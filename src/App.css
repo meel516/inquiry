@@ -1,3 +1,9 @@
+html {}
+
+body {
+    height: 95vh;
+}
+
 .App {
   text-align: center;
 }
@@ -21,6 +27,11 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.inquiry-form {
+  height: 85vh;
+  overflow-y: scroll;
 }
 
 @keyframes App-logo-spin {

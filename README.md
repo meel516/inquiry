@@ -1,4 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Inquiry Form Application
+
+This project consists of a re-write of the Inquiry Form used by the Brookdale Contact Center.  It was built using reactjs along with several installed modules, which are listed below.
+
+Formik - do I need to use this - the main reason is for validation but not sure?
+React Bootstrap - is used to apply bootstrap formatting to the output of the reactjs ui
+React Router - to route between page requests
+Okta - used to connect to okta and requires react-router to be in place
+  - https://developer.okta.com/code/react/okta_react/
+React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
+	- https://react-select.com/home#getting-started
+
+
+## Getting Started
+
+These instructions will help you get your machine setup to be able to run the application. If you are familiar with any of these components feel free to skip any of these sections. We will also help you get your local development environment setup to be able to make changes. (Note: This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).)
+
+### Install npm
+
+You will need to install npm on your machine in order to
+
+### Install IDE
+
+There are several IDEs that are available on the market that can be used for editing this code, see the list below.
+
+Notepad
+Notepad++
+Atom
+VS Code
+Sublime
 
 ## Available Scripts
 
