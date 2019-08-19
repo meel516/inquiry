@@ -54,6 +54,13 @@ export default class InquiryForm extends Component {
 
   handleRemoveCommunity(index) {
     console.log(`removing community[${index}]`)
+    this.setState((state) => {
+      let communities = state.communities;
+      communities.splice(index, 1)
+      return {
+        communities: communities
+      }
+    })
   }
 
   handleLostClosed(event) {

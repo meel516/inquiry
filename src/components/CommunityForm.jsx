@@ -37,6 +37,7 @@ export default class CommunityForm extends React.Component {
     }
 
     this.handleNextSteps = this.handleNextSteps.bind(this);
+    this.handleRemoveCommunity = this.handleRemoveCommunity.bind(this);
   }
 
   componentDidMount() {
@@ -73,7 +74,7 @@ export default class CommunityForm extends React.Component {
     const {selectedOption} = this.state;
 
    return (
-     <div class="communities-container">
+     <div className="communities-container">
        <Card>
          <CardBody>
            <Row>
@@ -89,12 +90,16 @@ export default class CommunityForm extends React.Component {
                 </FormGroup>
               </Col>
               <Col>
-                <label for="secondPersonFee">2nd Person Fee</label>
-                <input type="text" class="form-control" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee}/>
+                <FormGroup>
+                  <Label for="secondPersonFee">2nd Person Fee</Label>
+                  <Input type="text" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee}/>
+                </FormGroup>
               </Col>
               <Col>
-                <label for="communityFee">Community Fee</label>
-                <input type="text" class="form-control" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee}/>
+                <FormGroup>
+                  <Label for="communityFee">Community Fee</Label>
+                  <Input type="text" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee}/>
+                </FormGroup>
               </Col>
             </Row>
             <Row>
@@ -113,7 +118,7 @@ export default class CommunityForm extends React.Component {
             }
         </CardBody>
         <CardFooter className="text-right">
-          <Button color="primary" size="sm">Remove</Button>
+          <Button color="primary" size="sm" onClick={this.handleRemoveCommunity}>Remove</Button>
         </CardFooter>
       </Card>
     </div>
