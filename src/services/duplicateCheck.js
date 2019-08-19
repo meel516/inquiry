@@ -7,10 +7,11 @@ const SALES_SERVICES_URL = 'http://sales-services.assisted.com';
 export function duplicateCheck(contact) {
   const endpoint = window.encodeURI(`${SALES_SERVICES_URL}/ContactService/api/v1/contacts/validations/duplicateCheck`);
 
+  fetch(endpoint, {})
 
 }
 
 function getSalesLead(leadId) {
   var uri = `${SALES_SERVICES_URL}/Sims/api/leads/${leadId}`
-  return fetch()
+  return fetch(uri, {})
 }

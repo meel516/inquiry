@@ -32,7 +32,7 @@ export default class CommunityForm extends React.Component {
     super(props);
 
     this.state = {
-      communityList: [],
+      communityList: communityList,
       selectedOption: null,
     }
 
@@ -56,6 +56,10 @@ export default class CommunityForm extends React.Component {
 
   componentWillUnmount() {
     console.log('called componentWillUnmount on community form');
+  }
+
+  handleRemoveCommunity() {
+    this.props.remove();
   }
 
   handleNextSteps(option) {

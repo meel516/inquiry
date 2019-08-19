@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
 const advisorList = [
   {
@@ -35,34 +36,40 @@ const advisorList = [
 export default class Advisor extends React.Component {
   render() {
     return (
-      <div>
-        <div class="row">
-          <div class="col">
-            <label>Advisor</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
+      <>
+        <Row>
+          <Col>
+            <Label>Advisor</Label>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <Select options={advisorList} />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <label for="">Advisor First Name</label>
-            <input type="text" class="form-control" placeholder="First name" />
-          </div>
-          <div class="col">
-            <label for="">Advisor Last Name</label>
-            <input type="text" class="form-control" placeholder="Advisor Last name" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <label for="">Advisor Email</label>
-            <input type="text" class="form-control" placeholder="Advisor Email" />
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label htmlFor="advisorFirstName">Advisor First Name</Label>
+              <Input type="text" id="advisorFirstName" name="advisorFirstName" />
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+            <Label htmlFor="advisorLastName">Advisor Last Name</Label>
+            <Input type="text" id="advisorLastName" name="advisorLastName" />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label htmlFor="">Advisor Email</Label>
+              <Input type="text" id="advisorEmail" name="advisorEmail" />
+            </FormGroup>
+          </Col>
+        </Row>
+      </>
     )
   }
 }

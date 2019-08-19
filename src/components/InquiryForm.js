@@ -53,7 +53,7 @@ export default class InquiryForm extends Component {
   }
 
   handleRemoveCommunity(index) {
-
+    console.log(`removing community[${index}]`)
   }
 
   handleLostClosed(event) {
@@ -72,19 +72,19 @@ export default class InquiryForm extends Component {
       <h2>Inquiry Form</h2>
       <hr />
       <Contact />
+      <br />
+      <Address />
       <br/>
       <Row>
-				<div class="col-6">
+				<Col md="6">
 					<Label for="callPrompt">What prompted their call?</Label>
           <Select
             options={InquiryService.retrieveCallPrompts}
           />
-				</div>
+      </Col>
 			</Row>
       <br />
       <Note label="Situation" id="situation" name="situation"/>
-      <br />
-      <Address />
       <Row>
 				<Col>
           <FormGroup>
@@ -99,7 +99,7 @@ export default class InquiryForm extends Component {
   		<Row>
         <Col>
   				<Label for="careLevel">Care Level Recommended</Label>
-					<select class="form-control" id="careLevel">
+					<select className="form-control" id="careLevel">
 						<option></option>
 						<option>Nurture</option>
 						<option>Alzheimer's/Dementia</option>
@@ -136,7 +136,7 @@ export default class InquiryForm extends Component {
   			<Col>
             <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
             {this.state.communities.map((community, index) => (
-              <CommunityForm community={community} />
+              <CommunityForm key={index} community={community} remove={() =>this.handleRemoveCommunity(index)}/>
             ))}
           </Col>
       </Row>
@@ -197,27 +197,31 @@ export default class InquiryForm extends Component {
               </FormGroup>
             </Col>
           </Row>
-          <div class="row">
-              <div class="col">
-                <div class="form-check form-check-inline col-4">
-                  <input class="form-check-input" type="checkbox" value="" id="petFriendly" />
-                  <label class="form-check-label" for="petFriendly">Pet friendly</label>
-                </div>
-                <div class="form-check form-check-inline col-4">
-                  <input class="form-check-input" type="checkbox" value="" id="safety" />
-                  <label class="form-check-label" for="safety">Safety</label>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <br />
-        <SecondPerson />
-        <br />
-        <Row>
-  				<Col>
-  					<Label for="timeframe">I am calling for*</Label>
-  					<select class="form-control" id="timeframe">
+          <Row>
+            <Col>
+              <FormGroup check inline className="col-4">
+                <Label check>
+                  <Input type="checkbox" id="petFriendly" name="petFriendly" value="" />{' '}
+                  Pet friendly
+                </Label>
+              </FormGroup>
+              <FormGroup check inline className="col-4">
+                <Label check>
+                  <Input type="checkbox" id="safety" name="safety" value="" />{' '}
+                  Safety
+                </Label>
+              </FormGroup>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <br />
+      <SecondPerson />
+      <br />
+      <Row>
+  			<Col>
+  				<Label for="timeframe">I am calling for*</Label>
+  					<select className="form-control" id="timeframe">
   						<option>Select One</option>
   						<option>Myself</option>
   						<option>Parent</option>
@@ -230,7 +234,7 @@ export default class InquiryForm extends Component {
         <Row>
   				<Col>
             <Label for="timeframe">Reason for Call</Label>
-  					<select class="form-control" id="timeframe">
+  					<select className="form-control" id="timeframe">
   						<option>Select One</option>
   						<option>Family Relocating</option>
   						<option>Financial Strain of Home Ownership</option>
@@ -274,7 +278,7 @@ export default class InquiryForm extends Component {
         <Row>
   				<Col>
   					<Label for="attemptNumber">Attempt Number*</Label>
-  					<select class="form-control" id="attemptNumber">
+  					<select className="form-control" id="attemptNumber">
   						<option>Select One</option>
   						<option>1st</option>
   						<option>2nd</option>
@@ -290,8 +294,8 @@ export default class InquiryForm extends Component {
         <br />
         <Row>
   				<Col>
-  					<label for="callerType">What is the gender of the caller?*</label>
-  					<select class="form-control" id="callerType">
+  					<Label for="callerType">What is the gender of the caller?*</Label>
+  					<select className="form-control" id="callerType">
   						<option>Select One</option>
   						<option>Male</option>
   						<option>Female</option>
@@ -299,7 +303,7 @@ export default class InquiryForm extends Component {
     			</Col>
     		</Row>
         <br />
-        <div class="float-right">
+        <div className="float-right">
           <Button color="primary" size="sm" onClick={this.handleSubmit}>Submit</Button>{' '}
           <Button color="warning" size="sm" onClick={this.handleLostClosed}>Lost/Closed</Button>
         </div>
