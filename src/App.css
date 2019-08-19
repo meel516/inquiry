@@ -34,6 +34,19 @@ body {
   overflow-y: scroll;
 }
 
+.list-group-borderless {
+  border-top: 0 none;
+}
+
+.list-group-bborder {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.list-group-nopadding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

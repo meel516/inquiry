@@ -13,20 +13,19 @@ React Select - this is a pretty powerful library that has type ahead searching, 
 
 ## Getting Started
 
-These instructions will help you get your machine setup to be able to run the application. If you are familiar with any of these components feel free to skip any of these sections. We will also help you get your local development environment setup to be able to make changes. (Note: This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).)
+These instructions will help you get your machine setup to be able to run the application. If you are familiar with any of these components feel free to skip any of these sections. We will also help you get your local development environment setup to be able to make changes. (Note: This project was originally bootstrapped with [Create React App](https://github.com/facebook/create-react-app).)  And several packages were added to the system on an as needed basis.
 
 ### Install npm
 
-You will need to install npm on your machine in order to
+If you already have Node.js installed on your machine you can skip this section.  In order to do development and You will need to install npm on your machine in order to run the application and do any development work.  npm (Node.js) can be downloaded [here](https://nodejs.org/en/download/).
 
 ### Install IDE
 
 There are several IDEs that are available on the market that can be used for editing this code, see the list below.
 
-Notepad
-Notepad++
 Atom
 VS Code
+Notepad++
 Sublime
 
 ## Available Scripts

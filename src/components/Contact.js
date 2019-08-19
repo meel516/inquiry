@@ -1,6 +1,5 @@
 import React from 'react';
-import {Col, Form, Input, Label, Row} from 'reactstrap';
-import axios from 'axios';
+import {Col, Input, Label, Row} from 'reactstrap';
 
 const URL_PHONE_TYPES = "http://localhost/Sims/api/dropdowns/phoneTypes";
 
@@ -27,6 +26,7 @@ export default class Contact extends React.Component {
     this.setState({
       [name]: value
     });
+    console.log(`Contact state: ${this.state}`);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -42,7 +42,7 @@ export default class Contact extends React.Component {
     const {phoneTypes} = this.state;
 
     return (
-      <div>
+      <>
         <Row>
           <Col><Label for="phone">Name</Label></Col>
         </Row>
@@ -66,7 +66,7 @@ export default class Contact extends React.Component {
             <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
           </Col>
         </Row>
-      </div>
+      </>
     )
   }
 }

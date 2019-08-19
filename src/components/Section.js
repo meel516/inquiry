@@ -1,27 +1,28 @@
 import React from 'react';
+import { Col, Label, ListGroup, ListGroupItem, Row } from 'reactstrap';
 
 export default function Section(props) {
   return (
-    <div class="row">
-      <div class="col">
-        <div class="list-group list-group-flush">
-          <div class="list-group-item">
-            <label>Section Links</label>
-          </div>
-          <div class="list-group-item">
+    <Row>
+      <Col>
+        <ListGroup className="list-group-flush">
+          <ListGroupItem>
+            <Label>Section Links</Label>
+          </ListGroupItem>
+          <ListGroupItem>
             <a href="#contactinfo">Contact Info</a>
-          </div>
-          <div class="list-group-item">
+          </ListGroupItem>
+          <ListGroupItem>
             <a href="#situation">Situation</a>
-          </div>
-          <div class="list-group-item">
+          </ListGroupItem>
+          <ListGroupItem>
             <a href="#budget">Budget Passions & Personality</a>
-          </div>
-          <div class="list-group-item">
+          </ListGroupItem>
+          <ListGroupItem>
             <a href="#nextsteps">Next Steps</a>
-          </div>
-        </div>
-      </div>
-    </div>
+          </ListGroupItem>
+        </ListGroup>
+      </Col>
+    </Row>
   )
 }

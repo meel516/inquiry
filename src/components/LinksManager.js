@@ -1,30 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {Col, ListGroup, ListGroupItem, Row} from 'reactstrap';
 
-class LinksManager extends React.Component {
+const systemLinks = [
+  {name: "SMS", location: "http://sales.uat.assisted.com"},
+  {name: "Google", location: "http://www.google.com"},
+]
+
+export default class LinksManager extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      links: [],
+    }
   }
 
   componentDidMount() {
     console.log('LinksManager componentDidMount()')
+    console.log(process.env.REACT_APP_DOMAIN_DOMAIN)
+    console.log(process.env.NODE_ENV_DOMAIN)
+    this.setState({
+      links: systemLinks
+    })
   }
 
   render() {
+    const {links} = this.state || [];
+    const listItems = links.map((link) =>
+      <SingleLink key={link.name} link={link} />
+  );
+
     return (
-      <div class="row">
-        <div class="col">
-          <div class="list-group list-group-flush">
-            <div class="list-group-item">
-              <label>System Links</label>
-            </div>
-            <div class="list-group-item">
-              <a href="http://sales.assisted.com">SMS</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Row>
+        <Col>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem className="list-group-bborder">
+              <Col>
+                <label>System Links</label>
+              </Col>
+            </ListGroupItem>
+            {listItems}
+          </ListGroup>
+        </Col>
+      </Row>
     )
   }
 }
 
-export default LinksManager;
+function SingleLink(props) {
+  return (
+    <ListGroupItem className="list-group-borderless list-group-nopadding">
+      <a href={props.link.location}>{props.link.name}</a>
+    </ListGroupItem>
+  )
+}

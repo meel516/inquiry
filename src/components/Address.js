@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Form, Input, FormGroup, Label, Row} from 'reactstrap';
+import {Col, Input, FormGroup, Label, Row} from 'reactstrap';
 
 export default class Address extends React.Component {
   constructor(props) {
@@ -8,11 +8,11 @@ export default class Address extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
   			<Row>
   				<Col>
             <FormGroup>
-    					<Label for="line1">Address</Label>
+    					<Label htmlFor="line1">Address</Label>
     					<Input type="text" name="addressLine1" placeholder="Address" />
             </FormGroup>
   				</Col>
@@ -47,7 +47,7 @@ export default class Address extends React.Component {
   					<Input type="text" name="zip" />
   				</Col>
   			</Row>
-      </div>
+      </>
     )
   }
 }

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import InquiryForm from './InquiryForm';
 import LinksManager from './LinksManager';
-import Contact from './Contact';
-import Navigator from './Navigator';
-import Footer from './Footer';
+import Navigator from './Headers/Navigator';
+import Footer from './Footers/Footer';
 import Section from './Section';
 
-class LayoutManager extends React.Component {
+export default class LayoutManager extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,15 +21,15 @@ class LayoutManager extends React.Component {
    return (
      <div>
        <Navigator/>
-       <div class="container">
-        <div class="row">
-          <div class="col-2">
+       <div className="container">
+        <div className="row">
+          <div className="col-2">
             <Section />
           </div>
-          <div class="col-7 inquiry-form">
+          <div className="col-7 inquiry-form">
             <InquiryForm />
           </div>
-          <div class="col-3">
+          <div className="col-3">
             <LinksManager />
           </div>
         </div>
@@ -39,5 +39,3 @@ class LayoutManager extends React.Component {
    )
  }
 }
-
-export default LayoutManager;
