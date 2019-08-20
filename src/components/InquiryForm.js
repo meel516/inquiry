@@ -277,7 +277,7 @@ export default class InquiryForm extends Component {
         <Row>
   				<Col>
             <FormGroup>
-    					<Label for="ininid">ININ ID*</Label>
+    					<Label for="ininid">UMID*</Label>
               <Input type="text" id="ininid" />
             </FormGroup>
 				  </Col>
