@@ -21,6 +21,9 @@
     "start": "react-scripts start --env=local",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:update": "react-scripts test --updateSnapshot",
+    "test:coverage": "react-scripts test --coverage",
+
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

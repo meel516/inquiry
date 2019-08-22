@@ -8,7 +8,7 @@ export default class Address extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="Address">
   			<Row>
   				<Col>
             <FormGroup>
@@ -47,7 +47,7 @@ export default class Address extends React.Component {
   					<Input type="text" name="zip" />
   				</Col>
   			</Row>
-      </>
+      </div>
     )
   }
 }
