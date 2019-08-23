@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 
-import CareLevels from './CareLevels';
-import CommunityForm from './CommunityForm';
-import Contact from './Contact';
-import Prospect from './Prospect';
+import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
 import Advisor from './Advisor';
+import CareLevels from './CareLevels';
+import CommunitySelect from './CommunitySelect';
+import Contact from './Contact';
+import Drivers from './Drivers';
+import Prospect from './Prospect';
 import Note from './Note';
 import TimeFrame from './TimeFrame';
-import VeteranStatus from './VeteranStatus';
 import FinancialOptions from './FinancialOptions';
 import InquiryType from './InquiryType';
 import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
+import VeteranStatus from './VeteranStatus';
+
 import InquiryService from "../services/InquiryService";
+
 import Select from 'react-select';
 
 var Community = function(index) {
@@ -33,7 +37,30 @@ export default class InquiryForm extends Component {
     this.state = {
       communities: [],
       veteranStatus: null,
+      lead: {},
     };
+  }
+
+  componentDidMount() {
+    console.log('InquiryForm.componentDidMount()')
+    const emptyLead = {
+      influencer: {
+        firstName: "",
+        lastName: "",
+      },
+      secondPerson: {
+        firstName: "",
+        lastName: "",
+      },
+      prospect: {
+        firstName: "",
+        lastName: "",
+      }
+    };
+
+    this.setState({
+      lead: emptyLead,
+    })
   }
 
   handleVeteranStatusChange(option) {
@@ -74,174 +101,104 @@ export default class InquiryForm extends Component {
   }
 
   render () {
-   return (
-    <Form onSubmit={this.handleSubmit} className="inquiryForm">
-      <h2>Inquiry Form</h2>
-      <hr />
-      <Contact />
-      <br />
-      <Address />
-      <br/>
-      <Row>
-				<Col md="6">
-					<Label for="callPrompt">What prompted their call?</Label>
-          <Select
-            options={InquiryService.retrieveCallPrompts}
-          />
-      </Col>
-			</Row>
-      <br />
-      <Note label="Situation" id="situation" name="situation"/>
-      <Row>
-				<Col>
-          <FormGroup>
-  					<Label for="adlneeds">ADL Needs</Label>
-  					<Input type="text" id="adlNeeds" placeholder="ADL Needs" />
-          </FormGroup>
-				</Col>
-			</Row>
-      <br/>
-      <Prospect />
-      <br/>
-  		<Row>
-        <Col>
-  				<Label for="careLevel">Care Level Recommended</Label>
-					<select className="form-control" id="careLevel">
-						<option></option>
-						<option>Nurture</option>
-						<option>Alzheimer's/Dementia</option>
-						<option>Assisted Living</option>
-					  <option>At Home</option>
-          	<option value="BHS">BHS</option>
-						<option>Hospice</option>
-						<option>Independent Living</option>
-						<option>Private Duty Home Care</option>
-						<option>Rehab</option>
-						<option>Skilled Nursing Care</option>
-						<option>System Conversion</option>
-					</select>
-				</Col>
-      </Row>
-      <Row>
-  			<Col>
-          <Note label="Passions &amp; Personality" id="passionsPersonality" name="passionsPersonality"/>
-				</Col>
-      </Row>
-      <Row>
-				<Col md="5">
-          <TimeFrame />
-    		</Col>
-    	</Row>
-      <br />
-      <Row>
-				<Col>
-          <Note label="Financial Situation" id="financialSituation" name="financialSituation" />
-				</Col>
-      </Row>
-      <br />
-      <Row>
-  			<Col>
+    const {lead} = this.state
+    const {influencer, prospect, secondPerson} = lead;
+    console.log(`${JSON.stringify(lead)}`)
+    return (
+      <Form onSubmit={this.handleSubmit} className="inquiryForm">
+        <h2>Inquiry Form</h2>
+        <hr />
+        <section className="influencer-section">
+          <Contact name="influencer" contact={influencer} />
+          <br />
+            <Address />
+          <br/>
+          <Row>
+            <Col md="6">
+              <Label for="callPrompt">What prompted their call?</Label>
+              <Select
+                options={InquiryService.retrieveCallPrompts}
+                />
+            </Col>
+          </Row>
+        </section>
+        <br />
+        <section className="prospect-section">
+          <Note label="Situation" id="situation" name="situation"/>
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label for="adlneeds">ADL Needs</Label>
+                <Input type="text" id="adlNeeds" placeholder="ADL Needs" />
+              </FormGroup>
+            </Col>
+          </Row>
+          <br/>
+          <AdditionalCareElements />
+          <br/>
+          {  false && <Prospect contact={prospect} />
+          }
+          <br/>
+          <CareLevels />
+          <br/>
+          <Row>
+            <Col>
+              <Note label="Passions &amp; Personality" id="passionsPersonality" name="passionsPersonality"/>
+            </Col>
+          </Row>
+        </section>
+        <Row>
+          <Col md="5">
+            <TimeFrame />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col>
+            <Note label="Financial Situation" id="financialSituation" />
+          </Col>
+        </Row>
+        <br/>
+        <Row>
+          <Col>
             <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
             {this.state.communities.map((community, index) => (
-              <CommunityForm key={index} community={community} remove={() =>this.handleRemoveCommunity(index)}/>
+              <CommunitySelect key={index} community={community} remove={() =>this.handleRemoveCommunity(index)}/>
             ))}
           </Col>
-      </Row>
-      <br/>
-      <hr />
-      <FinancialOptions />
-      <br/>
-      <Row>
-  			<Col>
-          <Note label="Additional Notes" id="additionalNotes" name="additionalNotes" />
-				</Col>
-			</Row>
-      <br />
-      <Row>
-        <Col>
-          <Label for="drivers">Drivers</Label>
-          <Row>
-            <Col>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="activities" name="activities" value="" />{' '}
-                  Activities
-                </Label>
-              </FormGroup>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="accessToResidents" name="accessToResidents" value="" />{' '}
-                  Access to Residents
-                </Label>
-              </FormGroup>
-              <FormGroup check inline className="col-3">
-                <Label check>
-                  <Input type="checkbox" id="ageInPlace" name="ageInPlace" value="" />{' '}
-                  Age in Place
-                </Label>
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="care" name="care" value="" />{' '}
-                  Care
-                </Label>
-              </FormGroup>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="location" name="location" value="" />{' '}
-                  Location
-                </Label>
-              </FormGroup>
-              <FormGroup check inline className="col-3">
-                <Label check>
-                  <Input type="checkbox" id="peaceOfMind" name="peaceOfMind" value="" />{' '}
-                  Peace of mind
-                </Label>
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="petFriendly" name="petFriendly" value="" />{' '}
-                  Pet friendly
-                </Label>
-              </FormGroup>
-              <FormGroup check inline className="col-4">
-                <Label check>
-                  <Input type="checkbox" id="safety" name="safety" value="" />{' '}
-                  Safety
-                </Label>
-              </FormGroup>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <br />
-      <SecondPerson />
-      <br />
-      <Row>
-  			<Col>
-  				<Label for="timeframe">I am calling for*</Label>
-  					<select className="form-control" id="timeframe">
-  						<option>Select One</option>
-  						<option>Myself</option>
-  						<option>Parent</option>
+        </Row>
+        <br/>
+        <hr />
+        <FinancialOptions />
+        <br/>
+        <Row>
+          <Col>
+            <Note label="Additional Notes" id="additionalNotes" />
+          </Col>
+        </Row>
+        <br />
+        <Drivers />
+        <br />
+        { false && <SecondPerson contact={secondPerson} />
+        }
+        <br />
+        <Row>
+          <Col>
+            <Label for="callingFor">I am calling for*</Label>
+            <select className="form-control" id="callingFor">
+              <option>Select One</option>
+              <option>Myself</option>
+              <option>Parent</option>
               <option>Spouse</option>
               <option>Friend</option>
               <option>Other</option>
-    				</select>
-    			</Col>
-    		</Row>
+            </select>
+          </Col>
+        </Row>
         <Row>
   				<Col>
-            <Label for="timeframe">Reason for Call</Label>
-  					<select className="form-control" id="timeframe">
+            <Label for="reasonForCall">Reason for Call</Label>
+  					<select className="form-control" id="reasonForCall">
   						<option>Select One</option>
   						<option>Family Relocating</option>
   						<option>Financial Strain of Home Ownership</option>
@@ -312,7 +269,6 @@ export default class InquiryForm extends Component {
         <br />
         <div className="float-right">
           <Button color="primary" size="sm" onClick={this.handleSubmit}>Submit</Button>{' '}
-          <Button color="warning" size="sm" onClick={this.handleLostClosed}>Lost/Closed</Button>
         </div>
      </Form>
    )

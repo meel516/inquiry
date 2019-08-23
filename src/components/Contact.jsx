@@ -1,7 +1,7 @@
 import React from 'react';
 import {Col, Input, Label, Row} from 'reactstrap';
 
-const URL_PHONE_TYPES = "http://localhost/Sims/api/dropdowns/phoneTypes";
+const URL_PHONE_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
 
 export default class Contact extends React.Component {
   constructor(props) {
@@ -47,8 +47,8 @@ export default class Contact extends React.Component {
           <Col><Label for="phone">Name</Label></Col>
         </Row>
         <Row>
-          <Col><Input type="text" name="firstName" onChange={this.handleChange} placeholder="First name" /></Col>
-          <Col><Input type="text" name="lastName" onChange={this.handleChange} placeholder="Last name" /></Col>
+          <Col><Input type="text" name="firstName" onChange={this.handleChange} value={this.props.contact.firstName} placeholder="First name" /></Col>
+          <Col><Input type="text" name="lastName" onChange={this.handleChange} value={this.props.contact.lastName} placeholder="Last name" /></Col>
         </Row>
         <Row>
           <Col>

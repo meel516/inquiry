@@ -13,6 +13,9 @@ export default function Navigator(props) {
           alt="Brookdale Senior Living"
         />
       </NavbarBrand>
+      <Nav>
+        <NavItem>Inquiry Form</NavItem>
+      </Nav>
     </Navbar>
   );
 }

@@ -1,5 +1,6 @@
 
-export default class InquiryService {
+class InquiryService {
+
   retrieveCallPrompts() {
     return [
       {value: 1, label: "Age and Need for Care"},
@@ -12,4 +13,7 @@ export default class InquiryService {
       {value: 8, label: "Relocation"}
     ];
   }
+
 }
+
+export default new InquiryService();

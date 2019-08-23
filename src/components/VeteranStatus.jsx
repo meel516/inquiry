@@ -3,7 +3,7 @@ import {FormGroup, Label} from 'reactstrap';
 import Select from 'react-select';
 
 // <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
-const URL_VET_STATUS = "http://localhost/Sims/api/dropdowns/veteranStatus";
+const URL_VET_STATUS = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/veteranStatus`;
 
 export default class VeteranStatus extends React.Component {
   constructor(props) {
