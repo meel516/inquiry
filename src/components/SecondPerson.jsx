@@ -46,7 +46,7 @@ export default class SecondPerson extends React.Component {
       return (
         <>
         {this.renderQuestion()}
-        <Contact />
+        <Contact contact={this.props.contact} />
         <Note label="2nd Person Situation" id="situation2" name="situation2"/>
         </>
       )

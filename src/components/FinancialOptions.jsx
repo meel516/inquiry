@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
 export default function FinancialOptions(props) {
   return (

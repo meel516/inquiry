@@ -3,7 +3,7 @@ import React from 'react';
 import {Label} from 'reactstrap';
 import Select from 'react-select';
 
-const URL_TIMEFRAME = 'http://localhost/Sims/api/dropdowns/decisionTimeframe';
+const URL_TIMEFRAME = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/decisionTimeframe`;
 
 export default class TimeFrame extends React.Component {
   constructor(props) {

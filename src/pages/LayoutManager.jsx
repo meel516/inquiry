@@ -1,10 +1,10 @@
 import React from 'react';
 
-import InquiryForm from './InquiryForm';
-import LinksManager from './LinksManager';
+import InquiryForm from '../components/InquiryForm';
+import LinksManager from '../components/LinksManager';
 import Navigator from './Headers/Navigator';
 import Footer from './Footers/Footer';
-import Section from './Section';
+import Section from '../components/Section';
 
 export default class LayoutManager extends React.Component {
   constructor(props) {

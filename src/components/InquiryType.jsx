@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Input, FormGroup, Label} from 'reactstrap';
 
-const URL_INQUIRY_TYPES = "http://localhost/Sims/api/dropdowns/inquiryTypes";
+const URL_INQUIRY_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/inquiryTypes`;
 
 const inquiryTypeList = [
  { value: 1, text: 'Call In'}
@@ -39,7 +40,8 @@ function InquiryTypes(props) {
   const types = props.types;
   const inquiryTypeItems = types.map((type) =>
     <InquiryTypeItem key={type.value}
-                   item={type} />
+                   value={type.value}
+                   label={type.label}/>
   );
   return (
     <Input type="select" id="inquiryType" name="inquiryType">
@@ -49,8 +51,13 @@ function InquiryTypes(props) {
   )
 }
 
-function InquiryTypeItem(props) {
+function InquiryTypeItem({value, label}) {
   return (
-    <option value={props.item.value}>{props.item.text}</option>
+    <option key={value} value={value}>{label}</option>
   );
+}
+
+InquiryTypeItem.propTypes = {
+   value: PropTypes.number.isRequired,
+   label: PropTypes.string.isRequired
 }

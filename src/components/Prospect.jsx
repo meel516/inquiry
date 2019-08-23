@@ -10,7 +10,7 @@ export default function Prospect(props) {
           <Label>Prospect Name</Label>
         </Col>
       </Row>
-      <Contact />
+      <Contact contact={props.contact} />
       <Row>
         <Col>
           <FormGroup>

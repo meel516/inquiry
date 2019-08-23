@@ -2,7 +2,7 @@ import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import Select from 'react-select';
 
-const URI_DROPDOWNS = "http://localhost/Sims/api/dropdowns";
+const URI_DROPDOWNS = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns`;
 
 export default class InquiryLeadSource extends React.Component {
   constructor(props) {
