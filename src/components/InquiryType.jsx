@@ -26,38 +26,18 @@ export default class InquiryType extends React.Component {
 
   render() {
     const {inquiryTypes} = this.state;
+    const inquiryTypeOptions = inquiryTypes.map((type) => {
+      return  <option key={type.value} value={type.value}>{type.text}</option>
+    });
 
     return (
       <FormGroup>
         <Label for="inquiryType">Inquiry Type</Label>
-        <InquiryTypes types={this.state.inquiryTypes} />
+        <Input type="select" id="inquiryType" name="inquiryType">
+          <option value=""></option>
+          {inquiryTypeOptions}
+        </Input>
       </FormGroup>
     )
   }
-}
-
-function InquiryTypes(props) {
-  const types = props.types;
-  const inquiryTypeItems = types.map((type) =>
-    <InquiryTypeItem key={type.value}
-                   value={type.value}
-                   label={type.label}/>
-  );
-  return (
-    <Input type="select" id="inquiryType" name="inquiryType">
-      <option value=""></option>
-      {inquiryTypeItems}
-    </Input>
-  )
-}
-
-function InquiryTypeItem({value, label}) {
-  return (
-    <option key={value} value={value}>{label}</option>
-  );
-}
-
-InquiryTypeItem.propTypes = {
-   value: PropTypes.number.isRequired,
-   label: PropTypes.string.isRequired
 }
