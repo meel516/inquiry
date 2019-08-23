@@ -2,7 +2,7 @@ import React from 'react';
 import {Col, Input, FormGroup, Label, Row} from 'reactstrap';
 import Select from 'react-select';
 
-const URL_STATELIST = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/stateProv`;
+import {getAddressStates} from '../services/SalesServices'
 
 export default class Address extends React.Component {
   constructor(props) {
@@ -13,10 +13,9 @@ export default class Address extends React.Component {
   }
 
   componentDidMount() {
-    console.log(`uri: ${URL_STATELIST}`);
-    fetch(URL_STATELIST, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getAddressStates()
       .then((data) => {
+        console.log(data)
         this.setState({ states: data })
       })
       .catch(error => console.log(error));
@@ -24,9 +23,9 @@ export default class Address extends React.Component {
 
   render() {
     const {states} = this.state || [];
-    // const options = (states || []).map((state) => {
-    //   return <option key={state.value} value={state.value}>{state.text}</option>
-    // })
+    const options = (states || []).map((state) => {
+       return <option key={state.value} value={state.value}>{state.text}</option>
+     })
 
     return (
       <div className="Address">
@@ -58,7 +57,8 @@ export default class Address extends React.Component {
     					<Label for="state">State</Label>
               <Input type="select" name="state">
     						<option></option>
-    					</Input>
+                {options}
+  					</Input>
             </FormGroup>
   				</Col>
   				<Col>

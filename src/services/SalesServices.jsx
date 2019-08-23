@@ -53,3 +53,11 @@ export function retrieveCallPrompts() {
       {value: 8, label: "Relocation"}
     ];
 }
+
+export function getAddressStates() {
+  const endpoint = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/stateProv`;
+
+  return fetch(endpoint, { mode: 'cors', cache: 'no-cache' })
+    .then((res) => res.json());
+
+}
