@@ -17,13 +17,10 @@ import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import {retrieveCallPrompts} from "../services/SalesServices";
+import {createEmptyLead, retrieveCallPrompts, submitToService} from "../services/SalesServices";
+import {createCommunity} from '../services/CommunityServices';
 
 import Select from 'react-select';
-
-var Community = function(index) {
-
-};
 
 export default class InquiryForm extends Component {
   constructor(props) {
@@ -31,35 +28,52 @@ export default class InquiryForm extends Component {
     this.handleAddCommunity = this.handleAddCommunity.bind(this);
     this.handleVeteranStatusChange = this.handleVeteranStatusChange.bind(this);
 
-    this.handleLostClosed = this.handleLostClosed.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleContactChange = this.handleContactChange.bind(this);
+    this.handleAddressChanges = this.handleAddressChanges.bind(this);
+    this.handleLeadSourceChange = this.handleLeadSourceChange.bind(this);
 
+    this.handleLostClosed = this.handleLostClosed.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
+    var emptyLead = createEmptyLead();
     this.state = {
       communities: [],
       veteranStatus: null,
-      lead: {},
+      lead: emptyLead,
     };
   }
 
   componentDidMount() {
     console.log('InquiryForm.componentDidMount()')
-    const emptyLead = {
-      influencer: {
-        firstName: "",
-        lastName: "",
-      },
-      secondPerson: {
-        firstName: "",
-        lastName: "",
-      },
-      prospect: {
-        firstName: "",
-        lastName: "",
-      }
-    };
 
+    var emptyLead = createEmptyLead();
     this.setState({
       lead: emptyLead,
+    })
+  }
+
+  handleContactChange(type, name, value) {
+    console.log(`changing contact[${type}] property[${name}]=${value}`);
+    const updatedLead = this.state.lead;
+    const contact = updatedLead[type][name] = value;
+    this.setState({
+      lead: updatedLead,
+    })
+  }
+
+  handleLeadSourceChange(name, value) {
+    const updatedLead = this.state.lead;
+    updatedLead.leadSource[name] = value;
+    this.setState({
+      lead: updatedLead,
+    })
+  }
+
+  handleAddressChanges(type, name, value) {
+    const updatedLead = this.state.lead;
+    const contact = updatedLead[type].address[name] = value;
+    this.setState({
+      lead: updatedLead,
     })
   }
 
@@ -72,7 +86,7 @@ export default class InquiryForm extends Component {
   handleAddCommunity() {
     this.setState((state) => {
       let communities = state.communities;
-      communities.push(new Community(communities.length))
+      communities.push(createCommunity())
       return {
         communities: communities
       }
@@ -80,7 +94,6 @@ export default class InquiryForm extends Component {
   }
 
   handleRemoveCommunity(index) {
-    console.log(`removing community[${index}]`)
     this.setState((state) => {
       let communities = state.communities;
       communities.splice(index, 1)
@@ -95,22 +108,23 @@ export default class InquiryForm extends Component {
     event.preventDefault();
   }
 
-  handleSubmit(event) {
-    console.log('handling form submission')
+  handleFormSubmit(event) {
     event.preventDefault();
+    const lead = this.state.lead;
+    submitToService(lead);
   }
 
   render () {
     const {lead} = this.state
-    const {influencer, prospect, secondPerson} = lead;
-    console.log(`${JSON.stringify(lead)}`)
+    const {influencer, prospect, secondPerson} = lead || {};
+
     return (
       <Form onSubmit={this.handleSubmit} className="inquiryForm">
         <section className="influencer-section">
-          <Contact name="influencer" contact={influencer} />
+          <Contact type="influencer" contact={influencer} onChange={this.handleContactChange}>
+            <Address type="influencer" address={influencer.address} onChange={this.handleAddressChanges}/>
+          </Contact>
           <br />
-            <Address />
-          <br/>
           <Row>
             <Col md="6">
               <Label for="callPrompt">What prompted their call?</Label>
@@ -134,8 +148,7 @@ export default class InquiryForm extends Component {
           <br/>
           <AdditionalCareElements />
           <br/>
-          {  false && <Prospect contact={prospect} />
-          }
+          <Prospect contact={prospect} />
           <br/>
           <CareLevels />
           <br/>
@@ -177,8 +190,7 @@ export default class InquiryForm extends Component {
         <br />
         <Drivers />
         <br />
-        { false && <SecondPerson contact={secondPerson} />
-        }
+        <SecondPerson contact={secondPerson} />
         <br />
         <Row>
           <Col>
@@ -228,7 +240,7 @@ export default class InquiryForm extends Component {
             <VeteranStatus />
     			</Col>
     		</Row>
-        <InquiryLeadSource />
+        <InquiryLeadSource leadSource={lead.leadSource} onChange={this.handleLeadSourceChange}/>
         <Row>
   				<Col>
             <FormGroup>
@@ -237,7 +249,7 @@ export default class InquiryForm extends Component {
             </FormGroup>
 				  </Col>
         </Row>
-        <Row>
+        { false && <Row>
   				<Col>
   					<Label for="attemptNumber">Attempt Number*</Label>
   					<select className="form-control" id="attemptNumber">
@@ -250,9 +262,7 @@ export default class InquiryForm extends Component {
               <option>6th</option>
     				</select>
     			</Col>
-    		</Row>
-        <br />
-        <Advisor />
+    		</Row>}
         <br />
         <Row>
   				<Col>
@@ -266,7 +276,7 @@ export default class InquiryForm extends Component {
     		</Row>
         <br />
         <div className="float-right">
-          <Button color="primary" size="sm" onClick={this.handleSubmit}>Submit</Button>{' '}
+          <Button color="primary" size="sm" onClick={this.handleFormSubmit}>Submit</Button>{' '}
         </div>
      </Form>
    )

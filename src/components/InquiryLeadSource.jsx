@@ -28,7 +28,10 @@ export default class InquiryLeadSource extends React.Component {
       .catch(error => console.log(error));
 
     if (this.props.leadSource) {
-
+      const {leadSourceId} = this.props.leadSource;
+      if (leadSourceId) {
+        this.fetchAndSetLeadSourceDetail(leadSourceId);
+      }
     }
   }
 

@@ -61,3 +61,31 @@ export function getAddressStates() {
     .then((res) => res.json());
 
 }
+
+export function createEmptyLead() {
+  return  {
+      influencer: {
+        firstName: "",
+        lastName: "",
+        address: {
+          addressLine1: "",
+        }
+      },
+      secondPerson: {
+        firstName: "",
+        lastName: "",
+      },
+      prospect: {
+        firstName: "",
+        lastName: "",
+      },
+      leadSource: {
+        leadSourceId: 4,
+        leadSourceDetailId: 58,
+      }
+    };
+}
+
+export function submitToService(leadForm) {
+  console.log('submitting lead form to service');
+}

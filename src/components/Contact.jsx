@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Input, Label, Row} from 'reactstrap';
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
 const URL_PHONE_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
 
@@ -11,6 +11,7 @@ export default class Contact extends React.Component {
     }
     this.handleDupCheck = this.handleDupCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.applyChangesToContact = this.applyChangesToContact.bind(this);
   }
 
   componentDidMount() {
@@ -23,10 +24,15 @@ export default class Contact extends React.Component {
   handleChange(event) {
     const value = event.target.value;
     const name = event.target.name;
-    this.setState({
-      [name]: value
-    });
-    console.log(`Contact state: ${this.state}`);
+    // this.setState({
+    //   [name]: value
+    // });
+    this.applyChangesToContact(name, value);
+  }
+
+  applyChangesToContact(name, value) {
+    var type = this.props.type;
+    this.props.onChange(type, name, value);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -40,6 +46,8 @@ export default class Contact extends React.Component {
 
   render() {
     const {phoneTypes} = this.state;
+    console.log(`Contact: ${JSON.stringify(this.props.contact)}`)
+    console.log(`Contact Type: ${this.props.contact}`)
 
     return (
       <>
@@ -47,25 +55,32 @@ export default class Contact extends React.Component {
           <Col><Label for="phone">Name</Label></Col>
         </Row>
         <Row>
-          <Col><Input type="text" name="firstName" onChange={this.handleChange} placeholder="First name" /></Col>
-          <Col><Input type="text" name="lastName" onChange={this.handleChange} placeholder="Last name" /></Col>
+          <Col><Input type="text" name="firstName" value={this.props.contact.firstName} onChange={this.handleChange} placeholder="First name" /></Col>
+          <Col><Input type="text" name="lastName" value={this.props.contact.lastName} onChange={this.handleChange} placeholder="Last name" /></Col>
         </Row>
         <Row>
           <Col>
-            <Label for="phone">Phone</Label>
-            <Input type="text" name="phone" onBlur={this.handleDupCheck} onChange={this.handleChange} placeholder="Phone" />
+            <FormGroup>
+              <Label for="phone">Phone</Label>
+              <Input type="text" name="phone" onBlur={this.handleDupCheck} onChange={this.handleChange} placeholder="Phone" />
+            </FormGroup>
           </Col>
           <Col>
-            <Label for="phoneTypes">Phone Types</Label>
-            <PhoneTypes types={phoneTypes} />
+            <FormGroup>
+              <Label for="phoneTypes">Phone Types</Label>
+              <PhoneTypes types={phoneTypes} />
+            </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col>
-            <Label for="email">Email</Label>
-            <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
+            </FormGroup>
           </Col>
         </Row>
+        {this.props.children}
       </>
     )
   }

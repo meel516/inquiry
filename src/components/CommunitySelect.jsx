@@ -1,7 +1,10 @@
 import React from 'react';
 import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, Label, Row} from 'reactstrap';
-import Select from 'react-select';
+
 import Visit from './Visit';
+import {fetchCommunities} from '../services/CommunityServices'
+
+import Select from 'react-select';
 
 // https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
 const communityList = [
@@ -32,7 +35,7 @@ export default class CommunityForm extends React.Component {
     super(props);
 
     this.state = {
-      communityList: communityList,
+      communityList: [],
       selectedOption: null,
     }
 
@@ -43,6 +46,7 @@ export default class CommunityForm extends React.Component {
   componentDidMount() {
     console.log('called componentDidMount on community form');
     // removed do to CORS issues
+
     /*fetch('https://unit-api.brookdale.com/bu-master/api/communities', {mode: 'cors', cache: 'no-cache'})
       .then((res) => res.json())
       .then((data) => {
@@ -79,7 +83,9 @@ export default class CommunityForm extends React.Component {
          <CardBody>
            <Row>
              <Col>
-               <Select options={communityList} />
+               <Select
+                 options={communityList}
+                />
              </Col>
            </Row>
            <Row>
