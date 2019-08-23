@@ -29,7 +29,7 @@ export default class Address extends React.Component {
     // })
 
     return (
-      <>
+      <div className="Address">
   			<Row>
   				<Col>
             <FormGroup>
@@ -66,7 +66,7 @@ export default class Address extends React.Component {
   					<Input type="text" name="zip" />
   				</Col>
   			</Row>
-      </>
+      </div>
     )
   }
 }
