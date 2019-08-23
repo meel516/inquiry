@@ -17,7 +17,7 @@ import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import InquiryService from "../services/InquiryService";
+import {retrieveCallPrompts} from "../services/SalesServices";
 
 import Select from 'react-select';
 
@@ -106,8 +106,6 @@ export default class InquiryForm extends Component {
     console.log(`${JSON.stringify(lead)}`)
     return (
       <Form onSubmit={this.handleSubmit} className="inquiryForm">
-        <h2>Inquiry Form</h2>
-        <hr />
         <section className="influencer-section">
           <Contact name="influencer" contact={influencer} />
           <br />
@@ -117,7 +115,7 @@ export default class InquiryForm extends Component {
             <Col md="6">
               <Label for="callPrompt">What prompted their call?</Label>
               <Select
-                options={InquiryService.retrieveCallPrompts}
+                options={retrieveCallPrompts}
                 />
             </Col>
           </Row>

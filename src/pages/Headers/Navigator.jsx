@@ -14,7 +14,9 @@ export default function Navigator(props) {
         />
       </NavbarBrand>
       <Nav>
-        <NavItem>Inquiry Form</NavItem>
+        <NavItem>
+          <h3>Inquiry Form</h3>
+        </NavItem>
       </Nav>
     </Navbar>
   );

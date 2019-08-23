@@ -47,8 +47,8 @@ export default class Contact extends React.Component {
           <Col><Label for="phone">Name</Label></Col>
         </Row>
         <Row>
-          <Col><Input type="text" name="firstName" onChange={this.handleChange} value={this.props.contact.firstName} placeholder="First name" /></Col>
-          <Col><Input type="text" name="lastName" onChange={this.handleChange} value={this.props.contact.lastName} placeholder="Last name" /></Col>
+          <Col><Input type="text" name="firstName" onChange={this.handleChange} placeholder="First name" /></Col>
+          <Col><Input type="text" name="lastName" onChange={this.handleChange} placeholder="Last name" /></Col>
         </Row>
         <Row>
           <Col>
