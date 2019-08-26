@@ -6,6 +6,7 @@ since this export is not default... on the import you need to do ... import { du
 just a normal export
 */
 const SALES_SERVICES_URL = 'https://sales-services.uat.assisted.com';
+const SALES_SYSTEM_URL = 'https://sales.uat.assisted.com'
 
 export function checkForDuplicate(contact, address) {
     const endpoint = window.encodeURI(`${SALES_SERVICES_URL}/ContactService/api/v1/contacts/validations/duplicateCheck`);
@@ -59,7 +60,29 @@ export function getAddressStates() {
 
   return fetch(endpoint, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
+}
 
+export function getLeadSources() {
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/inquiryLeadSource`;
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+      .then((res) => res.json());
+}
+
+export function getLeadSourceDetails(leadSourceId) {
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/inquiryLeadSource/${leadSourceId}/inquiryLeadSourceDetails`;
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
+}
+
+export function getPhoneTypes() {
+  
+}
+
+export function getDecisionTimeframe() {
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/decisionTimeframe`;
+
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
 }
 
 export function createEmptyLead() {
@@ -67,9 +90,14 @@ export function createEmptyLead() {
       influencer: {
         firstName: "",
         lastName: "",
+        gender: "",
+        phone: {
+          number: "",
+          type: ""
+        },
         address: {
           addressLine1: "",
-        }
+        },
       },
       secondPerson: {
         firstName: "",
@@ -78,14 +106,31 @@ export function createEmptyLead() {
       prospect: {
         firstName: "",
         lastName: "",
+        phone: {
+          number: "",
+          type: ""
+        }
       },
       leadSource: {
         leadSourceId: 4,
         leadSourceDetailId: 58,
+      },
+      notes: {
+
       }
     };
 }
 
-export function submitToService(leadForm) {
+export function createLeadById(leadId) {
+  const lead = createEmptyLead();
+
+  return lead;
+}
+
+export function submitToService({lead, communities}) {
   console.log('submitting lead form to service');
+
+  console.log('Communities: ' + JSON.stringify(communities));
+  console.log('Lead: ' + JSON.stringify(lead));
+
 }
