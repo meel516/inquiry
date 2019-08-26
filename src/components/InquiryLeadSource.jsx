@@ -1,8 +1,9 @@
-import React from 'react';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
-import Select from 'react-select';
+import React from 'react'
 
-const URI_DROPDOWNS = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns`;
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap'
+import Select from 'react-select'
+
+import {getLeadSources, getLeadSourceDetails} from '../services/SalesServices'
 
 export default class InquiryLeadSource extends React.Component {
   constructor(props) {
@@ -17,8 +18,7 @@ export default class InquiryLeadSource extends React.Component {
   }
 
   componentDidMount() {
-    fetch(URI_DROPDOWNS+'/inquiryLeadSource', {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getLeadSources()
       .then((data) => {
         var leadSource = data.map(function(ls) {
           ls.label = ls.text
@@ -41,10 +41,7 @@ export default class InquiryLeadSource extends React.Component {
   }
 
   fetchAndSetLeadSourceDetail(leadSourceId) {
-    console.log(`leadsourceId: ${leadSourceId}`);
-    var url = `${URI_DROPDOWNS}/inquiryLeadSource/${leadSourceId}/inquiryLeadSourceDetails`;
-    fetch(url, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getLeadSourceDetails(leadSourceId)
       .then((data) => {
         var leadSourceDetailList = data.map(function(lsd) {
           lsd.label = lsd.text
@@ -56,7 +53,7 @@ export default class InquiryLeadSource extends React.Component {
 
   render() {
     const {leadSourceList, leadSourceDetailList} = this.state || [];
-    const {leadSourceId} = this.props;
+    const {leadSourceId, leadSourceDetailId} = this.props.leadSource;
 
     return (
       <>
@@ -65,7 +62,7 @@ export default class InquiryLeadSource extends React.Component {
           <FormGroup>
             <Label for="leadSource">Lead Source</Label>
             <Select
-              inputValue={leadSourceId}
+              defaultValue={leadSourceId}
               onChange={this.onChangeLeadSource}
               options={leadSourceList}
             />
@@ -77,6 +74,7 @@ export default class InquiryLeadSource extends React.Component {
           <FormGroup>
             <Label for="leadSourceDetail">Lead Source Detail</Label>
             <Select
+              defaultValue={leadSourceDetailId}
               onChange={this.onchangeLeadSourceDetail}
               options={leadSourceDetailList}
             />

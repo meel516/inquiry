@@ -6,7 +6,7 @@ export default function Driver(props) {
     <>
     <Row>
       <Col>
-        <Label for="drivers">Drivers</Label>
+        <Label for="drivers" className="section-header">Drivers</Label>
         <Row>
           <Col>
             <FormGroup check inline className="col-4">

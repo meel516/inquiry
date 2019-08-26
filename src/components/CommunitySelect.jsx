@@ -46,7 +46,13 @@ export default class CommunityForm extends React.Component {
   componentDidMount() {
     console.log('called componentDidMount on community form');
     // removed do to CORS issues
-
+    fetchCommunities()
+    .then((data) => {
+      var communities = data.filter((com) => com.active)
+            .map((com) => {com.value = com.bu});
+      this.setState({communityList: communities});
+    })
+    .catch((err) => console.error("Error", err));
     /*fetch('https://unit-api.brookdale.com/bu-master/api/communities', {mode: 'cors', cache: 'no-cache'})
       .then((res) => res.json())
       .then((data) => {

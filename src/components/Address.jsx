@@ -1,5 +1,5 @@
 import React from 'react'
-import {Col, Input, FormGroup, Label, Row} from 'reactstrap'
+import {Col, Input, InputGroup, FormGroup, Label, Row} from 'reactstrap'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 
@@ -40,7 +40,7 @@ export default class Address extends React.Component {
      })
 
     return (
-      <div className="Address">
+      <section className="Address">
   			<Row>
   				<Col>
             <FormGroup>
@@ -61,13 +61,13 @@ export default class Address extends React.Component {
   				<Col>
             <FormGroup>
     					<Label for="city">City</Label>
-    					<Input type="text" name="city" value={this.props.address.city} onChange={this.handleFieldChange} />
+              <Input type="text" name="city" size="sm" value={this.props.address.city} onChange={this.handleFieldChange} />
             </FormGroup>
   				</Col>
   				<Col>
             <FormGroup>
     					<Label for="state">State</Label>
-              <Input type="select" name="state">
+              <Input type="select" name="state" onChange={this.handleFieldChange}>
     						<option></option>
                 {options}
   					</Input>
@@ -78,12 +78,13 @@ export default class Address extends React.Component {
   					<Input type="text" name="zip" value={this.props.address.zipcode} onChange={this.handleFieldChange} />
   				</Col>
   			</Row>
-      </div>
+      </section>
     )
   }
 }
 
 Address.propTypes = {
   type: PropTypes.string.isRequired,
-
+  address: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
 }

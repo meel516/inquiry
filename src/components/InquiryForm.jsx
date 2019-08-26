@@ -3,6 +3,7 @@ import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
+import ADLNeeds from './ADLNeeds';
 import Advisor from './Advisor';
 import CareLevels from './CareLevels';
 import CommunitySelect from './CommunitySelect';
@@ -31,6 +32,7 @@ export default class InquiryForm extends Component {
     this.handleContactChange = this.handleContactChange.bind(this);
     this.handleAddressChanges = this.handleAddressChanges.bind(this);
     this.handleLeadSourceChange = this.handleLeadSourceChange.bind(this);
+    this.handleNoteChange = this.handleNoteChange.bind(this);
 
     this.handleLostClosed = this.handleLostClosed.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -41,6 +43,7 @@ export default class InquiryForm extends Component {
       veteranStatus: null,
       lead: emptyLead,
     };
+    this.lead = emptyLead;
   }
 
   componentDidMount() {
@@ -72,6 +75,14 @@ export default class InquiryForm extends Component {
   handleAddressChanges(type, name, value) {
     const updatedLead = this.state.lead;
     const contact = updatedLead[type].address[name] = value;
+    this.setState({
+      lead: updatedLead,
+    })
+  }
+
+  handleNoteChange(name, value) {
+    const updatedLead = this.state.lead;
+    updatedLead.notes[name] = value;
     this.setState({
       lead: updatedLead,
     })
@@ -110,8 +121,7 @@ export default class InquiryForm extends Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    const lead = this.state.lead;
-    submitToService(lead);
+    submitToService(this.state);
   }
 
   render () {
@@ -121,7 +131,7 @@ export default class InquiryForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className="inquiryForm">
         <section className="influencer-section">
-          <Contact type="influencer" contact={influencer} onChange={this.handleContactChange}>
+          <Contact type="influencer" contact={influencer} onChange={this.handleContactChange} onValid={this.handleOnValidate}>
             <Address type="influencer" address={influencer.address} onChange={this.handleAddressChanges}/>
           </Contact>
           <br />
@@ -136,13 +146,10 @@ export default class InquiryForm extends Component {
         </section>
         <br />
         <section className="prospect-section">
-          <Note label="Situation" id="situation" name="situation"/>
+          <Note label="Situation" id="situation" onChange={this.handleNoteChange}/>
           <Row>
             <Col>
-              <FormGroup>
-                <Label for="adlneeds">ADL Needs</Label>
-                <Input type="text" id="adlNeeds" placeholder="ADL Needs" />
-              </FormGroup>
+              <ADLNeeds />
             </Col>
           </Row>
           <br/>
@@ -154,7 +161,7 @@ export default class InquiryForm extends Component {
           <br/>
           <Row>
             <Col>
-              <Note label="Passions &amp; Personality" id="passionsPersonality" name="passionsPersonality"/>
+              <Note label="Passions &amp; Personality" id="passionsPersonality" onChange={this.handleNoteChange}/>
             </Col>
           </Row>
         </section>
@@ -166,7 +173,7 @@ export default class InquiryForm extends Component {
         <br />
         <Row>
           <Col>
-            <Note label="Financial Situation" id="financialSituation" />
+            <Note label="Financial Situation" id="financialSituation" onChange={this.handleNoteChange}/>
           </Col>
         </Row>
         <br/>
@@ -184,7 +191,7 @@ export default class InquiryForm extends Component {
         <br/>
         <Row>
           <Col>
-            <Note label="Additional Notes" id="additionalNotes" />
+            <Note label="Additional Notes" id="additionalNotes" onChange={this.handleNoteChange}/>
           </Col>
         </Row>
         <br />
@@ -193,7 +200,7 @@ export default class InquiryForm extends Component {
         <SecondPerson contact={secondPerson} />
         <br />
         <Row>
-          <Col>
+          <Col md="4">
             <Label for="callingFor">I am calling for*</Label>
             <select className="form-control" id="callingFor">
               <option>Select One</option>
@@ -206,7 +213,7 @@ export default class InquiryForm extends Component {
           </Col>
         </Row>
         <Row>
-  				<Col>
+  				<Col md="5">
             <Label for="reasonForCall">Reason for Call</Label>
   					<select className="form-control" id="reasonForCall">
   						<option>Select One</option>
@@ -231,21 +238,25 @@ export default class InquiryForm extends Component {
     			</Col>
     		</Row>
         <Row>
-  				<Col>
+  				<Col md="5">
             <InquiryType />
     			</Col>
     		</Row>
         <Row>
-  				<Col>
+  				<Col md="5">
             <VeteranStatus />
     			</Col>
     		</Row>
-        <InquiryLeadSource leadSource={lead.leadSource} onChange={this.handleLeadSourceChange}/>
         <Row>
-  				<Col>
+          <Col md="5">
+            <InquiryLeadSource leadSource={lead.leadSource} onChange={this.handleLeadSourceChange}/>
+          </Col>
+        </Row>
+        <Row>
+  				<Col md="5">
             <FormGroup>
     					<Label for="ininid">UMID*</Label>
-              <Input type="text" id="ininid" />
+              <Input type="text" id="ininid" size="sm"/>
             </FormGroup>
 				  </Col>
         </Row>
@@ -265,7 +276,7 @@ export default class InquiryForm extends Component {
     		</Row>}
         <br />
         <Row>
-  				<Col>
+  				<Col md="3">
   					<Label for="callerType">What is the gender of the caller?*</Label>
   					<select className="form-control" id="callerType">
   						<option>Select One</option>

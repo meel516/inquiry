@@ -75,14 +75,17 @@ export function getLeadSourceDetails(leadSourceId) {
 }
 
 export function getPhoneTypes() {
-  
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
+
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json());
 }
 
 export function getDecisionTimeframe() {
   var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/decisionTimeframe`;
 
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json())
+    .then((res) => res.json());
 }
 
 export function createEmptyLead() {

@@ -21,7 +21,7 @@ export default class LayoutManager extends React.Component {
    return (
      <div>
        <Navigator/>
-       <div className="container">
+       <div className="container-fluid">
         <div className="row">
           <div className="col-2">
             <Section />
