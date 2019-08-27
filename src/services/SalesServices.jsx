@@ -1,5 +1,5 @@
-import React from 'react'
-import axios from 'axios'
+//import React from 'react'
+//import axios from 'axios'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
@@ -9,7 +9,7 @@ const SALES_SERVICES_URL = 'https://sales-services.uat.assisted.com';
 const SALES_SYSTEM_URL = 'https://sales.uat.assisted.com'
 
 export function checkForDuplicate(contact, address) {
-    const endpoint = window.encodeURI(`${SALES_SERVICES_URL}/ContactService/api/v1/contacts/validations/duplicateCheck`);
+    const endpoint = window.encodeURI(`${SALES_SERVICES_URL}/api/duplicate/check`);
 
     const payload = {
       "address1":{
@@ -36,8 +36,8 @@ export function checkForDuplicate(contact, address) {
         headers: { 'Content-Type': 'application/json' },
         mode: 'cors',
         cache: 'no-cache',
-        body: JSON.stringify(payload)});
-      // .then((resp) => resp.json())
+        body: JSON.stringify(payload)})
+      .then((resp) => resp.json())
       // .then((data) => console.log(data))
       // .catch((error) => console.error('Error:', error));
 }
@@ -94,6 +94,7 @@ export function createEmptyLead() {
         firstName: "",
         lastName: "",
         gender: "",
+        email: "",
         phone: {
           number: "",
           type: ""
@@ -109,6 +110,7 @@ export function createEmptyLead() {
       prospect: {
         firstName: "",
         lastName: "",
+        email: "",
         phone: {
           number: "",
           type: ""
@@ -124,13 +126,15 @@ export function createEmptyLead() {
     };
 }
 
-export function createLeadById(leadId) {
-  const lead = createEmptyLead();
+export function createLeadById(guid) {
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/leads/guid/${guid}`;
+  //const lead = createEmptyLead();
 
-  return lead;
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json());
 }
 
-export function submitToService({lead, communities}) {
+export function submitToService(lead, communities) {
   console.log('submitting lead form to service');
 
   console.log('Communities: ' + JSON.stringify(communities));

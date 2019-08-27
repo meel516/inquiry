@@ -2,7 +2,7 @@ import React from 'react';
 
 import InquiryForm from '../components/InquiryForm';
 import LinksManager from '../components/LinksManager';
-import Navigator from './Headers/Navigator';
+import Header from './Headers/Navigator';
 import Footer from './Footers/Footer';
 import Section from '../components/Section';
 
@@ -18,16 +18,17 @@ export default class LayoutManager extends React.Component {
   }
 
   render () {
+    const props = this.props;
    return (
      <div>
-       <Navigator/>
+       <Header/>
        <div className="container-fluid">
         <div className="row">
           <div className="col-2">
             <Section />
           </div>
           <div className="col-7 inquiry-form">
-            <InquiryForm />
+            <InquiryForm {...props} />
           </div>
           <div className="col-3">
             <LinksManager />

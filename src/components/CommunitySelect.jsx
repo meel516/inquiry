@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import PropTypes from 'prop-types';
 
 import Visit from './Visit';
 import {fetchCommunities} from '../services/CommunityServices'
@@ -13,12 +14,15 @@ const communityList = [
 
 const nextStepsOptions = [
   {value: 1, label: 'Visit Scheduled'},
-  {value: 2, label: 'Home Visit Scheduled'},
   {value: 3, label: 'Assessment Scheduled'},
+  {value: 2, label: 'Home Visit Scheduled'},
   {value: 4, label: 'Lead No Visit & Transfer to Community'},
   {value: 5, label: 'Event RSVP Transfer to Community'},
-  {value: 6, label: 'First Call Left VM'},
   {value: 7, label: 'No Contact & Transfer to Community'},
+];
+
+const nonCommunityNextSteps = [
+  {value: 6, label: 'First Call Left VM'},
   {value: 8, label: 'PPC No Contact & Transfer to Community'},
   {value: 9, label: 'Follow up Call to Schedule Appointment'},
   {value: 10, label: 'Non Qualified Interaction'},
@@ -28,9 +32,9 @@ const nextStepsOptions = [
   {value: 14, label: 'BHS Referral'},
   {value: 15, label: 'Large Employer Group - Non Senior Living Lead'},
   {value: 16, label: 'Professional Referral'},
-];
+]
 
-export default class CommunityForm extends React.Component {
+export default class CommunitySelect extends React.Component {
   constructor(props) {
     super(props);
 
@@ -70,7 +74,7 @@ export default class CommunityForm extends React.Component {
   }
 
   handleRemoveCommunity() {
-    this.props.remove();
+    this.props.onRemove();
   }
 
   handleNextSteps(option) {
@@ -136,4 +140,9 @@ export default class CommunityForm extends React.Component {
     </div>
    )
  }
+}
+
+CommunitySelect.propTypes = {
+  onRemove: PropTypes.func,
+  onChange: PropTypes.func,
 }

@@ -4,8 +4,7 @@ import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 export default function Driver(props) {
   return (
     <>
-    <Row>
-      <Col>
+    <section className="drivers">
         <Label for="drivers" className="section-header">Drivers</Label>
         <Row>
           <Col>
@@ -67,8 +66,7 @@ export default function Driver(props) {
           </FormGroup>
         </Col>
       </Row>
-    </Col>
-  </Row>
+    </section>
   </>
   )
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import queryString from 'query-string';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
@@ -18,7 +19,7 @@ import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import {createEmptyLead, retrieveCallPrompts, submitToService} from "../services/SalesServices";
+import {createEmptyLead, createLeadById, retrieveCallPrompts, submitToService} from "../services/SalesServices";
 import {createCommunity} from '../services/CommunityServices';
 
 import Select from 'react-select';
@@ -43,16 +44,28 @@ export default class InquiryForm extends Component {
       veteranStatus: null,
       lead: emptyLead,
     };
-    this.lead = emptyLead;
   }
 
   componentDidMount() {
     console.log('InquiryForm.componentDidMount()')
 
-    var emptyLead = createEmptyLead();
-    this.setState({
-      lead: emptyLead,
-    })
+    const {lead} = queryString.parse(this.props.location.search);
+    console.log(`COID: ${lead}`);
+
+    var leadObj = null;
+    if (lead) {
+      createLeadById(lead)
+      .then((data) => {
+        this.setState({lead: data})
+      })
+      .catch(error => console.log(error));
+    }
+    else {
+      var leadObj = createEmptyLead();
+      this.setState({
+        lead: leadObj,
+      })
+    }
   }
 
   handleContactChange(type, name, value) {
@@ -60,31 +73,31 @@ export default class InquiryForm extends Component {
     const updatedLead = this.state.lead;
     const contact = updatedLead[type][name] = value;
     this.setState({
-      lead: updatedLead,
-    })
+       lead: updatedLead,
+     })
   }
 
   handleLeadSourceChange(name, value) {
-    const updatedLead = this.state.lead;
-    updatedLead.leadSource[name] = value;
+    const {lead} = this.state;
+    lead.leadSource[name] = value;
     this.setState({
-      lead: updatedLead,
+       lead: lead,
     })
   }
 
   handleAddressChanges(type, name, value) {
-    const updatedLead = this.state.lead;
-    const contact = updatedLead[type].address[name] = value;
+    const {lead} = this.state;
+    const contact = lead[type].address[name] = value;
     this.setState({
-      lead: updatedLead,
+       lead: lead,
     })
   }
 
   handleNoteChange(name, value) {
-    const updatedLead = this.state.lead;
-    updatedLead.notes[name] = value;
+    const {lead} = this.state.lead;
+    lead.notes[name] = value;
     this.setState({
-      lead: updatedLead,
+       lead: lead,
     })
   }
 
@@ -121,12 +134,12 @@ export default class InquiryForm extends Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    submitToService(this.state);
+    submitToService(this.lead, this.state.communities);
   }
 
   render () {
-    const {lead} = this.state
-    const {influencer, prospect, secondPerson} = lead || {};
+    const {lead} = this.state || {};
+    const {influencer, prospect, secondPerson} = this.state.lead || {};
 
     return (
       <Form onSubmit={this.handleSubmit} className="inquiryForm">
@@ -165,12 +178,11 @@ export default class InquiryForm extends Component {
             </Col>
           </Row>
         </section>
-        <Row>
+        { false &&<Row>
           <Col md="5">
             <TimeFrame />
           </Col>
-        </Row>
-        <br />
+        </Row>}
         <Row>
           <Col>
             <Note label="Financial Situation" id="financialSituation" onChange={this.handleNoteChange}/>
@@ -181,7 +193,7 @@ export default class InquiryForm extends Component {
           <Col>
             <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
             {this.state.communities.map((community, index) => (
-              <CommunitySelect key={index} community={community} remove={() =>this.handleRemoveCommunity(index)}/>
+              <CommunitySelect key={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)}/>
             ))}
           </Col>
         </Row>
@@ -256,7 +268,7 @@ export default class InquiryForm extends Component {
   				<Col md="5">
             <FormGroup>
     					<Label for="ininid">UMID*</Label>
-              <Input type="text" id="ininid" size="sm"/>
+              <Input type="text" id="ininid" bsSize="sm"/>
             </FormGroup>
 				  </Col>
         </Row>

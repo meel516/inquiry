@@ -1,4 +1,3 @@
-import axios from 'axios'
 import uuid from "uuid";
 
 const URL_COMMUNITIES = 'http://unit-api.brookdale.com/bu-master';

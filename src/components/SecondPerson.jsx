@@ -36,10 +36,6 @@ export default class SecondPerson extends React.Component {
     )
   }
 
-  renderSituation() {
-
-  }
-
   render() {
     const isSecondPersonShown = this.state.containsSecondPerson;
     if (isSecondPersonShown) {

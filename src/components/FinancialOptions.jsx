@@ -1,44 +1,46 @@
 import React from 'react';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Container, Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
 export default function FinancialOptions(props) {
   return (
-    <Row>
-      <Col>
-        <Label for="fincialOptions">Financial Options</Label>
-        <Row>
-          <Col>
-            <FormGroup check inline className="col-4">
-              <Label check>
-                <Input type="checkbox" name="aidAttendance" id="aidAttendance" value="" />{' '}
-                Aid & Attendance
-              </Label>
-            </FormGroup>
-            <FormGroup check inline className="col-4">
-              <Label check>
-                <Input type="checkbox" name="familyContribuations" id="familyContribuations" value="" />{' '}
-                Family Contributions
-              </Label>
-            </FormGroup>
-            <FormGroup check inline className="col-3">
-              <Label check>
-                <Input type="checkbox" name="homeOwner" id="homeOwner" value="" />{' '}
-                Home Owner
-              </Label>
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup check inline>
-              <Label check>
-                <Input type="checkbox" name="ltcPolicy" id="ltcPolicy" value="" />{' '}
-                LTC Policy
-              </Label>
-            </FormGroup>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+    <Container>
+      <div><Label for="fincialOptions">Financial Options</Label></div>
+      <Row>
+        <Col md="6">
+          <FormGroup check inline>
+            <Label check>
+              <Input type="checkbox" name="aidAttendance" id="aidAttendance" value="" />{' '}
+              Aid & Attendance
+            </Label>
+          </FormGroup>
+        </Col>
+        <Col md="6">
+          <FormGroup check inline>
+            <Label check>
+              <Input type="checkbox" name="familyContribuations" id="familyContribuations" value="" />{' '}
+              Family Contributions
+            </Label>
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="6">
+          <FormGroup check inline>
+            <Label check>
+              <Input type="checkbox" name="homeOwner" id="homeOwner" value="" />{' '}
+              Home Owner
+            </Label>
+          </FormGroup>
+        </Col>
+        <Col md="6">
+          <FormGroup check inline>
+            <Label check>
+              <Input type="checkbox" name="ltcPolicy" id="ltcPolicy" value="" />{' '}
+              LTC Policy
+            </Label>
+          </FormGroup>
+        </Col>
+      </Row>
+    </Container>
   )
 }
