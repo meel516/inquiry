@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { checkAuthentication } from '../../Helpers';
 
 export default function Navigator(props) {
   return (
@@ -17,6 +18,9 @@ export default function Navigator(props) {
         <NavItem>
           <h3>Inquiry Form</h3>
         </NavItem>
+        {false && <NavItem>
+          <h3>{props.userinfo.name}</h3>
+        </NavItem>}
       </Nav>
     </Navbar>
   );
