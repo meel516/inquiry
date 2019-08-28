@@ -1,6 +1,7 @@
 import { withAuth } from '@okta/okta-react';
 import React, { Component } from 'react';
 import { checkAuthentication } from './Helpers';
+import { Redirect } from 'react-router-dom';
 
 export default withAuth(class Home extends Component {
   constructor(props) {
@@ -29,10 +30,7 @@ export default withAuth(class Home extends Component {
           <div>
             {this.state.authenticated &&
               <div>
-                <p>Welcome back, {this.state.userinfo.name}!</p>
-                <p>
-                  You have successfully authenticated against your Okta org, and have been redirected back to this application.  You can now view the <a href="/inquiryForm">Inquiry Form</a>!!!
-                </p>
+                <Redirect to='/inquiryForm' />
               </div>
             }
             {!this.state.authenticated &&
