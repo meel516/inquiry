@@ -32,7 +32,7 @@ export default class InquiryType extends React.Component {
 
     return (
       <FormGroup>
-        <Label for="inquiryType">Inquiry Type</Label>
+        <Label for="inquiryType" className="label-format">Inquiry Method</Label>
         <Input type="select" id="inquiryType" name="inquiryType">
           <option value="">Select One</option>
           {inquiryTypeOptions}

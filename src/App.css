@@ -49,7 +49,11 @@ body {
 
 .section-header {
   font-weight: bold;
-  font-size: 13pt;
+  font-size: 14pt;
+}
+
+.label-format {
+  font-weight: bold;
 }
 
 @keyframes App-logo-spin {

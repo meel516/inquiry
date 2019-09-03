@@ -78,7 +78,7 @@ export default class Contact extends React.Component {
     return (
       <>
         <Row>
-          <Col><Label for="phone">Name</Label></Col>
+          <Col><Label for="name" className="label-format">Name</Label></Col>
         </Row>
         <Row>
           <Col>
@@ -92,13 +92,13 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="phone">Phone</Label>
+              <Label for="phone" className="label-format">Phone</Label>
               <Input type="text" name="phoneNumber" onBlur={this.handleChange} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes">Phone Type</Label>
+              <Label for="phoneTypes" className="label-format">Phone Type</Label>
               <PhoneTypes types={phoneTypes} onChange={this.handleChange} />
             </FormGroup>
           </Col>
@@ -106,7 +106,7 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="email">Email</Label>
+              <Label for="email" className="label-format">Email</Label>
               <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
             </FormGroup>
           </Col>

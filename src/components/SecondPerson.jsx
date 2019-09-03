@@ -26,7 +26,7 @@ export default class SecondPerson extends React.Component {
       <Row>
         <Col>
           <FormGroup check>
-            <Label check>
+            <Label check className="label-format">
               <Input type="checkbox" onClick={(e) => this.handleSecondPerson(e)} />
               Is there a 2nd Prospect?
             </Label>

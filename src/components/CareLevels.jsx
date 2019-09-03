@@ -44,7 +44,7 @@ export default class CareLevels extends React.Component {
       <Row>
         <Col>
           <FormGroup>
-            <Label for="careLevel">Care Level Recommended</Label>
+            <Label for="careLevel" className="label-format">Care Level Recommended</Label>
             <Select
               onChange={this.handleSelectCareLevel}
               options={careLevels}
@@ -66,7 +66,7 @@ function Questions(props) {
         <Row>
           <Col>
             <FormGroup check>
-              <Label for="recentvisit">
+              <Label for="recentvisit" className="label-format">
                 <Input type="checkbox" id=""/>
                 Have you/they had a recent visit to the ER?
               </Label>
@@ -81,7 +81,7 @@ function Questions(props) {
             </div>
           </Col>
           <Col>
-            <label for="recentfall">Have you/they had a recent fall?</label>
+            <label for="recentfall" className="label-format">Have you/they had a recent fall?</label>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="Yes" checked />
               <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -94,7 +94,7 @@ function Questions(props) {
       </Row>
       <Row>
         <Col>
-          <Label for="recentvisit">Have you/they had a recent surgery?</Label>
+          <Label for="recentvisit" className="label-format">Have you/they had a recent surgery?</Label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="Yes" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -105,7 +105,7 @@ function Questions(props) {
           </div>
         </Col>
         <Col>
-          <label for="recentfall">Have you/they had a recent or new illness?</label>
+          <label for="recentfall" className="label-format">Have you/they had a recent or new illness?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="Yes" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -118,7 +118,7 @@ function Questions(props) {
       </Row>
       <Row>
         <Col>
-          <label for="recentvisit">Do you/they have any wounds?</label>
+          <label for="recentvisit" className="label-format">Do you/they have any wounds?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="Yes" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -129,7 +129,7 @@ function Questions(props) {
           </div>
         </Col>
         <Col>
-          <label for="recentfall">Do they have any infections?</label>
+          <label for="recentfall" className="label-format">Do they have any infections?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="option1" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -142,7 +142,7 @@ function Questions(props) {
       </Row>
       <Row>
         <Col>
-          <label for="recentvisit">Are you/they experiencing shortness of breath or difficulty breathing?</label>
+          <label for="recentvisit" className="label-format">Are you/they experiencing shortness of breath or difficulty breathing?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="option1" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -153,7 +153,7 @@ function Questions(props) {
           </div>
         </Col>
         <Col>
-          <label for="recentfall">Do you/they have difficulty leaving the home?</label>
+          <label for="recentfall" className="label-format">Do you/they have difficulty leaving the home?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="option1" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
@@ -166,7 +166,7 @@ function Questions(props) {
       </Row>
       <Row>
         <Col>
-          <label for="recentfall">Do you/they have difficulty performing household tasks such as laundry, shopping or light housekeeping?</label>
+          <label for="recentfall" className="label-format">Do you/they have difficulty performing household tasks such as laundry, shopping or light housekeeping?</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="recentVisit" value="option1" checked />
             <label class="form-check-label" for="exampleRadios1">Yes</label>
