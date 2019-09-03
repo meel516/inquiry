@@ -9,7 +9,14 @@ import Select from 'react-select';
 
 // https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
 const communityList = [
-  {value: '1234', 'label': 'Brookdale Avalone'},
+  {value: '1', 'label': 'Brookdale Andy'},
+  {value: '2', 'label': 'Brookdale Avalone'},
+  {value: '3', 'label': 'Brookdale Dan'},
+  {value: '4', 'label': 'Brookdale Janet'},
+  {value: '5', 'label': 'Brookdale Jeff'},
+  {value: '6', 'label': 'Brookdale Josh'},
+  {value: '7', 'label': 'Brookdale Mary'},
+  {value: '8', 'label': 'Brookdale Matt'},
 ];
 
 const nextStepsOptions = [
@@ -93,35 +100,38 @@ export default class CommunitySelect extends React.Component {
          <CardBody>
            <Row>
              <Col>
-               <Select
-                 options={communityList}
-                />
+                <FormGroup>
+                  <Label for="communityList" className="label-format">Community</Label>
+                  <Select
+                    options={communityList}
+                  />
+                </FormGroup>
              </Col>
            </Row>
            <Row>
              <Col>
                 <FormGroup>
-                  <Label for="startingPrice">Starting at Price*</Label>
-                  <Input type="text" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice}/>
+                  <Label for="startingPrice" className="label-format">Starting at Price*</Label>
+                  <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice}/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="secondPersonFee">2nd Person Fee</Label>
-                  <Input type="text" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee}/>
+                  <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
+                  <Input type="number" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee}/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="communityFee">Community Fee</Label>
-                  <Input type="text" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee}/>
+                  <Label for="communityFee" className="label-format">Community Fee</Label>
+                  <Input type="number" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee}/>
                 </FormGroup>
               </Col>
             </Row>
             <Row>
               <Col>
                 <FormGroup>
-                  <Label>Next Steps</Label>
+                  <Label className="label-format">Next Steps</Label>
                   <Select
                     options={nextStepsOptions}
                     onChange={this.handleNextSteps}

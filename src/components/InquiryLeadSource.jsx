@@ -60,7 +60,7 @@ export default class InquiryLeadSource extends React.Component {
       <Row>
         <Col>
           <FormGroup>
-            <Label for="leadSource">Lead Source</Label>
+            <Label for="leadSource"  className="label-format">Lead Source</Label>
             <Select
               defaultValue={leadSourceId}
               onChange={this.onChangeLeadSource}
@@ -72,7 +72,7 @@ export default class InquiryLeadSource extends React.Component {
       <Row>
         <Col>
           <FormGroup>
-            <Label for="leadSourceDetail">Lead Source Detail</Label>
+            <Label for="leadSourceDetail"  className="label-format">Lead Source Detail</Label>
             <Select
               defaultValue={leadSourceDetailId}
               onChange={this.onchangeLeadSourceDetail}
@@ -84,7 +84,7 @@ export default class InquiryLeadSource extends React.Component {
       <Row>
         <Col>
           <FormGroup>
-            <Label for="additionalDetail">Additional Detail</Label>
+            <Label for="additionalDetail"  className="label-format">Additional Detail</Label>
             <Input type="text" id="additionalDetail" name="additionalDetail"/>
           </FormGroup>
         </Col>

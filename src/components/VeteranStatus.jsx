@@ -28,7 +28,7 @@ export default class VeteranStatus extends React.Component {
 
     return (
       <FormGroup>
-        <Label for="veteranstatus">Veteran Status</Label>
+        <Label for="veteranstatus" className="label-format">Veteran Status</Label>
         <Select
           onChange={this.props.onChange}
           options={vetstatus}

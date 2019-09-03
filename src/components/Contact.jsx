@@ -18,10 +18,32 @@ export default class Contact extends React.Component {
   }
 
   handleDupCheck = event => {
-    console.log('We made it');
     const {contact} = this.props;
-    console.log(`firstname: ${contact.firstName}`);
+    if (this.canDuplicateCheck(contact)) {
+      console.log('run duplicate check!');
+      checkForDuplicate()
+        .then((data) => this.setState({ duplicate: data }))
+        .catch(error => console.log(error));
+    } else {
+      console.log('do not run duplicate check!');
+    }
   }
+
+  canDuplicateCheck = (contact) => {
+    if (contact) {
+      const {firstName, lastName} = contact;
+      const {firstName, lastName, email, phoneNumber, phoneType} = contact;
+      if (firstName === "" || lastName === "") {
+        return false;
+      }
+      if ( (phoneNumber === "" && phoneType === "") || email === "") {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
 
   render() {
     const {phoneTypes} = this.state||[];
@@ -33,7 +55,7 @@ export default class Contact extends React.Component {
     return (
       <>
         <Row>
-          <Col><Label for="phone">Name</Label></Col>
+          <Col><Label for="name" className="label-format">Name</Label></Col>
         </Row>
         <Row>
           <Col>
@@ -46,13 +68,13 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="phone">Phone</Label>
-              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number} onBlur={this.handleDupCheck} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Phone" />
+              <Label for="phone" className="label-format">Phone</Label>
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes">Phone Types</Label>
+              <Label for="phoneTypes" className="label-format">Phone Types</Label>
               <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
                 <option value=""></option>
                 {displayablePhoneTypes}
@@ -63,7 +85,7 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="email">Email</Label>
+              <Label for="email" className="label-format">Email</Label>
               <Input type="email" name={`lead.${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
             </FormGroup>
           </Col>

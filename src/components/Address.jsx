@@ -27,11 +27,11 @@ export default class Address extends React.Component {
      })
 
     return (
-      <div className="Address">
+      <section className="Address">
   			<Row>
   				<Col>
             <FormGroup>
-    					<Label htmlFor="line1">Address</Label>
+    					<Label htmlFor="line1" className="label-format">Address</Label>
     					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1} onChange={onChange} placeholder="Address" />
             </FormGroup>
   				</Col>
@@ -39,7 +39,7 @@ export default class Address extends React.Component {
   			<Row>
   				<Col>
             <FormGroup>
-    					<Label for="line2">Address 2</Label>
+    					<Label for="line2" className="label-format">Address 2</Label>
     					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2} onChange={onChange} placeholder="Apartment, studio, or floor" />
             </FormGroup>
   				</Col>
@@ -47,13 +47,13 @@ export default class Address extends React.Component {
         <Row>
   				<Col>
             <FormGroup>
-    					<Label for="city">City</Label>
+    					<Label for="city" className="label-format">City</Label>
     					<Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city} onChange={onChange} placeholder="City"/>
             </FormGroup>
   				</Col>
   				<Col>
             <FormGroup>
-    					<Label for="state">State</Label>
+    					<Label for="state" className="label-format">State</Label>
               <Input type="select" name={`lead.${this.props.type}.address.state`} onChange={onChange}>
     						<option></option>
                 {options}
@@ -61,7 +61,7 @@ export default class Address extends React.Component {
             </FormGroup>
   				</Col>
   				<Col>
-  					<Label for="zip">Zip</Label>
+  					<Label for="zip" className="label-format">Zip</Label>
   					<Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={onChange} />
   				</Col>
   			</Row>
