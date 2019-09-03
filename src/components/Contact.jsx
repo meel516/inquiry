@@ -1,79 +1,33 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Field, ErrorMessage } from 'formik';
 
-import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
+const URL_PHONE_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
 
 export default class Contact extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      phoneTypes: [],
-      duplicate: null,
-    }
-
-    this.handleRunDupCheck = this.handleRunDupCheck.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.applyChangesToContact = this.applyChangesToContact.bind(this);
+  state = {
+    phoneTypes: [],
   }
 
   componentDidMount() {
-    const {phoneTypes} = this.state;
-
-    if (phoneTypes) {
-      getPhoneTypes()
-        .then((data) => this.setState({ phoneTypes: data }))
-        .catch(error => console.log(error));
-    }
+    fetch(URL_PHONE_TYPES, {mode: 'cors', cache: 'no-cache'})
+      .then((res) => res.json())
+      .then((data) => this.setState({ phoneTypes: data }))
+      .catch(error => console.log(error));
   }
 
-  handleChange(event) {
-    const value = event.target.value;
-    const name = event.target.name;
-    // this.setState({
-    //   [name]: value
-    // });
-    this.applyChangesToContact(name, value);
-  }
-
-  applyChangesToContact(name, value) {
-    var type = this.props.type;
-    this.props.onChange(type, name, value);
-    this.handleRunDupCheck();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    //console.log('Contact componentDidUpdate()')
-  }
-
-  handleRunDupCheck() {
+  handleDupCheck = event => {
+    console.log('We made it');
     const {contact} = this.props;
-    if (this.canDuplicateCheck(contact)) {
-      console.log('run duplicate check!');
-      checkForDuplicate()
-        .then((data) => this.setState({ duplicate: data }))
-        .catch(error => console.log(error));
-    }
-    else {
-      console.log('do not run duplicate check!');
-    }
-  }
-
-  canDuplicateCheck(contact) {
-    if (contact) {
-      const {firstName, lastName, email, phoneNumber, phoneType} = contact;
-      if (firstName === "" || lastName === "") {
-        return false;
-      }
-      if ( (phoneNumber === "" && phoneType === "") || email === "") {
-        return false;
-      }
-      return true;
-    }
-    return false;
+    console.log(`firstname: ${contact.firstName}`);
   }
 
   render() {
-    const {phoneTypes} = this.state;
+    const {phoneTypes} = this.state||[];
+    const {contact, errors, touched, onChange} = this.props;
+    const displayablePhoneTypes = (phoneTypes||[]).map(type => {
+      return <option key={type.value} value={type.value}>{type.text}</option>
+    });
 
     return (
       <>
@@ -82,24 +36,26 @@ export default class Contact extends React.Component {
         </Row>
         <Row>
           <Col>
-            {false && <input type="text" className="form-control-sm form-control" name="firstName" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First name" />}
-            <Input type="text" name="firstName" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First Name" />
+            <Input type="text" name={`${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autocomplete="off" placeholder="First name"/>
           </Col>
           <Col>
-            <Input type="text" name="lastName" defaultValue={this.props.contact.lastName} onBlur={this.handleChange} placeholder="Last Name" />
+            <Input type="text" name={`${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
               <Label for="phone">Phone</Label>
-              <Input type="text" name="phoneNumber" onBlur={this.handleChange} placeholder="Phone" />
+              <Input type="text" name={`${this.props.type}.phone`} value={contact.phone} onBlur={this.handleDupCheck} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes">Phone Type</Label>
-              <PhoneTypes types={phoneTypes} onChange={this.handleChange} />
+              <Label for="phoneTypes">Phone Types</Label>
+              <Input type="select" name={`${this.props.type}.phoneType`} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
+                <option value=""></option>
+                {displayablePhoneTypes}
+              </Input>
             </FormGroup>
           </Col>
         </Row>
@@ -107,7 +63,7 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
+              <Input type="text" name={`${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
             </FormGroup>
           </Col>
         </Row>
@@ -115,24 +71,4 @@ export default class Contact extends React.Component {
       </>
     )
   }
-}
-
-function PhoneTypes(props) {
-  const types = props.types;
-  const phoneTypeItems = types.map((type) =>
-    <PhoneTypeItem key={type.value}
-                   item={type} />
-  );
-  return (
-    <Input type="select" name="phoneType" onChange={props.handleChanges}>
-      <option value=""></option>
-      {phoneTypeItems}
-    </Input>
-  )
-}
-
-function PhoneTypeItem(props) {
-  return (
-    <option value={props.item.value}>{props.item.text}</option>
-  );
 }
