@@ -10,18 +10,18 @@ export default function Prospect(props) {
           <Label className="section-header" >Prospect</Label>
         </Col>
       </Row>
-      <Contact contact={props.contact} />
+      <Contact type="prospect" contact={props.contact} onChange={props.onChange}/>
       <Row>
         <Col>
           <FormGroup>
             <Label for="dob" className="label-format">Birthdate</Label>
-            <Input type="date" id="dob" />
+            <Input type="date" id="dob" name="lead.prospect.dob" value={props.contact.dob} onChange={props.onChange} />
           </FormGroup>
         </Col>
         <Col>
           <FormGroup>
             <Label for="age" className="label-format">Age</Label>
-            <Input type="number" id="age" min='0' max='999' placeholder="Age" />
+            <Input type="number" id="age" min='0' max='999' name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
           </FormGroup>
         </Col>
       </Row>

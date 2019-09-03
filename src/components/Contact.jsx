@@ -3,7 +3,7 @@ import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import { Field, ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-const URL_PHONE_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
+import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
 
 export default class Contact extends React.Component {
   state = {
@@ -11,8 +11,7 @@ export default class Contact extends React.Component {
   }
 
   componentDidMount() {
-    fetch(URL_PHONE_TYPES, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getPhoneTypes()
       .then((data) => this.setState({ phoneTypes: data }))
       .catch(error => console.log(error));
   }
@@ -31,7 +30,6 @@ export default class Contact extends React.Component {
 
   canDuplicateCheck = (contact) => {
     if (contact) {
-      const {firstName, lastName} = contact;
       const {firstName, lastName, email, phoneNumber, phoneType} = contact;
       if (firstName === "" || lastName === "") {
         return false;

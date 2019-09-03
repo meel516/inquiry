@@ -29,7 +29,10 @@ export default class CareLevels extends React.Component {
     this.handleSelectCareLevel = this.handleSelectCareLevel.bind(this);
   }
 
-  //
+  componentDidMount() {
+    // TODO: load care levels here
+  }
+
   handleSelectCareLevel(elmnt) {
     const {value} = elmnt || [];
     this.setState({

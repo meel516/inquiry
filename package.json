@@ -7,6 +7,7 @@
     "@okta/okta-react": "^1.2.2",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "formik": "^1.5.8",
     "prop-types": "^15.7.2",
     "query-string": "^6.8.2",
     "react": "^16.9.0",
@@ -18,7 +19,8 @@
     "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
     "reactstrap": "^8.0.1",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start --env=local",

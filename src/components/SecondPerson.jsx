@@ -4,24 +4,17 @@ import Contact from './Contact';
 import Note from './Note';
 
 export default class SecondPerson extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      containsSecondPerson: false,
-    };
-
-    this.handleSecondPerson = this.handleSecondPerson.bind(this);
+  state = {
+    containsSecondPerson: false,
   }
 
-  handleSecondPerson(e) {
-    console.log('handling checkbox');
+  handleSecondPerson = (e) => {
     this.setState({
       containsSecondPerson: e.target.checked,
     })
   }
 
-  renderQuestion() {
+  renderQuestion = () => {
     return (
       <Row>
         <Col>
@@ -42,7 +35,7 @@ export default class SecondPerson extends React.Component {
       return (
         <>
         {this.renderQuestion()}
-        <Contact contact={this.props.contact} />
+        <Contact type="second" contact={this.props.contact} {...this.props} />
         <Note label="2nd Person Situation" id="situation2" name="situation2"/>
         </>
       )

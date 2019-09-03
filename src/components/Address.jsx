@@ -21,13 +21,13 @@ export default class Address extends React.Component {
 
   render() {
     const {states} = this.state || [];
-    const {address, onChange} = this.props;
+    const {address, type, onChange} = this.props;
     const options = (states || []).map((state) => {
        return <option key={state.value} value={state.value}>{state.text}</option>
      })
 
     return (
-      <section className="Address">
+      <section className={`address-${type}`}>
   			<Row>
   				<Col>
             <FormGroup>
@@ -35,8 +35,6 @@ export default class Address extends React.Component {
     					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1} onChange={onChange} placeholder="Address" />
             </FormGroup>
   				</Col>
-  			</Row>
-  			<Row>
   				<Col>
             <FormGroup>
     					<Label for="line2" className="label-format">Address 2</Label>
@@ -65,7 +63,7 @@ export default class Address extends React.Component {
   					<Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={onChange} />
   				</Col>
   			</Row>
-      </div>
+      </section>
     )
   }
 }

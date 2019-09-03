@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InquiryForm from '../components/InquiryForm';
+import InquiryForm from '../components/InquiryMinForm';
 import LinksManager from '../components/LinksManager';
 import Header from './Headers/Navigator';
 import Footer from './Footers/Footer';
