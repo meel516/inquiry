@@ -1,6 +1,7 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import { Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 const URL_PHONE_TYPES = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
 
@@ -36,23 +37,23 @@ export default class Contact extends React.Component {
         </Row>
         <Row>
           <Col>
-            <Input type="text" name={`${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autocomplete="off" placeholder="First name"/>
+            <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First name"/>
           </Col>
           <Col>
-            <Input type="text" name={`${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
+            <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
               <Label for="phone">Phone</Label>
-              <Input type="text" name={`${this.props.type}.phone`} value={contact.phone} onBlur={this.handleDupCheck} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Phone" />
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number} onBlur={this.handleDupCheck} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for="phoneTypes">Phone Types</Label>
-              <Input type="select" name={`${this.props.type}.phoneType`} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
+              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
                 <option value=""></option>
                 {displayablePhoneTypes}
               </Input>
@@ -63,7 +64,7 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="text" name={`${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
+              <Input type="email" name={`lead.${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
             </FormGroup>
           </Col>
         </Row>
@@ -71,4 +72,8 @@ export default class Contact extends React.Component {
       </>
     )
   }
+}
+
+Contact.propTypes = {
+  type: PropTypes.string.isRequired,
 }

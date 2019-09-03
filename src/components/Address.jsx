@@ -32,7 +32,7 @@ export default class Address extends React.Component {
   				<Col>
             <FormGroup>
     					<Label htmlFor="line1">Address</Label>
-    					<Input type="text" name={`${this.props.type}.address.addressLine1`} value={address.addressLine1} onChange={onChange} placeholder="Address" />
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1} onChange={onChange} placeholder="Address" />
             </FormGroup>
   				</Col>
   			</Row>
@@ -40,7 +40,7 @@ export default class Address extends React.Component {
   				<Col>
             <FormGroup>
     					<Label for="line2">Address 2</Label>
-    					<Input type="text" name={`${this.props.type}.address.addressLine2`} value={address.addressLine2} onChange={onChange} placeholder="Apartment, studio, or floor" />
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2} onChange={onChange} placeholder="Apartment, studio, or floor" />
             </FormGroup>
   				</Col>
         </Row>
@@ -48,13 +48,13 @@ export default class Address extends React.Component {
   				<Col>
             <FormGroup>
     					<Label for="city">City</Label>
-    					<Input type="text" name={`${this.props.type}.address.city`} value={address.city} onChange={onChange} />
+    					<Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city} onChange={onChange} placeholder="City"/>
             </FormGroup>
   				</Col>
   				<Col>
             <FormGroup>
     					<Label for="state">State</Label>
-              <Input type="select" name={`${this.props.type}.address.state`} onChange={onChange}>
+              <Input type="select" name={`lead.${this.props.type}.address.state`} onChange={onChange}>
     						<option></option>
                 {options}
   					</Input>
@@ -62,7 +62,7 @@ export default class Address extends React.Component {
   				</Col>
   				<Col>
   					<Label for="zip">Zip</Label>
-  					<Input type="text" name={`${this.props.type}.address.zip`} value={address.zipcode} onChange={onChange} />
+  					<Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={onChange} />
   				</Col>
   			</Row>
       </div>
@@ -72,5 +72,4 @@ export default class Address extends React.Component {
 
 Address.propTypes = {
   type: PropTypes.string.isRequired,
-
 }
