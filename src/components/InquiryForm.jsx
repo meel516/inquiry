@@ -24,6 +24,17 @@ import {createCommunity} from '../services/CommunityServices';
 
 import Select from 'react-select';
 
+const whatPromptedTheirCall = [
+  {value: 1, label: 'Age and Need of Care'},
+  {value: 2, label: 'Death of Spouse'},
+  {value: 3, label: 'Downsizing'},
+  {value: 4, label: 'Memory Concerns'},
+  {value: 5, label: 'No Longer able to Care for Loved One at Home'},
+  {value: 6, label: 'Recent Hospital Visit - Doctor Recommendation'},
+  {value: 7, label: 'Response to Marketing Material'},
+  {value: 8, label: 'Relocation'},
+];
+
 export default class InquiryForm extends Component {
   constructor(props) {
     super(props);
@@ -152,7 +163,7 @@ export default class InquiryForm extends Component {
             <Col md="6">
               <Label for="callPrompt">What prompted their call?</Label>
               <Select
-                options={retrieveCallPrompts}
+                options={whatPromptedTheirCall}
                 />
             </Col>
           </Row>
@@ -268,7 +279,7 @@ export default class InquiryForm extends Component {
   				<Col md="5">
             <FormGroup>
     					<Label for="ininid">UMID*</Label>
-              <Input type="text" id="ininid" bsSize="sm"/>
+              <Input type="text" id="ininid" />
             </FormGroup>
 				  </Col>
         </Row>

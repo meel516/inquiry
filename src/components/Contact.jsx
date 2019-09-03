@@ -83,23 +83,23 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             {false && <input type="text" className="form-control-sm form-control" name="firstName" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First name" />}
-            <Input type="text" name="firstName" bsSize="sm" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First name" />
+            <Input type="text" name="firstName" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First Name" />
           </Col>
           <Col>
-            <Input type="text" name="lastName" bsSize="sm" defaultValue={this.props.contact.lastName} onBlur={this.handleChange} placeholder="Last name" />
+            <Input type="text" name="lastName" defaultValue={this.props.contact.lastName} onBlur={this.handleChange} placeholder="Last Name" />
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
               <Label for="phone">Phone</Label>
-              <Input type="text" name="phoneNumber" bsSize="sm" onBlur={this.handleChange} placeholder="Phone" />
+              <Input type="text" name="phoneNumber" onBlur={this.handleChange} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes">Phone Types</Label>
-              <PhoneTypes types={phoneTypes} onChange={this.handleChange}/>
+              <Label for="phoneTypes">Phone Type</Label>
+              <PhoneTypes types={phoneTypes} onChange={this.handleChange} />
             </FormGroup>
           </Col>
         </Row>
@@ -107,7 +107,7 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="text" name="email" bsSize="sm" onChange={this.handleChange} placeholder="Email" />
+              <Input type="text" name="email" onChange={this.handleChange} placeholder="Email" />
             </FormGroup>
           </Col>
         </Row>
@@ -124,7 +124,7 @@ function PhoneTypes(props) {
                    item={type} />
   );
   return (
-    <Input type="select" name="phoneType" bsSize="sm" onChange={props.handleChanges}>
+    <Input type="select" name="phoneType" onChange={props.handleChanges}>
       <option value=""></option>
       {phoneTypeItems}
     </Input>

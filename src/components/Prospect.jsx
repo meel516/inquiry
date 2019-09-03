@@ -14,14 +14,14 @@ export default function Prospect(props) {
       <Row>
         <Col>
           <FormGroup>
-            <Label for="dob">Date Of Birth</Label>
-            <Input type="text" id="dob" placeholder="Date Of Birth" />
+            <Label for="dob">Birthdate</Label>
+            <Input type="date" id="dob" />
           </FormGroup>
         </Col>
         <Col>
           <FormGroup>
             <Label for="age">Age</Label>
-            <Input type="text" id="age" placeholder="Age" />
+            <Input type="number" id="age" min='0' max='999' placeholder="Age" />
           </FormGroup>
         </Col>
       </Row>
