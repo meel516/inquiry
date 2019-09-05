@@ -1,7 +1,6 @@
 import React from 'react'
 import {Col, Input, FormGroup, Label, Row} from 'reactstrap'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
 
 import {getAddressStates} from '../services/SalesServices'
 
@@ -32,13 +31,13 @@ export default class Address extends React.Component {
   				<Col>
             <FormGroup>
     					<Label htmlFor="line1" className="label-format">Address</Label>
-    					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1} onChange={onChange} placeholder="Address" />
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1||''} onChange={onChange} placeholder="Address" />
             </FormGroup>
   				</Col>
   				<Col>
             <FormGroup>
     					<Label for="line2" className="label-format">Address 2</Label>
-    					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2} onChange={onChange} placeholder="Apartment, studio, or floor" />
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2||''} onChange={onChange} placeholder="Apartment, studio, or floor" />
             </FormGroup>
   				</Col>
         </Row>

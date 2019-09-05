@@ -2,9 +2,6 @@ import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import Select from 'react-select';
 
-const extraCareLevelQuestions = {
-}
-
 const careLevels = [
   {value: 1, label: 'Nurture'},
   {value: 2, label: 'Alzheimer\'s/Dementia'},
@@ -20,20 +17,16 @@ const careLevels = [
 ];
 
 export default class CareLevels extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      careLevels: careLevels,
-      selectedCareLevel: null,
-    }
-    this.handleSelectCareLevel = this.handleSelectCareLevel.bind(this);
+  state = {
+    careLevels: careLevels,
+    selectedCareLevel: null,
   }
 
   componentDidMount() {
     // TODO: load care levels here
   }
 
-  handleSelectCareLevel(elmnt) {
+  handleSelectCareLevel = (elmnt) => {
     const {value} = elmnt || [];
     this.setState({
       selectedCareLevel: value,
@@ -45,7 +38,7 @@ export default class CareLevels extends React.Component {
     return (
       <>
       <Row>
-        <Col>
+        <Col md="6">
           <FormGroup>
             <Label for="careLevel" className="label-format">Care Level Recommended</Label>
             <Select

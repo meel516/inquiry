@@ -10,7 +10,7 @@ export default function Prospect(props) {
           <Label className="section-header" >Prospect</Label>
         </Col>
       </Row>
-      <Contact type="prospect" contact={props.contact} onChange={props.onChange}/>
+      <Contact type="prospect" contact={props.contact} onChange={props.onChange} {...props}/>
       <Row>
         <Col>
           <FormGroup>

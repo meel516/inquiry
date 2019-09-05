@@ -42,16 +42,9 @@ const nonCommunityNextSteps = [
 ]
 
 export default class CommunitySelect extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      communityList: [],
-      selectedOption: null,
-    }
-
-    this.handleNextSteps = this.handleNextSteps.bind(this);
-    this.handleRemoveCommunity = this.handleRemoveCommunity.bind(this);
+  state = {
+    communityList: [],
+    selectedOption: null,
   }
 
   componentDidMount() {
@@ -80,11 +73,11 @@ export default class CommunitySelect extends React.Component {
     console.log('called componentWillUnmount on community form');
   }
 
-  handleRemoveCommunity() {
+  handleRemoveCommunity = () => {
     this.props.onRemove();
   }
 
-  handleNextSteps(option) {
+  handleNextSteps = (option) => {
     console.log(`Option selected:`, option);
     this.setState({
       selectedOption: option
@@ -93,6 +86,10 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {selectedOption} = this.state;
+    const {community, handleChange, handleBlur} = this.props;
+    const nextStepsOptns = (nextStepsOptions||[]).map(type => {
+      return <option key={type.value} value={type.value}>{type.label}</option>
+    });
 
    return (
      <div className="communities-container">
@@ -103,6 +100,8 @@ export default class CommunitySelect extends React.Component {
                 <FormGroup>
                   <Label for="communityList" className="label-format">Community</Label>
                   <Select
+                    name="communityId"
+                    onChange={this.props.handleChange}
                     options={communityList}
                   />
                 </FormGroup>
@@ -112,30 +111,30 @@ export default class CommunitySelect extends React.Component {
              <Col>
                 <FormGroup>
                   <Label for="startingPrice" className="label-format">Starting at Price*</Label>
-                  <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice}/>
+                  <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice} onChange={handleChange} onBlur={handleBlur}/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
-                  <Input type="number" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee}/>
+                  <Input type="number" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee} onChange={handleChange} onBlur={handleBlur}/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="communityFee" className="label-format">Community Fee</Label>
-                  <Input type="number" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee}/>
+                  <Input type="number" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee} onChange={handleChange} onBlur={handleBlur}/>
                 </FormGroup>
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col md="5">
                 <FormGroup>
                   <Label className="label-format">Next Steps</Label>
-                  <Select
-                    options={nextStepsOptions}
-                    onChange={this.handleNextSteps}
-                  />
+                  <Input type="select" onChange={this.handleNextSteps}>
+                    <option value=""></option>
+                    {nextStepsOptns}
+                  </Input>
                 </FormGroup>
               </Col>
             </Row>

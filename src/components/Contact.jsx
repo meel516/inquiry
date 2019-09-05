@@ -45,7 +45,7 @@ export default class Contact extends React.Component {
 
   render() {
     const {phoneTypes} = this.state||[];
-    const {contact, errors, touched, onChange} = this.props;
+    const {type, contact, errors, touched, onChange} = this.props;
     const displayablePhoneTypes = (phoneTypes||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -57,23 +57,23 @@ export default class Contact extends React.Component {
         </Row>
         <Row>
           <Col>
-            <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First name"/>
+            <Input type="text" name={`lead.${type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First name"/>
           </Col>
           <Col>
-            <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
+            <Input type="text" name={`lead.${type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
-              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes" className="label-format">Phone Types</Label>
-              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
+              <Label for="phoneTypes" className="label-format">Phone Type</Label>
+              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type||''} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
                 <option value=""></option>
                 {displayablePhoneTypes}
               </Input>
