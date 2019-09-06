@@ -178,25 +178,27 @@ export default class InquiryForm extends React.Component {
             <SecondPerson contact={props.values.lead.secondPerson} />
             <br />
             <Row>
-              <Col md="4">
-                <Label for="callingFor">I am calling for*</Label>
-                <select className="form-control" id="callingFor">
-                  <option>Select One</option>
-                  <option>Myself</option>
-                  <option>Parent</option>
-                  <option>Spouse</option>
-                  <option>Friend</option>
-                  <option>Other</option>
-                </select>
+              <Col md="5">
+                <FormGroup>
+                  <Label for="callingFor" className="label-format">I am calling for</Label>
+                  <select className="form-control" id="callingFor">
+                    <option>Select One</option>
+                    <option>Myself</option>
+                    <option>Parent</option>
+                    <option>Spouse</option>
+                    <option>Friend</option>
+                    <option>Other</option>
+                  </select>
+                </FormGroup>
               </Col>
             </Row>
             <Row>
       				<Col md="5">
-                <Label for="reasonForCall">Reason for Call</Label>
-      					<select className="form-control" id="reasonForCall">
-      						<option>Select One</option>
-      						<option>Family Relocating</option>
-      						<option>Financial Strain of Home Ownership</option>
+                <Label for="reasonForCall" className="label-format">Reason for Call</Label>
+                <select className="form-control" id="reasonForCall">
+                  <option>Select One</option>
+                  <option>Family Relocating</option>
+                  <option>Financial Strain of Home Ownership</option>
                   <option>Health</option>
                   <option>Home Maintenance</option>
                   <option>Hospital Discharge</option>
@@ -212,7 +214,7 @@ export default class InquiryForm extends React.Component {
                   <option>Skilled Nursing Discharge</option>
                   <option>Socialization/Life Enrichment</option>
                   <option>Transportation</option>
-        				</select>
+                </select> 
         			</Col>
         		</Row>
             <Row>
@@ -233,15 +235,15 @@ export default class InquiryForm extends React.Component {
             <Row>
       				<Col md="5">
                 <FormGroup>
-        					<Label for="ininid">UMID*</Label>
-                  <Input type="text" id="ininid" />
+        					<Label for="ininid" className="label-format">UMID</Label>
+                  <Input type="text" id="ininid" placeholder="UMID" />
                 </FormGroup>
     				  </Col>
             </Row>
             <br />
             <Row>
       				<Col md="3">
-      					<Label for="callerType">What is the gender of the caller?*</Label>
+      					<Label for="callerType" className="label-format">What is the gender of the caller?</Label>
       					<select className="form-control" id="callerType">
       						<option>Select One</option>
       						<option>Male</option>

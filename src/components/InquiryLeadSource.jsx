@@ -85,7 +85,7 @@ export default class InquiryLeadSource extends React.Component {
         <Col>
           <FormGroup>
             <Label for="additionalDetail"  className="label-format">Additional Detail</Label>
-            <Input type="text" id="additionalDetail" name="additionalDetail"/>
+            <Input type="text" id="additionalDetail" name="additionalDetail" placeholder="Additional Detail" />
           </FormGroup>
         </Col>
       </Row>

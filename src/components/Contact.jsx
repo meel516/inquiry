@@ -57,10 +57,14 @@ export default class Contact extends React.Component {
         </Row>
         <Row>
           <Col>
-            <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First name"/>
+            <FormGroup>
+              <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
+            </FormGroup>
           </Col>
           <Col>
-            <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last name" />
+            <FormGroup>
+              <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
+            </FormGroup>
           </Col>
         </Row>
         <Row>
@@ -72,7 +76,7 @@ export default class Contact extends React.Component {
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes" className="label-format">Phone Types</Label>
+              <Label for="phoneTypes" className="label-format">Phone Type</Label>
               <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
                 <option value=""></option>
                 {displayablePhoneTypes}

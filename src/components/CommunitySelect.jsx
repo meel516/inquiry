@@ -111,7 +111,7 @@ export default class CommunitySelect extends React.Component {
            <Row>
              <Col>
                 <FormGroup>
-                  <Label for="startingPrice" className="label-format">Starting at Price*</Label>
+                  <Label for="startingPrice" className="label-format">Starting at Price</Label>
                   <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice}/>
                 </FormGroup>
               </Col>

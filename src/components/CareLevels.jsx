@@ -50,6 +50,7 @@ export default class CareLevels extends React.Component {
             <Label for="careLevel" className="label-format">Care Level Recommended</Label>
             <Select
               onChange={this.handleSelectCareLevel}
+              defaultValue={{ label: "Select One", value: 0 }}
               options={careLevels}
             />
           </FormGroup>
