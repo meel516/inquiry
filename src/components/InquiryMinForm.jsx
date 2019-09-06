@@ -177,7 +177,6 @@ export default class InquiryForm extends React.Component {
             <SecondPerson contact={props.values.lead.secondPerson} {...props} />
             <br />
             <Row>
-<<<<<<< src/components/InquiryMinForm.jsx
               <Col md="5">
                 <FormGroup>
                   <Label for="callingFor" className="label-format">I am calling for</Label>
@@ -190,47 +189,11 @@ export default class InquiryForm extends React.Component {
                     <option>Other</option>
                   </select>
                 </FormGroup>
-=======
-              <Col md="4">
-                <Label for="callingFor" className="label-format">I am calling for</Label>
-                <select className="form-control" id="callingFor">
-                  <option>Select One</option>
-                  <option>Myself</option>
-                  <option>Parent</option>
-                  <option>Spouse</option>
-                  <option>Friend</option>
-                  <option>Other</option>
-                </select>
->>>>>>> src/components/InquiryMinForm.jsx
               </Col>
             </Row>
             <Row>
       				<Col md="5">
-<<<<<<< src/components/InquiryMinForm.jsx
-                <Label for="reasonForCall" className="label-format">Reason for Call</Label>
-                <select className="form-control" id="reasonForCall">
-                  <option>Select One</option>
-                  <option>Family Relocating</option>
-                  <option>Financial Strain of Home Ownership</option>
-                  <option>Health</option>
-                  <option>Home Maintenance</option>
-                  <option>Hospital Discharge</option>
-                  <option>Location</option>
-                  <option>Memory Care Needs</option>
-                  <option>Nutrition Assistance</option>
-                  <option>Prompted by Physician</option>
-                  <option>Relocate Near Family</option>
-                  <option>Relocate Near Friends</option>
-                  <option>Respite</option>
-                  <option>Security</option>
-                  <option>Services</option>
-                  <option>Skilled Nursing Discharge</option>
-                  <option>Socialization/Life Enrichment</option>
-                  <option>Transportation</option>
-                </select> 
-=======
                 <ReasonForCall onChange={handleChange} onBlur={handleBlur} {...props} />
->>>>>>> src/components/InquiryMinForm.jsx
         			</Col>
         		</Row>
             <Row>
