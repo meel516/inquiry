@@ -1,12 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Input, FormGroup, Label} from 'reactstrap';
 
-const URL_INTEREST_REASON = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/interestReason`;
-
-const reasonForCallList = [
- { value: 1, text: 'This is a test...'}
-];
+import {getReasonForInterest} from '../services/SalesServices'
 
 export default class ReasonForCall extends React.Component {
   constructor(props) {
@@ -17,15 +12,13 @@ export default class ReasonForCall extends React.Component {
   }
 
   componentDidMount() {
-    fetch(URL_INTEREST_REASON, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getReasonForInterest()
       .then((data) => this.setState({ reasonForCall: data }))
       .catch(error => console.log(error));
   }
 
-
   render() {
-    const {reasonForCall} = this.state;
+    const {reasonForCall} = this.state||[];
     const reasonForCallOptions = reasonForCall.map((type) => {
       return  <option key={type.value} value={type.value}>{type.text}</option>
     });

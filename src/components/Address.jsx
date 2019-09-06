@@ -1,7 +1,6 @@
 import React from 'react'
 import {Col, Input, FormGroup, Label, Row} from 'reactstrap'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
 
 import {getAddressStates} from '../services/SalesServices'
 

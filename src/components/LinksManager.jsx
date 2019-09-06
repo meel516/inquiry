@@ -16,11 +16,8 @@ const systemLinks = [
 ]
 
 export default class LinksManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      links: [],
-    }
+  state = {
+    links: [],
   }
 
   componentDidMount() {

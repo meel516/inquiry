@@ -6,11 +6,8 @@ import DedupRequest from './DedupRequest'
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
 just a normal export
 */
-const SALES_SERVICES_URL = 'https://sales-services.uat.assisted.com';
-const SALES_SYSTEM_URL = 'https://sales.uat.assisted.com'
-
 export function checkForDuplicate(contact, address) {
-    const endpoint = window.encodeURI(`${SALES_SERVICES_URL}/api/duplicate/check`);
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
 
     const dupRequest = new DedupRequest(contact, address);
 
@@ -38,36 +35,55 @@ export function retrieveCallPrompts() {
 }
 
 export function getAddressStates() {
-  const endpoint = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/stateProv`;
+  const endpoint = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/stateProv`;
 
   return fetch(endpoint, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
 }
 
 export function getLeadSources() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/inquiryLeadSource`;
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryLeadSource`;
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
       .then((res) => res.json());
 }
 
 export function getLeadSourceDetails(leadSourceId) {
-  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/inquiryLeadSource/${leadSourceId}/inquiryLeadSourceDetails`;
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryLeadSource/${leadSourceId}/inquiryLeadSourceDetails`;
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
     .then((res) => res.json())
 }
 
 export function getPhoneTypes() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/phoneTypes`;
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/phoneTypes`;
 
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
     .then((res) => res.json());
 }
 
+export function getInquiryTypes() {
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryTypes`;
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
+}
+
+export function getVeteranStatus() {
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/veteranStatus`;
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
+}
+
 export function getDecisionTimeframe() {
-  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/decisionTimeframe`;
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/decisionTimeframe`;
 
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
     .then((res) => res.json());
+}
+
+export function getReasonForInterest() {
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/interestReason`
+
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
 }
 
 export function createEmptyLead() {
@@ -89,6 +105,10 @@ export function createEmptyLead() {
       secondPerson: {
         firstName: "",
         lastName: "",
+        phone: {
+          number: "",
+          type: ""
+        },
       },
       prospect: {
         firstName: "",
@@ -110,7 +130,7 @@ export function createEmptyLead() {
 }
 
 export function createLeadById(guid) {
-  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/leads/guid/${guid}`;
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
   //const lead = createEmptyLead();
 
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
@@ -127,8 +147,8 @@ export async function submitToService({lead, communities, actions}) {
     console.log(`LeadId: ${lead.leadId}`);
   }
   else {
-    var leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/prospect`;
-    var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/influencer`;
+    var leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+    var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
 
     const influencer = {
       "salesContact": {
@@ -188,7 +208,9 @@ export async function submitToService({lead, communities, actions}) {
           },
           body: JSON.stringify(prospect)
       })
-      const createdLead = reponse.json();
+      const salesLead = reponse.json();
+      console.log(JSON.stringify(salesLead));
+
     } catch(err) {
       console.log(err);
     }

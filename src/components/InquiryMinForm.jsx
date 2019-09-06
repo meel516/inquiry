@@ -1,28 +1,27 @@
-import React, { Component } from 'react';
-import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import React from 'react';
+import {Button, Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import queryString from 'query-string';
-import {Formik} from 'formik';
+import {Formik, Form} from 'formik';
 import * as Yup from 'yup';
 import Select from 'react-select';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
 import ADLNeeds from './ADLNeeds';
-import Advisor from './Advisor';
 import CareLevels from './CareLevels';
 import CommunitySelect from './CommunitySelect';
 import Contact from './Contact';
 import Drivers from './Drivers';
-import Prospect from './Prospect';
-import Note from './Note';
-import TimeFrame from './TimeFrame';
 import FinancialOptions from './FinancialOptions';
 import InquiryType from './InquiryType';
 import InquiryLeadSource from './InquiryLeadSource';
+import Note from './Note';
+import Prospect from './Prospect';
+import ReasonForCall from './ReasonForCall';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import {createEmptyLead, createLeadById, retrieveCallPrompts, submitToService} from "../services/SalesServices";
+import {createEmptyLead, createLeadById, submitToService} from "../services/SalesServices";
 import {createCommunity} from '../services/CommunityServices';
 
 const whatPromptedTheirCall = [
@@ -59,7 +58,7 @@ export default class InquiryForm extends React.Component {
       .catch(error => console.log(error));
     }
     else {
-      var leadObj = createEmptyLead();
+      leadObj = createEmptyLead();
       this.setState({
         lead: leadObj,
         debug: debug,
@@ -130,7 +129,7 @@ export default class InquiryForm extends React.Component {
             </section>
             <br />
             <section className="prospect-section">
-              <Note label="Situation" id="situation" onChange={props.handleChange}/>
+              <Note label="Situation" id="situation" onBlur={props.handleBlur}/>
               <Row>
                 <Col>
                   <ADLNeeds />
@@ -145,13 +144,13 @@ export default class InquiryForm extends React.Component {
               <br/>
               <Row>
                 <Col>
-                  <Note label="Passions &amp; Personality" id="passionsPersonality" onChange={props.handleChange}/>
+                  <Note label="Passions &amp; Personality" id="passionsPersonality" onBlur={props.handleBlur}/>
                 </Col>
               </Row>
             </section>
             <Row>
               <Col>
-                <Note label="Financial Situation" id="financialSituation" onChange={props.handleChange}/>
+                <Note label="Financial Situation" id="financialSituation" onBlur={props.handleBlur}/>
               </Col>
             </Row>
             <br/>
@@ -159,7 +158,7 @@ export default class InquiryForm extends React.Component {
               <Col>
                 <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
                 {props.values.communities.map((community, index) => (
-                  <CommunitySelect key={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)}/>
+                  <CommunitySelect key={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)} {...props}/>
                 ))}
               </Col>
             </Row>
@@ -169,15 +168,16 @@ export default class InquiryForm extends React.Component {
             <br/>
             <Row>
               <Col>
-                <Note label="Additional Notes" id="additionalNotes" onChange={props.handleChange}/>
+                <Note label="Additional Notes" id="additionalNotes" onChange={props.handleChange} onBlur={props.handleBlur}/>
               </Col>
             </Row>
             <br />
             <Drivers />
             <br />
-            <SecondPerson contact={props.values.lead.secondPerson} />
+            <SecondPerson contact={props.values.lead.secondPerson} {...props} />
             <br />
             <Row>
+<<<<<<< src/components/InquiryMinForm.jsx
               <Col md="5">
                 <FormGroup>
                   <Label for="callingFor" className="label-format">I am calling for</Label>
@@ -190,10 +190,23 @@ export default class InquiryForm extends React.Component {
                     <option>Other</option>
                   </select>
                 </FormGroup>
+=======
+              <Col md="4">
+                <Label for="callingFor" className="label-format">I am calling for</Label>
+                <select className="form-control" id="callingFor">
+                  <option>Select One</option>
+                  <option>Myself</option>
+                  <option>Parent</option>
+                  <option>Spouse</option>
+                  <option>Friend</option>
+                  <option>Other</option>
+                </select>
+>>>>>>> src/components/InquiryMinForm.jsx
               </Col>
             </Row>
             <Row>
       				<Col md="5">
+<<<<<<< src/components/InquiryMinForm.jsx
                 <Label for="reasonForCall" className="label-format">Reason for Call</Label>
                 <select className="form-control" id="reasonForCall">
                   <option>Select One</option>
@@ -215,28 +228,31 @@ export default class InquiryForm extends React.Component {
                   <option>Socialization/Life Enrichment</option>
                   <option>Transportation</option>
                 </select> 
+=======
+                <ReasonForCall onChange={handleChange} onBlur={handleBlur} {...props} />
+>>>>>>> src/components/InquiryMinForm.jsx
         			</Col>
         		</Row>
             <Row>
       				<Col md="5">
-                <InquiryType onChange={props.handleChange}/>
+                <InquiryType onChange={handleChange} onBlur={handleBlur} {...props} />
         			</Col>
         		</Row>
             <Row>
       				<Col md="5">
-                <VeteranStatus />
+                <VeteranStatus onChange={handleChange} onBlur={handleBlur} {...props} />
         			</Col>
         		</Row>
             <Row>
               <Col md="5">
-                <InquiryLeadSource leadSource={props.values.lead.leadSource} onChange={props.handleChange}/>
+                <InquiryLeadSource leadSource={props.values.lead.leadSource} onChange={props.handleChange} {...props} />
               </Col>
             </Row>
             <Row>
       				<Col md="5">
                 <FormGroup>
-        					<Label for="ininid" className="label-format">UMID</Label>
-                  <Input type="text" id="ininid" placeholder="UMID" />
+        					<Label for="umid" className="label-format">UMID</Label>
+                  <Input type="text" id="umid" placeholder="UMID" />
                 </FormGroup>
     				  </Col>
             </Row>
@@ -257,7 +273,11 @@ export default class InquiryForm extends React.Component {
               <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
             </div>
 
-            {this.state.debug && <DisplayFormikState {...props} />}
+            {this.state.debug &&
+              <DebugFormikState {...props} />}
+
+            {this.state.debug &&
+              <DebugFormState {...this.state} />}
 
           </Form>
         );
@@ -268,9 +288,8 @@ export default class InquiryForm extends React.Component {
 }
 
 
-const DisplayFormikState = props =>
+const DebugFormikState = props =>
 <div style={{ margin: '1rem 0' }}>
-  <h3 style={{ fontFamily: 'monospace' }} />
   <pre
     style={{
       background: '#f6f8fa',
@@ -279,6 +298,20 @@ const DisplayFormikState = props =>
     }}
   >
     <strong>props</strong> ={' '}
+    {JSON.stringify(props, null, 2)}
+  </pre>
+</div>;
+
+const DebugFormState = props =>
+<div style={{ margin: '1rem 0' }}>
+  <pre
+    style={{
+      background: '#f6f8fa',
+      fontSize: '.65rem',
+      padding: '.5rem',
+    }}
+  >
+    <strong>state</strong> ={' '}
     {JSON.stringify(props, null, 2)}
   </pre>
 </div>;

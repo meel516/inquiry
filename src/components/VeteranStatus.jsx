@@ -1,23 +1,18 @@
 import React from 'react';
-import {FormGroup, Label} from 'reactstrap';
-import Select from 'react-select';
+import {FormGroup, Input, Label} from 'reactstrap';
 
 // <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
-const URL_VET_STATUS = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/veteranStatus`;
+import {getVeteranStatus} from '../services/SalesServices'
 
 export default class VeteranStatus extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    vetstatus: [],
   }
 
   componentDidMount() {
     console.log('VeteranStatus.componentDidMount()')
-    fetch(URL_VET_STATUS, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getVeteranStatus()
       .then((data) => {
-        data.map(function(vs) {
-          vs.label = vs.text;
-        })
         this.setState({ vetstatus: data })
       })
       .catch(error => console.log(error));
@@ -25,14 +20,17 @@ export default class VeteranStatus extends React.Component {
 
   render() {
     const {vetstatus} = this.state || [];
+    const veteranStatusOptions = (vetstatus || []).map((status) => {
+      return <option key={status.value} value={status.value}>{status.text}</option>
+    })
 
     return (
       <FormGroup>
         <Label for="veteranstatus" className="label-format">Veteran Status</Label>
-        <Select
-          onChange={this.props.onChange}
-          options={vetstatus}
-          />
+        <Input type="select" id="veteranstatus" name="veteranstatus" onChange={this.props.onChange}>
+          <option value="">Select One</option>
+          {veteranStatusOptions}
+        </Input>
       </FormGroup>
       )
   }
