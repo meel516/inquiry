@@ -9,14 +9,14 @@ import Select from 'react-select';
 
 // https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
 const communityList = [
-  {value: '1', 'label': 'Brookdale Andy'},
-  {value: '2', 'label': 'Brookdale Avalone'},
-  {value: '3', 'label': 'Brookdale Dan'},
-  {value: '4', 'label': 'Brookdale Janet'},
-  {value: '5', 'label': 'Brookdale Jeff'},
-  {value: '6', 'label': 'Brookdale Josh'},
-  {value: '7', 'label': 'Brookdale Mary'},
-  {value: '8', 'label': 'Brookdale Matt'},
+//  {value: '1', 'label': 'Brookdale Andy'},
+//  {value: '2', 'label': 'Brookdale Avalone'},
+//  {value: '3', 'label': 'Brookdale Dan'},
+//  {value: '4', 'label': 'Brookdale Janet'},
+//  {value: '5', 'label': 'Brookdale Jeff'},
+//  {value: '6', 'label': 'Brookdale Josh'},
+//  {value: '7', 'label': 'Brookdale Mary'},
+//  {value: '8', 'label': 'Brookdale Matt'},
 ];
 
 const nextStepsOptions = [
@@ -49,24 +49,16 @@ export default class CommunitySelect extends React.Component {
 
   componentDidMount() {
     console.log('called componentDidMount on community form');
-    // removed do to CORS issues
     fetchCommunities()
     .then((data) => {
-      var communities = data.filter((com) => com.active)
-            .map((com) => {com.value = com.bu});
+      //console.log(data);
+      var communities = data.map((com) => {
+        return { value: com.id, label: com.buildingName }
+      });
+      //console.log(communities);
       this.setState({communityList: communities});
     })
     .catch((err) => console.error("Error", err));
-    /*fetch('https://unit-api.brookdale.com/bu-master/api/communities', {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
-      .then((data) => {
-        var communities = data
-          .filter(com => com.active)
-          .map(com => {com.value = com.bu;
-                       com.label = com.name})
-        this.setState({ communityList: communities })
-      })
-    .catch(error => console.log(error));*/
   }
 
   componentWillUnmount() {
@@ -85,7 +77,7 @@ export default class CommunitySelect extends React.Component {
   }
 
   render () {
-    const {selectedOption} = this.state;
+    const {communityList, selectedOption} = this.state;
     const {community, handleChange, handleBlur} = this.props;
     const nextStepsOptns = (nextStepsOptions||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.label}</option>
@@ -102,7 +94,7 @@ export default class CommunitySelect extends React.Component {
                   <Select
                     name="communityId"
                     onChange={this.props.handleChange}
-                    options={communityList}
+                    options={this.state.communityList}
                   />
                 </FormGroup>
              </Col>
