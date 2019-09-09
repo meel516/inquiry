@@ -56,7 +56,7 @@ export default class LinksManager extends React.Component {
 function SingleLink(props) {
   return (
     <ListGroupItem className="list-group-borderless list-group-nopadding">
-      <a href={props.link.location}>{props.link.name}</a>
+      <a target='_blank' href={props.link.location}>{props.link.name}</a>
     </ListGroupItem>
   )
 }
