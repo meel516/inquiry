@@ -1,38 +1,29 @@
 import uuid from "uuid";
 
-const URL_COMMUNITIES = 'http://unit-api.brookdale.com/bu-master';
+const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 
 var Community = function(index) {
 
 };
 
 export function fetchCommunities() {
-    const endpoint = window.encodeURI(`${URL_COMMUNITIES}/api/communities`)
+    const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
+    //const endpoint = window.encodeURI(`http://localhost/CommunitySearch/service/searchByAppAndUser`)
+    console.log('endpoint is: ' + endpoint);
 
-    // return axios.get(endpoint, {
-    //   headers: {
-    //     client_id: 'f096568719ac4e5d8e27df8982a955bd',
-    //     client_secret: 'e360e263b5344781891E822F603E1C42'
-    //   }
-    // });
+    const commRequest = {
+        "communitySearchText": "",
+        "appShortName": "SIMS",
+        "userName": "mmatthiessen"
+    }
 
-    // return fetch(endpoint, { mode: 'cors', cache: 'no-cache', })
-    //   .then((res) => res.json());
     return fetch(endpoint, {
-      method: 'GET', mode: 'cors', cache: 'no-cache',
+      method: 'POST', mode: 'cors', cache: 'no-cache',
       headers: {
-        client_id: 'f096568719ac4e5d8e27df8982a955bd',
-        client_secret: 'e360e263b5344781891E822F603E1C42'
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(commRequest)
     }).then((res) => res.json());
-      // .then((res) => response.json())
-      // .then((data) => {
-      //   if(!data) {
-      //     throw new Error()
-      //   }
-      //   return data;
-      // })
-      // .catch((err) => console.error("Error:", err));
 }
 
 export function createCommunity() {
