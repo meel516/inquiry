@@ -66,7 +66,7 @@ export default class CommunitySelect extends React.Component {
                        com.label = com.name})
         this.setState({ communityList: communities })
       })
-      .catch(error => console.log(error));*/
+    .catch(error => console.log(error));*/
   }
 
   componentWillUnmount() {
