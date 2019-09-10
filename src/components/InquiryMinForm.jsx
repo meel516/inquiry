@@ -15,6 +15,7 @@ import Drivers from './Drivers';
 import FinancialOptions from './FinancialOptions';
 import InquiryType from './InquiryType';
 import InquiryLeadSource from './InquiryLeadSource';
+import NextSteps from './NextSteps'
 import Note from './Note';
 import Prospect from './Prospect';
 import ReasonForCall from './ReasonForCall';
@@ -177,6 +178,11 @@ export default class InquiryForm extends React.Component {
             <br />
             <SecondPerson contact={props.values.lead.secondPerson} {...props} />
             <br />
+            <Row>
+              <Col md="5">
+                <NextSteps id="nextsteps" onChange={handleChange} onBlur={handleBlur} {...props} />
+              </Col>
+            </Row>
             <Row>
               <Col md="5">
                 <FormGroup>
