@@ -1,6 +1,7 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import Select from 'react-select';
+import CurrentSituation from './CurrentSituation';
 
 const additionalCareElements = [
  { value: 1, label: 'Memory Concerns'},
@@ -37,7 +38,7 @@ export default class AdditionalCareElements extends React.Component {
     return (
       <>
       <Row>
-        <Col md="9">
+        <Col>
           <FormGroup>
             <Label for="additionalCareElements" className="label-format">Additional Care Elements Discovered</Label>
             <Select isMulti
@@ -51,20 +52,10 @@ export default class AdditionalCareElements extends React.Component {
       { (careElements.includes(1) === true) ? <MemoryConcerns /> : null }
       { (careElements.includes(2) === true) ? <MobilityConcerns /> : null }
       { (careElements.includes(3) === true) ? <NutritionConcerns/> : null }
-      { (careElements.includes(4) === true) ? <CurrentLivingSituation/> : null }
+      { (careElements.includes(4) === true) ? <CurrentSituation/> : null } 
       </>
-    )
+    )  
   }
-}
-
-function CurrentLivingSituation(props) {
-  return (
-    <Row>
-      <Col>
-        <Label className="label-format">Current Living Situation</Label>
-      </Col>
-    </Row>
-  )
 }
 
 function NutritionConcerns(props) {
