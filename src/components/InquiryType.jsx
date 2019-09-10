@@ -20,6 +20,7 @@ export default class InquiryType extends React.Component {
 
   render() {
     const {inquiryTypes} = this.state||[];
+    const {handleChange} = this.props;
     const inquiryTypeOptions = inquiryTypes.map((type) => {
       return  <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -27,7 +28,7 @@ export default class InquiryType extends React.Component {
     return (
       <FormGroup>
         <Label for="inquiryType" className="label-format">Inquiry Method</Label>
-        <Input type="select" id="inquiryType" name="inquiryType">
+        <Input type="select" id="inquiryType" name="lead.inquiryType" onChange={handleChange}>
           <option value="">Select One</option>
           {inquiryTypeOptions}
         </Input>
