@@ -38,7 +38,7 @@ export default class AdditionalCareElements extends React.Component {
     return (
       <>
       <Row>
-        <Col md="9">
+        <Col>
           <FormGroup>
             <Label for="additionalCareElements" className="label-format">Additional Care Elements Discovered</Label>
             <Select isMulti
