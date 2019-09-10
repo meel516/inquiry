@@ -8,7 +8,7 @@ import Select from 'react-select';
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
 import ADLNeeds from './ADLNeeds';
-import CareLevels from './CareLevels';
+import CareType from './CareType';
 import CommunitySelect from './CommunitySelect';
 import Contact from './Contact';
 import Drivers from './Drivers';
@@ -140,7 +140,7 @@ export default class InquiryForm extends React.Component {
               <br/>
               <Prospect contact={props.values.lead.prospect} onChange={props.handleChange} {...props}/>
               <br/>
-              <CareLevels onChange={props.handleChange}/>
+              <CareType onChange={handleChange} onBlur={handleBlur} {...props} />
               <br/>
               <Row>
                 <Col>
