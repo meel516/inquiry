@@ -111,11 +111,13 @@ export default class InquiryForm extends React.Component {
           handleBlur,
           handleSubmit,
           handleReset,
+          setFieldValue,
+          setFieldTouched,
         } = props;
         return (
           <Form onSubmit={handleSubmit} className="inquiryForm">
             <section className="influencer-section">
-              <Contact type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
+              <Contact key="influencer-contact" type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
                 <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props}/>
               </Contact>
               <br />
@@ -158,10 +160,9 @@ export default class InquiryForm extends React.Component {
             <Row>
               <Col>
                 <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
-                {props.values.communities.map((community, i) => {
-                  return (
+                {props.values.communities.map((community, i) => (
                   <CommunitySelect key={community.index} arrayIndex={i} community={community} onRemove={() =>this.handleRemoveCommunity(community.index)} {...props}/>
-                )})}
+                ))}
               </Col>
             </Row>
             <br/>

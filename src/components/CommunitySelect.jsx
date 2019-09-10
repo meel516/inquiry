@@ -43,6 +43,13 @@ export default class CommunitySelect extends React.Component {
     this.props.onRemove();
   }
 
+  handleSelectCommunity = (optn) => {
+    const {setFieldValue, arrayIndex} = this.props;
+    const name = `communities[${arrayIndex}].communityId`
+    setFieldValue(name, optn.value);
+    this.props.setFieldTouched(name, true);
+  }
+
   handleNextSteps = (option) => {
     console.log(`Option selected:`, option);
     this.setState({
@@ -53,6 +60,7 @@ export default class CommunitySelect extends React.Component {
   render () {
     const {communityList, selectedOption} = this.state;
     const {community, handleChange, handleBlur, arrayIndex} = this.props;
+    console.log(`community[${arrayIndex}]=${community.communityId}`)
     const nextStepsOptns = (nextStepsOptions||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.label}</option>
     });
@@ -67,8 +75,12 @@ export default class CommunitySelect extends React.Component {
                   <Label for="communityList" className="label-format">Community</Label>
                   <Select
                     name={`communities[${arrayIndex}].communityId`}
-                    onChange={handleChange}
+                    isSearchable="true"
+                    defaultInputValue={community.communityId}
+                    value={community.communityId}
+                    onChange={this.handleSelectCommunity}
                     options={communityList}
+                    placeholder="Select a Community"
                   />
                 </FormGroup>
              </Col>
@@ -118,7 +130,7 @@ export default class CommunitySelect extends React.Component {
                   <Input type="select" 
                     id="selected-action" 
                     name={`communities[${arrayIndex}].action`}
-                    onChange={this.handleNextSteps}>
+                    onChange={handleChange}>
                     <option value=""></option>
                     {nextStepsOptns}
                   </Input>
