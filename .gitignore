@@ -27,3 +27,6 @@ package-lock.json
 
 # ignore snapshot test files
 */__tests__/__snapshots__/*
+
+# ignore vscode files
+.vscode

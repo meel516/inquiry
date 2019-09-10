@@ -150,72 +150,87 @@ export async function submitToService({lead, communities, actions}) {
     var leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
     var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
 
-    const influencer = {
-      "salesContact": {
-        "address": lead.influencer.address,
-        "phoneNumbers": [
-          {
-            "primary": true,
-            "phoneType": "Home",
-            "phoneNumber": lead.influencer.number,
-            "onNationalDoNotCall": false
-          }
-        ],
-        "emailAddress": lead.influencer.email,
-        "firstName": lead.influencer.firstName,
-        "lastName": lead.influencer.lastName,
-      },
-      "primary": false,
-    };
+    for (let i = 0; i < communities.length; i++) {
+      let community = communities[i];
+      let prospect = createProspectRequest(lead, community);
 
-    const prospect = {
-      "salesContact": {
-        "phoneNumbers": [
-          {
-            "onNationalDoNotCall": false,
-            "primary": true,
-            "phoneNumber": "4143546213",
-            "phoneType": "Home"
-          }
-        ],
-        "firstName": lead.prospect.firstName,
-        "lastName": lead.prospect.lastName,
-        "emailAddress": lead.prospect.email,
-        "veteranStatus": 2,
-        "currentSituation": 11,
-        "birthDate": "1975-03-08T05:00:00.000+0000"
-      },
-      "leadStatus": {
-        "dayRespite": false,
-        "status": 1,
-        "effectiveDate": "2019-07-29T16:42:18.000+0000"
-      },
-      "buildingId": 140,
-      "inquiryTypeId": 6,
-      "inquiryLeadSourceId": 4,
-      "inquiryLeadSourceDetailId": 58,
-      "leadTypeId": 4,
-      "decisionTimeframeId": 1,
-      "inquirerType": "PROSP",
+      try {
+        let resp = await fetch(leadUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(prospect)
+        })
+        const salesLead = resp.json();
+        console.log(`SalesLead: ${JSON.stringify(salesLead)}`);
+        const {objectId} = salesLead;
+        console.log(`Sales Lead Id: ${objectId}`);
+  
+      } catch(err) {
+        console.log(err);
+      }
+
+      let influencer = createInfluencerRequest(lead.influencer);
+      if (influencer) {
+
+      }
     }
-
-    try {
-      let reponse = await fetch(leadUrl, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(prospect)
-      })
-      const salesLead = reponse.json();
-      console.log(JSON.stringify(salesLead));
-
-    } catch(err) {
-      console.log(err);
-    }
-
   }
 
   actions.setSubmitting(false);
+}
+
+export function createProspectRequest(lead, community, lastName = 'Unknown') {
+  const {prospect} = lead;
+
+  return {
+    salesContact: {
+      phoneNumbers: [
+        {
+          onNationalDoNotCall: false,
+          primary: true,
+          phoneNumber: "4143546213",
+          phoneType: "Home",
+        }
+      ],
+      firstName: ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown'),
+      lastName: ((prospect && prospect.lastName) ? prospect.lastName : lastName),
+      emailAddress: prospect.email,
+      gender: "M",
+      age: 44,
+      maritalStatus: "Single",
+      veteranStatus: 2,
+      currentSituation: 11,
+      birthDate: "1975-03-08T05:00:00.000+0000"
+    },
+    buildingId: 225707,
+    inquiryTypeId: 6,
+    inquiryLeadSourceId: 4,
+    inquiryLeadSourceDetailId: 58,
+    leadTypeId: 4,
+    inquirerType: "PROSP",
+    inquiryDate: "2019-07-29T05:00:00.000+0000"
+  }
+}
+
+function createInfluencerRequest(influencer) {
+  return {
+    "salesContact": {
+      "address": influencer.address,
+      "phoneNumbers": [
+        {
+          "primary": true,
+          "phoneType": "Home",
+          "phoneNumber": influencer.number,
+          "onNationalDoNotCall": false
+        }
+      ],
+      "emailAddress": influencer.email,
+      "firstName": influencer.firstName,
+      "lastName": influencer.lastName,
+    },
+    "primary": false,
+  };
 }

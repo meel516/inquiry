@@ -30,7 +30,14 @@ Sublime
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run the following commands:
+
+### `npm local`
+
+Allows you to run the app in the development mode locally, using the local .env.local configuration.
+
+A file needs to be created called .env.local in the base of the project.
+
 
 ### `npm start`
 

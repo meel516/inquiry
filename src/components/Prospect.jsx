@@ -15,7 +15,7 @@ export default function Prospect(props) {
         <Col>
           <FormGroup>
             <Label for="dob" className="label-format">Birthdate</Label>
-            <Input type="date" id="dob" name="lead.prospect.dob" value={props.contact.dob} onChange={props.onChange} />
+            <Input type="date" id="dob" name="lead.prospect.birthDate" value={props.contact.birthDate} onChange={props.onChange} />
           </FormGroup>
         </Col>
         <Col>

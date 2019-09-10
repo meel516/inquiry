@@ -1,5 +1,5 @@
 import React from 'react';
-import {checkForDuplicate} from '../SalesServices';
+import {checkForDuplicate, createEmptyLead, createProspectRequest} from '../SalesServices';
 
 const no_duplicate_found = {
     "duplicate": false,
@@ -17,4 +17,13 @@ test('fetcing communities via api service', () => {
     .then((data) => {
       expect(data).toBe(no_duplicate_found)
     })
+})
+
+test('', () => {
+
+  const lead = createEmptyLead();
+  const community = {}
+
+  expect(createProspectRequest(lead, community))
+
 })
