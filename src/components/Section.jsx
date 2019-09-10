@@ -16,7 +16,10 @@ export default function Section(props) {
             <a href="#situation">Situation</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#budget">Budget Passions & Personality</a>
+            <a href="#passionsPersonality">Passions & Personality</a>
+          </ListGroupItem>
+          <ListGroupItem className="list-group-borderless">
+            <a href="#financialSituation">Budget</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
             <a href="#nextsteps">Next Steps</a>
