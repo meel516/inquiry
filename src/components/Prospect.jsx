@@ -21,7 +21,7 @@ export default function Prospect(props) {
         <Col>
           <FormGroup>
             <Label for="age" className="label-format">Age</Label>
-            <Input type="number" id="age" min='0' max='999' name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
+            <Input type="number" id="age" name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
           </FormGroup>
         </Col>
       </Row>

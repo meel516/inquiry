@@ -5,9 +5,14 @@ import PropTypes from 'prop-types'
 import {getAddressStates} from '../services/SalesServices'
 
 export default class Address extends React.Component {
-  state = {
-    states: [],
-    type: this.props.type,
+  constructor(props) {
+    super(props);
+    this.state = {
+      states: [],
+      type: this.props.type,
+    }
+
+    this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -18,40 +23,49 @@ export default class Address extends React.Component {
       .catch(error => console.log(error));
   }
 
+  handleFieldChange(e) {
+    const value = e.target.value;
+    const name = e.target.name;
+    // this.setState({
+    //   [name]: value
+    // });
+    this.props.onChange(this.state.type, name, value);
+  }
+
   render() {
     const {states} = this.state || [];
-    const {address, type, onChange} = this.props;
     const options = (states || []).map((state) => {
        return <option key={state.value} value={state.value}>{state.text}</option>
-     })
+     });
+    const {address, type} = this.props||{};
 
     return (
-      <section className={`address-${type}`}>
-  			<Row>
+      <section className="Address">
+        <Row>
   				<Col>
             <FormGroup>
-    					<Label htmlFor="line1" className="label-format">Address</Label>
-    					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1||''} onChange={onChange} placeholder="Address" />
+    					<Label htmlFor="line1" className="label-format">Address 1</Label>
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine1`} value={address.addressLine1||''} onChange={this.props.onChange} placeholder="Street Address" />
             </FormGroup>
   				</Col>
-  				<Col>
+          <Col>
             <FormGroup>
     					<Label for="line2" className="label-format">Address 2</Label>
-    					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2||''} onChange={onChange} placeholder="Apartment, studio, or floor" />
+    					<Input type="text" name={`lead.${this.props.type}.address.addressLine2`} value={address.addressLine2||''} onChange={this.props.onChange} placeholder="Apartment, Studio, or Floor" />
             </FormGroup>
   				</Col>
-        </Row>
+  			</Row>
         <Row>
   				<Col>
             <FormGroup>
     					<Label for="city" className="label-format">City</Label>
-    					<Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city} onChange={onChange} placeholder="City"/>
+              <Input type="text" name="city" value={address.city} onChange={this.handleFieldChange} placeholder="City" />
             </FormGroup>
   				</Col>
   				<Col>
             <FormGroup>
     					<Label for="state" className="label-format">State</Label>
-              <Input type="select" name={`lead.${this.props.type}.address.state`} onChange={onChange}>
+              <Input type="select" name="state" onChange={this.handleFieldChange}>
     						<option></option>
                 {options}
   					</Input>
@@ -59,7 +73,7 @@ export default class Address extends React.Component {
   				</Col>
   				<Col>
   					<Label for="zip" className="label-format">Zip</Label>
-  					<Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={onChange} />
+  					<Input type="number" name="zip" value={address.zipcode} onChange={this.handleFieldChange} placeholder="Zip" />
   				</Col>
   			</Row>
       </section>
@@ -69,4 +83,6 @@ export default class Address extends React.Component {
 
 Address.propTypes = {
   type: PropTypes.string.isRequired,
+  address: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
 }
