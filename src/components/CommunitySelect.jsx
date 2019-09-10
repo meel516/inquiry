@@ -8,17 +8,6 @@ import {fetchCommunities} from '../services/CommunityServices'
 import Select from 'react-select';
 
 // https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
-const communityList = [
-//  {value: '1', 'label': 'Brookdale Andy'},
-//  {value: '2', 'label': 'Brookdale Avalone'},
-//  {value: '3', 'label': 'Brookdale Dan'},
-//  {value: '4', 'label': 'Brookdale Janet'},
-//  {value: '5', 'label': 'Brookdale Jeff'},
-//  {value: '6', 'label': 'Brookdale Josh'},
-//  {value: '7', 'label': 'Brookdale Mary'},
-//  {value: '8', 'label': 'Brookdale Matt'},
-];
-
 const nextStepsOptions = [
   {value: 1, label: 'Visit Scheduled'},
   {value: 3, label: 'Assessment Scheduled'},
@@ -27,19 +16,6 @@ const nextStepsOptions = [
   {value: 5, label: 'Event RSVP Transfer to Community'},
   {value: 7, label: 'No Contact & Transfer to Community'},
 ];
-
-const nonCommunityNextSteps = [
-  {value: 6, label: 'First Call Left VM'},
-  {value: 8, label: 'PPC No Contact & Transfer to Community'},
-  {value: 9, label: 'Follow up Call to Schedule Appointment'},
-  {value: 10, label: 'Non Qualified Interaction'},
-  {value: 11, label: 'Back Office Entry Fee Lead'},
-  {value: 12, label: 'Back Office Project Contellation'},
-  {value: 13, label: 'Spanish Lead'},
-  {value: 14, label: 'BHS Referral'},
-  {value: 15, label: 'Large Employer Group - Non Senior Living Lead'},
-  {value: 16, label: 'Professional Referral'},
-]
 
 export default class CommunitySelect extends React.Component {
   state = {
@@ -51,11 +27,9 @@ export default class CommunitySelect extends React.Component {
     console.log('called componentDidMount on community form');
     fetchCommunities()
     .then((data) => {
-      //console.log(data);
       var communities = data.map((com) => {
         return { value: com.id, label: com.buildingName }
       });
-      //console.log(communities);
       this.setState({communityList: communities});
     })
     .catch((err) => console.error("Error", err));
@@ -78,7 +52,7 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {communityList, selectedOption} = this.state;
-    const {community, handleChange, handleBlur} = this.props;
+    const {community, handleChange, handleBlur, arrayIndex} = this.props;
     const nextStepsOptns = (nextStepsOptions||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.label}</option>
     });
@@ -92,9 +66,9 @@ export default class CommunitySelect extends React.Component {
                 <FormGroup>
                   <Label for="communityList" className="label-format">Community</Label>
                   <Select
-                    name="communityId"
-                    onChange={this.props.handleChange}
-                    options={this.state.communityList}
+                    name={`communities[${arrayIndex}].communityId`}
+                    onChange={handleChange}
+                    options={communityList}
                   />
                 </FormGroup>
              </Col>
@@ -103,27 +77,48 @@ export default class CommunitySelect extends React.Component {
              <Col>
                 <FormGroup>
                   <Label for="startingPrice" className="label-format">Starting at Price</Label>
-                  <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="startingPrice" 
+                    name={`communities[${arrayIndex}].startingPrice`} 
+                    value={community.startingPrice||0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="Starting at Price"/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
-                  <Input type="number" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="secondPersonFee" 
+                    name={`communities[${arrayIndex}].secondPersonFee`}
+                    value={community.secondPersonFee||0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="2nd Person Fee" />
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="communityFee" className="label-format">Community Fee</Label>
-                  <Input type="number" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="communityFee" 
+                    name={`communities[${arrayIndex}].communityFee`}
+                    value={community.communityFee|0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="Community Fee" />
                 </FormGroup>
               </Col>
             </Row>
             <Row>
               <Col md="5">
                 <FormGroup>
-                  <Label className="label-format">Next Steps</Label>
-                  <Input type="select" onChange={this.handleNextSteps}>
+                  <Label for="selected-action" className="label-format">Action</Label>
+                  <Input type="select" 
+                    id="selected-action" 
+                    name={`communities[${arrayIndex}].action`}
+                    onChange={this.handleNextSteps}>
                     <option value=""></option>
                     {nextStepsOptns}
                   </Input>

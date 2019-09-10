@@ -3,12 +3,11 @@ import uuid from "uuid";
 const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 
 var Community = function(index) {
-
+  this.index = index
 };
 
 export function fetchCommunities() {
     const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
-    //const endpoint = window.encodeURI(`http://localhost/CommunitySearch/service/searchByAppAndUser`)
     console.log('endpoint is: ' + endpoint);
 
     const commRequest = {
@@ -26,6 +25,7 @@ export function fetchCommunities() {
     }).then((res) => res.json());
 }
 
+// creates an empty community object
 export function createCommunity() {
   var community = new Community(uuid.v4());
 

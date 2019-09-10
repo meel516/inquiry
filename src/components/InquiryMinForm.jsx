@@ -144,27 +144,28 @@ export default class InquiryForm extends React.Component {
               <br/>
               <Row>
                 <Col>
-                  <Note label="Passions &amp; Personality" id="passionsPersonality" onBlur={props.handleBlur}/>
+                  <Note label="Passions &amp; Personality" id="passionsPersonality" onChange={props.handleChange} onBlur={props.handleBlur}/>
                 </Col>
               </Row>
             </section>
             <Row>
               <Col>
-                <Note label="Financial Situation" id="financialSituation" onBlur={props.handleBlur}/>
+                <Note label="Financial Situation" id="financialSituation" onChange={props.handleChange} onBlur={props.handleBlur}/>
               </Col>
             </Row>
             <br/>
             <Row>
               <Col>
                 <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
-                {props.values.communities.map((community, index) => (
-                  <CommunitySelect key={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)} {...props}/>
-                ))}
+                {props.values.communities.map((community, i) => {
+                  return (
+                  <CommunitySelect key={community.index} arrayIndex={i} community={community} onRemove={() =>this.handleRemoveCommunity(community.index)} {...props}/>
+                )})}
               </Col>
             </Row>
             <br/>
             <hr />
-            <FinancialOptions />
+            <FinancialOptions {...props} />
             <br/>
             <Row>
               <Col>
