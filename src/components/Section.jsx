@@ -22,7 +22,7 @@ export default function Section(props) {
             <a href="#financialSituation">Budget</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#nextsteps">Next Steps</a>
+            <a href="#nextStepsLabel">Next Steps</a>
           </ListGroupItem>
         </ListGroup>
       </Col>
