@@ -137,7 +137,7 @@ export default class InquiryForm extends React.Component {
                 </Col>
               </Row>
               <br/>
-              <AdditionalCareElements />
+              <AdditionalCareElements {...props}/>
               <br/>
               <Prospect contact={props.values.lead.prospect} onChange={props.handleChange} {...props}/>
               <br/>

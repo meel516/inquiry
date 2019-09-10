@@ -8,6 +8,7 @@ import ADLNeeds from './ADLNeeds';
 import Advisor from './Advisor';
 import CareLevels from './CareLevels';
 import CommunitySelect from './CommunitySelect';
+import CurrentSituation from './CurrentSituation;'
 import Contact from './Contact';
 import Drivers from './Drivers';
 import Prospect from './Prospect';
@@ -179,6 +180,9 @@ export default class InquiryForm extends Component {
           </Row>
           <br/>
           <AdditionalCareElements />
+          <br/>
+          <br/>
+          <CurrentSituation />
           <br/>
           <Prospect contact={prospect} />
           <br/>
