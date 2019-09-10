@@ -92,6 +92,13 @@ export function getCurrentSituation() {
     .then((res) => res.json());
 }
 
+export function getCareTypes() {
+  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/careTypes`
+
+  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+    .then((res) => res.json())
+}
+
 export function createEmptyLead() {
   return  {
       influencer: {

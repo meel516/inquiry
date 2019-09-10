@@ -1,56 +1,35 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
-import Select from 'react-select';
 
-const careLevels = [
-  {value: 1, label: 'Nurture'},
-  {value: 2, label: 'Alzheimer\'s/Dementia'},
-  {value: 3, label: 'Assisted Living'},
-  {value: 4, label: 'At Home'},
-  {value: 5, label: 'BHS'},
-  {value: 6, label: 'Hospice'},
-  {value: 7, label: 'Independent Living'},
-  {value: 8, label: 'Private Duty Home Care'},
-  {value: 9, label: 'Rehab'},
-  {value: 10, label: 'Skilled Nursing Care'},
-  {value: 11, label: 'System Conversion'},
-];
+import {getCareTypes} from '../services/SalesServices'
 
-export default class CareLevels extends React.Component {
+export default class CareType extends React.Component {
   state = {
-    careLevels: careLevels,
-    selectedCareLevel: null,
+    careTypes: [],
   }
+  
 
   componentDidMount() {
-    // TODO: load care levels here
+    getCareTypes()
+      .then((data) => this.setState({ careTypes: data }))
+      .catch(error => console.log(error));
   }
 
-  handleSelectCareLevel = (elmnt) => {
-    const {value} = elmnt || [];
-    this.setState({
-      selectedCareLevel: value,
-    })
-  }
 
   render() {
-    const {careLevels} = this.state || [];
+    const {careTypes} = this.state||[];
+    const careTypeOptions = careTypes.map((type) => {
+      return  <option key={type.value} value={type.value}>{type.text}</option>
+    });
+
     return (
-      <>
-      <Row>
-        <Col md="6">
-          <FormGroup>
-            <Label for="careLevel" className="label-format">Care Level Recommended</Label>
-            <Select
-              onChange={this.handleSelectCareLevel}
-              defaultValue={{ label: "Select One", value: 0 }}
-              options={careLevels}
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      { }
-    </>
+      <FormGroup>
+        <Label for="careType" className="label-format">Care Level Recommended</Label>
+        <Input type="select" id="careType" name="careType">
+          <option value="">Select One</option>
+          {careTypeOptions}
+        </Input>
+      </FormGroup>
     )
   }
 }
