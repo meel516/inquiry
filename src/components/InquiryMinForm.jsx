@@ -179,7 +179,7 @@ export default class InquiryForm extends React.Component {
             <br />
             <Row>
               <Col md="5">
-                <NextSteps id="nextsteps" onChange={handleChange} onBlur={handleBlur} {...props} />
+                <NextSteps id="nextStepsLabel" onChange={handleChange} onBlur={handleBlur} {...props} />
               </Col>
             </Row>
             <Row>
