@@ -56,6 +56,10 @@ body {
   font-weight: bold;
 }
 
+div.react-datetime-picker__wrapper {
+  border: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

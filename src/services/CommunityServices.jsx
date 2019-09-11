@@ -1,14 +1,17 @@
 import uuid from "uuid";
+import { thisExpression } from "@babel/types";
 
 const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 
 var Community = function(index) {
-
+  this.index = index;
+  this.communityId = 0;
+  this.freeMeal = 1;  // No
+  this.followupDate = new Date();
 };
 
 export function fetchCommunities() {
     const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
-    //const endpoint = window.encodeURI(`http://localhost/CommunitySearch/service/searchByAppAndUser`)
     console.log('endpoint is: ' + endpoint);
 
     const commRequest = {

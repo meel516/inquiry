@@ -159,7 +159,7 @@ export default class InquiryForm extends React.Component {
               <Col>
                 <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
                 {props.values.communities.map((community, index) => (
-                  <CommunitySelect key={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)} {...props}/>
+                  <CommunitySelect key={index} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(index)} {...props}/>
                 ))}
               </Col>
             </Row>
@@ -245,7 +245,7 @@ export default class InquiryForm extends React.Component {
             {this.state.debug &&
               <DebugFormikState {...props} />}
 
-            {this.state.debug &&
+            {false && this.state.debug &&
               <DebugFormState {...this.state} />}
 
           </Form>
