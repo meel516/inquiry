@@ -26,7 +26,7 @@ export default class LeadSource extends React.Component {
   }
 
   handleOnChange = (event) => {
-    var leadSourceId = event.value;
+    var leadSourceId = event.target.value;
     this.fetchAndSetLeadSourceDetail(leadSourceId);
     this.props.handleChange(event);
   }
@@ -45,7 +45,7 @@ export default class LeadSource extends React.Component {
 
   render() {
     const {leadSource, leadSourceDetail} = this.state||[];
-    const {handleChange} = this.props;
+    const {handleChange, handleBlur} = this.props;
     const leadSourceOptions = leadSource.map((type) => {
       return  <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -81,7 +81,7 @@ export default class LeadSource extends React.Component {
         <Col>
           <FormGroup>
             <Label for="additionalDetail"  className="label-format">Additional Detail</Label>
-            <Input type="text" id="additionalDetail" name="additionalDetail" placeholder="Additional Detail" />
+            <Input type="text" id="additionalDetail" name="lead.additionalDetail" placeholder="Additional Detail"  onChange={handleChange}  onBlur={handleBlur} />
           </FormGroup>
         </Col>
       </Row>
