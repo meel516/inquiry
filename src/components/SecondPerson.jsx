@@ -4,14 +4,7 @@ import Contact from './Contact';
 import Note from './Note';
 
 export default class SecondPerson extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = props.handleChange.bind(this);
-    this.handleBlur = props.handleBlur.bind(this)
-
- }
-
- state = {
+state = {
   containsSecondPerson: false,
 }    
 
@@ -46,9 +39,9 @@ export default class SecondPerson extends React.Component {
         {this.renderQuestion()}
         <Contact 
           type="secondPerson" 
-          onChange={ this.handleChange }
-          onBlur={ this.handleBlur }
-          contact={this.props.contact} 
+          onChange={ handleChange }
+          onBlur={ handleBlur }
+          contact={ this.props.contact } 
           {...this.props} />
         <Note label="2nd Person Situation" id="situation2" name="situation2"/>
         </>
