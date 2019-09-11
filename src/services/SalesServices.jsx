@@ -120,10 +120,8 @@ export function createEmptyLead() {
           type: ""
         }
       },
-      leadSource: {
-        leadSourceId: "",
-        leadSourceDetailId: "",
-      },
+      leadSource: "",
+      leadSourceDetail: "",
       notes: {
 
       },
