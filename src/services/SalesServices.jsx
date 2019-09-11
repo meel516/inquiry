@@ -184,8 +184,26 @@ export async function submitToService({lead, communities, actions}) {
   actions.setSubmitting(false);
 }
 
+var SalesContact = function() {
+
+}
+
+var SalesLead = function(salesContact) {
+  this.salesContact = salesContact;
+}
+
 export function createProspectRequest(lead, community, lastName = 'Unknown') {
   const {prospect} = lead;
+
+  const salesContact = new SalesContact();
+  const salesLead = new SalesLead(salesContact);
+
+  salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
+  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
+  salesContact.emailAddress = prospect.email;
+
+  salesLead.buildingId = community.communityId;
+
 
   return {
     salesContact: {
@@ -207,7 +225,7 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
       currentSituation: 11,
       birthDate: "1975-03-08T05:00:00.000+0000"
     },
-    buildingId: 225707,
+    buildingId: community.communityId,
     inquiryTypeId: 6,
     inquiryLeadSourceId: 4,
     inquiryLeadSourceDetailId: 58,

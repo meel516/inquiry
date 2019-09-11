@@ -120,7 +120,6 @@ export default class InquiryForm extends React.Component {
               <Contact key="influencer-contact" type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
                 <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props}/>
               </Contact>
-              <br />
               {false && <Row>
                 <Col md="6">
                   <Label for="callPrompt">What prompted their call?</Label>
@@ -132,7 +131,7 @@ export default class InquiryForm extends React.Component {
             </section>
             <br />
             <section className="prospect-section">
-              <Note label="Situation" id="situation" onBlur={props.handleBlur}/>
+              <Note label="Situation" id="situation" onChange={props.handleChange} onBlur={props.handleBlur}/>
               <Row>
                 <Col>
                   <ADLNeeds />

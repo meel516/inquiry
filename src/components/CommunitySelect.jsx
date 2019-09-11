@@ -8,16 +8,6 @@ import {getFollowupActions} from '../services/SalesServices'
 
 import Select from 'react-select';
 
-// https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
-// const nextStepsOptions = [
-//   {value: 1, label: 'Visit Scheduled'},
-//   {value: 3, label: 'Assessment Scheduled'},
-//   {value: 2, label: 'Home Visit Scheduled'},
-//   {value: 4, label: 'Lead No Visit & Transfer to Community'},
-//   {value: 5, label: 'Event RSVP Transfer to Community'},
-//   {value: 7, label: 'No Contact & Transfer to Community'},
-// ];
-
 export default class CommunitySelect extends React.Component {
   state = {
     communityList: [],
@@ -64,7 +54,7 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {selectedAction, followupActions} = this.state;
-    const {community, handleChange, handleBlur} = this.props;
+    const {community, index, handleChange, handleBlur} = this.props;
     const followupOptns = (followupActions||[]).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
@@ -91,7 +81,7 @@ export default class CommunitySelect extends React.Component {
                   <Label for="startingPrice" className="label-format">Starting at Price</Label>
                   <Input type="number" 
                     id="startingPrice" 
-                    name={`communities[${arrayIndex}].startingPrice`} 
+                    name={`communities[${index}].startingPrice`} 
                     value={community.startingPrice||0} 
                     onChange={handleChange} 
                     onBlur={handleBlur}
@@ -103,7 +93,7 @@ export default class CommunitySelect extends React.Component {
                   <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
                   <Input type="number" 
                     id="secondPersonFee" 
-                    name={`communities[${arrayIndex}].secondPersonFee`}
+                    name={`communities[${index}].secondPersonFee`}
                     value={community.secondPersonFee||0} 
                     onChange={handleChange} 
                     onBlur={handleBlur}
@@ -115,7 +105,7 @@ export default class CommunitySelect extends React.Component {
                   <Label for="communityFee" className="label-format">Community Fee</Label>
                   <Input type="number" 
                     id="communityFee" 
-                    name={`communities[${arrayIndex}].communityFee`}
+                    name={`communities[${index}].communityFee`}
                     value={community.communityFee|0} 
                     onChange={handleChange} 
                     onBlur={handleBlur}
