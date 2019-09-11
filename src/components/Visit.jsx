@@ -69,7 +69,7 @@ class FollowUp extends React.Component {
 
   onScheduledDateChange = (date) => {
     const {index, setFieldValue} = this.props;
-    setFieldValue(`communities[${index}].scheduledDate`, date);
+    setFieldValue(`communities[${index}].followupDate`, date);
     console.log(`Scheduled Date: ${date}`);
     this.setState({ followupDate: date })
   }
@@ -77,9 +77,9 @@ class FollowUp extends React.Component {
   render() {
     return (
       <FormGroup>
-        <Label for="scheduledDate" className="label-format">Scheduled Date</Label>
+        <Label for="followupDate" className="label-format">Scheduled Date</Label>
         <DateTimePicker
-          name="scheduledDate"
+          name="followupDate"
           className="no-border form-control"
           disableClock={true}
           showWeekNumbers={true}
