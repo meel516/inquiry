@@ -35,66 +35,54 @@ export function retrieveCallPrompts() {
 }
 
 export function getAddressStates() {
-  const endpoint = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/stateProv`;
-
-  return fetch(endpoint, { mode: 'cors', cache: 'no-cache' })
-    .then((res) => res.json());
+  return createFetch(createDropDownUrl('stateProv'))
 }
 
 export function getLeadSources() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryLeadSource`;
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json());
+  return createFetch(createDropDownUrl('inquiryLeadSource'))
 }
 
 export function getLeadSourceDetails(leadSourceId) {
-  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryLeadSource/${leadSourceId}/inquiryLeadSourceDetails`;
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json())
+  return createFetch(`${createDropDownUrl('inquiryLeadSource')}/${leadSourceId}/inquiryLeadSourceDetails`);
 }
 
 export function getPhoneTypes() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/phoneTypes`;
-
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json());
+  return createFetch(createDropDownUrl('phoneTypes'))
 }
 
 export function getInquiryTypes() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/inquiryTypes`;
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json())
+  return createFetch(createDropDownUrl('inquiryTypes'))
 }
 
 export function getVeteranStatus() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/veteranStatus`;
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json())
+  return createFetch(createDropDownUrl('veteranStatus'))
 }
 
 export function getDecisionTimeframe() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/decisionTimeframe`;
-
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json());
+  return createFetch(createDropDownUrl('decisionTimeframe'))
 }
 
 export function getReasonForInterest() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/interestReason`
-
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json())
+  return createFetch(createDropDownUrl('interestReason'))
 }
 
 export function getCurrentSituation() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/currentSituation`;
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
-    .then((res) => res.json());
+  return createFetch(createDropDownUrl('currentSituation'))
 }
 
 export function getCareTypes() {
-  const url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/careTypes`
+  return createFetch(createDropDownUrl('careTypes'))
+}
 
+export function getFollowupActions() {
+  return createFetch(createDropDownUrl('followUpActions'))
+}
+
+function createDropDownUrl(action) {
+  return `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/${action}`
+}
+
+function createFetch(url) {
   return fetch(url, {mode: 'cors', cache: 'no-cache'})
     .then((res) => res.json())
 }
