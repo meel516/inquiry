@@ -51,16 +51,21 @@ export default class CommunitySelect extends React.Component {
     this.props.onRemove();
   }
 
-  handleNextSteps = (option) => {
-    console.log(`Option selected:`, option);
-    this.setState({
-      selectedAction: option
-    })
-    this.props.handleChange('')
+  handleNextSteps = (optn) => {
+    console.log(`Option selected: ${JSON.stringify(optn.target.value)}`);
+    const {index, setFieldValue} = this.props;
+    setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
+    this.setState({selectedAction: optn.target.value})
+  }
+
+  handleCommunityChange = (optn) => {
+    console.log(`Community Selected: ${optn}`);
+    const {index, setFieldValue} = this.props;
+    setFieldValue(`communities[${index}].communityId`, optn.value);
   }
 
   render () {
-    const {communityList, selectedAction, followupActions} = this.state;
+    const {selectedAction, followupActions} = this.state;
     const {community, handleChange, handleBlur} = this.props;
     const followupOptns = (followupActions||[]).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
@@ -76,7 +81,7 @@ export default class CommunitySelect extends React.Component {
                   <Label for="communityList" className="label-format">Community</Label>
                   <Select
                     name="communityId"
-                    onChange={this.props.handleChange}
+                    onChange={this.handleCommunityChange}
                     options={this.state.communityList}
                   />
                 </FormGroup>
