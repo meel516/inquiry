@@ -18,6 +18,7 @@ export default class CareType extends React.Component {
 
   render() {
     const {careTypes} = this.state||[];
+    const {handleChange} = this.props;
     const careTypeOptions = careTypes.map((type) => {
       return  <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -25,7 +26,7 @@ export default class CareType extends React.Component {
     return (
       <FormGroup>
         <Label for="careType" className="label-format">Care Level Recommended</Label>
-        <Input type="select" id="careType" name="careType">
+        <Input type="select" id="careType" name="lead.careType" onChange={handleChange}>
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>

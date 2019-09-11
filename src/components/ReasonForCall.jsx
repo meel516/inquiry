@@ -19,6 +19,7 @@ export default class ReasonForCall extends React.Component {
 
   render() {
     const {reasonForCall} = this.state||[];
+    const {handleChange} = this.props;
     const reasonForCallOptions = reasonForCall.map((type) => {
       return  <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -26,7 +27,7 @@ export default class ReasonForCall extends React.Component {
     return (
       <FormGroup>
         <Label for="reasonForCall" className="label-format">Reason for Call</Label>
-        <Input type="select" id="reasonForCall" name="reasonForCall">
+        <Input type="select" id="reasonForCall" name="lead.prospect.reasonForCall" onChange={handleChange}>
           <option value="">Select One</option>
           {reasonForCallOptions}
         </Input>

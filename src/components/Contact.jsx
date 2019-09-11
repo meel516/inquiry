@@ -78,7 +78,7 @@ export default class Contact extends React.Component {
             <FormGroup>
               <Label for="phoneTypes" className="label-format">Phone Type</Label>
               <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type||''} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
-                <option value=""></option>
+                <option value="">Select One</option>
                 {displayablePhoneTypes}
               </Input>
             </FormGroup>

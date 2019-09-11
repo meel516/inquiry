@@ -14,7 +14,7 @@ import Contact from './Contact';
 import Drivers from './Drivers';
 import FinancialOptions from './FinancialOptions';
 import InquiryType from './InquiryType';
-import InquiryLeadSource from './InquiryLeadSource';
+import LeadSource from './LeadSource';
 import NextSteps from './NextSteps'
 import Note from './Note';
 import Prospect from './Prospect';
@@ -215,7 +215,7 @@ export default class InquiryForm extends React.Component {
         		</Row>
             <Row>
               <Col md="5">
-                <InquiryLeadSource leadSource={props.values.lead.leadSource} onChange={props.handleChange} {...props} />
+                <LeadSource leadSource={props.values.lead.leadSource} onChange={props.handleChange} {...props} />
               </Col>
             </Row>
             <Row>
@@ -228,7 +228,7 @@ export default class InquiryForm extends React.Component {
             </Row>
             <br />
             <Row>
-      				<Col md="3">
+      				<Col md="5">
       					<Label for="callerType" className="label-format">What is the gender of the caller?</Label>
       					<select className="form-control" id="callerType">
       						<option>Select One</option>
