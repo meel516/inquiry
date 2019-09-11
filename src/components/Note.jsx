@@ -6,7 +6,7 @@ export default function Note(props) {
   return (
     <FormGroup>
       <Label for={props.id} className="label-format">{props.label}</Label>
-      <Input type="textarea" name={`lead.notes.${props.id}`} id={props.id} onChange={props.onChange} onBlur={props.onBlur}/>
+      <Input type="textarea" name={props.name||`lead.notes.${props.id}`} id={props.id} onChange={props.onChange} onBlur={props.onBlur}/>
     </FormGroup>
   )
 }
