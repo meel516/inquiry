@@ -138,7 +138,8 @@ export function createEmptyLead() {
       },
       notes: {
 
-      }
+      },
+      nextSteps: "",
     };
 }
 
