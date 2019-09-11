@@ -52,7 +52,7 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {selectedAction, followupActions} = this.state;
-    const {community, handleChange, handleBlur} = this.props;
+    const {handleChange, handleBlur} = this.props;
     const followupOptns = (followupActions||[]).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
