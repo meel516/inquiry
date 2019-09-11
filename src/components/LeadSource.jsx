@@ -26,7 +26,6 @@ export default class LeadSource extends React.Component {
   }
 
   handleOnChange = (event) => {
-    debugger
     var leadSourceId = event.target.value;
     this.fetchAndSetLeadSourceDetail(leadSourceId);
     this.props.handleChange(event);
