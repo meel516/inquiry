@@ -4,23 +4,25 @@ import PropTypes from 'prop-types';
 
 import Visit from './Visit';
 import {fetchCommunities} from '../services/CommunityServices'
+import {getFollowupActions} from '../services/SalesServices'
 
 import Select from 'react-select';
 
 // https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
-const nextStepsOptions = [
-  {value: 1, label: 'Visit Scheduled'},
-  {value: 3, label: 'Assessment Scheduled'},
-  {value: 2, label: 'Home Visit Scheduled'},
-  {value: 4, label: 'Lead No Visit & Transfer to Community'},
-  {value: 5, label: 'Event RSVP Transfer to Community'},
-  {value: 7, label: 'No Contact & Transfer to Community'},
-];
+// const nextStepsOptions = [
+//   {value: 1, label: 'Visit Scheduled'},
+//   {value: 3, label: 'Assessment Scheduled'},
+//   {value: 2, label: 'Home Visit Scheduled'},
+//   {value: 4, label: 'Lead No Visit & Transfer to Community'},
+//   {value: 5, label: 'Event RSVP Transfer to Community'},
+//   {value: 7, label: 'No Contact & Transfer to Community'},
+// ];
 
 export default class CommunitySelect extends React.Component {
   state = {
     communityList: [],
-    selectedOption: null,
+    selectedAction: null,
+    followupActions: [],
   }
 
   componentDidMount() {
@@ -33,6 +35,10 @@ export default class CommunitySelect extends React.Component {
       this.setState({communityList: communities});
     })
     .catch((err) => console.error("Error", err));
+
+    getFollowupActions()
+      .then((data) => this.setState({followupActions: data}))
+      .catch((err) => console.error("Error", err));
   }
 
   componentWillUnmount() {
@@ -43,27 +49,25 @@ export default class CommunitySelect extends React.Component {
     this.props.onRemove();
   }
 
-  handleSelectCommunity = (optn) => {
-    const {setFieldValue, arrayIndex} = this.props;
-    const name = `communities[${arrayIndex}].communityId`
-    setFieldValue(name, optn.value);
-    this.props.setFieldTouched(name, true);
+  handleNextSteps = (optn) => {
+    console.log(`Option selected: ${JSON.stringify(optn.target.value)}`);
+    const {index, setFieldValue} = this.props;
+    setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
+    this.setState({selectedAction: optn.target.value})
   }
 
-  handleNextSteps = (option) => {
-    console.log(`Option selected:`, option);
-    this.setState({
-      selectedOption: option
-    })
+  handleCommunityChange = (optn) => {
+    console.log(`Community Selected: ${optn}`);
+    const {index, setFieldValue} = this.props;
+    setFieldValue(`communities[${index}].communityId`, optn.value);
   }
 
   render () {
-    const {communityList, selectedOption} = this.state;
-    const {community, handleChange, handleBlur, arrayIndex} = this.props;
-    console.log(`community[${arrayIndex}]=${community.communityId}`)
-    const nextStepsOptns = (nextStepsOptions||[]).map(type => {
-      return <option key={type.value} value={type.value}>{type.label}</option>
-    });
+    const {selectedAction, followupActions} = this.state;
+    const {community, handleChange, handleBlur} = this.props;
+    const followupOptns = (followupActions||[]).map((optn) => {
+      return <option key={optn.value} value={optn.value}>{optn.text}</option>
+    })
 
    return (
      <div className="communities-container">
@@ -74,13 +78,9 @@ export default class CommunitySelect extends React.Component {
                 <FormGroup>
                   <Label for="communityList" className="label-format">Community</Label>
                   <Select
-                    name={`communities[${arrayIndex}].communityId`}
-                    isSearchable="true"
-                    defaultInputValue={community.communityId}
-                    value={community.communityId}
-                    onChange={this.handleSelectCommunity}
-                    options={communityList}
-                    placeholder="Select a Community"
+                    name="communityId"
+                    onChange={this.handleCommunityChange}
+                    options={this.state.communityList}
                   />
                 </FormGroup>
              </Col>
@@ -126,19 +126,16 @@ export default class CommunitySelect extends React.Component {
             <Row>
               <Col md="5">
                 <FormGroup>
-                  <Label for="selected-action" className="label-format">Action</Label>
-                  <Input type="select" 
-                    id="selected-action" 
-                    name={`communities[${arrayIndex}].action`}
-                    onChange={handleChange}>
+                  <Label for="action" className="label-format">Action</Label>
+                  <Input type="select" id="action" onChange={this.handleNextSteps}>
                     <option value=""></option>
-                    {nextStepsOptns}
+                    {followupOptns}
                   </Input>
                 </FormGroup>
               </Col>
             </Row>
             {
-              (selectedOption && selectedOption.value === 1) ? <Visit /> : null
+              ( selectedAction ) ? <Visit onChange={this.props.handleChange} {...this.props}/> : null
             }
         </CardBody>
         <CardFooter className="text-right">
