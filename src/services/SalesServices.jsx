@@ -133,8 +133,8 @@ export function createEmptyLead() {
         }
       },
       leadSource: {
-        leadSourceId: 4,
-        leadSourceDetailId: 58,
+        leadSourceId: "",
+        leadSourceDetailId: "",
       },
       notes: {
 
