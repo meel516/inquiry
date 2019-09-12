@@ -38,14 +38,12 @@ export default class CommunitySelect extends React.Component {
   }
 
   handleFollowupAction = (optn) => {
-    console.log(`Option selected: ${JSON.stringify(optn.target.value)}`);
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
     this.setState({selectedAction: optn.target.value})
   }
 
   handleCommunityChange = (optn) => {
-    console.log(`Community Selected: ${optn}`);
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].communityId`, optn.value);
   }
