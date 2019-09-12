@@ -5,7 +5,6 @@ import queryString from 'query-string';
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
 import ADLNeeds from './ADLNeeds';
-import Advisor from './Advisor';
 import CareLevels from './CareLevels';
 import CommunitySelect from './CommunitySelect';
 import CurrentSituation from './CurrentSituation;'
@@ -21,7 +20,7 @@ import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import {createEmptyLead, createLeadById, retrieveCallPrompts, submitToService} from "../services/SalesServices";
+import {createEmptyLead, createLeadById, submitToService} from "../services/SalesServices";
 import {createCommunity} from '../services/CommunityServices';
 
 import Select from 'react-select';

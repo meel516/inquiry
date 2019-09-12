@@ -8,16 +8,6 @@ import {getFollowupActions} from '../services/SalesServices'
 
 import Select from 'react-select';
 
-// https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/
-// const nextStepsOptions = [
-//   {value: 1, label: 'Visit Scheduled'},
-//   {value: 3, label: 'Assessment Scheduled'},
-//   {value: 2, label: 'Home Visit Scheduled'},
-//   {value: 4, label: 'Lead No Visit & Transfer to Community'},
-//   {value: 5, label: 'Event RSVP Transfer to Community'},
-//   {value: 7, label: 'No Contact & Transfer to Community'},
-// ];
-
 export default class CommunitySelect extends React.Component {
   state = {
     communityList: [],
@@ -43,15 +33,11 @@ export default class CommunitySelect extends React.Component {
       .catch((err) => console.error("Error", err));
   }
 
-  componentWillUnmount() {
-    console.log('called componentWillUnmount on community form');
-  }
-
   handleRemoveCommunity = () => {
     this.props.onRemove();
   }
 
-  handleNextSteps = (optn) => {
+  handleFollowupAction = (optn) => {
     console.log(`Option selected: ${JSON.stringify(optn.target.value)}`);
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
@@ -66,7 +52,7 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {selectedAction, followupActions} = this.state;
-    const {community, handleChange, handleBlur} = this.props;
+    const {handleChange, handleBlur} = this.props;
     const followupOptns = (followupActions||[]).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
@@ -110,8 +96,8 @@ export default class CommunitySelect extends React.Component {
             <Row>
               <Col md="5">
                 <FormGroup>
-                  <Label for="action" className="label-format">Action</Label>
-                  <Input type="select" id="action" onChange={this.handleNextSteps}>
+                  <Label for="action" className="label-format">Followup Action</Label>
+                  <Input type="select" id="action" onChange={this.handleFollowupAction}>
                     <option value=""></option>
                     {followupOptns}
                   </Input>
@@ -119,7 +105,7 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             {
-              ( selectedAction ) ? <Visit onChange={this.props.handleChange} {...this.props}/> : null
+              ( selectedAction ) ? <Visit  onChange={this.props.handleChange} {...this.props}/> : null
             }
         </CardBody>
         <CardFooter className="text-right">
