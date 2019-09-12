@@ -77,7 +77,7 @@ class FollowUp extends React.Component {
   render() {
     return (
       <FormGroup>
-        <Label for="followupDate" className="label-format">Scheduled Date</Label>
+        <Label for="followupDate" className="label-format">Next Steps Date</Label>
         <DateTimePicker
           name="followupDate"
           className="no-border form-control"
