@@ -25,17 +25,6 @@ import VeteranStatus from './VeteranStatus';
 import {createEmptyLead, createLeadById, submitToService} from "../services/SalesServices";
 import {createCommunity} from '../services/CommunityServices';
 
-const whatPromptedTheirCall = [
-  {value: 1, label: 'Age and Need of Care'},
-  {value: 2, label: 'Death of Spouse'},
-  {value: 3, label: 'Downsizing'},
-  {value: 4, label: 'Memory Concerns'},
-  {value: 5, label: 'No Longer able to Care for Loved One at Home'},
-  {value: 6, label: 'Recent Hospital Visit - Doctor Recommendation'},
-  {value: 7, label: 'Response to Marketing Material'},
-  {value: 8, label: 'Relocation'},
-];
-
 export default class InquiryForm extends React.Component {
   state = {
     communities: [],
@@ -119,15 +108,6 @@ export default class InquiryForm extends React.Component {
               <Contact type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
                 <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props}/>
               </Contact>
-              <br />
-              {false && <Row>
-                <Col md="6">
-                  <Label for="callPrompt">What prompted their call?</Label>
-                  <Select
-                    options={whatPromptedTheirCall}
-                    />
-                </Col>
-              </Row>}
             </section>
             <br />
             <section className="prospect-section">
@@ -226,7 +206,6 @@ export default class InquiryForm extends React.Component {
                 </FormGroup>
     				  </Col>
             </Row>
-            <br />
             <Row>
       				<Col md="5">
       					<Label for="callerType" className="label-format">What is the gender of the caller?</Label>
