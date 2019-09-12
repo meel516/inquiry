@@ -94,9 +94,9 @@ export default class CommunitySelect extends React.Component {
             <Row>
               <Col md="5">
                 <FormGroup>
-                  <Label for="action" className="label-format">Followup Action</Label>
+                  <Label for="action" className="label-format">Next Steps Action</Label>
                   <Input type="select" id="action" onChange={this.handleFollowupAction}>
-                    <option value=""></option>
+                    <option value="">Select One</option>
                     {followupOptns}
                   </Input>
                 </FormGroup>
