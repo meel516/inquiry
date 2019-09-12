@@ -1,75 +1,66 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
-export default class ADLNeeds extends React.Component {
-
-  render() {
+export default function ADLNeeds(props) {
     return (
-      <div>
-        <div><Label for="drivers">ADL Needs</Label></div>
-        <div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
+      <>
+      <section className="adlNeeds">
+        <Label for="adlNeeds" className="label-format">ADL Needs</Label>
+        <Row>
+          <Col>
+            <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" id="bathing" name="bathing" value="" />{' '}
+                <Input type="checkbox" name="bathing" id="bathing" value="" />{' '}
                 Bathing
               </Label>
             </FormGroup>
-          </div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
-            <Label check>
-              <Input type="checkbox" id="dressing" name="dressing" value="" />{' '}
-              Dressing
-            </Label>
-          </FormGroup>
-          </div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
+            <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" id="feeding" name="feeding" value="" />{' '}
+                <Input type="checkbox" name="dressing" id="dressing" value="" />{' '}
+                Dressing
+              </Label>
+            </FormGroup>
+            <FormGroup check inline className="col-3">
+              <Label check>
+                <Input type="checkbox" name="feeding" id="feeding" value="" />{' '}
                 Feeding
               </Label>
             </FormGroup>
-          </div>
-        </div>
-        <div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" id="incontinence" name="incontinence" value="" />{' '}
+                <Input type="checkbox" name="incontinence" id="incontinence" value="" />{' '}
                 Incontinence
               </Label>
             </FormGroup>
-          </div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
+            <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" id="location" name="location" value="" />{' '}
+                <Input type="checkbox" name="medications" id="medications" value="" />{' '}
                 Medications
               </Label>
             </FormGroup>
-          </div>
-          <div className="d-inline-flex flex-md-fill p-1">
-            <FormGroup check>
+            <FormGroup check inline className="col-3">
               <Label check>
-                <Input type="checkbox" id="peaceOfMind" name="peaceOfMind" value="" />{' '}
+                <Input type="checkbox" name="toileting" id="toileting" value="" />{' '}
                 Toileting
               </Label>
             </FormGroup>
-          </div>
-        </div>
-        <div>
-          <div className="d-inline-flex flex-fill p-1">
-            <FormGroup check>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" id="petFriendly" name="petFriendly" value="" />{' '}
+                <Input type="checkbox" name="transferring" id="transferring" value="" />{' '}
                 Transferring
               </Label>
             </FormGroup>
-          </div>
-        </div>
-      </div>
-    )
-  }
+          </Col>
+        </Row>
+    </section>
+  </>
+  )
 }

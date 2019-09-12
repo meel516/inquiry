@@ -7,21 +7,15 @@ export default function Prospect(props) {
     <>
       <Row>
         <Col>
-          <Label><h4>Prospect</h4></Label>
+          <Label className="section-header" >Prospect</Label>
         </Col>
       </Row>
-      <Contact contact={props.contact} />
+      <Contact type="prospect" contact={props.contact} onChange={props.onChange} {...props}/>
       <Row>
-        <Col>
+        <Col md="6">
           <FormGroup>
-            <Label for="dob">Date Of Birth</Label>
-            <Input type="text" id="dob" placeholder="Date Of Birth" />
-          </FormGroup>
-        </Col>
-        <Col>
-          <FormGroup>
-            <Label for="age">Age</Label>
-            <Input type="text" id="age" placeholder="Age" />
+            <Label for="age" className="label-format">Age</Label>
+            <Input type="number" id="age" name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
           </FormGroup>
         </Col>
       </Row>

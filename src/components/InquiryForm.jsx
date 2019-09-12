@@ -5,9 +5,9 @@ import queryString from 'query-string';
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
 import ADLNeeds from './ADLNeeds';
-import Advisor from './Advisor';
 import CareLevels from './CareLevels';
 import CommunitySelect from './CommunitySelect';
+import CurrentSituation from './CurrentSituation;'
 import Contact from './Contact';
 import Drivers from './Drivers';
 import Prospect from './Prospect';
@@ -15,14 +15,26 @@ import Note from './Note';
 import TimeFrame from './TimeFrame';
 import FinancialOptions from './FinancialOptions';
 import InquiryType from './InquiryType';
+import ReasonForCall from './ReasonForCall';
 import InquiryLeadSource from './InquiryLeadSource';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 
-import {createEmptyLead, createLeadById, retrieveCallPrompts, submitToService} from "../services/SalesServices";
+import {createEmptyLead, createLeadById, submitToService} from "../services/SalesServices";
 import {createCommunity} from '../services/CommunityServices';
 
 import Select from 'react-select';
+
+const whatPromptedTheirCall = [
+  {value: 1, label: 'Age and Need of Care'},
+  {value: 2, label: 'Death of Spouse'},
+  {value: 3, label: 'Downsizing'},
+  {value: 4, label: 'Memory Concerns'},
+  {value: 5, label: 'No Longer able to Care for Loved One at Home'},
+  {value: 6, label: 'Recent Hospital Visit - Doctor Recommendation'},
+  {value: 7, label: 'Response to Marketing Material'},
+  {value: 8, label: 'Relocation'},
+];
 
 export default class InquiryForm extends Component {
   constructor(props) {
@@ -150,9 +162,9 @@ export default class InquiryForm extends Component {
           <br />
           <Row>
             <Col md="6">
-              <Label for="callPrompt">What prompted their call?</Label>
+              <Label for="callPrompt" className="label-format">What prompted their call?</Label>
               <Select
-                options={retrieveCallPrompts}
+                options={whatPromptedTheirCall}
                 />
             </Col>
           </Row>
@@ -167,6 +179,9 @@ export default class InquiryForm extends Component {
           </Row>
           <br/>
           <AdditionalCareElements />
+          <br/>
+          <br/>
+          <CurrentSituation />
           <br/>
           <Prospect contact={prospect} />
           <br/>
@@ -213,7 +228,7 @@ export default class InquiryForm extends Component {
         <br />
         <Row>
           <Col md="4">
-            <Label for="callingFor">I am calling for*</Label>
+            <Label for="callingFor" className="label-format">I am calling for*</Label>
             <select className="form-control" id="callingFor">
               <option>Select One</option>
               <option>Myself</option>
@@ -226,27 +241,7 @@ export default class InquiryForm extends Component {
         </Row>
         <Row>
   				<Col md="5">
-            <Label for="reasonForCall">Reason for Call</Label>
-  					<select className="form-control" id="reasonForCall">
-  						<option>Select One</option>
-  						<option>Family Relocating</option>
-  						<option>Financial Strain of Home Ownership</option>
-              <option>Health</option>
-              <option>Home Maintenance</option>
-              <option>Hospital Discharge</option>
-              <option>Location</option>
-              <option>Memory Care Needs</option>
-              <option>Nutrition Assistance</option>
-              <option>Prompted by Physician</option>
-              <option>Relocate Near Family</option>
-              <option>Relocate Near Friends</option>
-              <option>Respite</option>
-              <option>Security</option>
-              <option>Services</option>
-              <option>Skilled Nursing Discharge</option>
-              <option>Socialization/Life Enrichment</option>
-              <option>Transportation</option>
-    				</select>
+            <ReasonForCall />
     			</Col>
     		</Row>
         <Row>
@@ -267,14 +262,14 @@ export default class InquiryForm extends Component {
         <Row>
   				<Col md="5">
             <FormGroup>
-    					<Label for="ininid">UMID*</Label>
-              <Input type="text" id="ininid" bsSize="sm"/>
+    					<Label for="ininid" className="label-format">UMID*</Label>
+              <Input type="text" id="ininid" />
             </FormGroup>
 				  </Col>
         </Row>
         { false && <Row>
   				<Col>
-  					<Label for="attemptNumber">Attempt Number*</Label>
+  					<Label for="attemptNumber" className="label-format">Attempt Number*</Label>
   					<select className="form-control" id="attemptNumber">
   						<option>Select One</option>
   						<option>1st</option>
@@ -288,8 +283,8 @@ export default class InquiryForm extends Component {
     		</Row>}
         <br />
         <Row>
-  				<Col md="3">
-  					<Label for="callerType">What is the gender of the caller?*</Label>
+  				<Col md="5">
+  					<Label for="callerType" className="label-format">What is the gender of the caller?*</Label>
   					<select className="form-control" id="callerType">
   						<option>Select One</option>
   						<option>Male</option>

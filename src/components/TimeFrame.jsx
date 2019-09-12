@@ -29,7 +29,7 @@ export default class TimeFrame extends React.Component {
     const {timeframe} = this.state || []
     return (
       <>
-      <Label for="timeframe">Timeframe</Label>
+      <Label for="timeframe" className="label-format">Timeframe</Label>
       <Select
         options={timeframe}
         id="timeframe"

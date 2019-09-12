@@ -13,4 +13,14 @@
 # [START app_yaml]
 env: flex
 runtime: nodejs
+
+skip_files:
+  - .env*
+
+manual_scaling:
+  instances: 1
+
+env_variables:
+  REACT_APP_SALES_SERVICES_URL: https://sales-services.uat.brookdale.com
+
 # [END app_yaml]
