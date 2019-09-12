@@ -1,29 +1,44 @@
 import React from 'react';
-import {checkForDuplicate, createEmptyLead, createProspectRequest} from '../SalesServices';
+import { checkForDuplicate, createEmptyLead, createProspectRequest } from '../SalesServices';
 
-const no_duplicate_found = {
-    "duplicate": false,
-    "duplicates": []
-};
 
-test('fetcing communities via api service', () => {
-  const contact = {
-    firstName: 'Kris',
-    lastName: 'Bryant',
-    email: 'Kris.Bryant@gmail.com'
-  }
-  return checkForDuplicate(contact)
-    .then(res => res.json())
-    .then((data) => {
-      expect(data).toBe(no_duplicate_found)
-    })
-})
-
-test('', () => {
-
-  const lead = createEmptyLead();
-  const community = {}
-
-  expect(createProspectRequest(lead, community))
-
+test('Test creation of empty lead', () => {
+  expect(createEmptyLead()).toEqual({
+    influencer: {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      email: "",
+      phone: {
+        number: "",
+        type: ""
+      },
+      address: {
+        addressLine1: "",
+        addressLine2: "",
+      },
+    },
+    secondPerson: {
+      firstName: "",
+      lastName: "",
+      phone: {
+        number: "",
+        type: ""
+      },
+    },
+    prospect: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: {
+        number: "",
+        type: ""
+      }
+    },
+    leadSource: "",
+    leadSourceDetail: "",
+    notes: {
+    },
+    nextSteps: "",
+  })
 })

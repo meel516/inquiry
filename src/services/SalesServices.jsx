@@ -123,7 +123,6 @@ export function createEmptyLead() {
       leadSource: "",
       leadSourceDetail: "",
       notes: {
-
       },
       nextSteps: "",
     };
@@ -187,6 +186,7 @@ var SalesContact = function() {
 }
 
 var SalesLead = function(salesContact) {
+  this.leadTypeId = 4;
   this.salesContact = salesContact;
 }
 
@@ -199,38 +199,44 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
   salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
   salesContact.emailAddress = prospect.email;
+  salesContact.age = prospect.age;
+  salesContact.birthDate = prospect.birthDate
 
   salesLead.buildingId = community.communityId;
+  salesLead.inquiryLeadSourceId = lead.leadSource;
+  salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail;
+  salesLead.inquiryDate = new Date();
 
+  return salesLead;
 
-  return {
-    salesContact: {
-      phoneNumbers: [
-        {
-          onNationalDoNotCall: false,
-          primary: true,
-          phoneNumber: "4143546213",
-          phoneType: "Home",
-        }
-      ],
-      firstName: ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown'),
-      lastName: ((prospect && prospect.lastName) ? prospect.lastName : lastName),
-      emailAddress: prospect.email,
-      gender: "M",
-      age: 44,
-      maritalStatus: "Single",
-      veteranStatus: 2,
-      currentSituation: 11,
-      birthDate: "1975-03-08T05:00:00.000+0000"
-    },
-    buildingId: community.communityId,
-    inquiryTypeId: 6,
-    inquiryLeadSourceId: 4,
-    inquiryLeadSourceDetailId: 58,
-    leadTypeId: 4,
-    inquirerType: "PROSP",
-    inquiryDate: "2019-07-29T05:00:00.000+0000"
-  }
+  // return {
+  //   salesContact: {
+  //     phoneNumbers: [
+  //       {
+  //         onNationalDoNotCall: false,
+  //         primary: true,
+  //         phoneNumber: "4143546213",
+  //         phoneType: "Home",
+  //       }
+  //     ],
+  //     firstName: ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown'),
+  //     lastName: ((prospect && prospect.lastName) ? prospect.lastName : lastName),
+  //     emailAddress: prospect.email,
+  //     gender: "M",
+  //     age: 44,
+  //     maritalStatus: "Single",
+  //     veteranStatus: 2,
+  //     currentSituation: 11,
+  //     birthDate: "1975-03-08T05:00:00.000+0000"
+  //   },
+  //   buildingId: community.communityId,
+  //   inquiryTypeId: 6,
+  //   inquiryLeadSourceId: 4,
+  //   inquiryLeadSourceDetailId: 58,
+  //   leadTypeId: 4,
+  //   inquirerType: "PROSP",
+  //   inquiryDate: "2019-07-29T05:00:00.000+0000"
+  // }
 }
 
 function createInfluencerRequest(influencer) {
