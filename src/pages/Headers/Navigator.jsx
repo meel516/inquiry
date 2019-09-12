@@ -1,23 +1,7 @@
-import { withAuth } from '@okta/okta-react';
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-import { checkAuthentication } from '../../Helpers';
+import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
 
-export default withAuth(class Navigator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { authenticated: null, userinfo: null };
-    this.checkAuthentication = checkAuthentication.bind(this);
-  }
-
-  async componentDidMount() {
-    this.checkAuthentication();
-  }
-
-  async componentDidUpdate() {
-    this.checkAuthentication();
-  }
-
+export default class Navigator extends Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
@@ -30,18 +14,20 @@ export default withAuth(class Navigator extends Component {
             alt="Brookdale Senior Living"
           />
         </NavbarBrand>
-        <Nav>
+        <Nav md={5}>
           <NavItem>
             <h3>Inquiry Form</h3>
           </NavItem>
-          {
-            this.state.authenticated !== null &&
+        </Nav>
+        <Nav className="ml-auto" style={{paddingRight:"20px"}} navbar>
+        { 
+            this.props.authenticated !== null &&
             <NavItem>
-              <p>Welcome, {this.state.userinfo.given_name}!</p>
+              <p>Welcome, {this.props.userinfo.given_name}!</p>
             </NavItem>
           }
         </Nav>
       </Navbar>
     );
   }
-});
+}

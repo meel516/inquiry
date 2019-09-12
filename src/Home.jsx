@@ -4,29 +4,24 @@ import { checkAuthentication } from './Helpers';
 import { Redirect } from 'react-router-dom';
 
 export default withAuth(class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { authenticated: null, userinfo: null };
-    this.checkAuthentication = checkAuthentication.bind(this);
-    this.login = this.login.bind(this);
+  state = { 
+    authenticated: null, 
+    userinfo: null 
   }
+  checkAuthentication = checkAuthentication.bind(this);
 
-  async componentDidMount() {
+  componentDidMount() {
     this.checkAuthentication();
   }
 
-  async componentDidUpdate() {
-    this.checkAuthentication();
-  }
-
-  async login() {
+  login = () => {
     this.props.auth.login('/');
   }
 
   render() {
-      return (
-        <div>
-          {this.state.authenticated !== null &&
+    return (
+      <div>
+        {this.state.authenticated !== null &&
           <div>
             {this.state.authenticated &&
               <div>
@@ -35,15 +30,12 @@ export default withAuth(class Home extends Component {
             }
             {!this.state.authenticated &&
               <div>
-                <p>
-                  When you click the login button below, you will be redirected to the login page on your Okta org to authenticate.
-                </p>
-                <button id="login-button" primary onClick={this.login}>Login</button>
+                <Redirect to='http://google.com' />
               </div>
             }
           </div>
-          }
-        </div>
-      );
-    }
+        }
+      </div>
+    );
+  }
 });
