@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import ScrollingLayoutManager from './pages/ScrollingLayoutManager';
 import SingePageLayoutManager from './pages/SingePageLayoutManager';
 import {Security, SecureRoute, ImplicitCallback} from '@okta/okta-react';

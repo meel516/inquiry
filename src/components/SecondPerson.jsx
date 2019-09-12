@@ -4,29 +4,22 @@ import Contact from './Contact';
 import Note from './Note';
 
 export default class SecondPerson extends React.Component {
-  constructor(props) {
-    super(props);
+state = {
+  containsSecondPerson: false,
+}    
 
-    this.state = {
-      containsSecondPerson: false,
-    };
-
-    this.handleSecondPerson = this.handleSecondPerson.bind(this);
-  }
-
-  handleSecondPerson(e) {
-    console.log('handling checkbox');
+  handleSecondPerson = (e) => {
     this.setState({
       containsSecondPerson: e.target.checked,
     })
   }
 
-  renderQuestion() {
+  renderQuestion = () => {
     return (
       <Row>
         <Col>
           <FormGroup check>
-            <Label check>
+            <Label check className="label-format">
               <Input type="checkbox" onClick={(e) => this.handleSecondPerson(e)} />
               Is there a 2nd Prospect?
             </Label>
@@ -37,12 +30,19 @@ export default class SecondPerson extends React.Component {
   }
 
   render() {
+    const { handleChange } = this.props;
+    const { handleBlur } = this.props;
     const isSecondPersonShown = this.state.containsSecondPerson;
     if (isSecondPersonShown) {
       return (
         <>
         {this.renderQuestion()}
-        <Contact contact={this.props.contact} />
+        <Contact 
+          type="secondPerson" 
+          onChange={ handleChange }
+          onBlur={ handleBlur }
+          contact={ this.props.contact } 
+          {...this.props} />
         <Note label="2nd Person Situation" id="situation2" name="situation2"/>
         </>
       )

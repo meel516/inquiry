@@ -1,64 +1,34 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
 
 export default class Contact extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      phoneTypes: [],
-      duplicate: null,
-    }
-
-    this.handleRunDupCheck = this.handleRunDupCheck.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.applyChangesToContact = this.applyChangesToContact.bind(this);
+  state = {
+    phoneTypes: [],
   }
 
   componentDidMount() {
-    const {phoneTypes} = this.state;
-
-    if (phoneTypes) {
-      getPhoneTypes()
-        .then((data) => this.setState({ phoneTypes: data }))
-        .catch(error => console.log(error));
-    }
+    getPhoneTypes()
+      .then((data) => this.setState({ phoneTypes: data }))
+      .catch(error => console.log(error));
   }
 
-  handleChange(event) {
-    const value = event.target.value;
-    const name = event.target.name;
-    // this.setState({
-    //   [name]: value
-    // });
-    this.applyChangesToContact(name, value);
-  }
-
-  applyChangesToContact(name, value) {
-    var type = this.props.type;
-    this.props.onChange(type, name, value);
-    this.handleRunDupCheck();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    //console.log('Contact componentDidUpdate()')
-  }
-
-  handleRunDupCheck() {
+  handleDupCheck = event => {
     const {contact} = this.props;
     if (this.canDuplicateCheck(contact)) {
       console.log('run duplicate check!');
       checkForDuplicate()
         .then((data) => this.setState({ duplicate: data }))
         .catch(error => console.log(error));
-    }
-    else {
+    } else {
       console.log('do not run duplicate check!');
     }
   }
 
-  canDuplicateCheck(contact) {
+  canDuplicateCheck = (contact) => {
     if (contact) {
       const {firstName, lastName, email, phoneNumber, phoneType} = contact;
       if (firstName === "" || lastName === "") {
@@ -72,42 +42,53 @@ export default class Contact extends React.Component {
     return false;
   }
 
+
   render() {
-    const {phoneTypes} = this.state;
+    const {phoneTypes} = this.state||[];
+    const {type, contact, errors, touched, onChange} = this.props;
+    const displayablePhoneTypes = (phoneTypes||[]).map(type => {
+      return <option key={type.value} value={type.value}>{type.text}</option>
+    });
 
     return (
       <>
         <Row>
-          <Col><Label for="phone">Name</Label></Col>
-        </Row>
-        <Row>
-          <Col>
-            {false && <input type="text" className="form-control-sm form-control" name="firstName" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First name" />}
-            <Input type="text" name="firstName" bsSize="sm" defaultValue={this.props.contact.firstName} onBlur={this.handleChange} placeholder="First name" />
-          </Col>
-          <Col>
-            <Input type="text" name="lastName" bsSize="sm" defaultValue={this.props.contact.lastName} onBlur={this.handleChange} placeholder="Last name" />
-          </Col>
+          <Col><Label for="name" className="label-format">Name</Label></Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
-              <Label for="phone">Phone</Label>
-              <Input type="text" name="phoneNumber" bsSize="sm" onBlur={this.handleChange} placeholder="Phone" />
+              <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="phoneTypes">Phone Types</Label>
-              <PhoneTypes types={phoneTypes} onChange={this.handleChange}/>
+              <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
-              <Label for="email">Email</Label>
-              <Input type="text" name="email" bsSize="sm" onChange={this.handleChange} placeholder="Email" />
+              <Label for="phone" className="label-format">Phone</Label>
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="phoneTypes" className="label-format">Phone Type</Label>
+              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type||''} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
+                <option value="">Select One</option>
+                {displayablePhoneTypes}
+              </Input>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for="email" className="label-format">Email</Label>
+              <Input type="email" name={`lead.${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
             </FormGroup>
           </Col>
         </Row>
@@ -117,22 +98,6 @@ export default class Contact extends React.Component {
   }
 }
 
-function PhoneTypes(props) {
-  const types = props.types;
-  const phoneTypeItems = types.map((type) =>
-    <PhoneTypeItem key={type.value}
-                   item={type} />
-  );
-  return (
-    <Input type="select" name="phoneType" bsSize="sm" onChange={props.handleChanges}>
-      <option value=""></option>
-      {phoneTypeItems}
-    </Input>
-  )
-}
-
-function PhoneTypeItem(props) {
-  return (
-    <option value={props.item.value}>{props.item.text}</option>
-  );
+Contact.propTypes = {
+  type: PropTypes.string.isRequired,
 }

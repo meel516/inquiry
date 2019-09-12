@@ -1,5 +1,5 @@
 import React from 'react';
-import Address from '../components/Address';
+import Address from '../Address';
 import { create } from 'react-test-renderer'
 
 describe('Address Test',()=> {

@@ -7,7 +7,7 @@ export default function Section(props) {
       <Col>
         <ListGroup className="list-group-flush">
           <ListGroupItem className="list-group-borderless">
-            <Label>Section Links</Label>
+            <Label className="label-format" >Section Links</Label>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
             <a href="#contactinfo">Contact Info</a>
@@ -16,10 +16,13 @@ export default function Section(props) {
             <a href="#situation">Situation</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#budget">Budget Passions & Personality</a>
+            <a href="#passionsPersonality">Passions & Personality</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#nextsteps">Next Steps</a>
+            <a href="#financialSituation">Budget</a>
+          </ListGroupItem>
+          <ListGroupItem className="list-group-borderless">
+            <a href="#nextStepsLabel">Next Steps</a>
           </ListGroupItem>
         </ListGroup>
       </Col>
