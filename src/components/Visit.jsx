@@ -30,7 +30,7 @@ export default class Visit extends React.Component {
           <Col md="4">
             <FollowUp {...this.props} />
           </Col>
-          <Col md={{ size: 4, offset: 2}} style={{ verticalAlign: 'bottom' }}>
+          <Col md="4" style={{ verticalAlign: 'bottom' }}>
             <FormGroup>
               {
                 (community && (community.followUpAction === "20" ||
@@ -52,7 +52,7 @@ export default class Visit extends React.Component {
 function FreeMeal(props) {
   return (
     <React.Fragment>
-      <Label for="freeMeal" className="label-format">This Visit include a Free Meal?</Label>
+      <Label for="freeMeal" className="label-format">Does this Visit include a Free Meal?</Label>
       <Input type="select" id="freeMeal" name="freeMeal" onChange={props.onChange}>
         {freeMealList.map((optn) => {
           return <option key={optn.value} value={optn.value}>{optn.label}</option>
