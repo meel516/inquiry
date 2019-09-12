@@ -92,7 +92,7 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col md="5">
+              <Col md="4">
                 <FormGroup>
                   <Label for="action" className="label-format">Next Steps Action</Label>
                   <Input type="select" id="action" onChange={this.handleFollowupAction}>
