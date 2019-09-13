@@ -16,14 +16,8 @@ export default withAuth(class CommunityLookup extends React.Component {
         this.checkAuthentication(this.loadCommunities);
     }
 
-    hanldeUserNameOnly = (email) => {
-        let index = email.indexOf('@');
-        return email.substring(0, index);
-    }
-
     loadCommunities = (userInfo) => {
-        let username = this.hanldeUserNameOnly(userInfo.email);
-        fetchCommunities(username)
+        fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 //console.log(data);
                 var communities = data.map((com) => {
