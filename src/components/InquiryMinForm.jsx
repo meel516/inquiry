@@ -1,9 +1,8 @@
 import React from 'react';
-import {Button, Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Alert, Button, Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import queryString from 'query-string';
 import {Formik, Form} from 'formik';
 import * as Yup from 'yup';
-import Select from 'react-select';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
@@ -67,6 +66,7 @@ export default class InquiryForm extends React.Component {
   }
 
   handleRemoveCommunity = (index, values) => {
+    debugger
     if (index !== undefined || index !== null) {
       let communities = values.communities;
       communities.splice(index, 1)
@@ -93,6 +93,7 @@ export default class InquiryForm extends React.Component {
         {props => {
           const {
           values,
+          status,
           touched,
           errors,
           dirty,
@@ -106,6 +107,12 @@ export default class InquiryForm extends React.Component {
         } = props;
         return (
           <Form onSubmit={handleSubmit} className="inquiryForm">
+            <section className="errors">
+              <Row>
+                {!!status && 
+                  <Alert color="danger">{status}</Alert>}
+              </Row>
+            </section>
             <section className="influencer-section">
               <Contact key="influencer-contact" type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
                 <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props}/>
@@ -169,7 +176,7 @@ export default class InquiryForm extends React.Component {
               <Col md="5">
                 <FormGroup>
                   <Label for="callingFor" className="label-format">I am calling for</Label>
-                  <select className="form-control" id="callingFor">
+                  <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
                     <option>Select One</option>
                     <option>Myself</option>
                     <option>Parent</option>
@@ -211,10 +218,11 @@ export default class InquiryForm extends React.Component {
             <Row>
       				<Col md="5">
       					<Label for="callerType" className="label-format">What is the gender of the caller?</Label>
-      					<select className="form-control" id="callerType">
+      					<select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
       						<option>Select One</option>
-      						<option>Male</option>
-      						<option>Female</option>
+      						<option value="M">Male</option>
+      						<option value="F">Female</option>
+                  <option value="U">Unknown</option>
         				</select>
         			</Col>
         		</Row>
@@ -267,6 +275,6 @@ const DebugFormState = props =>
   </pre>
 </div>;
 
-// const InquiryFormSchema = Yup.object().shape({
+// const EnhancedInquiryForm = withFormik()
 //
 // });

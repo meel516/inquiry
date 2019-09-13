@@ -72,45 +72,42 @@ function createFetch(url) {
     .then((res) => res.json())
 }
 
+function createEmptyContact() {
+  return {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    phone: {
+      number: "",
+      type: ""
+    }
+  }
+}
+
+function createEmptyAddress() {
+  return {
+    addressLine1: "",
+    addressLine2: "",
+  }
+}
+
+function createEmptyNotes() {
+  return {
+
+  }
+}
+
+function Lead() {}
+
 export function createEmptyLead() {
-  return  {
-      influencer: {
-        firstName: "",
-        lastName: "",
-        gender: "",
-        email: "",
-        phone: {
-          number: "",
-          type: ""
-        },
-        address: {
-          addressLine1: "",
-          addressLine2: "",
-        },
-      },
-      secondPerson: {
-        firstName: "",
-        lastName: "",
-        phone: {
-          number: "",
-          type: ""
-        },
-      },
-      prospect: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: {
-          number: "",
-          type: ""
-        }
-      },
-      leadSource: "",
-      leadSourceDetail: "",
-      notes: {
-      },
-      nextSteps: "",
-    };
+  const lead = new Lead();
+  lead.influencer = createEmptyContact();
+  lead.influencer.address = createEmptyAddress();
+  lead.secondPerson = createEmptyContact();
+  lead.prospect = createEmptyContact();
+  lead.notes = createEmptyNotes();
+  return lead;
 }
 
 export function createLeadById(guid) {
@@ -122,10 +119,9 @@ export function createLeadById(guid) {
 }
 
 export async function submitToService({lead, communities, actions}) {
+  let successful = true;
   console.log('submitting lead form to service');
-
-  console.log(`Communities: ${JSON.stringify(communities)}`);
-  console.log('Lead: ' + JSON.stringify(lead));
+  debugger;
 
   if (lead.leadId) {
     console.log(`LeadId: ${lead.leadId}`);
@@ -134,12 +130,15 @@ export async function submitToService({lead, communities, actions}) {
     var leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
     var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
 
+    // IF no community is selected then assume 64000 community
+
     for (let i = 0; i < communities.length; i++) {
       let community = communities[i];
       let prospect = createProspectRequest(lead, community);
+      console.log(`Submit Request: ${prospect}`);
 
       try {
-        let resp = await fetch(leadUrl, {
+        let response = await fetch(leadUrl, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -147,23 +146,34 @@ export async function submitToService({lead, communities, actions}) {
             },
             body: JSON.stringify(prospect)
         })
-        const salesLead = resp.json();
-        console.log(`SalesLead: ${JSON.stringify(salesLead)}`);
-        const {objectId} = salesLead;
-        console.log(`Sales Lead Id: ${objectId}`);
+        const salesResponse = await response.json();
+        if (response.status === 201) {
+          // was successful
+          console.log('successfully created sales lead')
+          const {objectId} = salesResponse;
+          console.log(`Sales Lead Id: ${objectId}`);
+
+          let influencer = createInfluencerRequest(lead.influencer);
+          if (influencer) {
+    
+          }
+
+        } else {
+          // failed
+          console.log('failed to create sales lead')
+          actions.setStatus(salesResponse.error.substring(0, 200));
+          successful = false;
+        }
   
       } catch(err) {
         console.log(err);
-      }
-
-      let influencer = createInfluencerRequest(lead.influencer);
-      if (influencer) {
-
+        successful = false;
       }
     }
   }
 
   actions.setSubmitting(false);
+  return successful;
 }
 
 var SalesContact = function() {
@@ -173,6 +183,24 @@ var SalesContact = function() {
 var SalesLead = function(salesContact) {
   this.leadTypeId = 4;
   this.salesContact = salesContact;
+}
+
+function mapInquiryTypeValue(callingFor) {
+  if (callingFor && callingFor === 'Myself') {
+    return 'PROSP'
+  }
+  else {
+    return 'INFLU'
+  }
+}
+
+function toSaleDateFormat(d) {
+  if (d instanceof Date) {
+    debugger
+    let str = d.toISOString().replace('T', "'T'");
+    return str
+  }
+  return null;
 }
 
 export function createProspectRequest(lead, community, lastName = 'Unknown') {
@@ -185,43 +213,20 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
   salesContact.emailAddress = prospect.email;
   salesContact.age = prospect.age;
-  salesContact.birthDate = prospect.birthDate
 
+  salesLead.inquiryTypeId = prospect.reasonForCall;
+  let callingFor = mapInquiryTypeValue(lead.callingFor);
+  salesLead.inquirerType = callingFor;
   salesLead.buildingId = community.communityId;
   salesLead.inquiryLeadSourceId = lead.leadSource;
   salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail;
-  salesLead.inquiryDate = new Date();
+  salesLead.inquiryDate = toSaleDateFormat(new Date());
+
+  if (salesLead.inquirerType && salesLead.inquirerType === 'PROSP') {
+    salesContact.gender = lead.callerType
+  }
 
   return salesLead;
-
-  // return {
-  //   salesContact: {
-  //     phoneNumbers: [
-  //       {
-  //         onNationalDoNotCall: false,
-  //         primary: true,
-  //         phoneNumber: "4143546213",
-  //         phoneType: "Home",
-  //       }
-  //     ],
-  //     firstName: ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown'),
-  //     lastName: ((prospect && prospect.lastName) ? prospect.lastName : lastName),
-  //     emailAddress: prospect.email,
-  //     gender: "M",
-  //     age: 44,
-  //     maritalStatus: "Single",
-  //     veteranStatus: 2,
-  //     currentSituation: 11,
-  //     birthDate: "1975-03-08T05:00:00.000+0000"
-  //   },
-  //   buildingId: community.communityId,
-  //   inquiryTypeId: 6,
-  //   inquiryLeadSourceId: 4,
-  //   inquiryLeadSourceDetailId: 58,
-  //   leadTypeId: 4,
-  //   inquirerType: "PROSP",
-  //   inquiryDate: "2019-07-29T05:00:00.000+0000"
-  // }
 }
 
 function createInfluencerRequest(influencer) {
