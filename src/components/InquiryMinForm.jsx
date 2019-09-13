@@ -57,14 +57,14 @@ export default class InquiryForm extends React.Component {
   }
 
   handleAddCommunity = (values) => {
-    // this.setState((state) => {
-    //   console.log(state);
-      // let communities = state.communities;
+    this.setState((state) => {
+      console.log(state);
+      let communities = state.communities;
       values.communities.push(createCommunity())
-    //   return {
-    //     communities: communities
-    //   }
-    // })
+      return {
+        communities: communities
+      }
+    })
   }
 
   handleRemoveCommunity = (index, values) => {
@@ -140,7 +140,7 @@ export default class InquiryForm extends React.Component {
             <br/>
             <Row>
               <Col>
-                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)} >Add Community</Button>
+                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)} {...props} >Add Community</Button>
                 {props.values.communities.map((community, index) => (
                   <CommunitySelect key={index} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(index, values)} {...props}/>
                 ))}
