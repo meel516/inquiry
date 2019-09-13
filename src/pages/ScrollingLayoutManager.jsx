@@ -1,14 +1,14 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
 
-import { checkAuthentication } from '../Helpers';
+import { checkAuthentication } from '../auth/checkAuth';
 import InquiryForm from '../components/InquiryMinForm';
 import LinksManager from '../components/LinksManager';
 import Navigator from './Headers/Navigator';
 import Footer from './Footers/Footer';
 import Section from '../components/Section';
 
-export default withAuth(class LayoutManager extends React.Component {
+export default withAuth(class LayoutManager extends React.Component { 
   state = {
     authenticated: null, 
     userinfo: null,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
 
-export default class Navigator extends Component {
+export default class Navigator extends Component { 
   render() {
     return (
       <Navbar color="light" light expand="md">

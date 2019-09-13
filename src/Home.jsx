@@ -1,6 +1,6 @@
 import { withAuth } from '@okta/okta-react';
 import React, { Component } from 'react';
-import { checkAuthentication } from './Helpers';
+import { checkAuthentication } from './auth/checkAuth';
 import { Redirect } from 'react-router-dom';
 
 export default withAuth(class Home extends Component {
