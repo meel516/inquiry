@@ -30,7 +30,7 @@ export default withAuth(class Home extends Component {
             }
             {!this.state.authenticated &&
               <div>
-                <Redirect to='http://google.com' />
+                <Redirect to='/redirect' />
               </div>
             }
           </div>
