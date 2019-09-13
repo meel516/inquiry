@@ -8,13 +8,11 @@ export default class CareType extends React.Component {
     careTypes: [],
   }
   
-
   componentDidMount() {
     getCareTypes()
       .then((data) => this.setState({ careTypes: data }))
       .catch(error => console.log(error));
   }
-
 
   render() {
     const {careTypes} = this.state||[];

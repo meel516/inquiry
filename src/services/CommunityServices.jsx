@@ -1,5 +1,4 @@
 import uuid from "uuid";
-import { thisExpression } from "@babel/types";
 
 const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 

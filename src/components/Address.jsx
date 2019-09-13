@@ -37,7 +37,7 @@ export default class Address extends React.Component {
     const options = (states || []).map((state) => {
        return <option key={state.value} value={state.value}>{state.text}</option>
      });
-    const {address, type} = this.props||{};
+    const {address} = this.props||{};
 
     return (
       <section className="Address">
@@ -67,7 +67,6 @@ export default class Address extends React.Component {
     					<Label for="state" className="label-format">State</Label>
               <Input type="select" name="state" onChange={this.handleFieldChange}>
                 <option value="">Select One</option>
-                <option value=""></option>
                 {options}
   					</Input>
             </FormGroup>

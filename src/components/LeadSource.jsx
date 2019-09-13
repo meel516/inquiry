@@ -35,9 +35,6 @@ export default class LeadSource extends React.Component {
     console.log(leadSourceId);
     getLeadSourceDetails(leadSourceId)
       .then((data) => {
-        var leadSourceDetail = data.map(function(lsd) {
-          lsd.label = lsd.text
-        });
         this.setState({leadSourceDetail: data})
       })
       .catch(error => console.log(error));

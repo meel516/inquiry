@@ -31,23 +31,17 @@ export default class CommunitySelect extends React.Component {
       .catch((err) => console.error("Error", err));
   }
 
-  componentWillUnmount() {
-    console.log('called componentWillUnmount on community form');
-  }
-
   handleRemoveCommunity = () => {
     this.props.onRemove();
   }
 
-  handleNextSteps = (optn) => {
-    console.log(`Option selected: ${JSON.stringify(optn.target.value)}`);
+  handleFollowupAction = (optn) => {
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
     this.setState({selectedAction: optn.target.value})
   }
 
   handleCommunityChange = (optn) => {
-    console.log(`Community Selected: ${optn}`);
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].communityId`, optn.value);
   }
@@ -114,18 +108,18 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col md="5">
+              <Col md="4">
                 <FormGroup>
-                  <Label for="action" className="label-format">Action</Label>
-                  <Input type="select" id="action" onChange={this.handleNextSteps}>
-                    <option value=""></option>
+                  <Label for="action" className="label-format">Next Steps Action</Label>
+                  <Input type="select" id="action" onChange={this.handleFollowupAction}>
+                    <option value="">Select One</option>
                     {followupOptns}
                   </Input>
                 </FormGroup>
               </Col>
             </Row>
             {
-              ( selectedAction ) ? <Visit onChange={this.props.handleChange} {...this.props}/> : null
+              ( selectedAction ) ? <Visit  onChange={this.props.handleChange} {...this.props}/> : null
             }
         </CardBody>
         <CardFooter className="text-right">
