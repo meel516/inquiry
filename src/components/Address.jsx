@@ -67,7 +67,6 @@ export default class Address extends React.Component {
     					<Label for="state" className="label-format">State</Label>
               <Input type="select" name="state" onChange={this.handleFieldChange}>
                 <option value="">Select One</option>
-                <option value=""></option>
                 {options}
   					</Input>
             </FormGroup>

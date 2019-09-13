@@ -12,13 +12,7 @@ export default function Prospect(props) {
       </Row>
       <Contact type="prospect" contact={props.contact} onChange={props.onChange} {...props}/>
       <Row>
-        <Col>
-          <FormGroup>
-            <Label for="dob" className="label-format">Birthdate</Label>
-            <Input type="date" id="dob" name="lead.prospect.dob" value={props.contact.dob} onChange={props.onChange} />
-          </FormGroup>
-        </Col>
-        <Col>
+        <Col md="6">
           <FormGroup>
             <Label for="age" className="label-format">Age</Label>
             <Input type="number" id="age" name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
