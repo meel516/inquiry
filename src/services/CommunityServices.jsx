@@ -9,14 +9,14 @@ var Community = function(index) {
   this.followupDate = new Date();
 };
 
-export function fetchCommunities() {
+export async function fetchCommunities(username) { 
     const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
-    console.log('endpoint is: ' + endpoint);
+    console.log(`fetchCommunities username: ${username}`)
 
     const commRequest = {
         "communitySearchText": "",
         "appShortName": "SIMS",
-        "userName": "mmatthiessen"
+        "userName": username
     }
 
     return fetch(endpoint, {

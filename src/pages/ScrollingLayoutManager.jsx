@@ -1,27 +1,33 @@
 import React from 'react';
+import { withAuth } from '@okta/okta-react';
 
+import { checkAuthentication } from '../auth/checkAuth';
 import InquiryForm from '../components/InquiryMinForm';
 import LinksManager from '../components/LinksManager';
 import Navigator from './Headers/Navigator';
 import Footer from './Footers/Footer';
 import Section from '../components/Section';
 
-export default class LayoutManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+export default withAuth(class LayoutManager extends React.Component { 
+  state = {
+    authenticated: null, 
+    userinfo: null,
+  }
+  checkAuthentication = checkAuthentication.bind(this)
+
+  componentDidMount() {
+    this.checkAuthentication();
   }
 
-  handleSubmit(event) {
-    console.log('handling form submit')
-    event.preventDefault();
+  componentDidUpdate() {
+     this.checkAuthentication();
   }
 
   render () {
-    const props = this.props;
+   const props = {...this.props, ...this.state};
    return (
      <div>
-       <Navigator/>
+       <Navigator {...props}/>
        <div className="container-fluid">
         <div className="row">
           <div className="col-2">
@@ -39,4 +45,4 @@ export default class LayoutManager extends React.Component {
      </div>
    )
  }
-}
+})
