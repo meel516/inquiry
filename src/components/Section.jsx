@@ -10,16 +10,16 @@ export default function Section(props) {
             <Label className="label-format" >Section Links</Label>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#contactinfo">Contact Info</a>
+            <a href="#nameLabel">Contact Info</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#situation">Situation</a>
+            <a href="#situationLabel">Situation</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#passionsPersonality">Passions & Personality</a>
+            <a href="#passionPersonalityLabel">Passions & Personality</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
-            <a href="#financialSituation">Budget</a>
+            <a href="#financialSituationLabel">Budget</a>
           </ListGroupItem>
           <ListGroupItem className="list-group-borderless">
             <a href="#nextStepsLabel">Result of Call</a>
