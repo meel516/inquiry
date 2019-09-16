@@ -56,20 +56,20 @@ export default class InquiryForm extends React.Component {
     }
   }
 
-  handleAddCommunity = () => {
+  handleAddCommunity = (values) => {
     this.setState((state) => {
+      console.log(state);
       let communities = state.communities;
-      communities.push(createCommunity())
+      values.communities.push(createCommunity())
       return {
         communities: communities
       }
     })
   }
 
-  handleRemoveCommunity = (index, values) => {
-    if (index !== undefined || index !== null) {
-      let communities = values.communities;
-      communities.splice(index, 1)
+  handleRemoveCommunity = (uuid, values) => {
+    if (uuid !== undefined || uuid !== null) {
+      let communities = (values.communities||[]).filter((community) => (community.uuid !== uuid));
       this.setState({
         communities: communities
       })
@@ -101,6 +101,7 @@ export default class InquiryForm extends React.Component {
           handleBlur,
           handleSubmit,
           handleReset,
+          mapPropsToValues,
         } = props;
         return (
           <Form onSubmit={handleSubmit} className="inquiryForm">
@@ -138,9 +139,9 @@ export default class InquiryForm extends React.Component {
             <br/>
             <Row>
               <Col>
-                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity()} >Add Community</Button>
+                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)} {...props} >Add Community</Button>
                 {props.values.communities.map((community, index) => (
-                  <CommunitySelect key={index} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(index, values)} {...props}/>
+                  <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(community.uuid, values)} {...props}/>
                 ))}
               </Col>
             </Row>
@@ -225,7 +226,7 @@ export default class InquiryForm extends React.Component {
             {this.state.debug &&
               <DebugFormikState {...props} />}
 
-            {false && this.state.debug &&
+            {this.state.debug &&
               <DebugFormState {...this.state} />}
 
           </Form>

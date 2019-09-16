@@ -3,7 +3,7 @@ import uuid from "uuid";
 const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 
 var Community = function(index) {
-  this.index = index;
+  this.uuid = index;
   this.communityId = 0;
   this.freeMeal = 1;  // No
   this.followupDate = new Date();
