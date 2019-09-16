@@ -18,6 +18,7 @@ export default class CommunitySelect extends React.Component {
   }
 
   handleRemoveCommunity = () => {
+    
     this.props.onRemove();
   }
 

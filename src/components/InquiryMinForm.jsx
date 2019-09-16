@@ -67,10 +67,9 @@ export default class InquiryForm extends React.Component {
     })
   }
 
-  handleRemoveCommunity = (index, values) => {
-    if (index !== undefined || index !== null) {
-      let communities = values.communities;
-      communities.splice(index, 1)
+  handleRemoveCommunity = (uuid, values) => {
+    if (uuid !== undefined || uuid !== null) {
+      let communities = (values.communities||[]).filter((community) => (community.uuid !== uuid));
       this.setState({
         communities: communities
       })
@@ -142,7 +141,7 @@ export default class InquiryForm extends React.Component {
               <Col>
                 <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)} {...props} >Add Community</Button>
                 {props.values.communities.map((community, index) => (
-                  <CommunitySelect key={index} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(index, values)} {...props}/>
+                  <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(community.uuid, values)} {...props}/>
                 ))}
               </Col>
             </Row>
