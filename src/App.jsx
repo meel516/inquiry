@@ -1,18 +1,37 @@
 import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import ScrollingLayoutManager from './pages/ScrollingLayoutManager';
-import SingePageLayoutManager from './pages/SingePageLayoutManager';
+import {Security, SecureRoute, ImplicitCallback} from '@okta/okta-react';
+import Home from './Home';
+import Redirect from './Redirect';
 
-//location for Okta routing: https://developer.okta.com/code/react/okta_react/
+const config = {
+  issuer: `${process.env.REACT_APP_OKTA_URL}/oauth2/default`,
+  client_id: `${process.env.REACT_APP_OKTA_CLIENTID}`,
+  redirect_uri: `${window.location.origin}/implicit/callback`,
+  //onAuthRequired: {onAuthRequired},
+  //scopes: ['openid', 'email', 'profile'],
+}
+
+/*
+function onAuthRequired({history}) {
+  console.log("Got here");
+  history.push('/Redirect');
+}
+*/
+
 function App() {
   return (
-    <Router>
-      <Route exact path="/" component={ScrollingLayoutManager} />
-      <Route exact path="/inquiryForm" component={ScrollingLayoutManager} />
-      <Route exact path="/inquiryFormSingle" component={SingePageLayoutManager} />
-    </Router>
+    <BrowserRouter>
+        <Security {...config} >
+          <SecureRoute path='/' exact component={Home} />
+          <Route path='/implicit/callback' component={ImplicitCallback} />
+          <SecureRoute exact path="/inquiryForm" component={ScrollingLayoutManager} />
+          <Route path='/redirect' component={Redirect} />
+        </Security>
+    </BrowserRouter>
   );
 }
 

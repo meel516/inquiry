@@ -21,6 +21,8 @@ manual_scaling:
   instances: 1
 
 env_variables:
-  REACT_APP_SALES_SERVICES_URL: https://sales-services.uat.brookdale.com
+  REACT_APP_SALES_SERVICES_URL: "https://sales-services.uat.brookdale.com"
+  REACT_APP_OKTA_URL: "https://brookdaledev.oktapreview.com"
+  REACT_APP_OKTA_CLIENTID: 
 
 # [END app_yaml]
