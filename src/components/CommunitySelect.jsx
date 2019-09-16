@@ -1,37 +1,24 @@
 import React from 'react';
 import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, Label, Row} from 'reactstrap';
-import PropTypes from 'prop-types';
 
+import CommunityLookup from './CommunityLookup'
 import Visit from './Visit';
-import {fetchCommunities} from '../services/CommunityServices'
 import {getFollowupActions} from '../services/SalesServices'
-
-import Select from 'react-select';
 
 export default class CommunitySelect extends React.Component {
   state = {
-    communityList: [],
     selectedAction: null,
     followupActions: [],
   }
 
   componentDidMount() {
-    console.log('called componentDidMount on community form');
-    fetchCommunities()
-    .then((data) => {
-      var communities = data.map((com) => {
-        return { value: com.id, label: com.buildingName }
-      });
-      this.setState({communityList: communities});
-    })
-    .catch((err) => console.error("Error", err));
-
     getFollowupActions()
       .then((data) => this.setState({followupActions: data}))
       .catch((err) => console.error("Error", err));
   }
 
   handleRemoveCommunity = () => {
+    
     this.props.onRemove();
   }
 
@@ -39,11 +26,6 @@ export default class CommunitySelect extends React.Component {
     const {index, setFieldValue} = this.props;
     setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
     this.setState({selectedAction: optn.target.value})
-  }
-
-  handleCommunityChange = (optn) => {
-    const {index, setFieldValue} = this.props;
-    setFieldValue(`communities[${index}].communityId`, optn.value);
   }
 
   render () {
@@ -59,14 +41,7 @@ export default class CommunitySelect extends React.Component {
          <CardBody>
            <Row>
              <Col>
-                <FormGroup>
-                  <Label for="communityList" className="label-format">Community</Label>
-                  <Select
-                    name="communityId"
-                    onChange={this.handleCommunityChange}
-                    options={this.state.communityList}
-                  />
-                </FormGroup>
+               <CommunityLookup {...this.props}/>
              </Col>
            </Row>
            <Row>
@@ -131,7 +106,7 @@ export default class CommunitySelect extends React.Component {
  }
 }
 
-CommunitySelect.propTypes = {
-  onRemove: PropTypes.func,
-  onChange: PropTypes.func,
-}
+// CommunitySelect.propTypes = {
+//   onRemove: PropTypes.func,
+//   onChange: PropTypes.func,
+// }

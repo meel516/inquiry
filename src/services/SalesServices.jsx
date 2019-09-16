@@ -1,6 +1,6 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
-import {createCommunity} from './CommunityServices'
+import {createCommunity, freeMealListing} from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
@@ -173,6 +173,10 @@ export async function submitToService({ lead, communities, actions }) {
                 },
                 body: JSON.stringify(influencer),
               })
+              const inf = await response.json();
+              if (response.status !== 201) {
+                console.log(`Error: ${response.status} ${inf.message}`);
+              }
             }
             catch (err) {
               console.log(err);
@@ -182,9 +186,26 @@ export async function submitToService({ lead, communities, actions }) {
 
           let followup = createFollowupRequest(objectId, community)
           if (followup) {
-
+            try {
+              response = await fetch(fuaUrl, {
+                method: 'POST', mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(followup),
+              })
+              const fua = await response.json();
+              if (response.status !== 201) {
+                console.log(`Error: ${response.status} ${fua.message}`);
+              }
+            }
+            catch(err) {
+              console.log(err);
+              successful = false;
+            }
           }
 
+          // TODO: are notes only added on the contact center COI?
           let notes = lead.notes
           if (notes) {
             for (let [key, value] of Object.entries(notes)) {
@@ -316,8 +337,15 @@ function createFollowupRequest(coid, community) {
   if (coid && community && community.followUpAction) {
     const salesFollowup = new SalesFollowup(coid);
     salesFollowup.followUpActionId = community.followUpAction
-    salesFollowup.followUpDescText = community.followUpDescText;
     salesFollowup.followUpDate = community.followupDate
+    salesFollowup.followUpDescText = community.followUpDescText;
+
+    if (community.freeMeal && community.freeMeal > 0) {
+      let index = community.freeMeal;
+      const freeMealItems = freeMealListing();
+      salesFollowup.followUpDescText = `${salesFollowup.followUpDescText} \n\n Does this visit include a free meal? ${freeMealItems[index]}`
+    }
+
     return salesFollowup;
   }
   return null;
