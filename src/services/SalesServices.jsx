@@ -139,7 +139,7 @@ export async function submitToService({ lead, communities, actions }) {
     // IF zero/many community is selected always assume 64000 community
     if (!doesCommunityListContainContactCenter(communities)) {
       let community = createCommunity();
-      community.buildingId = 225707
+      community.communityId = 225707
       communities.push(community);
     }
 
