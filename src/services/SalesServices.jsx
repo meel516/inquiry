@@ -136,15 +136,17 @@ export async function submitToService({ lead, communities, actions }) {
     const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
     const fuaUrl  = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
 
+    const communityList = [...communities];
+
     // IF zero/many community is selected always assume 64000 community
     if (!doesCommunityListContainContactCenter(communities)) {
       let community = createCommunity();
       community.communityId = 225707
-      communities.push(community);
+      communityList.push(community);
     }
 
-    for (let i = 0; i < communities.length; i++) {
-      let community = communities[i];
+    for (let i = 0; i < communityList.length; i++) {
+      let community = communityList[i];
       let prospect = createProspectRequest(lead, community);
       console.log(`Submit Request: ${prospect}`);
 
@@ -163,24 +165,26 @@ export async function submitToService({ lead, communities, actions }) {
           const { objectId } = salesResponse;
           console.log(`Sales Lead Id: ${objectId}`);
 
-          let influencer = createInfluencerRequest(objectId, lead.influencer);
-          if (influencer) {
-            try {
-              response = await fetch(inflUrl, {
-                method: 'POST', mode: 'cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(influencer),
-              })
-              const inf = await response.json();
-              if (response.status !== 201) {
-                console.log(`Error: ${response.status} ${inf.message}`);
+          if (prospect.inquirerType !== 'PROSP') {
+            let influencer = createInfluencerRequest(objectId, lead.influencer);
+            if (influencer) {
+              try {
+                response = await fetch(inflUrl, {
+                  method: 'POST', mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(influencer),
+                })
+                const inf = await response.json();
+                if (response.status !== 201) {
+                  console.log(`Error: ${response.status} ${inf.message}`);
+                }
               }
-            }
-            catch (err) {
-              console.log(err);
-              successful = false;
+              catch (err) {
+                console.log(err);
+                successful = false;
+              }
             }
           }
 
@@ -267,10 +271,22 @@ function SalesInfluencer(leadId, salesContact) {
   this.salesContact = salesContact
 }
 
+function SalesPhone(number, type) {
+  return {
+    primary: true,
+    phoneNumber: number,
+    phoneType: "Home",
+  }
+}
 
 function SalesLead(salesContact) {
   this.leadTypeId = 4;
   this.salesContact = salesContact;
+}
+
+function createPhone(phone) {
+  let {number, type} = phone;
+  return new SalesPhone(number, type);
 }
 
 function mapInquiryTypeValue(callingFor) {
@@ -280,6 +296,19 @@ function mapInquiryTypeValue(callingFor) {
   else {
     return 'INFLU'
   }
+}
+
+function addPhoneToContact(contact) {
+  if (hasPhoneContacts(contact)) {
+    const phone = createPhone(contact.phone);
+    contact.phoneNumbers = [];
+    contact.phoneNumbers.push(phone);
+  }
+}
+
+function hasPhoneContacts(contact) {
+  if (!contact) return false;
+  if (contact && contact.phone && contact.phone.number.length > 0) return true;
 }
 
 export function createProspectRequest(lead, community, lastName = 'Unknown') {
@@ -292,6 +321,7 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
   salesContact.emailAddress = prospect.email;
   salesContact.age = prospect.age;
+  addPhoneToContact(prospect);
 
   salesLead.inquiryTypeId = prospect.reasonForCall;
   let callingFor = mapInquiryTypeValue(lead.callingFor);
@@ -317,18 +347,9 @@ function createInfluencerRequest(coid, influencer) {
 
   salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
   salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
-  salesContact.address = influencer.address
   salesContact.emailAddress = influencer.email
-
-  if ( influencer.phone ) {
-    const {number, type} = influencer.phone
-    salesContact.phoneNumbers = [];
-    salesContact.phoneNumber.push({
-      phoneType: type,
-      primary: true,
-      phoneNumber: number
-    })
-  }
+  salesContact.address = influencer.address
+  addPhoneToContact(influencer)
 
   return salesInfluencer;
 }
