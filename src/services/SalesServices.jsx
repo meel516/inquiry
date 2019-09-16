@@ -1,22 +1,24 @@
 //import React from 'react'
-//import axios from 'axios'
 import DedupRequest from './DedupRequest'
+import {createCommunity} from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
 just a normal export
 */
 export function checkForDuplicate(contact, address) {
-    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
+  const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
 
-    const dupRequest = new DedupRequest(contact, address);
+  const dupRequest = new DedupRequest(contact, address);
 
-    return fetch(endpoint, { method:'POST',
-        headers: { 'Content-Type': 'application/json' },
-        mode: 'cors',
-        cache: 'no-cache',
-        body: JSON.stringify(dupRequest.payload)})
-      .then((resp) => resp.json())
+  return fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    mode: 'cors',
+    cache: 'no-cache',
+    body: JSON.stringify(dupRequest.payload)
+  })
+    .then((resp) => resp.json())
 }
 
 export function getAddressStates() {
@@ -68,9 +70,11 @@ function createDropDownUrl(action) {
 }
 
 function createFetch(url) {
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+  return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json())
 }
+
+// business logic ------
 
 function createEmptyContact() {
   return {
@@ -98,7 +102,7 @@ function createEmptyNotes() {
   }
 }
 
-function Lead() {}
+function Lead() { }
 
 export function createEmptyLead() {
   const lead = new Lead();
@@ -114,11 +118,11 @@ export function createLeadById(guid) {
   var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
   //const lead = createEmptyLead();
 
-  return fetch(url, {mode: 'cors', cache: 'no-cache'})
+  return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
 }
 
-export async function submitToService({lead, communities, actions}) {
+export async function submitToService({ lead, communities, actions }) {
   let successful = true;
   console.log('submitting lead form to service');
   debugger;
@@ -127,10 +131,17 @@ export async function submitToService({lead, communities, actions}) {
     console.log(`LeadId: ${lead.leadId}`);
   }
   else {
-    var leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
-    var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
+    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+    const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
+    const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
+    const fuaUrl  = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
 
-    // IF no community is selected then assume 64000 community
+    // IF zero/many community is selected always assume 64000 community
+    if (!doesCommunityListContainContactCenter(communities)) {
+      let community = createCommunity();
+      community.buildingId = 225707
+      communities.push(community);
+    }
 
     for (let i = 0; i < communities.length; i++) {
       let community = communities[i];
@@ -139,23 +150,58 @@ export async function submitToService({lead, communities, actions}) {
 
       try {
         let response = await fetch(leadUrl, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(prospect)
+          method: 'POST', mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(prospect)
         })
         const salesResponse = await response.json();
         if (response.status === 201) {
           // was successful
           console.log('successfully created sales lead')
-          const {objectId} = salesResponse;
+          const { objectId } = salesResponse;
           console.log(`Sales Lead Id: ${objectId}`);
 
-          let influencer = createInfluencerRequest(lead.influencer);
+          let influencer = createInfluencerRequest(objectId, lead.influencer);
           if (influencer) {
-    
+            try {
+              response = await fetch(inflUrl, {
+                method: 'POST', mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(influencer),
+              })
+            }
+            catch (err) {
+              console.log(err);
+              successful = false;
+            }
+          }
+
+          let followup = createFollowupRequest(objectId, community)
+          if (followup) {
+
+          }
+
+          let notes = lead.notes
+          if (notes) {
+            for (let [key, value] of Object.entries(notes)) {
+              let noteRequest = createNoteRequest(objectId, value);
+              try {
+                response = await fetch(noteUrl, {
+                  method: 'POST', mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(noteRequest),
+                })
+              }
+              catch(err) {
+
+              }
+            }
           }
 
         } else {
@@ -164,8 +210,8 @@ export async function submitToService({lead, communities, actions}) {
           actions.setStatus(salesResponse.error.substring(0, 200));
           successful = false;
         }
-  
-      } catch(err) {
+
+      } catch (err) {
         console.log(err);
         successful = false;
       }
@@ -176,11 +222,32 @@ export async function submitToService({lead, communities, actions}) {
   return successful;
 }
 
-var SalesContact = function() {
+function doesCommunityListContainContactCenter(communities) {
+  if (communities == null || communities.length === 0) {
+    return false
+  }
+  return communities.includes((community) => {
+    return community.buildingId = 225707
+  });
+}
+
+function SalesContact() {
 
 }
 
-var SalesLead = function(salesContact) {
+function SalesFollowup(leadId) {
+  this.leadId = leadId
+}
+
+function SalesInfluencer(leadId, salesContact) {
+  this.leadId = leadId
+  this.primary = true
+  this.active = true
+  this.salesContact = salesContact
+}
+
+
+function SalesLead(salesContact) {
   this.leadTypeId = 4;
   this.salesContact = salesContact;
 }
@@ -194,17 +261,8 @@ function mapInquiryTypeValue(callingFor) {
   }
 }
 
-function toSaleDateFormat(d) {
-  if (d instanceof Date) {
-    debugger
-    let str = d.toISOString().replace('T', "'T'");
-    return str
-  }
-  return null;
-}
-
 export function createProspectRequest(lead, community, lastName = 'Unknown') {
-  const {prospect} = lead;
+  const { prospect } = lead;
 
   const salesContact = new SalesContact();
   const salesLead = new SalesLead(salesContact);
@@ -220,7 +278,6 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   salesLead.buildingId = community.communityId;
   salesLead.inquiryLeadSourceId = lead.leadSource;
   salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail;
-  salesLead.inquiryDate = toSaleDateFormat(new Date());
 
   if (salesLead.inquirerType && salesLead.inquirerType === 'PROSP') {
     salesContact.gender = lead.callerType
@@ -229,22 +286,39 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   return salesLead;
 }
 
-function createInfluencerRequest(influencer) {
-  return {
-    "salesContact": {
-      "address": influencer.address,
-      "phoneNumbers": [
-        {
-          "primary": true,
-          "phoneType": "Home",
-          "phoneNumber": influencer.number,
-          "onNationalDoNotCall": false
-        }
-      ],
-      "emailAddress": influencer.email,
-      "firstName": influencer.firstName,
-      "lastName": influencer.lastName,
-    },
-    "primary": false,
-  };
+function createNoteRequest(coid, note) {
+
+}
+
+function createInfluencerRequest(coid, influencer) {
+  const salesContact = new SalesContact();
+  const salesInfluencer = new SalesInfluencer(coid, salesContact);
+
+  salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
+  salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
+  salesContact.address = influencer.address
+  salesContact.emailAddress = influencer.email
+
+  if ( influencer.phone ) {
+    const {number, type} = influencer.phone
+    salesContact.phoneNumbers = [];
+    salesContact.phoneNumber.push({
+      phoneType: type,
+      primary: true,
+      phoneNumber: number
+    })
+  }
+
+  return salesInfluencer;
+}
+
+function createFollowupRequest(coid, community) {
+  if (coid && community && community.followUpAction) {
+    const salesFollowup = new SalesFollowup(coid);
+    salesFollowup.followUpActionId = community.followUpAction
+    salesFollowup.followUpDescText = community.followUpDescText;
+    salesFollowup.followUpDate = community.followupDate
+    return salesFollowup;
+  }
+  return null;
 }
