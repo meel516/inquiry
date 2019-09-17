@@ -17,9 +17,8 @@ class App extends Component {
       <BrowserRouter>
           <Security issuer={process.env.REACT_APP_OKTA_URL + '/oauth2/default'}
                     clientId={process.env.REACT_APP_OKTA_CLIENTID}
-                    redirectUri={window.location.origin + '/implicit/callback'}
-                    onAuthRequired={onAuthRequired} >
-            <Route path='/' exact={true} component={Home} />
+                    redirectUri={window.location.origin + '/implicit/callback'}>
+            <SecureRoute path='/' exact={true} component={Home} />
             <SecureRoute path='/inquiryForm' exact={true} component={ScrollingLayoutManager} />
             <Route path='/redirect' component={Redirect} />
             <Route path='/implicit/callback' component={ImplicitCallback} />
