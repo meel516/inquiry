@@ -3,11 +3,7 @@ import { Col, Input, FormGroup, Label, Row } from 'reactstrap';
 import DateTimePicker from 'react-datetime-picker';
 import Note from './Note'
 
-const freeMealList = [
-  { value: 1, label: "No" },
-  { value: 2, label: "Lunch" },
-  { value: 3, label: "Dinner" },
-];
+import {freeMealListing} from '../services/CommunityServices'
 
 export default class Visit extends React.Component {
   state = {
@@ -50,11 +46,12 @@ export default class Visit extends React.Component {
 }
 
 function FreeMeal(props) {
+  const freeMealItems = freeMealListing()
   return (
     <React.Fragment>
       <Label for="freeMeal" className="label-format">Does this Visit include a Free Meal?</Label>
       <Input type="select" id="freeMeal" name="freeMeal" onChange={props.onChange}>
-        {freeMealList.map((optn) => {
+        {freeMealItems.map((optn) => {
           return <option key={optn.value} value={optn.value}>{optn.label}</option>
         })}
       </Input>

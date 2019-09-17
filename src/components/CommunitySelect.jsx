@@ -30,7 +30,7 @@ export default class CommunitySelect extends React.Component {
 
   render () {
     const {selectedAction, followupActions} = this.state;
-    const {handleChange, handleBlur} = this.props;
+    const {community, index, handleChange, handleBlur} = this.props;
     const followupOptns = (followupActions||[]).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
@@ -48,19 +48,37 @@ export default class CommunitySelect extends React.Component {
              <Col>
                 <FormGroup>
                   <Label for="startingPrice" className="label-format">Starting at Price</Label>
-                  <Input type="number" id="startingPrice" placeholder="Starting at Price" value={this.props.community.startingPrice} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="startingPrice" 
+                    name={`communities[${index}].startingPrice`} 
+                    value={community.startingPrice||0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="Starting at Price"/>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
-                  <Input type="number" id="secondPersonFee" placeholder="2nd Person Fee" value={this.props.community.secondPersonFee} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="secondPersonFee" 
+                    name={`communities[${index}].secondPersonFee`}
+                    value={community.secondPersonFee||0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="2nd Person Fee" />
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="communityFee" className="label-format">Community Fee</Label>
-                  <Input type="number" id="communityFee" placeholder="Community Fee" value={this.props.community.communityFee} onChange={handleChange} onBlur={handleBlur}/>
+                  <Input type="number" 
+                    id="communityFee" 
+                    name={`communities[${index}].communityFee`}
+                    value={community.communityFee|0} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    placeholder="Community Fee" />
                 </FormGroup>
               </Col>
             </Row>

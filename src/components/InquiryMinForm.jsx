@@ -1,9 +1,8 @@
 import React from 'react';
-import {Button, Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Alert, Button, Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import queryString from 'query-string';
 import {Formik, Form} from 'formik';
 import * as Yup from 'yup';
-import Select from 'react-select';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
@@ -93,6 +92,7 @@ export default class InquiryForm extends React.Component {
         {props => {
           const {
           values,
+          status,
           touched,
           errors,
           dirty,
@@ -101,12 +101,20 @@ export default class InquiryForm extends React.Component {
           handleBlur,
           handleSubmit,
           handleReset,
+          setFieldValue,
+          setFieldTouched,
           mapPropsToValues,
         } = props;
         return (
           <Form onSubmit={handleSubmit} className="inquiryForm">
+            <section className="errors">
+              <Row>
+                {!!status && 
+                  <Alert color="danger">{status}</Alert>}
+              </Row>
+            </section>
             <section className="influencer-section">
-              <Contact type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
+              <Contact key="influencer-contact" type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
                 <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props}/>
               </Contact>
             </section>
@@ -139,7 +147,7 @@ export default class InquiryForm extends React.Component {
             <br/>
             <Row>
               <Col>
-                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)} {...props} >Add Community</Button>
+                <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)}>Add Community</Button>
                 {props.values.communities.map((community, index) => (
                   <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() =>this.handleRemoveCommunity(community.uuid, values)} {...props}/>
                 ))}
@@ -147,7 +155,7 @@ export default class InquiryForm extends React.Component {
             </Row>
             <br/>
             <hr />
-            <FinancialOptions />
+            <FinancialOptions {...props} />
             <br/>
             <Row>
               <Col>
@@ -168,7 +176,7 @@ export default class InquiryForm extends React.Component {
               <Col md="5">
                 <FormGroup>
                   <Label for="callingFor" className="label-format">I am calling for</Label>
-                  <select className="form-control" id="callingFor">
+                  <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
                     <option>Select One</option>
                     <option>Myself</option>
                     <option>Parent</option>
@@ -210,10 +218,11 @@ export default class InquiryForm extends React.Component {
             <Row>
       				<Col md="5">
       					<Label for="callerType" className="label-format">What is the gender of the caller?</Label>
-      					<select className="form-control" id="callerType">
+      					<select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
       						<option>Select One</option>
-      						<option>Male</option>
-      						<option>Female</option>
+      						<option value="M">Male</option>
+      						<option value="F">Female</option>
+                  <option value="U">Unknown</option>
         				</select>
         			</Col>
         		</Row>
@@ -266,6 +275,6 @@ const DebugFormState = props =>
   </pre>
 </div>;
 
-// const InquiryFormSchema = Yup.object().shape({
+// const EnhancedInquiryForm = withFormik()
 //
 // });

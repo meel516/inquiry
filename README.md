@@ -23,14 +23,21 @@ If you already have Node.js installed on your machine you can skip this section.
 
 There are several IDEs that are available on the market that can be used for editing this code, see the list below.
 
-Atom
-VS Code
-Notepad++
-Sublime
+*Atom
+*VS Code - most developers are using this for their IDE
+*Notepad++
+*Sublime
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run the following commands:
+
+### `npm run local`
+
+Allows you to run the app in the development mode locally, using the local .env.local configuration.
+
+A file needs to be created called .env.local in the base of the project.
+
 
 ### `npm start`
 
