@@ -19,22 +19,21 @@ export default withAuth(class Home extends Component {
   }
 
   render() {
+    if (this.state.authenticated === null) return null;
+    
+    const homeContent = this.state.authenticated ? (
+      <div>
+        <Redirect to='/inquiryForm' />
+      </div>
+    ) : (
+      <div>
+        <Redirect to='/redirect' />
+      </div>
+    );
+    
     return (
       <div>
-        {this.state.authenticated !== null &&
-          <div>
-            {this.state.authenticated &&
-              <div>
-                <Redirect to='/inquiryForm' />
-              </div>
-            }
-            {!this.state.authenticated &&
-              <div>
-                <Redirect to='/redirect' />
-              </div>
-            }
-          </div>
-        }
+        {homeContent}
       </div>
     );
   }

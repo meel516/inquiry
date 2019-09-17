@@ -120,7 +120,7 @@ export default class InquiryForm extends React.Component {
             </section>
             <br />
             <section className="prospect-section">
-              <Note label="Situation" id="situation" onChange={props.handleChange} onBlur={props.handleBlur}/>
+              <Note labelId="situationLabel" label="Situation" id="situation" onBlur={props.handleBlur}/>
               <Row>
                 <Col>
                   <ADLNeeds />
@@ -135,13 +135,13 @@ export default class InquiryForm extends React.Component {
               <br/>
               <Row>
                 <Col>
-                  <Note label="Passions &amp; Personality" id="passionsPersonality" onChange={props.handleChange} onBlur={props.handleBlur}/>
+                  <Note labelId="passionPersonalityLabel" label="Passions &amp; Personality" id="passionsPersonality" onBlur={props.handleBlur}/>
                 </Col>
               </Row>
             </section>
             <Row>
               <Col>
-                <Note label="Financial Situation" id="financialSituation" onChange={props.handleChange} onBlur={props.handleBlur}/>
+                <Note labelId="financialSituationLabel" label="Financial Situation" id="financialSituation" onBlur={props.handleBlur}/>
               </Col>
             </Row>
             <br/>

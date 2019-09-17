@@ -53,7 +53,7 @@ export default class Contact extends React.Component {
     return (
       <>
         <Row>
-          <Col><Label for="name" className="label-format">Name</Label></Col>
+          <Col><Label for="name" id="nameLabel" className="label-format">Name</Label></Col>
         </Row>
         <Row>
           <Col>

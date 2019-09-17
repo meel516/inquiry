@@ -211,7 +211,7 @@ export async function submitToService({ lead, communities, actions }) {
 
           // TODO: are notes only added on the contact center COI?
           let notes = lead.notes
-          if (notes) {
+          if (notes && isContactCenter(community)) {
             for (let [key, value] of Object.entries(notes)) {
               let noteRequest = createNoteRequest(objectId, value);
               try {
@@ -252,8 +252,12 @@ function doesCommunityListContainContactCenter(communities) {
     return false
   }
   return communities.includes((community) => {
-    return community.buildingId = 225707
+    return isContactCenter(community)
   });
+}
+
+function isContactCenter(community) {
+  return (community && community.buildingId === 225707)
 }
 
 function SalesContact() {
