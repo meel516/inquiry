@@ -84,7 +84,7 @@ function NutritionConcerns(props) {
             <FormGroup check inline className="col-4">
               <Label check>
                 <Input type="checkbox" name="prescribeddiet" id="prescribeddiet" value="" />{' '}
-                Other Perscribed Diet Restrictions
+                Other Prescribed Diet Restrictions
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
