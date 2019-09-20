@@ -407,6 +407,9 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
     salesContact.gender = lead.callerType
   }
 
+  salesLead.salesLeadDriver = lead.drivers;
+  salesLead.salesLeadFinancialOption = lead.financialOptions;
+
   return salesLead;
 }
 
