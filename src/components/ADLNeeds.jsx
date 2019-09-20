@@ -1,7 +1,19 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
-export default function ADLNeeds(props) {
+export default class AdlNeeds extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+handleInputChange = ({ target: { name, checked } }) => {
+  const qualifiedName = "lead.adlNeeds.".concat(name);
+  const {setFieldValue} = this.props;
+  setFieldValue(qualifiedName, checked);
+};
+
+render() {
     return (
       <>
       <section className="adlNeeds">
@@ -10,19 +22,20 @@ export default function ADLNeeds(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="bathing" id="bathing" value="" />{' '}
+                <Input type="checkbox" name="bathing" onChange={this.handleInputChange}
+                  />{' '}
                 Bathing
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="dressing" id="dressing" value="" />{' '}
+                <Input type="checkbox" name="dressing" onChange={this.handleInputChange} />{' '}
                 Dressing
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-3">
               <Label check>
-                <Input type="checkbox" name="feeding" id="feeding" value="" />{' '}
+                <Input type="checkbox" name="feeding" onChange={this.handleInputChange} />{' '}
                 Feeding
               </Label>
             </FormGroup>
@@ -32,19 +45,19 @@ export default function ADLNeeds(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="incontinence" id="incontinence" value="" />{' '}
+                <Input type="checkbox" name="incontinence" onChange={this.handleInputChange} />{' '}
                 Incontinence
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="medications" id="medications" value="" />{' '}
+                <Input type="checkbox" name="medications" onChange={this.handleInputChange} />{' '}
                 Medications
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-3">
               <Label check>
-                <Input type="checkbox" name="toileting" id="toileting" value="" />{' '}
+                <Input type="checkbox" name="toileting" onChange={this.handleInputChange} />{' '}
                 Toileting
               </Label>
             </FormGroup>
@@ -54,7 +67,7 @@ export default function ADLNeeds(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="transferring" id="transferring" value="" />{' '}
+                <Input type="checkbox" name="transferring" onChange={this.handleInputChange} />{' '}
                 Transferring
               </Label>
             </FormGroup>
@@ -63,4 +76,6 @@ export default function ADLNeeds(props) {
     </section>
   </>
   )
+    }
+// }
 }

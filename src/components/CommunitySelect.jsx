@@ -17,8 +17,7 @@ export default class CommunitySelect extends React.Component {
       .catch((err) => console.error("Error", err));
   }
 
-  handleRemoveCommunity = () => {
-    
+  handleRemoveCommunity = () => {    
     this.props.onRemove();
   }
 
