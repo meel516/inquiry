@@ -1,24 +1,24 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
-import {createCommunity, freeMealListing} from './CommunityServices'
+import { createCommunity, freeMealListing } from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
 just a normal export
 */
 export function checkForDuplicate(contact, address) {
-  const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
+  // const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
 
-  const dupRequest = new DedupRequest(contact, address);
+  // const dupRequest = new DedupRequest(contact, address);
 
-  return fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    mode: 'cors',
-    cache: 'no-cache',
-    body: JSON.stringify(dupRequest.payload)
-  })
-    .then((resp) => resp.json())
+  // return fetch(endpoint, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   mode: 'cors',
+  //   cache: 'no-cache',
+  //   body: JSON.stringify(dupRequest.payload)
+  // })
+  //   .then((resp) => resp.json())
 }
 
 export function getAddressStates() {
@@ -91,8 +91,11 @@ function createEmptyContact() {
 
 function createEmptyAddress() {
   return {
-    addressLine1: "",
-    addressLine2: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    zip: "",
   }
 }
 
@@ -116,138 +119,207 @@ export function createEmptyLead() {
 
 export function createLeadById(guid) {
   var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
-  //const lead = createEmptyLead();
 
   return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
 }
 
+async function submitInfluencer(influencer) {
+  const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
+  if (influencer) {
+    try {
+      let response = await fetch(inflUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(influencer),
+      })
+      const inf = await response.json();
+      if (response.status !== 201) {
+        console.log(`Error: ${response.status} ${inf.message}`);
+      }
+    }
+    catch (err) {
+      console.log(err);
+      // successful = false;
+    }
+  }
+}
+
+async function submitFollowup(leadId, community) {
+  const fuaUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
+
+  let followup = createFollowupRequest(leadId, community)
+  if (followup) {
+    try {
+      let response = await fetch(fuaUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(followup),
+      })
+      const fua = await response.json();
+      if (response.status !== 201) {
+        console.log(`Error: ${response.status} ${fua.message}`);
+      }
+    }
+    catch (err) {
+      console.log(err);
+      //successful = false;
+    }
+  }
+}
+
+/**
+ * Submits notes to the server.
+ * @param {note} notes 
+ */
+async function submitNotes(coid, notes) {
+  const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
+  debugger;
+
+  for (let [key, value] of Object.entries(notes)) {
+    console.log(`Notes: ${key}: ${value}`);
+    let noteRequest = createNoteRequest(coid, value);
+    try {
+      fetch(noteUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(noteRequest),
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
+    catch (err) {
+      // TODO: catch errors and process them...
+    }
+  }
+}
+
+/**
+ * Processes the submission of the contact center to the sales system based upon
+ * input from the inquiry form.
+ * 
+ * @param {lead} lead the form lead object
+ * @param {Community} community an object representing the contact center
+ */
+async function processContactCenter(lead, community) {
+  const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+  debugger;
+
+  let prospect = createProspectRequest(lead, community);
+  try {
+    let response = await fetch(leadUrl, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(prospect)
+    })
+    const salesResponse = await response.json();
+    if (response.status === 201) {
+      // was successful
+      const { objectId } = salesResponse;
+      lead.leadId = objectId
+      console.log(`Sales Lead Id: ${objectId}`);
+
+      if (prospect.inquirerType !== 'PROSP') {
+        const influencer = createInfluencerRequest(objectId, lead.influencer);
+        submitInfluencer(influencer);
+      }
+
+      // TODO: are notes only added on the contact center COI?
+      const notes = lead.notes
+      if (notes) {
+        submitNotes(objectId, notes);
+      }
+
+      return objectId;
+    }
+  } catch (err) {
+    console.log(err);
+    // successful = false;
+  }
+}
+
+function handleProspectSubmission() {
+
+}
+
+async function retrieveProspect(leadId) {
+  const prospectUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/prospect`
+
+  // already returning json from this fetch
+  const prospect = await createFetch(prospectUrl)
+  return prospect;
+}
+
+async function handleNewInquiryForm(lead, communities, actions) {
+
+  const communityList = [...communities];
+
+  // IF zero/many community is selected always assume 64000 community
+  let leadId = null;
+  if (!containContactCenter(communities)) {
+    let community = createCommunity();
+    community.communityId = 225707
+    leadId = await processContactCenter(lead, community);
+  }
+  else {
+    let contactCenter;
+    communityList.map((community) => {
+      if (isContactCenter(community)) {
+        contactCenter = community;
+        return null;
+      }
+      return community;
+    });
+
+    if (contactCenter != null) {
+      leadId = await processContactCenter(lead, contactCenter);
+    }
+  }
+
+  if (leadId == null) {
+    leadId = lead.leadId;
+  }
+
+  if (leadId != null) {
+    let prospect = await retrieveProspect(leadId);
+    for (let i = 0; i < communityList.length; i++) {
+      let community = communityList[i];
+      handleProspectSubmission(community, prospect);
+
+      submitFollowup(leadId, community);
+
+    }
+  }
+}
+
+function handleExistingInquiryForm(lead, communities, actions) {
+
+}
+
 export async function submitToService({ lead, communities, actions }) {
   let successful = true;
   console.log('submitting lead form to service');
-  debugger;
 
   if (lead.leadId) {
     console.log(`LeadId: ${lead.leadId}`);
+    handleExistingInquiryForm(lead, communities, actions)
   }
   else {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
-    const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
-    const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
-    const fuaUrl  = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
-
-    const communityList = [...communities];
-
-    // IF zero/many community is selected always assume 64000 community
-    if (!doesCommunityListContainContactCenter(communities)) {
-      let community = createCommunity();
-      community.communityId = 225707
-      communityList.push(community);
-    }
-
-    for (let i = 0; i < communityList.length; i++) {
-      let community = communityList[i];
-      let prospect = createProspectRequest(lead, community);
-      console.log(`Submit Request: ${prospect}`);
-
-      try {
-        let response = await fetch(leadUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(prospect)
-        })
-        const salesResponse = await response.json();
-        if (response.status === 201) {
-          // was successful
-          console.log('successfully created sales lead')
-          const { objectId } = salesResponse;
-          console.log(`Sales Lead Id: ${objectId}`);
-
-          if (prospect.inquirerType !== 'PROSP') {
-            let influencer = createInfluencerRequest(objectId, lead.influencer);
-            if (influencer) {
-              try {
-                response = await fetch(inflUrl, {
-                  method: 'POST', mode: 'cors',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(influencer),
-                })
-                const inf = await response.json();
-                if (response.status !== 201) {
-                  console.log(`Error: ${response.status} ${inf.message}`);
-                }
-              }
-              catch (err) {
-                console.log(err);
-                successful = false;
-              }
-            }
-          }
-
-          let followup = createFollowupRequest(objectId, community)
-          if (followup) {
-            try {
-              response = await fetch(fuaUrl, {
-                method: 'POST', mode: 'cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(followup),
-              })
-              const fua = await response.json();
-              if (response.status !== 201) {
-                console.log(`Error: ${response.status} ${fua.message}`);
-              }
-            }
-            catch(err) {
-              console.log(err);
-              successful = false;
-            }
-          }
-
-          // TODO: are notes only added on the contact center COI?
-          let notes = lead.notes
-          if (notes && isContactCenter(community)) {
-            for (let [key, value] of Object.entries(notes)) {
-              let noteRequest = createNoteRequest(objectId, value);
-              try {
-                response = await fetch(noteUrl, {
-                  method: 'POST', mode: 'cors',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(noteRequest),
-                })
-              }
-              catch(err) {
-
-              }
-            }
-          }
-
-        } else {
-          // failed
-          console.log('failed to create sales lead')
-          actions.setStatus(salesResponse.error.substring(0, 200));
-          successful = false;
-        }
-
-      } catch (err) {
-        console.log(err);
-        successful = false;
-      }
-    }
+    handleNewInquiryForm(lead, communities, actions)
   }
-
   actions.setSubmitting(false);
   return successful;
 }
 
-function doesCommunityListContainContactCenter(communities) {
+function containContactCenter(communities) {
   if (communities == null || communities.length === 0) {
     return false
   }
@@ -283,13 +355,32 @@ function SalesPhone(number, type) {
   }
 }
 
+function SalesNote(leadId, note) {
+  this.deleteInd = false
+  this.bhsInd = false
+  this.leadId = leadId
+  this.noteText = note
+}
+
+function SalesAddress({ type = 'Home', active = true, primary = true }) {
+  this.addressType = type
+  this.active = active
+  this.primary = primary
+}
+
 function SalesLead(salesContact) {
   this.leadTypeId = 4;
   this.salesContact = salesContact;
 }
 
+function stripPhoneFormatting(phone) {
+  if (phone == null) return null;
+  return phone.replace(/\D/g,'');
+}
+
 function createPhone(phone) {
-  let {number, type} = phone;
+  let { number, type } = phone;
+  number = stripPhoneFormatting(number);
   return new SalesPhone(number, type);
 }
 
@@ -302,12 +393,32 @@ function mapInquiryTypeValue(callingFor) {
   }
 }
 
-function addPhoneToContact(contact) {
+function addPhoneToContact(contact, salesContact) {
   if (hasPhoneContacts(contact)) {
     const phone = createPhone(contact.phone);
-    contact.phoneNumbers = [];
-    contact.phoneNumbers.push(phone);
+    salesContact.phoneNumbers = [];
+    salesContact.phoneNumbers.push(phone);
   }
+}
+
+function addAddressToContact(contact, salesContact) {
+  debugger
+  if (hasAddress(contact)) {
+    const { address } = contact;
+    const salesAddress = new SalesAddress(address);
+    salesAddress.primary = true;
+    salesAddress.addressLine1 = address.line1
+    salesAddress.addressLine2 = address.line2
+    salesAddress.city = address.city
+    salesAddress.stateProv = address.state
+    salesAddress.zipPostalCode = address.zip
+    salesContact.address = address
+  }
+}
+
+function hasAddress(contact) {
+  if (!contact) return false;
+  if (contact && contact.address) return true;
 }
 
 function hasPhoneContacts(contact) {
@@ -325,7 +436,8 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
   salesContact.emailAddress = prospect.email;
   salesContact.age = prospect.age;
-  addPhoneToContact(prospect);
+  salesContact.veteranStatus = prospect.veteranStatus
+  addPhoneToContact(prospect, salesContact);
 
   salesLead.inquiryTypeId = prospect.reasonForCall;
   let callingFor = mapInquiryTypeValue(lead.callingFor);
@@ -342,7 +454,7 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
 }
 
 function createNoteRequest(coid, note) {
-
+  return new SalesNote(coid, note);
 }
 
 function createInfluencerRequest(coid, influencer) {
@@ -353,7 +465,8 @@ function createInfluencerRequest(coid, influencer) {
   salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
   salesContact.emailAddress = influencer.email
   salesContact.address = influencer.address
-  addPhoneToContact(influencer)
+  addPhoneToContact(influencer, salesContact);
+  addAddressToContact(influencer, salesContact);
 
   return salesInfluencer;
 }

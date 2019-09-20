@@ -10,7 +10,6 @@ export default class VeteranStatus extends React.Component {
   }
 
   componentDidMount() {
-    console.log('VeteranStatus.componentDidMount()')
     getVeteranStatus()
       .then((data) => {
         this.setState({ vetstatus: data })
@@ -27,7 +26,7 @@ export default class VeteranStatus extends React.Component {
     return (
       <FormGroup>
         <Label for="veteranstatus" className="label-format">Veteran Status</Label>
-        <Input type="select" id="veteranstatus" name="veteranstatus" onChange={this.props.onChange}>
+        <Input type="select" id="veteranstatus" name={"lead.prospect.veteranStatus"} onChange={this.props.onChange}>
           <option value="">Select One</option>
           {veteranStatusOptions}
         </Input>
