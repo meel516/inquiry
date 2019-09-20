@@ -266,6 +266,22 @@ async function submitNotes(coid, notes) {
     }
   }
 }
+
+async function submitProspectNeeds(coid, lead) {
+  const prospectNeedsUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/prospectneed`;
+  
+  let prospectNeedsRequest = createProspectNeedsRequest(coid, lead);
+  console.log(JSON.stringify(prospectNeedsRequest));
+  fetch(prospectNeedsUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospectNeedsRequest),
+  })
+  .then(res =>  res.json())
+  .catch(err => console.log(err))
+}
                   
 /**
  * Processes the submission of the contact center to the sales system based upon
@@ -301,6 +317,11 @@ async function processContactCenter(lead, community) {
       const notes = lead.notes
       if (notes) {
         submitNotes(objectId, notes);
+      }
+
+      const careType = lead.careType
+      if (careType) {
+        submitProspectNeeds(objectId, lead);
       }
 
       return objectId;
@@ -426,6 +447,10 @@ function SalesContact() {
 }
 
 function SalesFollowup(leadId) {
+  this.leadId = leadId
+}
+
+function SalesProspectNeed(leadId) {
   this.leadId = leadId
 }
 
@@ -561,6 +586,50 @@ function createInfluencerRequest(coid, influencer) {
   addAddressToContact(influencer, salesContact);
 
   return salesInfluencer;
+}
+
+function createProspectNeedsRequest(coid, lead) {
+  if (coid && lead.careType) {
+    const salesProspectNeed = new SalesProspectNeed(coid);
+    salesProspectNeed.careTypeId = Number(lead.careType);
+    salesProspectNeed.effectiveDate = new Date();
+
+    if (lead.adlNeeds) {
+      salesProspectNeed.bathing = lead.adlNeeds.bathing;
+      salesProspectNeed.incontinence = lead.adlNeeds.incontinence;
+      salesProspectNeed.transferring = lead.adlNeeds.transferring;
+      salesProspectNeed.dressing = lead.adlNeeds.dressing;
+      salesProspectNeed.medications = lead.adlNeeds.medications;
+      salesProspectNeed.feeding = lead.adlNeeds.feeding;
+      salesProspectNeed.toileting = lead.adlNeeds.toileting;
+    }
+
+    if (lead.memoryConcerns) {
+      salesProspectNeed.alzDiagnosis = lead.memoryConcerns.dementia;
+      salesProspectNeed.argumentative = lead.memoryConcerns.memoryLoss;
+      salesProspectNeed.forgetsRepeats = lead.memoryConcerns.repeatsStories;
+      salesProspectNeed.wandering = lead.memoryConcerns.wandering;
+    }
+
+    if (lead.mobilityConcerns) {
+      salesProspectNeed.fallRisk = lead.mobilityConcerns.fallRisk;
+      salesProspectNeed.walkerRegularly = lead.mobilityConcerns.regularlyWalks;
+      salesProspectNeed.caneRegularly = lead.mobilityConcerns.usesCane;
+      salesProspectNeed.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair;
+      salesProspectNeed.onePersTransfer = lead.mobilityConcerns.personTransfer;
+      salesProspectNeed.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer;
+    }
+
+    if (lead.nutritionConcerns) {
+      salesProspectNeed.diabetesDiagnosis = lead.nutritionConcerns.diabetes;
+      salesProspectNeed.lowSaltLowDiet = lead.nutritionConcerns.lowSalt;
+      salesProspectNeed.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet;
+      salesProspectNeed.notEatingWell = lead.nutritionConcerns.notEatingWell;
+    }
+
+    return salesProspectNeed;
+  }
+  return null;
 }
 
 function createFollowupRequest(coid, community) {
