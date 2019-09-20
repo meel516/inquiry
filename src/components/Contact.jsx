@@ -1,6 +1,5 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
-import { Field, ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
 import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
@@ -19,10 +18,10 @@ export default class Contact extends React.Component {
   handleDupCheck = event => {
     const {contact} = this.props;
     if (this.canDuplicateCheck(contact)) {
-      console.log('run duplicate check!');
-      checkForDuplicate()
-        .then((data) => this.setState({ duplicate: data }))
-        .catch(error => console.log(error));
+      // console.log('run duplicate check!');
+      // checkForDuplicate()
+      //   .then((data) => this.setState({ duplicate: data }))
+      //   .catch(error => console.log(error));
     } else {
       console.log('do not run duplicate check!');
     }
@@ -45,7 +44,7 @@ export default class Contact extends React.Component {
 
   render() {
     const {phoneTypes} = this.state||[];
-    const {type, contact, errors, touched, onChange} = this.props;
+    const {contact, errors, touched, onChange} = this.props;
     const displayablePhoneTypes = (phoneTypes||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });

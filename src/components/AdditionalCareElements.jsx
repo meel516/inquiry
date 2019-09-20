@@ -21,8 +21,10 @@ export default class AdditionalCareElements extends React.Component {
     this.handleNutritionConcernsInputChange = this.handleNutritionConcernsInputChange.bind(this);
   }
 
-  componentDidMount() {
-    console.log('AdditionalCareElements.componentDidMount()')
+  handleCurrentSituationChange = ({ target: { name, value } }) => {
+    const qualifiedName = `lead.${name}`;
+    const {setFieldValue} = this.props;
+    setFieldValue(qualifiedName, value);
   }
 
   // elmnts - array of elements
@@ -73,7 +75,7 @@ export default class AdditionalCareElements extends React.Component {
       { (careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange}/> : null }
       { (careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange}/> : null }
       { (careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange}/> : null }
-      { (careElements.includes(4) === true) ? <CurrentSituation/> : null } 
+      { (careElements.includes(4) === true) ? <CurrentSituation onChange={this.handleCurrentSituationChange}/> : null } 
       </>
     )  
   }
