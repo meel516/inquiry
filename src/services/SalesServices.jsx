@@ -1,6 +1,6 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
-import { createCommunity, freeMealListing } from './CommunityServices'
+import {  createCommunity, freeMealListing } from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
@@ -134,7 +134,7 @@ function createMobilityConcerns() {
     usesWheelChair: false,
     secondPersonTransfer: false,
     usesCane: false,
-  }
+  }  
 }
 
 function createNutritionConcerns() {
@@ -188,7 +188,7 @@ export function createEmptyLead() {
 }
 
 export function createLeadById(guid) {
-  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
 
   return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
@@ -196,7 +196,7 @@ export function createLeadById(guid) {
 
 async function submitInfluencer(influencer) {
   const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
-  if (influencer) {
+  if ( influencer ) {
     try {
       let response = await fetch(inflUrl, {
         method: 'POST', mode: 'cors',
@@ -244,32 +244,30 @@ async function submitFollowup(leadId, community) {
 
 /**
  * Submits notes to the server.
- * @param {note} notes 
+ * @param {number} coid the lead id used to associate the note
+ * @param {note} notes the note object which contains all form notes
  */
 async function submitNotes(coid, notes) {
   const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
   debugger;
 
   for (let [key, value] of Object.entries(notes)) {
-    console.log(`Notes: ${key}: ${value}`);
-    let noteRequest = createNoteRequest(coid, value);
-    try {
+    console.log(`Note: ${key}`);
+    if (value && value.trim().length > 0) {
+      let noteRequest = createNoteRequest(coid, value);
       fetch(noteUrl, {
-        method: 'POST', mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(noteRequest),
+          method: 'POST', mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(noteRequest),
       })
-        .then(res => res.json())
-        .catch(err => console.log(err))
-    }
-    catch (err) {
-      // TODO: catch errors and process them...
+      .then(res =>  res.json())
+      .catch(err => console.log(err))
     }
   }
 }
-
+                  
 /**
  * Processes the submission of the contact center to the sales system based upon
  * input from the inquiry form.
@@ -302,7 +300,6 @@ async function processContactCenter(lead, community) {
         submitInfluencer(influencer);
       }
 
-      // TODO: are notes only added on the contact center COI?
       const notes = lead.notes
       if (notes) {
         submitNotes(objectId, notes);
@@ -310,14 +307,38 @@ async function processContactCenter(lead, community) {
 
       return objectId;
     }
+
   } catch (err) {
     console.log(err);
     // successful = false;
   }
 }
 
-function handleProspectSubmission() {
+async function handleProspectSubmission(lead, community) {
+  const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
+  let prospect = createProspectRequest(lead, community);
+
+  let response = await fetch(leadUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(prospect)
+  })
+  const salesResponse = await response.json();
+  if (response.status === 201) {
+    const { objectId } = salesResponse;
+    lead.leadId = objectId
+    return objectId;
+  }
+
+  throw new ProspectError(response.status, (response.statusText||'Unable to communicate to server.'))
+}
+
+function ProspectError({status, message}) {
+  this.status = status
+  this.message = message
 }
 
 async function retrieveProspect(leadId) {
@@ -472,17 +493,15 @@ function addPhoneToContact(contact, salesContact) {
 }
 
 function addAddressToContact(contact, salesContact) {
-  debugger
   if (hasAddress(contact)) {
     const { address } = contact;
     const salesAddress = new SalesAddress(address);
-    salesAddress.primary = true;
     salesAddress.addressLine1 = address.line1
     salesAddress.addressLine2 = address.line2
     salesAddress.city = address.city
     salesAddress.stateProv = address.state
     salesAddress.zipPostalCode = address.zip
-    salesContact.address = address
+    salesContact.address = salesAddress
   }
 }
 
@@ -503,18 +522,20 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   const salesLead = new SalesLead(salesContact);
 
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName);
-  salesContact.emailAddress = prospect.email;
-  salesContact.age = prospect.age;
+  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName)
+  salesContact.emailAddress = prospect.email
+  salesContact.age = prospect.age
   salesContact.veteranStatus = prospect.veteranStatus
-  addPhoneToContact(prospect, salesContact);
+  salesContact.currentSituation = lead.currentSituation
+  addPhoneToContact(prospect, salesContact)
 
-  salesLead.inquiryTypeId = prospect.reasonForCall;
-  let callingFor = mapInquiryTypeValue(lead.callingFor);
-  salesLead.inquirerType = callingFor;
-  salesLead.buildingId = community.communityId;
-  salesLead.inquiryLeadSourceId = lead.leadSource;
-  salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail;
+  salesLead.inquiryTypeId = prospect.reasonForCall
+  let callingFor = mapInquiryTypeValue(lead.callingFor)
+  salesLead.inquirerType = callingFor
+  salesLead.buildingId = community.communityId
+  salesLead.inquiryLeadSourceId = lead.leadSource
+  salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
+  salesLead.interestReasonId = lead.reasonForCall
 
   if (salesLead.inquirerType && salesLead.inquirerType === 'PROSP') {
     salesContact.gender = lead.callerType

@@ -2,6 +2,16 @@ import React from 'react';
 import {Col, Input, FormGroup, Label, Row} from 'reactstrap';
 import Contact from './Contact';
 import Note from './Note';
+import PropTypes from 'prop-types'
+
+PropTypes.SecondPerson = {
+  handleChange: PropTypes.func,
+  handleBlur: PropTypes.func,
+
+  type: PropTypes.string.isRequired,
+  contact: PropTypes.instanceOf(Contact).isRequired,
+}
+
 
 export default class SecondPerson extends React.Component {
 state = {
@@ -43,7 +53,7 @@ state = {
           onBlur={ handleBlur }
           contact={ this.props.contact } 
           {...this.props} />
-        <Note label="2nd Person Situation" id="situation2" name="situation2"/>
+        <Note label="2nd Person Situation" id="situation2" name="situation2" onChange={handleChange} onBlur={handleBlur}/>
         </>
       )
     } else {
