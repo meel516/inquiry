@@ -105,6 +105,69 @@ function createEmptyNotes() {
   }
 }
 
+function createAdlNeeds() {
+  return {
+      bathing: false,
+      dressing: false,
+      feeding: false,
+      incontinence: false,
+      medications: false,
+      toileting: false,
+      transferring: false,
+    }
+}
+
+function createMemoryConcerns() {
+  return {
+    dementia: false,
+    memoryLoss: false,
+    repeatsStories: false,
+    wandering: false,  
+  }
+}
+
+function createMobilityConcerns() {
+  return {
+    fallRisk: false,
+    regularlyWalks: false,
+    personTransfer: false,
+    usesWheelChair: false,
+    secondPersonTransfer: false,
+    usesCane: false,
+  }
+}
+
+function createNutritionConcerns() {
+  return {
+    diabetes: false,
+    lowSalt: false,
+    prescribedDiet: false,
+    notEatingWell: false,
+  }
+}
+
+function createFinancialOptions() {
+  return {
+    aidAttendance: false,
+    familyContributions: false,
+    homeOwner: false,
+    ltcPolicy: false,
+  }
+}
+
+function createDrivers() {
+  return {
+    activities: false,
+    accessToResidents: false,
+    ageInPlace: false,
+    care: false,
+    location: false,
+    peaceOfMind: false,
+    petFriendly: false,
+    safety: false,
+  }
+}
+
 function Lead() { }
 
 export function createEmptyLead() {
@@ -113,6 +176,13 @@ export function createEmptyLead() {
   lead.influencer.address = createEmptyAddress();
   lead.secondPerson = createEmptyContact();
   lead.prospect = createEmptyContact();
+  lead.adlNeeds = createAdlNeeds();
+  lead.memoryConcerns = createMemoryConcerns();
+  lead.mobilityConcerns = createMobilityConcerns();
+  lead.nutritionConcerns = createNutritionConcerns();
+  lead.financialOptions = createFinancialOptions();
+  lead.drivers = createDrivers();
+
   lead.notes = createEmptyNotes();
   return lead;
 }

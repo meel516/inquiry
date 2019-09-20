@@ -123,7 +123,7 @@ export default class InquiryForm extends React.Component {
               <Note labelId="situationLabel" label="Situation" id="situation" onChange={props.handleChange} onBlur={props.handleBlur}/>
               <Row>
                 <Col>
-                  <ADLNeeds />
+                  <ADLNeeds adlNeeds={props.values.lead.adlNeeds} {...props} />
                 </Col>
               </Row>
               <br/>
@@ -163,7 +163,7 @@ export default class InquiryForm extends React.Component {
               </Col>
             </Row>
             <br />
-            <Drivers />
+            <Drivers {...props} />
             <br />
             <SecondPerson contact={props.values.lead.secondPerson} {...props} />
             <br />
@@ -232,10 +232,10 @@ export default class InquiryForm extends React.Component {
               <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
             </div>
 
-            {this.state.debug &&
+            { this.state.debug &&
               <DebugFormikState {...props} />}
 
-            {this.state.debug &&
+            { this.state.debug &&
               <DebugFormState {...this.state} />}
 
           </Form>
