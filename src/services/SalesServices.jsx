@@ -249,7 +249,6 @@ async function submitFollowup(leadId, community) {
  */
 async function submitNotes(coid, notes) {
   const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
-  debugger;
 
   for (let [key, value] of Object.entries(notes)) {
     console.log(`Note: ${key}`);
@@ -277,7 +276,6 @@ async function submitNotes(coid, notes) {
  */
 async function processContactCenter(lead, community) {
   const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
-  debugger;
 
   let prospect = createProspectRequest(lead, community);
   try {
