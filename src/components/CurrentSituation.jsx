@@ -1,7 +1,6 @@
 import React from 'react';
 import {FormGroup, Input, Label} from 'reactstrap';
 
-// <CurrentSituation status={this.state.currentSituation} onChange={this.handleCurrentSituationChange}/>
 import {getCurrentSituation} from '../services/SalesServices'
 
 export default class CurrentSituation extends React.Component {
@@ -14,7 +13,6 @@ export default class CurrentSituation extends React.Component {
       .then((data) => this.setState({ currentSituation: data }))
       .catch(error => console.log(error));
   }
-
 
   render() {
     const {currentSituation} = this.state||[];

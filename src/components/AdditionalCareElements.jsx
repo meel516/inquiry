@@ -101,6 +101,8 @@ export default class AdditionalCareElements extends React.Component {
         params.fields.forEach( e => {
           setFieldValue(params.namespace.concat(e), false);
         });  
+      } else {
+        setFieldValue("lead.currentSituation", undefined);
       }
     }
   }
