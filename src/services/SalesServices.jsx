@@ -282,6 +282,21 @@ async function submitProspectNeeds(coid, lead) {
   .then(res =>  res.json())
   .catch(err => console.log(err))
 }
+
+async function submitSecondPerson(secondPersonRequest) {
+  const secondPersonUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/secondperson`;
+
+  console.log(JSON.stringify(secondPersonRequest));
+  fetch(secondPersonUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(secondPersonRequest),
+  })
+  .then(res =>  res.json())
+  .catch(err => console.log(err))
+}
                   
 /**
  * Processes the submission of the contact center to the sales system based upon
@@ -325,6 +340,13 @@ async function processContactCenter(lead, community) {
       if (careType) {
         submitProspectNeeds(objectId, lead);
       }
+      
+      const secondPerson = lead.secondPerson;
+      if (secondPerson) {
+        const secondPersonRequest = createSecondPersonRequest(objectId, lead.secondPerson);
+        submitSecondPerson(secondPersonRequest);
+      }
+
       return objectId;
     }
     else {
@@ -475,6 +497,10 @@ function SalesPhone(number, type) {
   }
 }
 
+function SalesSecondPerson(salesLead) {
+  this.salesLead = salesLead
+}
+
 function SalesNote(leadId, note) {
   this.deleteInd = false
   this.bhsInd = false
@@ -593,6 +619,23 @@ function createInfluencerRequest(coid, influencer) {
   addAddressToContact(influencer, salesContact);
 
   return salesInfluencer;
+}
+
+function createSecondPersonRequest(coid, secondperson) {
+  const salesContact = new SalesContact();
+  const salesLead = new SalesLead(salesContact, 5);
+  const salesSecondPerson = new SalesSecondPerson(salesLead);
+
+  salesContact.firstName = ((secondperson && secondperson.firstName) ? secondperson.firstName : '')
+  salesContact.lastName = ((secondperson && secondperson.lastName) ? secondperson.lastName : '')
+  salesContact.emailAddress = secondperson.email
+  addPhoneToContact(secondperson, salesContact);
+
+  const primarySalesLead = new SalesLead(null, null);
+  primarySalesLead.leadId = coid;
+  salesSecondPerson.primarySalesLead = primarySalesLead;
+
+  return salesSecondPerson;
 }
 
 function createProspectNeedsRequest(coid, lead) {
