@@ -54,7 +54,7 @@ export default class CommunitySelect extends React.Component {
                     <Input type="number" 
                       id="startingPrice" 
                       name={`communities[${index}].startingPrice`} 
-                      value={community.startingPrice||0} 
+                      value={community.startingPrice||''} 
                       onChange={handleChange} 
                       onBlur={handleBlur}
                       placeholder="Starting at Price"/>
@@ -71,7 +71,7 @@ export default class CommunitySelect extends React.Component {
                     <Input type="number" 
                       id="secondPersonFee" 
                       name={`communities[${index}].secondPersonFee`}
-                      value={community.secondPersonFee||0} 
+                      value={community.secondPersonFee||''} 
                       onChange={handleChange} 
                       onBlur={handleBlur}
                       placeholder="2nd Person Fee" />
@@ -88,7 +88,7 @@ export default class CommunitySelect extends React.Component {
                     <Input type="number" 
                       id="communityFee" 
                       name={`communities[${index}].communityFee`}
-                      value={community.communityFee|0} 
+                      value={community.communityFee|''} 
                       onChange={handleChange} 
                       onBlur={handleBlur}
                       placeholder="Community Fee" />
