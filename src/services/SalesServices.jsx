@@ -266,6 +266,22 @@ async function submitNotes(coid, notes) {
     }
   }
 }
+
+async function submitProspectNeeds(coid, lead) {
+  const prospectNeedsUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/prospectneed`;
+  
+  let prospectNeedsRequest = createProspectNeedsRequest(coid, lead);
+  console.log(JSON.stringify(prospectNeedsRequest));
+  fetch(prospectNeedsUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospectNeedsRequest),
+  })
+  .then(res =>  res.json())
+  .catch(err => console.log(err))
+}
                   
 /**
  * Processes the submission of the contact center to the sales system based upon
@@ -278,18 +294,20 @@ async function processContactCenter(lead, community) {
   const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
   let prospect = createProspectRequest(lead, community);
-  try {
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
-    })
-    const salesResponse = await response.json();
-    if (response.status === 201) {
-      // was successful
-      const { objectId } = salesResponse;
+
+  let response = await fetch(leadUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
+  })
+  const salesResponse = await response.json();
+  if (response.status === 201) {
+    // was successful
+    const { objectId } = salesResponse;
+
+    if (objectId) {
       lead.leadId = objectId
       console.log(`Sales Lead Id: ${objectId}`);
 
@@ -303,13 +321,17 @@ async function processContactCenter(lead, community) {
         submitNotes(objectId, notes);
       }
 
+      const careType = lead.careType
+      if (careType) {
+        submitProspectNeeds(objectId, lead);
+      }
       return objectId;
     }
-
-  } catch (err) {
-    console.log(err);
-    // successful = false;
+    else {
+      throw new Error('Sales Lead was not created.')
+    }
   }
+
 }
 
 async function handleProspectSubmission(lead, community) {
@@ -397,12 +419,17 @@ export async function submitToService({ lead, communities, actions }) {
   let successful = true;
   console.log('submitting lead form to service');
 
-  if (lead.leadId) {
-    console.log(`LeadId: ${lead.leadId}`);
-    handleExistingInquiryForm(lead, communities, actions)
-  }
-  else {
-    handleNewInquiryForm(lead, communities, actions)
+  try {
+    if (lead.leadId) {
+      console.log(`LeadId: ${lead.leadId}`);
+      handleExistingInquiryForm(lead, communities, actions)
+    }
+    else {
+      handleNewInquiryForm(lead, communities, actions)
+    }
+  } catch(err) {
+    console.log(err);
+    successful = false;
   }
   actions.setSubmitting(false);
   return successful;
@@ -426,6 +453,10 @@ function SalesContact() {
 }
 
 function SalesFollowup(leadId) {
+  this.leadId = leadId
+}
+
+function SalesProspectNeed(leadId) {
   this.leadId = leadId
 }
 
@@ -457,8 +488,8 @@ function SalesAddress({ type = 'Home', active = true, primary = true }) {
   this.primary = primary
 }
 
-function SalesLead(salesContact) {
-  this.leadTypeId = 4;
+function SalesLead(salesContact, leadTypeId = 4) {
+  this.leadTypeId = leadTypeId;
   this.salesContact = salesContact;
 }
 
@@ -513,14 +544,15 @@ function hasPhoneContacts(contact) {
   if (contact && contact.phone && contact.phone.number.length > 0) return true;
 }
 
-export function createProspectRequest(lead, community, lastName = 'Unknown') {
-  const { prospect } = lead;
+export function createProspectRequest(lead, community) {
+  const { prospect, influencer } = lead;
+  const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
   const salesContact = new SalesContact();
-  const salesLead = new SalesLead(salesContact);
+  const salesLead = new SalesLead(salesContact, 4);
 
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName)
+  salesContact.lastName = ((prospect && prospect.lastName) ? influencer.lastName : defaultLastName)
   salesContact.emailAddress = prospect.email
   salesContact.age = prospect.age
   salesContact.veteranStatus = prospect.veteranStatus
@@ -561,6 +593,49 @@ function createInfluencerRequest(coid, influencer) {
   addAddressToContact(influencer, salesContact);
 
   return salesInfluencer;
+}
+
+function createProspectNeedsRequest(coid, lead) {
+  if (coid && lead.careType) {
+    const salesProspectNeed = new SalesProspectNeed(coid);
+    salesProspectNeed.careTypeId = Number(lead.careType);
+
+    if (lead.adlNeeds) {
+      salesProspectNeed.bathing = lead.adlNeeds.bathing;
+      salesProspectNeed.incontinence = lead.adlNeeds.incontinence;
+      salesProspectNeed.transferring = lead.adlNeeds.transferring;
+      salesProspectNeed.dressing = lead.adlNeeds.dressing;
+      salesProspectNeed.medications = lead.adlNeeds.medications;
+      salesProspectNeed.feeding = lead.adlNeeds.feeding;
+      salesProspectNeed.toileting = lead.adlNeeds.toileting;
+    }
+
+    if (lead.memoryConcerns) {
+      salesProspectNeed.alzDiagnosis = lead.memoryConcerns.dementia;
+      salesProspectNeed.argumentative = lead.memoryConcerns.memoryLoss;
+      salesProspectNeed.forgetsRepeats = lead.memoryConcerns.repeatsStories;
+      salesProspectNeed.wandering = lead.memoryConcerns.wandering;
+    }
+
+    if (lead.mobilityConcerns) {
+      salesProspectNeed.fallRisk = lead.mobilityConcerns.fallRisk;
+      salesProspectNeed.walkerRegularly = lead.mobilityConcerns.regularlyWalks;
+      salesProspectNeed.caneRegularly = lead.mobilityConcerns.usesCane;
+      salesProspectNeed.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair;
+      salesProspectNeed.onePersTransfer = lead.mobilityConcerns.personTransfer;
+      salesProspectNeed.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer;
+    }
+
+    if (lead.nutritionConcerns) {
+      salesProspectNeed.diabetesDiagnosis = lead.nutritionConcerns.diabetes;
+      salesProspectNeed.lowSaltLowDiet = lead.nutritionConcerns.lowSalt;
+      salesProspectNeed.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet;
+      salesProspectNeed.notEatingWell = lead.nutritionConcerns.notEatingWell;
+    }
+
+    return salesProspectNeed;
+  }
+  return null;
 }
 
 function createFollowupRequest(coid, community) {

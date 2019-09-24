@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row} from 'reactstrap';
 
 import CommunityLookup from './CommunityLookup'
 import Visit from './Visit';
@@ -47,37 +47,52 @@ export default class CommunitySelect extends React.Component {
              <Col>
                 <FormGroup>
                   <Label for="startingPrice" className="label-format">Starting at Price</Label>
-                  <Input type="number" 
-                    id="startingPrice" 
-                    name={`communities[${index}].startingPrice`} 
-                    value={community.startingPrice||0} 
-                    onChange={handleChange} 
-                    onBlur={handleBlur}
-                    placeholder="Starting at Price"/>
+                  <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>$</InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="number" 
+                      id="startingPrice" 
+                      name={`communities[${index}].startingPrice`} 
+                      value={community.startingPrice||''} 
+                      onChange={handleChange} 
+                      onBlur={handleBlur}
+                      placeholder="Starting at Price"/>
+                  </InputGroup>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
-                  <Input type="number" 
-                    id="secondPersonFee" 
-                    name={`communities[${index}].secondPersonFee`}
-                    value={community.secondPersonFee||0} 
-                    onChange={handleChange} 
-                    onBlur={handleBlur}
-                    placeholder="2nd Person Fee" />
+                  <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>$</InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="number" 
+                      id="secondPersonFee" 
+                      name={`communities[${index}].secondPersonFee`}
+                      value={community.secondPersonFee||''} 
+                      onChange={handleChange} 
+                      onBlur={handleBlur}
+                      placeholder="2nd Person Fee" />
+                  </InputGroup>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
                   <Label for="communityFee" className="label-format">Community Fee</Label>
-                  <Input type="number" 
-                    id="communityFee" 
-                    name={`communities[${index}].communityFee`}
-                    value={community.communityFee|0} 
-                    onChange={handleChange} 
-                    onBlur={handleBlur}
-                    placeholder="Community Fee" />
+                  <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>$</InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="number" 
+                      id="communityFee" 
+                      name={`communities[${index}].communityFee`}
+                      value={community.communityFee|''} 
+                      onChange={handleChange} 
+                      onBlur={handleBlur}
+                      placeholder="Community Fee" />
+                  </InputGroup>
                 </FormGroup>
               </Col>
             </Row>
