@@ -294,18 +294,20 @@ async function processContactCenter(lead, community) {
   const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
   let prospect = createProspectRequest(lead, community);
-  try {
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
-    })
-    const salesResponse = await response.json();
-    if (response.status === 201) {
-      // was successful
-      const { objectId } = salesResponse;
+
+  let response = await fetch(leadUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
+  })
+  const salesResponse = await response.json();
+  if (response.status === 201) {
+    // was successful
+    const { objectId } = salesResponse;
+
+    if (objectId) {
       lead.leadId = objectId
       console.log(`Sales Lead Id: ${objectId}`);
 
@@ -323,14 +325,13 @@ async function processContactCenter(lead, community) {
       if (careType) {
         submitProspectNeeds(objectId, lead);
       }
-
       return objectId;
     }
-
-  } catch (err) {
-    console.log(err);
-    // successful = false;
+    else {
+      throw new Error('Sales Lead was not created.')
+    }
   }
+
 }
 
 async function handleProspectSubmission(lead, community) {
@@ -418,12 +419,17 @@ export async function submitToService({ lead, communities, actions }) {
   let successful = true;
   console.log('submitting lead form to service');
 
-  if (lead.leadId) {
-    console.log(`LeadId: ${lead.leadId}`);
-    handleExistingInquiryForm(lead, communities, actions)
-  }
-  else {
-    handleNewInquiryForm(lead, communities, actions)
+  try {
+    if (lead.leadId) {
+      console.log(`LeadId: ${lead.leadId}`);
+      handleExistingInquiryForm(lead, communities, actions)
+    }
+    else {
+      handleNewInquiryForm(lead, communities, actions)
+    }
+  } catch(err) {
+    console.log(err);
+    successful = false;
   }
   actions.setSubmitting(false);
   return successful;
@@ -482,8 +488,8 @@ function SalesAddress({ type = 'Home', active = true, primary = true }) {
   this.primary = primary
 }
 
-function SalesLead(salesContact) {
-  this.leadTypeId = 4;
+function SalesLead(salesContact, leadTypeId = 4) {
+  this.leadTypeId = leadTypeId;
   this.salesContact = salesContact;
 }
 
@@ -538,14 +544,15 @@ function hasPhoneContacts(contact) {
   if (contact && contact.phone && contact.phone.number.length > 0) return true;
 }
 
-export function createProspectRequest(lead, community, lastName = 'Unknown') {
-  const { prospect } = lead;
+export function createProspectRequest(lead, community) {
+  const { prospect, influencer } = lead;
+  const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
   const salesContact = new SalesContact();
-  const salesLead = new SalesLead(salesContact);
+  const salesLead = new SalesLead(salesContact, 4);
 
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName)
+  salesContact.lastName = ((prospect && prospect.lastName) ? influencer.lastName : defaultLastName)
   salesContact.emailAddress = prospect.email
   salesContact.age = prospect.age
   salesContact.veteranStatus = prospect.veteranStatus
@@ -592,7 +599,6 @@ function createProspectNeedsRequest(coid, lead) {
   if (coid && lead.careType) {
     const salesProspectNeed = new SalesProspectNeed(coid);
     salesProspectNeed.careTypeId = Number(lead.careType);
-    salesProspectNeed.effectiveDate = new Date();
 
     if (lead.adlNeeds) {
       salesProspectNeed.bathing = lead.adlNeeds.bathing;
