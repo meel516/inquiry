@@ -578,7 +578,7 @@ export function createProspectRequest(lead, community) {
   const salesLead = new SalesLead(salesContact, 4);
 
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-  salesContact.lastName = ((prospect && prospect.lastName) ? influencer.lastName : defaultLastName)
+  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : defaultLastName)
   salesContact.emailAddress = prospect.email
   salesContact.age = prospect.age
   salesContact.veteranStatus = prospect.veteranStatus
