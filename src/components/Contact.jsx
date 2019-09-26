@@ -1,6 +1,7 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 import PropTypes from 'prop-types'
+import {Field, ErrorMessage } from 'formik';
 
 import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
 
@@ -58,11 +59,13 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
+              <ErrorMessage name={`lead.${this.props.type}.firstName`} component="div"/>
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
+              <ErrorMessage name={`lead.${this.props.type}.lastName`} />
             </FormGroup>
           </Col>
         </Row>
@@ -71,6 +74,7 @@ export default class Contact extends React.Component {
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
               <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
+              <ErrorMessage name={`lead.${this.props.type}.phone.number`} />
             </FormGroup>
           </Col>
           <Col>
@@ -88,6 +92,7 @@ export default class Contact extends React.Component {
             <FormGroup>
               <Label for="email" className="label-format">Email</Label>
               <Input type="email" name={`lead.${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
+              <ErrorMessage component="div" name={`lead.${this.props.type}.email`} />
             </FormGroup>
           </Col>
         </Row>
