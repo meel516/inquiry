@@ -20,6 +20,7 @@ import Prospect from './Prospect';
 import ReasonForCall from './ReasonForCall';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
+import { Debug } from './Debug'
 
 import { createEmptyLead, createLeadById, submitToService } from "../services/SalesServices";
 import { createCommunity } from '../services/CommunityServices';
@@ -77,7 +78,6 @@ class InquiryForm extends React.Component {
   }
 
   render() {
-
     const {
       values,
       status,
@@ -92,6 +92,7 @@ class InquiryForm extends React.Component {
       setFieldValue,
       setFieldTouched,
       mapPropsToValues,
+      validationSchema,
     } = this.props;
     return (
       <Form onSubmit={handleSubmit} className="inquiryForm">
@@ -199,7 +200,8 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="umid" className="label-format">UMID</Label>
-              <Input type="text" id="umid" placeholder="UMID" />
+              <Input name="umid" type="text" id="umid" placeholder="UMID" />
+              <ErrorMessage name="umid" component="div" />
             </FormGroup>
           </Col>
         </Row>
@@ -220,7 +222,9 @@ class InquiryForm extends React.Component {
           <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
         </div>
 
-        {this.state.debug &&
+        <Debug/>
+
+        { this.state.debug && 
           <DebugFormikState {...this.props} />}
 
         {this.state.debug &&
@@ -231,15 +235,22 @@ class InquiryForm extends React.Component {
   }
 }
 
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const formSchema = Yup.object().shape({
+  umid: Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Hey, get back here')});
+
 const EnhancedInquiryForm = withFormik({
   mapPropsToValues: () => {
     return {
       communities: [],
       lead: createEmptyLead(),
       debug: false,
-      validationSchema: { SignupSchema },
     }
   },
+
+  validationSchema: Yup.object().shape({
+    umid: Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Hey, get back here')}),
 
   handleSubmit: (values, { setSubmitting }) => {
     setTimeout(() => {
@@ -251,37 +262,6 @@ const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
 
 })(InquiryForm);
-
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
-const SignupSchema = Yup.object().shape({
-  'lead.prospect.firstName': Yup.string()
-    .min(2, 'Too Short!')
-    .max(7, 'Too Long!')
-    .required('Required'),
-  'lead.prospect.lastName': Yup.string()
-    .min(2, 'Too Short!')
-    .max(7, 'Too Long!')
-    .required('Required'),
-  'lead.influencer.firstName': Yup.string()
-    .min(2, 'Too Short!')
-    .max(7, 'Too Long!')
-    .required('Required'),
-  'lead.influencer.lastName': Yup.string()
-    .min(2, 'Too Short!')
-    .max(7, 'Too Long!')
-    .required('Required'),
-  'lead.prospect.email': Yup.string()
-    .email('Invalid email')
-    .required('Required'),
-  'lead.prospect.phone.number': Yup.string()
-    .matches(phoneRegExp, 'Phone number is not valid')
-    .required('Required'),
-  'lead.influencer.phone.number': Yup.string()
-    .matches(phoneRegExp, 'Phone number is not valid')
-    .required('Required'),
-});
-
 
 const DebugFormikState = props =>
   <div style={{ margin: '1rem 0' }}>

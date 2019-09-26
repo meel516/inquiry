@@ -46,6 +46,7 @@ export default class Contact extends React.Component {
   render() {
     const {phoneTypes} = this.state||[];
     const {contact, errors, touched, onChange} = this.props;
+    const firstName = `lead.${this.props.type}.firstName`;
     const displayablePhoneTypes = (phoneTypes||[]).map(type => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -59,7 +60,7 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
-              <ErrorMessage name={`lead.${this.props.type}.firstName`} component="div"/>
+              <ErrorMessage name={firstName} component="div"/>
             </FormGroup>
           </Col>
           <Col>
