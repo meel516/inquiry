@@ -10,15 +10,58 @@ const additionalCareElements = [
  { value: 4, label: 'Current Living Situation'},
 ];
 
+const additionalCareParams = [
+  { params: {
+    namespace: "lead.memoryConcerns.",
+    fields: [
+      "dementia", "memoryLoss", "repeatsStories", "wandering",
+    ]
+  }},
+  { params: {
+    namespace: "lead.mobilityConcerns.",
+    fields: [
+      "fallRisk", "regularlyWalks", "personTransfer", "usesWheelChair", "secondPersonTransfer", "usesCane",
+    ]
+  }},
+  { params: {
+    namespace: "lead.nutritionConcerns.",
+    fields: [
+      "diabetes", "lowSalt", "prescribedDiet", "notEatingWell",
+    ]
+  }},
+];
+
 export default class AdditionalCareElements extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      hasMounted: false,
       careElements: [],
     }
+
     this.handleMemoryConcernsInputChange = this.handleMemoryConcernsInputChange.bind(this);
     this.handleMobilityConcernsInputChange = this.handleMobilityConcernsInputChange.bind(this);
     this.handleNutritionConcernsInputChange = this.handleNutritionConcernsInputChange.bind(this);
+    this.differenceOf2Arrays = this.differenceOf2Arrays.bind(this);
+  }
+
+  differenceOf2Arrays (array1, array2) {
+    var temp = [];
+    array1 = array1.toString().split(',').map(Number);
+    array2 = array2.toString().split(',').map(Number);
+    
+    for (var i in array1) {
+      if(array2.indexOf(array1[i]) === -1) {
+        temp.push(array1[i]);
+      }
+    }
+    for(i in array2) {
+      if(array1.indexOf(array2[i]) === -1) {
+       temp.push(array2[i]);
+      }
+    }
+    
+    return temp.sort((a,b) => a-b);
   }
 
   handleCurrentSituationChange = ({ target: { name, value } }) => {
@@ -29,12 +72,39 @@ export default class AdditionalCareElements extends React.Component {
 
   // elmnts - array of elements
   handleSelectCareElements = (elmnts) => {
-    const elements = (elmnts || []).map((item) => {
+    const {setFieldValue} = this.props;
+    const currentElements = this.state.careElements || [];
+    const modifiedElements = elmnts || [];
+
+    const elements = modifiedElements.map((item) => {
       return item.value;
     })
+
     this.setState({
       careElements: elements,
     })
+
+    // set all checkboxes to false for care element if being removed
+    const diff = modifiedElements.length - currentElements.length;
+    if (diff < 0) {
+      let removedElement = undefined;
+      if (modifiedElements.length === 0) {
+        removedElement = currentElements;
+      } else {
+        const justTheValues = modifiedElements.map((item) => {return item.value;});
+        removedElement = this.differenceOf2Arrays(currentElements, justTheValues);
+      }
+
+      // we don't care about 4th care element, Current Living Situation
+      if (removedElement < 4) {
+        const params = additionalCareParams[removedElement[0] - 1].params;
+        params.fields.forEach( e => {
+          setFieldValue(params.namespace.concat(e), false);
+        });  
+      } else {
+        setFieldValue("lead.currentSituation", undefined);
+      }
+    }
   }
 
   handleMemoryConcernsInputChange = ({ target: { name, checked } }) => {
@@ -107,7 +177,7 @@ function NutritionConcerns(props) {
             <FormGroup check inline className="col-4">
               <Label check>
                 <Input type="checkbox" name="prescribedDiet" onChange={props.onChange} />{' '}
-                Other Perscribed Diet Restrictions
+                Other Prescribed Diet Restrictions
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">

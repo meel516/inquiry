@@ -4,6 +4,8 @@ import Contact from './Contact';
 import Note from './Note';
 import PropTypes from 'prop-types'
 
+import {createEmptyContact} from '../services/SalesServices'
+
 PropTypes.SecondPerson = {
   handleChange: PropTypes.func,
   handleBlur: PropTypes.func,
@@ -22,6 +24,16 @@ state = {
     this.setState({
       containsSecondPerson: e.target.checked,
     })
+    if (!e.target.checked) {
+      this.handleContactReset();
+    }
+  }
+
+  handleContactReset = () => {
+    const {setFieldValue} = this.props;
+    const secondPerson = createEmptyContact();
+    setFieldValue('lead.secondPerson', secondPerson);
+    setFieldValue('lead.notes.secondPerson', '');
   }
 
   renderQuestion = () => {
@@ -53,7 +65,7 @@ state = {
           onBlur={ handleBlur }
           contact={ this.props.contact } 
           {...this.props} />
-        <Note label="2nd Person Situation" id="situation2" name="situation2" onChange={handleChange} onBlur={handleBlur}/>
+        <Note label="2nd Person Situation" id="situation2" name="lead.notes.secondPerson" onChange={handleChange} onBlur={handleBlur}/>
         </>
       )
     } else {

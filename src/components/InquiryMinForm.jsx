@@ -84,7 +84,8 @@ export default class InquiryForm extends React.Component {
         onSubmit={(values, actions) => {
           actions.setSubmitting(true);
           actions.validateForm();
-          submitToService({...values, actions});
+          let successful = submitToService({...values, actions});
+          console.log(`Was successful: ${successful}`)
         }}
         validationSchema={Yup.object().shape({
           "lead.influencer.email": Yup.string().email(),

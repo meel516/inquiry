@@ -1,6 +1,6 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
-import {  createCommunity, freeMealListing } from './CommunityServices'
+import { createCommunity, freeMealListing } from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
@@ -76,7 +76,7 @@ function createFetch(url) {
 
 // business logic ------
 
-function createEmptyContact() {
+export function createEmptyContact() {
   return {
     firstName: "",
     lastName: "",
@@ -107,14 +107,14 @@ function createEmptyNotes() {
 
 function createAdlNeeds() {
   return {
-      bathing: false,
-      dressing: false,
-      feeding: false,
-      incontinence: false,
-      medications: false,
-      toileting: false,
-      transferring: false,
-    }
+    bathing: false,
+    dressing: false,
+    feeding: false,
+    incontinence: false,
+    medications: false,
+    toileting: false,
+    transferring: false,
+  }
 }
 
 function createMemoryConcerns() {
@@ -122,7 +122,7 @@ function createMemoryConcerns() {
     dementia: false,
     memoryLoss: false,
     repeatsStories: false,
-    wandering: false,  
+    wandering: false,
   }
 }
 
@@ -134,7 +134,7 @@ function createMobilityConcerns() {
     usesWheelChair: false,
     secondPersonTransfer: false,
     usesCane: false,
-  }  
+  }
 }
 
 function createNutritionConcerns() {
@@ -188,7 +188,7 @@ export function createEmptyLead() {
 }
 
 export function createLeadById(guid) {
-var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
 
   return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
@@ -196,7 +196,7 @@ var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${gui
 
 async function submitInfluencer(influencer) {
   const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
-  if ( influencer ) {
+  if (influencer) {
     try {
       let response = await fetch(inflUrl, {
         method: 'POST', mode: 'cors',
@@ -255,18 +255,49 @@ async function submitNotes(coid, notes) {
     if (value && value.trim().length > 0) {
       let noteRequest = createNoteRequest(coid, value);
       fetch(noteUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(noteRequest),
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(noteRequest),
       })
-      .then(res =>  res.json())
-      .catch(err => console.log(err))
+        .then(res => res.json())
+        .catch(err => console.log(err))
     }
   }
 }
-                  
+
+async function submitProspectNeeds(coid, lead) {
+  const prospectNeedsUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/prospectneed`;
+
+  let prospectNeedsRequest = createProspectNeedsRequest(coid, lead);
+  console.log(JSON.stringify(prospectNeedsRequest));
+  fetch(prospectNeedsUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospectNeedsRequest),
+  })
+    .then(res => res.json())
+    .catch(err => console.log(err))
+}
+
+async function submitSecondPerson(secondPersonRequest) {
+  const secondPersonUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/secondperson`;
+
+  console.log(JSON.stringify(secondPersonRequest));
+  fetch(secondPersonUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(secondPersonRequest),
+  })
+    .then(res => res.json())
+    .catch(err => console.log(err))
+}
+
 /**
  * Processes the submission of the contact center to the sales system based upon
  * input from the inquiry form.
@@ -278,18 +309,20 @@ async function processContactCenter(lead, community) {
   const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
   let prospect = createProspectRequest(lead, community);
-  try {
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
-    })
-    const salesResponse = await response.json();
-    if (response.status === 201) {
-      // was successful
-      const { objectId } = salesResponse;
+
+  let response = await fetch(leadUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
+  })
+  const salesResponse = await response.json();
+  if (response.status === 201) {
+    // was successful
+    const { objectId } = salesResponse;
+
+    if (objectId) {
       lead.leadId = objectId
       console.log(`Sales Lead Id: ${objectId}`);
 
@@ -303,12 +336,22 @@ async function processContactCenter(lead, community) {
         submitNotes(objectId, notes);
       }
 
+      const careType = lead.careType
+      if (careType) {
+        submitProspectNeeds(objectId, lead);
+      }
+
+      const secondPerson = lead.secondPerson;
+      if (secondPerson) {
+        const secondPersonRequest = createSecondPersonRequest(objectId, lead.secondPerson);
+        submitSecondPerson(secondPersonRequest);
+      }
+
       return objectId;
     }
-
-  } catch (err) {
-    console.log(err);
-    // successful = false;
+    else {
+      throw new Error('Sales Lead was not created.')
+    }
   }
 }
 
@@ -320,9 +363,9 @@ async function handleProspectSubmission(lead, community) {
   let response = await fetch(leadUrl, {
     method: 'POST', mode: 'cors',
     headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
   })
   const salesResponse = await response.json();
   if (response.status === 201) {
@@ -330,11 +373,10 @@ async function handleProspectSubmission(lead, community) {
     lead.leadId = objectId
     return objectId;
   }
-
-  throw new ProspectError(response.status, (response.statusText||'Unable to communicate to server.'))
+  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
 }
 
-function ProspectError({status, message}) {
+function ProspectError({ status, message }) {
   this.status = status
   this.message = message
 }
@@ -397,12 +439,17 @@ export async function submitToService({ lead, communities, actions }) {
   let successful = true;
   console.log('submitting lead form to service');
 
-  if (lead.leadId) {
-    console.log(`LeadId: ${lead.leadId}`);
-    handleExistingInquiryForm(lead, communities, actions)
-  }
-  else {
-    handleNewInquiryForm(lead, communities, actions)
+  try {
+    if (lead.leadId) {
+      console.log(`LeadId: ${lead.leadId}`);
+      handleExistingInquiryForm(lead, communities, actions)
+    }
+    else {
+      handleNewInquiryForm(lead, communities, actions)
+    }
+  } catch (err) {
+    console.log(err);
+    successful = false;
   }
   actions.setSubmitting(false);
   return successful;
@@ -429,6 +476,10 @@ function SalesFollowup(leadId) {
   this.leadId = leadId
 }
 
+function SalesProspectNeed(leadId) {
+  this.leadId = leadId
+}
+
 function SalesInfluencer(leadId, salesContact) {
   this.leadId = leadId
   this.primary = true
@@ -444,6 +495,10 @@ function SalesPhone(number, type) {
   }
 }
 
+function SalesSecondPerson(salesLead) {
+  this.salesLead = salesLead
+}
+
 function SalesNote(leadId, note) {
   this.deleteInd = false
   this.bhsInd = false
@@ -457,14 +512,14 @@ function SalesAddress({ type = 'Home', active = true, primary = true }) {
   this.primary = primary
 }
 
-function SalesLead(salesContact) {
-  this.leadTypeId = 4;
+function SalesLead(salesContact, leadTypeId = 4) {
+  this.leadTypeId = leadTypeId;
   this.salesContact = salesContact;
 }
 
 function stripPhoneFormatting(phone) {
   if (phone == null) return null;
-  return phone.replace(/\D/g,'');
+  return phone.replace(/\D/g, '');
 }
 
 function createPhone(phone) {
@@ -513,14 +568,15 @@ function hasPhoneContacts(contact) {
   if (contact && contact.phone && contact.phone.number.length > 0) return true;
 }
 
-export function createProspectRequest(lead, community, lastName = 'Unknown') {
-  const { prospect } = lead;
+export function createProspectRequest(lead, community) {
+  const { prospect, influencer } = lead;
+  const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
   const salesContact = new SalesContact();
-  const salesLead = new SalesLead(salesContact);
+  const salesLead = new SalesLead(salesContact, 4);
 
   salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : lastName)
+  salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : defaultLastName)
   salesContact.emailAddress = prospect.email
   salesContact.age = prospect.age
   salesContact.veteranStatus = prospect.veteranStatus
@@ -538,6 +594,9 @@ export function createProspectRequest(lead, community, lastName = 'Unknown') {
   if (salesLead.inquirerType && salesLead.inquirerType === 'PROSP') {
     salesContact.gender = lead.callerType
   }
+
+  salesLead.salesLeadDriver = lead.drivers;
+  salesLead.salesLeadFinancialOption = lead.financialOptions;
 
   return salesLead;
 }
@@ -558,6 +617,66 @@ function createInfluencerRequest(coid, influencer) {
   addAddressToContact(influencer, salesContact);
 
   return salesInfluencer;
+}
+
+function createSecondPersonRequest(coid, secondperson) {
+  const salesContact = new SalesContact();
+  const salesLead = new SalesLead(salesContact, 5);
+  const salesSecondPerson = new SalesSecondPerson(salesLead);
+
+  salesContact.firstName = ((secondperson && secondperson.firstName) ? secondperson.firstName : '')
+  salesContact.lastName = ((secondperson && secondperson.lastName) ? secondperson.lastName : '')
+  salesContact.emailAddress = secondperson.email
+  addPhoneToContact(secondperson, salesContact);
+
+  const primarySalesLead = new SalesLead(null, null);
+  primarySalesLead.leadId = coid;
+  salesSecondPerson.primarySalesLead = primarySalesLead;
+
+  return salesSecondPerson;
+}
+
+function createProspectNeedsRequest(coid, lead) {
+  if (coid && lead.careType) {
+    const salesProspectNeed = new SalesProspectNeed(coid);
+    salesProspectNeed.careTypeId = Number(lead.careType);
+
+    if (lead.adlNeeds) {
+      salesProspectNeed.bathing = lead.adlNeeds.bathing;
+      salesProspectNeed.incontinence = lead.adlNeeds.incontinence;
+      salesProspectNeed.transferring = lead.adlNeeds.transferring;
+      salesProspectNeed.dressing = lead.adlNeeds.dressing;
+      salesProspectNeed.medications = lead.adlNeeds.medications;
+      salesProspectNeed.feeding = lead.adlNeeds.feeding;
+      salesProspectNeed.toileting = lead.adlNeeds.toileting;
+    }
+
+    if (lead.memoryConcerns) {
+      salesProspectNeed.alzDiagnosis = lead.memoryConcerns.dementia;
+      salesProspectNeed.argumentative = lead.memoryConcerns.memoryLoss;
+      salesProspectNeed.forgetsRepeats = lead.memoryConcerns.repeatsStories;
+      salesProspectNeed.wandering = lead.memoryConcerns.wandering;
+    }
+
+    if (lead.mobilityConcerns) {
+      salesProspectNeed.fallRisk = lead.mobilityConcerns.fallRisk;
+      salesProspectNeed.walkerRegularly = lead.mobilityConcerns.regularlyWalks;
+      salesProspectNeed.caneRegularly = lead.mobilityConcerns.usesCane;
+      salesProspectNeed.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair;
+      salesProspectNeed.onePersTransfer = lead.mobilityConcerns.personTransfer;
+      salesProspectNeed.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer;
+    }
+
+    if (lead.nutritionConcerns) {
+      salesProspectNeed.diabetesDiagnosis = lead.nutritionConcerns.diabetes;
+      salesProspectNeed.lowSaltLowDiet = lead.nutritionConcerns.lowSalt;
+      salesProspectNeed.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet;
+      salesProspectNeed.notEatingWell = lead.nutritionConcerns.notEatingWell;
+    }
+
+    return salesProspectNeed;
+  }
+  return null;
 }
 
 function createFollowupRequest(coid, community) {
