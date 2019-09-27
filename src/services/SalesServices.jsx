@@ -1,6 +1,6 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
-import {  createCommunity, freeMealListing } from './CommunityServices'
+import { createCommunity, freeMealListing } from './CommunityServices'
 
 /*
 since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
@@ -76,7 +76,7 @@ function createFetch(url) {
 
 // business logic ------
 
-function createEmptyContact() {
+export function createEmptyContact() {
   return {
     firstName: "",
     lastName: "",
@@ -107,14 +107,14 @@ function createEmptyNotes() {
 
 function createAdlNeeds() {
   return {
-      bathing: false,
-      dressing: false,
-      feeding: false,
-      incontinence: false,
-      medications: false,
-      toileting: false,
-      transferring: false,
-    }
+    bathing: false,
+    dressing: false,
+    feeding: false,
+    incontinence: false,
+    medications: false,
+    toileting: false,
+    transferring: false,
+  }
 }
 
 function createMemoryConcerns() {
@@ -122,7 +122,7 @@ function createMemoryConcerns() {
     dementia: false,
     memoryLoss: false,
     repeatsStories: false,
-    wandering: false,  
+    wandering: false,
   }
 }
 
@@ -134,7 +134,7 @@ function createMobilityConcerns() {
     usesWheelChair: false,
     secondPersonTransfer: false,
     usesCane: false,
-  }  
+  }
 }
 
 function createNutritionConcerns() {
@@ -188,7 +188,7 @@ export function createEmptyLead() {
 }
 
 export function createLeadById(guid) {
-var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+  var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
 
   return fetch(url, { mode: 'cors', cache: 'no-cache' })
     .then((res) => res.json());
@@ -196,7 +196,7 @@ var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${gui
 
 async function submitInfluencer(influencer) {
   const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
-  if ( influencer ) {
+  if (influencer) {
     try {
       let response = await fetch(inflUrl, {
         method: 'POST', mode: 'cors',
@@ -255,21 +255,21 @@ async function submitNotes(coid, notes) {
     if (value && value.trim().length > 0) {
       let noteRequest = createNoteRequest(coid, value);
       fetch(noteUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(noteRequest),
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(noteRequest),
       })
-      .then(res =>  res.json())
-      .catch(err => console.log(err))
+        .then(res => res.json())
+        .catch(err => console.log(err))
     }
   }
 }
 
 async function submitProspectNeeds(coid, lead) {
   const prospectNeedsUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/prospectneed`;
-  
+
   let prospectNeedsRequest = createProspectNeedsRequest(coid, lead);
   console.log(JSON.stringify(prospectNeedsRequest));
   fetch(prospectNeedsUrl, {
@@ -279,8 +279,8 @@ async function submitProspectNeeds(coid, lead) {
     },
     body: JSON.stringify(prospectNeedsRequest),
   })
-  .then(res =>  res.json())
-  .catch(err => console.log(err))
+    .then(res => res.json())
+    .catch(err => console.log(err))
 }
 
 async function submitSecondPerson(secondPersonRequest) {
@@ -294,10 +294,10 @@ async function submitSecondPerson(secondPersonRequest) {
     },
     body: JSON.stringify(secondPersonRequest),
   })
-  .then(res =>  res.json())
-  .catch(err => console.log(err))
+    .then(res => res.json())
+    .catch(err => console.log(err))
 }
-                  
+
 /**
  * Processes the submission of the contact center to the sales system based upon
  * input from the inquiry form.
@@ -340,7 +340,7 @@ async function processContactCenter(lead, community) {
       if (careType) {
         submitProspectNeeds(objectId, lead);
       }
-      
+
       const secondPerson = lead.secondPerson;
       if (secondPerson) {
         const secondPersonRequest = createSecondPersonRequest(objectId, lead.secondPerson);
@@ -353,7 +353,6 @@ async function processContactCenter(lead, community) {
       throw new Error('Sales Lead was not created.')
     }
   }
-
 }
 
 async function handleProspectSubmission(lead, community) {
@@ -364,9 +363,9 @@ async function handleProspectSubmission(lead, community) {
   let response = await fetch(leadUrl, {
     method: 'POST', mode: 'cors',
     headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
   })
   const salesResponse = await response.json();
   if (response.status === 201) {
@@ -374,11 +373,10 @@ async function handleProspectSubmission(lead, community) {
     lead.leadId = objectId
     return objectId;
   }
-
-  throw new ProspectError(response.status, (response.statusText||'Unable to communicate to server.'))
+  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
 }
 
-function ProspectError({status, message}) {
+function ProspectError({ status, message }) {
   this.status = status
   this.message = message
 }
@@ -449,7 +447,7 @@ export async function submitToService({ lead, communities, actions }) {
     else {
       handleNewInquiryForm(lead, communities, actions)
     }
-  } catch(err) {
+  } catch (err) {
     console.log(err);
     successful = false;
   }
@@ -521,7 +519,7 @@ function SalesLead(salesContact, leadTypeId = 4) {
 
 function stripPhoneFormatting(phone) {
   if (phone == null) return null;
-  return phone.replace(/\D/g,'');
+  return phone.replace(/\D/g, '');
 }
 
 function createPhone(phone) {
