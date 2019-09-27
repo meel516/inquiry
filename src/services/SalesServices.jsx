@@ -76,77 +76,77 @@ function createFetch(url) {
 
 // business logic ------
 function createContact(salesContact) {
-  if (salesContact) {
-    const contact = createEmptyContact();
-    contact.contactId = salesContact.contactId;
-    contact.firstName = salesContact.firstName;
-    contact.lastName = salesContact.lastName;
-    contact.age = salesContact.age;
-    contact.masterId = salesContact.masterId;
-    contact.veteranStatus = salesContact.veteranStatus;
-    contact.currentSituation = salesContact.currentSituation;
-    if (salesContact.address) {
-      const address = createEmptyAddress();
-      contact.address = address;
-    }
+    if (salesContact) {
+      const contact = createEmptyContact();
+      contact.contactId = salesContact.contactId;
+      contact.firstName = salesContact.firstName;
+      contact.lastName = salesContact.lastName;
+      contact.age = salesContact.age;
+      contact.masterId = salesContact.masterId;
+      contact.veteranStatus = salesContact.veteranStatus;
+      contact.currentSituation = salesContact.currentSituation;
+      if (salesContact.address) {
+        const address = createEmptyAddress();
+        contact.address = address;
+      }
 
+      return contact;
+    }
+    // TODO: do we create an empty contact or do we throw an exception that is caught and alerts the user?
+    const contact = createEmptyContact();
+    contact.address = createEmptyAddress();
     return contact;
   }
-  // TODO: do we create an empty contact or do we throw an exception that is caught and alerts the user?
-  const contact = createEmptyContact();
-  contact.address = createEmptyAddress();
-  return contact;
-}
 
 function createEmptyContact() {
-  return {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    email: "",
-    phone: {
-      number: "",
-      type: ""
+    return {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      email: "",
+      phone: {
+        number: "",
+        type: ""
+      }
     }
   }
-}
-
+  
 function createEmptyAddress() {
-  return {
-    line1: "",
-    line2: "",
-    city: "",
-    state: "",
-    zip: "",
-  }
-}
-
-function createEmptyNotes() {
-  return {
-
-  }
-}
-
-function createAdlNeeds() {
-  return {
-      bathing: false,
-      dressing: false,
-      feeding: false,
-      incontinence: false,
-      medications: false,
-      toileting: false,
-      transferring: false,
+    return {
+      line1: "",
+      line2: "",
+      city: "",
+      state: "",
+      zip: "",
     }
-}
-
-function createMemoryConcerns() {
-  return {
-    dementia: false,
-    memoryLoss: false,
-    repeatsStories: false,
-    wandering: false,  
   }
-}
+  
+function createEmptyNotes() {
+    return {
+  
+    }
+  }
+  
+function createAdlNeeds() {
+    return {
+        bathing: false,
+        dressing: false,
+        feeding: false,
+        incontinence: false,
+        medications: false,
+        toileting: false,
+        transferring: false,
+      }
+  }
+  
+function createMemoryConcerns() {
+    return {
+      dementia: false,
+      memoryLoss: false,
+      repeatsStories: false,
+      wandering: false,  
+    }
+  }
 
 function createMobilityConcerns() {
   return {
@@ -190,7 +190,13 @@ function createDrivers() {
   }
 }
 
-function Lead() { }
+class Lead {
+  constructor(leadId) {
+    if(leadId) {
+      this.leadId = leadId
+    }
+  }
+}
 
 function createLead(salesLead) {
   const lead = new Lead();
@@ -757,3 +763,4 @@ function createFollowupRequest(coid, community) {
   }
   return null;
 }
+

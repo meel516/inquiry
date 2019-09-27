@@ -31,13 +31,14 @@ export default class InquiryForm extends React.Component {
     debug: false,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const {lead, debug} = queryString.parse(this.props.location.search);
     console.log(`COID: ${lead}`);
 
     var leadObj = null;
     if (lead) {
-      let leadObj = createLeadById(lead)
+      let leadObj = await createLeadById(lead);
+      console.log(`Lead: ${JSON.stringify(leadObj)}`);
       this.setState({
         lead: leadObj,
         debug: debug
