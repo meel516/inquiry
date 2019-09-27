@@ -37,14 +37,11 @@ export default class InquiryForm extends React.Component {
 
     var leadObj = null;
     if (lead) {
-      createLeadById(lead)
-      .then((data) => {
-        this.setState({
-          lead: data,
-          debug: debug
-        })
+      let leadObj = createLeadById(lead)
+      this.setState({
+        lead: leadObj,
+        debug: debug
       })
-      .catch(error => console.log(error));
     }
     else {
       leadObj = createEmptyLead();

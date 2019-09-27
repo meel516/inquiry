@@ -75,6 +75,28 @@ function createFetch(url) {
 }
 
 // business logic ------
+function createContact(salesContact) {
+  if (salesContact) {
+    const contact = createEmptyContact();
+    contact.contactId = salesContact.contactId;
+    contact.firstName = salesContact.firstName;
+    contact.lastName = salesContact.lastName;
+    contact.age = salesContact.age;
+    contact.masterId = salesContact.masterId;
+    contact.veteranStatus = salesContact.veteranStatus;
+    contact.currentSituation = salesContact.currentSituation;
+    if (salesContact.address) {
+      const address = createEmptyAddress();
+      contact.address = address;
+    }
+
+    return contact;
+  }
+  // TODO: do we create an empty contact or do we throw an exception that is caught and alerts the user?
+  const contact = createEmptyContact();
+  contact.address = createEmptyAddress();
+  return contact;
+}
 
 function createEmptyContact() {
   return {
@@ -170,6 +192,22 @@ function createDrivers() {
 
 function Lead() { }
 
+function createLead(salesLead) {
+  const lead = new Lead();
+  lead.leadId = salesLead.leadId
+  lead.prospect = createContact(salesLead.salesContact)
+  lead.adlNeeds = createAdlNeeds();
+  lead.memoryConcerns = createMemoryConcerns();
+  lead.mobilityConcerns = createMobilityConcerns();
+  lead.nutritionConcerns = createNutritionConcerns();
+  lead.financialOptions = createFinancialOptions();
+  lead.drivers = createDrivers();
+
+  lead.notes = createEmptyNotes();
+
+  return lead;
+}
+
 export function createEmptyLead() {
   const lead = new Lead();
   lead.influencer = createEmptyContact();
@@ -187,11 +225,32 @@ export function createEmptyLead() {
   return lead;
 }
 
-export function createLeadById(guid) {
-var url = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+export async function createLeadById(guid) {
+  const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
 
-  return fetch(url, { mode: 'cors', cache: 'no-cache' })
-    .then((res) => res.json());
+  let salesLead = await createFetch(leadUrl);
+  if (salesLead) {
+    const lead = createLead(salesLead);
+
+    if (lead && lead.leadId) {
+      // fetch influencer
+      const {prospect} = lead;
+      if (prospect) {
+        const {contactId} = prospect;
+        lead.currentSituation = prospect.currentSituation
+        const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencers/${contactId}`
+
+        let influencers = await createFetch(inflUrl);
+        let influencer = (influencers||[]).find(function(influencer){
+          return (influencer.primary === true && influencer.active === true);
+        });
+        lead.influencer = createContact(influencer);
+      }
+    }
+    return lead;
+  }
+  // TODO: do we create an empty lead knowning that the system cannot find the lead? or alert the user?
+  return createEmptyLead();
 }
 
 async function submitInfluencer(influencer) {
