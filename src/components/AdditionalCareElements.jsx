@@ -1,34 +1,40 @@
 import React from 'react';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import CurrentSituation from './CurrentSituation';
 
 const additionalCareElements = [
- { value: 1, label: 'Memory Concerns'},
- { value: 2, label: 'Mobility Concerns'},
- { value: 3, label: 'Nutrition Concerns'},
- { value: 4, label: 'Current Living Situation'},
+  { value: 1, label: 'Memory Concerns' },
+  { value: 2, label: 'Mobility Concerns' },
+  { value: 3, label: 'Nutrition Concerns' },
+  { value: 4, label: 'Current Living Situation' },
 ];
 
 const additionalCareParams = [
-  { params: {
-    namespace: "lead.memoryConcerns.",
-    fields: [
-      "dementia", "memoryLoss", "repeatsStories", "wandering",
-    ]
-  }},
-  { params: {
-    namespace: "lead.mobilityConcerns.",
-    fields: [
-      "fallRisk", "regularlyWalks", "personTransfer", "usesWheelChair", "secondPersonTransfer", "usesCane",
-    ]
-  }},
-  { params: {
-    namespace: "lead.nutritionConcerns.",
-    fields: [
-      "diabetes", "lowSalt", "prescribedDiet", "notEatingWell",
-    ]
-  }},
+  {
+    params: {
+      namespace: "lead.memoryConcerns.",
+      fields: [
+        "dementia", "memoryLoss", "repeatsStories", "wandering",
+      ]
+    }
+  },
+  {
+    params: {
+      namespace: "lead.mobilityConcerns.",
+      fields: [
+        "fallRisk", "regularlyWalks", "personTransfer", "usesWheelChair", "secondPersonTransfer", "usesCane",
+      ]
+    }
+  },
+  {
+    params: {
+      namespace: "lead.nutritionConcerns.",
+      fields: [
+        "diabetes", "lowSalt", "prescribedDiet", "notEatingWell",
+      ]
+    }
+  },
 ];
 
 export default class AdditionalCareElements extends React.Component {
@@ -45,34 +51,34 @@ export default class AdditionalCareElements extends React.Component {
     this.differenceOf2Arrays = this.differenceOf2Arrays.bind(this);
   }
 
-  differenceOf2Arrays (array1, array2) {
+  differenceOf2Arrays(array1, array2) {
     var temp = [];
     array1 = array1.toString().split(',').map(Number);
     array2 = array2.toString().split(',').map(Number);
-    
+
     for (var i in array1) {
-      if(array2.indexOf(array1[i]) === -1) {
+      if (array2.indexOf(array1[i]) === -1) {
         temp.push(array1[i]);
       }
     }
-    for(i in array2) {
-      if(array1.indexOf(array2[i]) === -1) {
-       temp.push(array2[i]);
+    for (i in array2) {
+      if (array1.indexOf(array2[i]) === -1) {
+        temp.push(array2[i]);
       }
     }
-    
-    return temp.sort((a,b) => a-b);
+
+    return temp.sort((a, b) => a - b);
   }
 
   handleCurrentSituationChange = ({ target: { name, value } }) => {
     const qualifiedName = `lead.${name}`;
-    const {setFieldValue} = this.props;
+    const { setFieldValue } = this.props;
     setFieldValue(qualifiedName, value);
   }
 
   // elmnts - array of elements
   handleSelectCareElements = (elmnts) => {
-    const {setFieldValue} = this.props;
+    const { setFieldValue } = this.props;
     const currentElements = this.state.careElements || [];
     const modifiedElements = elmnts || [];
 
@@ -91,16 +97,16 @@ export default class AdditionalCareElements extends React.Component {
       if (modifiedElements.length === 0) {
         removedElement = currentElements;
       } else {
-        const justTheValues = modifiedElements.map((item) => {return item.value;});
+        const justTheValues = modifiedElements.map((item) => { return item.value; });
         removedElement = this.differenceOf2Arrays(currentElements, justTheValues);
       }
 
       // we don't care about 4th care element, Current Living Situation
       if (removedElement < 4) {
         const params = additionalCareParams[removedElement[0] - 1].params;
-        params.fields.forEach( e => {
+        params.fields.forEach(e => {
           setFieldValue(params.namespace.concat(e), false);
-        });  
+        });
       } else {
         setFieldValue("lead.currentSituation", undefined);
       }
@@ -109,45 +115,45 @@ export default class AdditionalCareElements extends React.Component {
 
   handleMemoryConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.memoryConcerns.".concat(name);
-    const {setFieldValue} = this.props;
+    const { setFieldValue } = this.props;
     setFieldValue(qualifiedName, checked);
   };
-  
+
   handleMobilityConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.mobilityConcerns.".concat(name);
-    const {setFieldValue} = this.props;
+    const { setFieldValue } = this.props;
     setFieldValue(qualifiedName, checked);
   };
 
   handleNutritionConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.nutritionConcerns.".concat(name);
-    const {setFieldValue} = this.props;
+    const { setFieldValue } = this.props;
     setFieldValue(qualifiedName, checked);
   };
-  
+
 
   render() {
     const { careElements } = this.state || [];
     return (
       <>
-      <Row>
-        <Col>
-          <FormGroup>
-            <Label for="additionalCareElements" className="label-format">Additional Care Elements Discovered</Label>
-            <Select isMulti
-              name="additionalCareElements"
-              onChange={this.handleSelectCareElements}
-              options={additionalCareElements}
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for="additionalCareElements" className="label-format">Additional Care Elements Discovered</Label>
+              <Select isMulti
+                name="additionalCareElements"
+                onChange={this.handleSelectCareElements}
+                options={additionalCareElements}
               />
-          </FormGroup>
-        </Col>
-      </Row>
-      { (careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange}/> : null }
-      { (careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange}/> : null }
-      { (careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange}/> : null }
-      { (careElements.includes(4) === true) ? <CurrentSituation onChange={this.handleCurrentSituationChange}/> : null } 
+            </FormGroup>
+          </Col>
+        </Row>
+        {(careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange} /> : null}
+        {(careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange} /> : null}
+        {(careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange} /> : null}
+        {(careElements.includes(4) === true) ? <CurrentSituation onChange={this.handleCurrentSituationChange} /> : null}
       </>
-    )  
+    )
   }
 }
 
@@ -188,8 +194,8 @@ function NutritionConcerns(props) {
             </FormGroup>
           </Col>
         </Row>
-  </section>
-  </>
+      </section>
+    </>
   )
 }
 
@@ -246,8 +252,8 @@ function MobilityConcerns(props) {
             </FormGroup>
           </Col>
         </Row>
-  </section>
-  </>
+      </section>
+    </>
   )
 }
 
@@ -288,7 +294,7 @@ function MemoryConcerns(props) {
             </FormGroup>
           </Col>
         </Row>
-  </section>
-  </>
+      </section>
+    </>
   )
 }

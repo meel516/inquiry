@@ -1,8 +1,8 @@
 import React from 'react';
-import {FormGroup, Input, Label} from 'reactstrap';
+import { FormGroup, Input, Label } from 'reactstrap';
 
 // <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
-import {getVeteranStatus} from '../services/SalesServices'
+import { DropDownService } from '../services/SalesServices'
 
 export default class VeteranStatus extends React.Component {
   state = {
@@ -10,7 +10,7 @@ export default class VeteranStatus extends React.Component {
   }
 
   componentDidMount() {
-    getVeteranStatus()
+    DropDownService.getVeteranStatus()
       .then((data) => {
         this.setState({ vetstatus: data })
       })
@@ -18,7 +18,7 @@ export default class VeteranStatus extends React.Component {
   }
 
   render() {
-    const {vetstatus} = this.state || [];
+    const { vetstatus } = this.state || [];
     const veteranStatusOptions = (vetstatus || []).map((status) => {
       return <option key={status.value} value={status.value}>{status.text}</option>
     })
@@ -31,6 +31,6 @@ export default class VeteranStatus extends React.Component {
           {veteranStatusOptions}
         </Input>
       </FormGroup>
-      )
+    )
   }
 }

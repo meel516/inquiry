@@ -52,6 +52,14 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `npm run test -t <path_to_test/>`
+
+Launches only the single test suite based upon the file supplied.
+
+### `npm run test:debug`
+
+Launches the test runn in debugger mode so that you can debug into your unit tests if necessary.  The way to set a break point is to add debugger statement and run the test and chrome will stop at the debug point. [debugging tests](https://facebook.github.io/create-react-app/docs/debugging-tests)
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br>

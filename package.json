@@ -27,6 +27,7 @@
     "local": "react-scripts start --env=local",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "test:update": "react-scripts test --updateSnapshot",
     "test:coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject",

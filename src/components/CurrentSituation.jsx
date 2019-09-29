@@ -1,7 +1,7 @@
 import React from 'react';
-import {FormGroup, Input, Label} from 'reactstrap';
+import { FormGroup, Input, Label } from 'reactstrap';
 
-import {getCurrentSituation} from '../services/SalesServices'
+import { DropDownService } from '../services/SalesServices'
 
 export default class CurrentSituation extends React.Component {
   state = {
@@ -9,15 +9,15 @@ export default class CurrentSituation extends React.Component {
   }
 
   componentDidMount() {
-    getCurrentSituation()
+    DropDownService.getCurrentSituation()
       .then((data) => this.setState({ currentSituation: data }))
       .catch(error => console.log(error));
   }
 
   render() {
-    const {currentSituation} = this.state||[];
+    const { currentSituation } = this.state || [];
     const currentSituationOptions = currentSituation.map((type) => {
-      return  <option key={type.value} value={type.value}>{type.text}</option>
+      return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
     return (

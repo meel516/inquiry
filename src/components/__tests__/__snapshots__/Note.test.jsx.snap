@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`verify note rendering 1`] = `
+<div
+  className="form-group"
+>
+  <label
+    className="label-format"
+    htmlFor="additionalNotes"
+  >
+    Additional Notes
+  </label>
+  <textarea
+    className="form-control"
+    id="additionalNotes"
+    name="lead.notes.additionalNotes"
+    onBlur={[Function]}
+    onChange={[Function]}
+  />
+</div>
+`;

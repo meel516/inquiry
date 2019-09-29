@@ -1,5 +1,5 @@
 import React from 'react';
-import {fetchCommunities} from '../CommunityServices';
+import { fetchCommunities } from '../CommunityServices';
 
 // expect.extends({
 //   toContainCommunity(received, buId) {
@@ -10,7 +10,7 @@ import {fetchCommunities} from '../CommunityServices';
 test('fetcing communities via api service', () => {
   return fetchCommunities()
     .then((resp) => {
-      const {data} = resp;
+      const { data } = resp;
       console.log(data)
       expect(data).toEqual(
         expect.arrayContaining([

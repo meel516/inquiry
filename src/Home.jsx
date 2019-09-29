@@ -4,9 +4,9 @@ import { checkAuthentication } from './auth/checkAuth';
 import { Redirect } from 'react-router-dom';
 
 export default withAuth(class Home extends Component {
-  state = { 
-    authenticated: null, 
-    userinfo: null 
+  state = {
+    authenticated: null,
+    userinfo: null
   }
   checkAuthentication = checkAuthentication.bind(this);
 
@@ -20,17 +20,17 @@ export default withAuth(class Home extends Component {
 
   render() {
     if (this.state.authenticated === null) return null;
-    
+
     const homeContent = this.state.authenticated ? (
       <div>
         <Redirect to='/inquiryForm' />
       </div>
     ) : (
-      <div>
-        <Redirect to='/redirect' />
-      </div>
-    );
-    
+        <div>
+          <Redirect to='/redirect' />
+        </div>
+      );
+
     return (
       <div>
         {homeContent}

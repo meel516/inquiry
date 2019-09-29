@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row} from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
 
 import CommunityLookup from './CommunityLookup'
 import Visit from './Visit';
-import {getFollowupActions} from '../services/SalesServices'
+import { DropDownService } from '../services/SalesServices'
 
 export default class CommunitySelect extends React.Component {
   state = {
@@ -12,52 +12,52 @@ export default class CommunitySelect extends React.Component {
   }
 
   componentDidMount() {
-    getFollowupActions()
-      .then((data) => this.setState({followupActions: data}))
+    DropDownService.getFollowupActions()
+      .then((data) => this.setState({ followupActions: data }))
       .catch((err) => console.error("Error", err));
   }
 
-  handleRemoveCommunity = () => {    
+  handleRemoveCommunity = () => {
     this.props.onRemove();
   }
 
   handleFollowupAction = (optn) => {
-    const {index, setFieldValue} = this.props;
+    const { index, setFieldValue } = this.props;
     setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
-    this.setState({selectedAction: optn.target.value})
+    this.setState({ selectedAction: optn.target.value })
   }
 
-  render () {
-    const {selectedAction, followupActions} = this.state;
-    const {community, index, handleChange, handleBlur} = this.props;
-    const followupOptns = (followupActions||[]).map((optn) => {
+  render() {
+    const { selectedAction, followupActions } = this.state;
+    const { community, index, handleChange, handleBlur } = this.props;
+    const followupOptns = (followupActions || []).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
 
-   return (
-     <div className="communities-container">
-       <Card>
-         <CardBody>
-           <Row>
-             <Col>
-               <CommunityLookup {...this.props}/>
-             </Col>
-           </Row>
-           <Row>
-             <Col>
+    return (
+      <div className="communities-container">
+        <Card>
+          <CardBody>
+            <Row>
+              <Col>
+                <CommunityLookup {...this.props} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
                 <FormGroup>
                   <Label for="startingPrice" className="label-format">Starting at Price</Label>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>$</InputGroupText>
                     </InputGroupAddon>
-                    <Input type="number" 
-                      id="startingPrice" 
-                      name={`communities[${index}].startingPrice`} 
-                      value={community.startingPrice||''} 
-                      onChange={handleChange} 
+                    <Input type="number"
+                      id="startingPrice"
+                      name={`communities[${index}].startingPrice`}
+                      value={community.startingPrice || ''}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="Starting at Price"/>
+                      placeholder="Starting at Price" />
                   </InputGroup>
                 </FormGroup>
               </Col>
@@ -68,11 +68,11 @@ export default class CommunitySelect extends React.Component {
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>$</InputGroupText>
                     </InputGroupAddon>
-                    <Input type="number" 
-                      id="secondPersonFee" 
+                    <Input type="number"
+                      id="secondPersonFee"
                       name={`communities[${index}].secondPersonFee`}
-                      value={community.secondPersonFee||''} 
-                      onChange={handleChange} 
+                      value={community.secondPersonFee || ''}
+                      onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="2nd Person Fee" />
                   </InputGroup>
@@ -85,11 +85,11 @@ export default class CommunitySelect extends React.Component {
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>$</InputGroupText>
                     </InputGroupAddon>
-                    <Input type="number" 
-                      id="communityFee" 
+                    <Input type="number"
+                      id="communityFee"
                       name={`communities[${index}].communityFee`}
-                      value={community.communityFee|''} 
-                      onChange={handleChange} 
+                      value={community.communityFee | ''}
+                      onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Community Fee" />
                   </InputGroup>
@@ -108,16 +108,16 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             {
-              ( selectedAction ) ? <Visit  onChange={this.props.handleChange} {...this.props}/> : null
+              (selectedAction) ? <Visit onChange={this.props.handleChange} {...this.props} /> : null
             }
-        </CardBody>
-        <CardFooter className="text-right">
-          <Button color="primary" size="sm" onClick={this.handleRemoveCommunity}>Remove</Button>
-        </CardFooter>
-      </Card>
-    </div>
-   )
- }
+          </CardBody>
+          <CardFooter className="text-right">
+            <Button color="primary" size="sm" onClick={this.handleRemoveCommunity}>Remove</Button>
+          </CardFooter>
+        </Card>
+      </div>
+    )
+  }
 }
 
 // CommunitySelect.propTypes = {

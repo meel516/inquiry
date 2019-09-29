@@ -8,9 +8,9 @@ import Navigator from './Headers/Navigator';
 import Footer from './Footers/Footer';
 import Section from '../components/Section';
 
-export default withAuth(class LayoutManager extends React.Component { 
+export default withAuth(class LayoutManager extends React.Component {
   state = {
-    authenticated: null, 
+    authenticated: null,
     userinfo: null,
   }
   checkAuthentication = checkAuthentication.bind(this)
@@ -20,29 +20,29 @@ export default withAuth(class LayoutManager extends React.Component {
   }
 
   componentDidUpdate() {
-     this.checkAuthentication();
+    this.checkAuthentication();
   }
 
-  render () {
-   const props = {...this.props, ...this.state};
-   return (
-     <div>
-       <Navigator {...props}/>
-       <div className="container-fluid">
-        <div className="row">
-          <div className="col-2">
-            <Section />
-          </div>
-          <div className="col-7 inquiry-form">
-            <InquiryForm {...props} />
-          </div>
-          <div className="col-3">
-            <LinksManager />
+  render() {
+    const props = { ...this.props, ...this.state };
+    return (
+      <div>
+        <Navigator {...props} />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-2">
+              <Section />
+            </div>
+            <div className="col-7 inquiry-form">
+              <InquiryForm {...props} />
+            </div>
+            <div className="col-3">
+              <LinksManager />
+            </div>
           </div>
         </div>
-       </div>
-       <Footer />
-     </div>
-   )
- }
+        <Footer />
+      </div>
+    )
+  }
 })

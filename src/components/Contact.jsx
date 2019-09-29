@@ -1,23 +1,28 @@
 import React from 'react';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 
-import {getPhoneTypes, checkForDuplicate} from '../services/SalesServices'
+import { DropDownService, DuplicationService } from '../services/SalesServices'
 
 export default class Contact extends React.Component {
-  state = {
-    phoneTypes: [],
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      phoneTypes: [],
+    }
+    this.dedup = new DuplicationService()
   }
 
   componentDidMount() {
-    getPhoneTypes()
+    DropDownService.getPhoneTypes()
       .then((data) => this.setState({ phoneTypes: data }))
       .catch(error => console.log(error));
   }
 
   handleDupCheck = event => {
-    const {contact} = this.props;
-    if (this.canDuplicateCheck(contact)) {
+    const { contact } = this.props;
+    if (DuplicationService.shouldRunDuplicateCheck(contact)) {
       // console.log('run duplicate check!');
       // checkForDuplicate()
       //   .then((data) => this.setState({ duplicate: data }))
@@ -27,25 +32,10 @@ export default class Contact extends React.Component {
     }
   }
 
-  canDuplicateCheck = (contact) => {
-    if (contact) {
-      const {firstName, lastName, email, phoneNumber, phoneType} = contact;
-      if (firstName === "" || lastName === "") {
-        return false;
-      }
-      if ( (phoneNumber === "" && phoneType === "") || email === "") {
-        return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
-
   render() {
-    const {phoneTypes} = this.state||[];
-    const {contact, errors, touched, onChange} = this.props;
-    const displayablePhoneTypes = (phoneTypes||[]).map(type => {
+    const { phoneTypes } = this.state || [];
+    const { contact, errors, touched, onChange } = this.props;
+    const displayablePhoneTypes = (phoneTypes || []).map(type => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
@@ -57,7 +47,7 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
+              <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name" />
             </FormGroup>
           </Col>
           <Col>
@@ -70,13 +60,13 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
-              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number || ''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for="phoneTypes" className="label-format">Phone Type</Label>
-              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type||''} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
+              <Input type="select" name={`lead.${this.props.type}.phone.type`} value={contact.phone.type || ''} onChange={this.props.onChange} onBlur={this.handleDupCheck}>
                 <option value="">Select One</option>
                 {displayablePhoneTypes}
               </Input>
