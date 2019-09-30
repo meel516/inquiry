@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
+import { ErrorMessage } from 'formik';
 
 const nextStepsOptionsArray = [
   { value: 1, label: 'Visit/Assessment/Home Visit Scheduled' },
@@ -31,10 +32,11 @@ export default class NextStepsSelect extends React.Component {
     return (
       <FormGroup>
         <Label for="nextSteps" id="nextStepsLabel" className="label-format">Result of Call</Label>
-        <Input type="select" id="nextSteps" name="lead.nextSteps" onChange={this.handleChange} onBlur={this.onBlur} >
+        <Input type="select" id="nextSteps" name='lead.fua' onChange={this.props.handleChange} onBlur={this.props.onBlur} >
           <option value="">Select One</option>
           {nextStepsOptions}
         </Input>
+        <ErrorMessage name="lead.fua" component="div"/>
       </FormGroup>
 
     )
