@@ -1,7 +1,7 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ProspectError, ObjectMappingService } from './Types'
+import { ProspectError, ObjectMappingService, Util } from './Types'
 import { CommunityService } from './CommunityServices'
 
 class DuplicationService {
@@ -280,7 +280,7 @@ class SalesAPIService {
         }
 
         const secondPerson = lead.secondPerson;
-        if (secondPerson) {
+        if (secondPerson && !Util.isContactEmpty(secondPerson)) {
           const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(objectId, lead.secondPerson);
           this.submitSecondPerson(secondPersonRequest);
         }

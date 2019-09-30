@@ -1,14 +1,9 @@
-import React from 'react';
-import { fetchCommunities } from '../CommunityServices';
 
-// expect.extends({
-//   toContainCommunity(received, buId) {
-//     console.log(received);
-//   }
-// })
+import { CommunityService } from '../CommunityServices';
 
 test('fetcing communities via api service', () => {
-  return fetchCommunities()
+  const service = new CommunityService()
+  return service.fetchCommunities('jtoepfer')
     .then((resp) => {
       const { data } = resp;
       console.log(data)

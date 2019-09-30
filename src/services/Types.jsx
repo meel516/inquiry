@@ -93,10 +93,18 @@ class Util {
         if (contact && contact.phone && contact.phone.number.length > 0) return true;
     }
 
+    /**
+     * checks to see if the contact has a first/last name if so then it's not empty,
+     * otherwise if either/both are missing it is considered empty.
+     * @param {Contact} contact 
+     */
     static isContactEmpty(contact) {
-        debugger;
+        debugger
         if (contact) {
-            if (!contact.firstName && !contact.lastName) {
+            if (!contact.firstName || !contact.lastName) {
+                return true;
+            }
+            else {
                 return false;
             }
         }
@@ -382,32 +390,43 @@ class ObjectMappingService {
     }
 
     static createProspectRequest(lead, community) {
-        debugger
+        if (!lead || !community) return;
+
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
         const salesContact = new SalesContact();
         const salesLead = new SalesLead(salesContact, 4);
 
-        salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
-        salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : defaultLastName)
-        salesContact.emailAddress = prospect.email
-        salesContact.age = prospect.age
-        salesContact.veteranStatus = prospect.veteranStatus
-        salesContact.currentSituation = lead.currentSituation
-        this.addPhoneToContact(prospect, salesContact)
+        let callingFor = Util.mapInquiryTypeValue(lead.callingFor)
+        if (callingFor === 'PROSP') {
+            salesContact.firstName = influencer.firstName;
+            salesContact.lastName = influencer.lastName;
+            salesContact.emailAddress = influencer.email;
+            salesContact.age = prospect.age;
+            salesContact.age = prospect.age
+            salesContact.veteranStatus = prospect.veteranStatus
+            salesContact.currentSituation = lead.currentSituation
+            this.addAddressToContact(influencer, salesContact);
+            this.addPhoneToContact(influencer, salesContact)
+            salesContact.gender = lead.callerType
+        }
+        else {
+            salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
+            salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : defaultLastName)
+            salesContact.emailAddress = prospect.email
+            salesContact.age = prospect.age
+            salesContact.veteranStatus = prospect.veteranStatus
+            salesContact.currentSituation = lead.currentSituation
+            this.addPhoneToContact(prospect, salesContact)
+        }
 
         salesLead.inquiryTypeId = prospect.reasonForCall
-        let callingFor = Util.mapInquiryTypeValue(lead.callingFor)
         salesLead.inquirerType = callingFor
         salesLead.buildingId = community.communityId
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.interestReasonId = lead.reasonForCall
-
-        if (salesLead.inquirerType && salesLead.inquirerType === 'PROSP') {
-            salesContact.gender = lead.callerType
-        }
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;

@@ -1,4 +1,5 @@
 
+import { TestUtils } from './test-utils'
 import { ObjectMappingService, Util as Utils } from "../Types"
 
 test('test phone number digits only', () => {
@@ -51,4 +52,10 @@ test('test undefined contact is empty', () => {
 test('test empty contact still empty', () => {
     const contact = ObjectMappingService.createEmptyContact();
     expect(Utils.isContactEmpty(contact)).toBeTruthy()
+})
+
+test('test first name only still empty', () => {
+    const contact = ObjectMappingService.createEmptyContact();
+    TestUtils.addFirstName(contact)
+    expect(Utils.isContactEmpty(contact)).toBeTruthy() 
 })

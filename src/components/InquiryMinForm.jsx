@@ -29,7 +29,6 @@ export default class InquiryForm extends React.Component {
   state = {
     communities: [],
     lead: ObjectMappingService.createEmptyLead(),
-    debug: false,
   };
 
   async componentDidMount() {
@@ -39,7 +38,7 @@ export default class InquiryForm extends React.Component {
     var leadObj = null;
     if (lead) {
       const salesapi = new SalesAPIService();
-      let leadObj = await salesapi.getLeadById(lead);
+      leadObj = await salesapi.getLeadById(lead);
       this.setState({
         lead: leadObj,
       })
@@ -74,7 +73,9 @@ export default class InquiryForm extends React.Component {
   }
 
   render() {
-    console.log(`Debugging is : ${this.state.debug}`)
+    if (!this.state.lead) {
+      return 'loading...'
+    }
     return (
       <Formik
         initialValues={{ ...this.state }}
