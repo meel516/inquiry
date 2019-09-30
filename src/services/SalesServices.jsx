@@ -236,6 +236,30 @@ class SalesAPIService {
       .catch(err => console.log(err))
   }
 
+  async submitProspect(lead, community) {
+    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+
+    const prospect = ObjectMappingService.createProspectRequest(lead, community);
+
+    let response = await fetch(leadUrl, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(prospect)
+    })
+    const salesResponse = await response.json();
+    if (response.status === 201) {
+      const { objectId } = salesResponse;
+      prospect.leadId = objectId
+
+      return prospect;
+    }
+    else {
+      throw new Error('Sales Lead was not created.')
+    }
+  }
+
   /**
   * Processes the submission of the contact center to the sales system based upon
   * input from the inquiry form.
@@ -244,158 +268,138 @@ class SalesAPIService {
   * @param {Community} community an object representing the contact center
   */
   async processContactCenter(lead, community) {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+    const salesLead = await this.submitProspect(lead, community)
+    let leadId = lead.leadId = salesLead.leadId
 
-    let prospect = ObjectMappingService.createProspectRequest(lead, community);
+    if (salesLead.inquirerType !== 'PROSP') {
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer);
+      this.submitInfluencer(influencer);
+    }
 
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
-    })
-    const salesResponse = await response.json();
-    if (response.status === 201) {
-      // was successful
-      const { objectId } = salesResponse;
+    const notes = lead.notes
+    if (notes) {
+      this.submitNotes(leadId, notes);
+    }
 
-      if (objectId) {
-        lead.leadId = objectId
-        console.log(`Sales Lead Id: ${objectId}`);
+    debugger
+    const careType = lead.careType
+    if (careType) {
+      this.submitProspectNeeds(leadId, lead);
+    }
 
-        if (prospect.inquirerType !== 'PROSP') {
-          const influencer = ObjectMappingService.createInfluencerRequest(objectId, lead.influencer);
-          this.submitInfluencer(influencer);
-        }
+    const secondPerson = lead.secondPerson;
+    if (secondPerson && !Util.isContactEmpty(secondPerson)) {
+      const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson);
+      this.submitSecondPerson(secondPersonRequest);
+    }
 
-        const notes = lead.notes
-        if (notes) {
-          this.submitNotes(objectId, notes);
-        }
+    return leadId;
+  }
 
-        const careType = lead.careType
-        if (careType) {
-          this.submitProspectNeeds(objectId, lead);
-        }
 
-        const secondPerson = lead.secondPerson;
-        if (secondPerson && !Util.isContactEmpty(secondPerson)) {
-          const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(objectId, lead.secondPerson);
-          this.submitSecondPerson(secondPersonRequest);
-        }
+async handleProspectSubmission(lead, community) {
+  const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
-        return objectId;
+  let prospect = ObjectMappingService.createProspectRequest(lead, community);
+
+  let response = await fetch(leadUrl, {
+    method: 'POST', mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prospect)
+  })
+  const salesResponse = await response.json();
+  if (response.status === 201) {
+    const { objectId } = salesResponse;
+    lead.leadId = objectId
+    return objectId;
+  }
+  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
+}
+
+async retrieveProspect(leadId) {
+  const prospectUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/prospect`
+
+  // already returning json from this fetch
+  const prospect = await this.createFetch(prospectUrl)
+  return prospect;
+}
+
+async handleNewInquiryForm(lead, communities, actions) {
+
+  const communityList = [...communities];
+
+  // IF zero/many community is selected always assume Contact Center community
+  let leadId = null;
+  if (!CommunityService.containContactCenter(communities)) {
+    let community = CommunityService.createCommunity();
+    community.communityId = 225707
+    leadId = await this.processContactCenter(lead, community);
+  }
+  else {
+    let contactCenter;
+    communityList.map((community) => {
+      if (CommunityService.isContactCenter(community)) {
+        contactCenter = community;
+        return null;
       }
-      else {
-        throw new Error('Sales Lead was not created.')
-      }
+      return community;
+    });
+
+    if (contactCenter != null) {
+      leadId = await this.processContactCenter(lead, contactCenter);
     }
   }
 
-  async handleProspectSubmission(lead, community) {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+  if (leadId == null) {
+    leadId = lead.leadId;
+  }
 
-    let prospect = ObjectMappingService.createProspectRequest(lead, community);
+  if (leadId != null) {
+    let prospect = await this.retrieveProspect(leadId);
+    for (let i = 0; i < communityList.length; i++) {
+      let community = communityList[i];
+      this.handleProspectSubmission(community, prospect);
 
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospect)
-    })
-    const salesResponse = await response.json();
-    if (response.status === 201) {
-      const { objectId } = salesResponse;
-      lead.leadId = objectId
-      return objectId;
+      this.submitFollowup(leadId, community);
+
     }
-    throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
   }
+}
 
-  async retrieveProspect(leadId) {
-    const prospectUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/prospect`
+handleExistingInquiryForm(lead, communities, actions) {
 
-    // already returning json from this fetch
-    const prospect = await this.createFetch(prospectUrl)
-    return prospect;
-  }
+}
 
-  async handleNewInquiryForm(lead, communities, actions) {
-
-    const communityList = [...communities];
-
-    // IF zero/many community is selected always assume Contact Center community
-    let leadId = null;
-    if (!CommunityService.containContactCenter(communities)) {
-      let community = CommunityService.createCommunity();
-      community.communityId = 225707
-      leadId = await this.processContactCenter(lead, community);
+async submitToService({ lead, communities, actions }) {
+  let successful = true;
+  try {
+    if (lead.leadId) {
+      console.log(`LeadId: ${lead.leadId}`);
+      this.handleExistingInquiryForm(lead, communities, actions)
     }
     else {
-      let contactCenter;
-      communityList.map((community) => {
-        if (CommunityService.isContactCenter(community)) {
-          contactCenter = community;
-          return null;
-        }
-        return community;
-      });
-
-      if (contactCenter != null) {
-        leadId = await this.processContactCenter(lead, contactCenter);
-      }
+      this.handleNewInquiryForm(lead, communities, actions)
     }
-
-    if (leadId == null) {
-      leadId = lead.leadId;
-    }
-
-    if (leadId != null) {
-      let prospect = await this.retrieveProspect(leadId);
-      for (let i = 0; i < communityList.length; i++) {
-        let community = communityList[i];
-        this.handleProspectSubmission(community, prospect);
-
-        this.submitFollowup(leadId, community);
-
-      }
-    }
+  } catch (err) {
+    console.log(err);
+    successful = false;
   }
+  actions.setSubmitting(false);
+  return successful;
+}
 
-  handleExistingInquiryForm(lead, communities, actions) {
+createFetch(url) {
+  return fetch(url, { mode: 'cors', cache: 'no-cache' })
+    .then((res) => res.json())
+}
 
+log(msg) {
+  if (process.env.NODE_ENV !== "production") {
+    console.log(msg);
   }
-
-  async submitToService({ lead, communities, actions }) {
-    let successful = true;
-    try {
-      if (lead.leadId) {
-        console.log(`LeadId: ${lead.leadId}`);
-        this.handleExistingInquiryForm(lead, communities, actions)
-      }
-      else {
-        this.handleNewInquiryForm(lead, communities, actions)
-      }
-    } catch (err) {
-      console.log(err);
-      successful = false;
-    }
-    actions.setSubmitting(false);
-    return successful;
-  }
-
-  createFetch(url) {
-    return fetch(url, { mode: 'cors', cache: 'no-cache' })
-      .then((res) => res.json())
-  }
-
-  log(msg) {
-    if (process.env.NODE_ENV !== "production") {
-      console.log(msg);
-    }
-  }
+}
 }
 
 class Logger {
