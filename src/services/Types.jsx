@@ -99,7 +99,6 @@ class Util {
      * @param {Contact} contact 
      */
     static isContactEmpty(contact) {
-        debugger
         if (contact) {
             if (!contact.firstName || !contact.lastName) {
                 return true;
@@ -133,17 +132,28 @@ class ObjectMappingService {
 
     static createLead(salesLead) {
         const lead = new Lead();
-        lead.leadId = salesLead.leadId
-        lead.prospect = this.createContact(salesLead.salesContact)
-        lead.adlNeeds = this.createAdlNeeds();
-        lead.memoryConcerns = this.createMemoryConcerns();
-        lead.mobilityConcerns = this.createMobilityConcerns();
-        lead.nutritionConcerns = this.createNutritionConcerns();
-        lead.financialOptions = this.createFinancialOptions();
-        lead.drivers = this.createDrivers();
-
-        lead.notes = this.createEmptyNotes();
-
+        if (salesLead) {
+            lead.leadId = salesLead.leadId
+            lead.adlNeeds = this.createAdlNeeds();
+            lead.memoryConcerns = this.createMemoryConcerns();
+            lead.mobilityConcerns = this.createMobilityConcerns();
+            lead.nutritionConcerns = this.createNutritionConcerns();
+            lead.financialOptions = this.createFinancialOptions();
+            lead.drivers = this.createDrivers();
+            lead.leadSource = salesLead.inquiryLeadSourceId
+            lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
+            lead.leadTypeId = salesLead.leadTypeId
+            lead.notes = this.createEmptyNotes();
+            if (salesLead.salesContact) {
+                const {salesContact} = salesLead;
+                lead.currentSituation = salesContact.currentSituation
+                lead.veteranStatus = salesContact.veteranStatus
+                lead.prospect = this.createContact(salesContact);
+            }
+        }
+        else {
+            return this.createEmptyLead();
+        }
         return lead;
     }
 
@@ -174,10 +184,20 @@ class ObjectMappingService {
             contact.masterId = salesContact.masterId;
             contact.veteranStatus = salesContact.veteranStatus;
             contact.currentSituation = salesContact.currentSituation;
+            const address = this.createEmptyAddress();
             if (salesContact.address) {
-                const address = this.createEmptyAddress();
-                contact.address = address;
+                const salesAddress = salesContact.address
+                address.addressId = salesAddress.addressId
+                address.addressType = salesAddress.addressType
+                address.primary = salesAddress.primary
+                address.active = salesAddress.active
+                address.line1 = salesAddress.addressLine1
+                address.line2 = salesAddress.addressLine2
+                address.city = salesAddress.city
+                address.state = salesAddress.stateProv
+                address.zip = salesAddress.zipPostalCode
             }
+            contact.address = address;
 
             return contact;
         }
@@ -315,38 +335,39 @@ class ObjectMappingService {
         if (coid && lead.careType) {
             const salesProspectNeed = new SalesProspectNeed(coid);
             salesProspectNeed.careTypeId = Number(lead.careType);
+            const {adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns} = lead
 
-            if (lead.adlNeeds) {
-                salesProspectNeed.bathing = lead.adlNeeds.bathing;
-                salesProspectNeed.incontinence = lead.adlNeeds.incontinence;
-                salesProspectNeed.transferring = lead.adlNeeds.transferring;
-                salesProspectNeed.dressing = lead.adlNeeds.dressing;
-                salesProspectNeed.medications = lead.adlNeeds.medications;
-                salesProspectNeed.feeding = lead.adlNeeds.feeding;
-                salesProspectNeed.toileting = lead.adlNeeds.toileting;
+            if (adlNeeds) {
+                salesProspectNeed.bathing = adlNeeds.bathing;
+                salesProspectNeed.incontinence = adlNeeds.incontinence;
+                salesProspectNeed.transferring = adlNeeds.transferring;
+                salesProspectNeed.dressing = adlNeeds.dressing;
+                salesProspectNeed.medications = adlNeeds.medications;
+                salesProspectNeed.feeding = adlNeeds.feeding;
+                salesProspectNeed.toileting = adlNeeds.toileting;
             }
 
-            if (lead.memoryConcerns) {
-                salesProspectNeed.alzDiagnosis = lead.memoryConcerns.dementia;
-                salesProspectNeed.argumentative = lead.memoryConcerns.memoryLoss;
-                salesProspectNeed.forgetsRepeats = lead.memoryConcerns.repeatsStories;
-                salesProspectNeed.wandering = lead.memoryConcerns.wandering;
+            if (memoryConcerns) {
+                salesProspectNeed.alzDiagnosis = memoryConcerns.dementia;
+                salesProspectNeed.argumentative = memoryConcerns.memoryLoss;
+                salesProspectNeed.forgetsRepeats = memoryConcerns.repeatsStories;
+                salesProspectNeed.wandering = memoryConcerns.wandering;
             }
 
-            if (lead.mobilityConcerns) {
-                salesProspectNeed.fallRisk = lead.mobilityConcerns.fallRisk;
-                salesProspectNeed.walkerRegularly = lead.mobilityConcerns.regularlyWalks;
-                salesProspectNeed.caneRegularly = lead.mobilityConcerns.usesCane;
-                salesProspectNeed.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair;
-                salesProspectNeed.onePersTransfer = lead.mobilityConcerns.personTransfer;
-                salesProspectNeed.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer;
+            if (mobilityConcerns) {
+                salesProspectNeed.fallRisk = mobilityConcerns.fallRisk;
+                salesProspectNeed.walkerRegularly = mobilityConcerns.regularlyWalks;
+                salesProspectNeed.caneRegularly = mobilityConcerns.usesCane;
+                salesProspectNeed.wheelchairRegularly = mobilityConcerns.usesWheelChair;
+                salesProspectNeed.onePersTransfer = mobilityConcerns.personTransfer;
+                salesProspectNeed.twoPersTransfer = mobilityConcerns.secondPersonTransfer;
             }
 
-            if (lead.nutritionConcerns) {
-                salesProspectNeed.diabetesDiagnosis = lead.nutritionConcerns.diabetes;
-                salesProspectNeed.lowSaltLowDiet = lead.nutritionConcerns.lowSalt;
-                salesProspectNeed.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet;
-                salesProspectNeed.notEatingWell = lead.nutritionConcerns.notEatingWell;
+            if (nutritionConcerns) {
+                salesProspectNeed.diabetesDiagnosis = nutritionConcerns.diabetes;
+                salesProspectNeed.lowSaltLowDiet = nutritionConcerns.lowSalt;
+                salesProspectNeed.otherDietRestrictions = nutritionConcerns.prescribedDiet;
+                salesProspectNeed.notEatingWell = nutritionConcerns.notEatingWell;
             }
 
             return salesProspectNeed;
@@ -400,14 +421,13 @@ class ObjectMappingService {
 
         let callingFor = Util.mapInquiryTypeValue(lead.callingFor)
         if (callingFor === 'PROSP') {
-            salesContact.firstName = influencer.firstName;
-            salesContact.lastName = influencer.lastName;
-            salesContact.emailAddress = influencer.email;
-            salesContact.age = prospect.age;
+            salesContact.firstName = influencer.firstName
+            salesContact.lastName = influencer.lastName
+            salesContact.emailAddress = influencer.email
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
-            this.addAddressToContact(influencer, salesContact);
+            this.addAddressToContact(influencer, salesContact)
             this.addPhoneToContact(influencer, salesContact)
             salesContact.gender = lead.callerType
         }
