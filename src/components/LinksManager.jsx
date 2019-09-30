@@ -24,9 +24,6 @@ export default class LinksManager extends React.Component {
   }
 
   componentDidMount() {
-    console.log('LinksManager componentDidMount()')
-    console.log(process.env.REACT_APP_DOMAIN_DOMAIN)
-    console.log(process.env.NODE_ENV_DOMAIN)
     this.setState({
       links: systemLinks
     })
