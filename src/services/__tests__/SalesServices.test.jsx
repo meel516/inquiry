@@ -1,15 +1,15 @@
-import React from 'react';
 
-import {TestUtils} from './test-utils'
+import {TestUtils} from '../../utils/test-utils'
 import {ObjectMappingService} from '../Types'
 import { DropDownService, DuplicationService, SalesAPIService } from '../SalesServices';
+import { CommunityService } from '../CommunityServices';
 
 describe('testing api', () => {
     beforeEach(() => {
       fetch.resetMocks()
     })
 
-    test('fetch')
+    //test('fetch')
 })
 
 test('test empty contact if duplicate should be run - no', () => {
@@ -77,4 +77,66 @@ test('test dup check true with name/email combo', () => {
     expect(DuplicationService.shouldRunDuplicateCheck(contact)).toBeTruthy()
 })
 
+describe('test lead creation', () => {
+    describe('test edge cases', () => {
+        test('test sales lead is null', () => {
+            const lead = ObjectMappingService.createLead(null);
+            expect(lead).not.toBeNull()
+        })
 
+        test('test sales lead is undefined', () => {
+            const lead = ObjectMappingService.createLead(undefined);
+            expect(lead).not.toBeNull()
+        })
+    })
+
+    describe('test field level cases', () => {
+        test('verify creation of lead from salesLead', () => {
+            const salesLead = TestUtils.createSampleLead('INFLU')
+            const lead = ObjectMappingService.createLead(salesLead)
+        
+            expect(lead.currentSituation).toEqual(1)
+            expect(lead.veteranStatus).toEqual(3)
+            expect(lead.leadId).toEqual(6861902)
+            expect(lead.leadSource).toEqual(16)
+            expect(lead.leadSourceDetail).toEqual(10001)
+            expect(lead.leadTypeId).toEqual(4)
+        
+        })
+    })
+})
+
+describe('test submit prospect needs', () => {
+    const salesService = new SalesAPIService();
+
+    beforeEach(() => {
+        global.fetch.resetMocks()
+        global.fetch = jest.fn().mockImplementation(({url}) => {
+            console.log(url)
+        });
+    })
+  
+    describe('test happy path submission of prospect (self)', () => {
+        beforeEach(() => {
+            jest.mock('../Types', () => {
+                return jest.fn().mockImplementation(() => {
+
+                })
+            })
+        })
+
+        test('submit lead/community as prospect', () => {
+            const lead = ObjectMappingService.createEmptyLead();
+    
+            const community = CommunityService.createCommunity();
+    
+            const salesLead = salesService.submitProspect(lead, community);
+    
+            expect(salesLead).not.toBeNull();
+        });
+    })
+
+    describe('test happy path submission of influencer ()', () => {
+
+    })
+})
