@@ -1,5 +1,6 @@
 import React from 'react';
 import {FormGroup, Input, Label} from 'reactstrap';
+import { ErrorMessage } from 'formik';
 
 // <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
 import {getVeteranStatus} from '../services/SalesServices'
@@ -30,6 +31,7 @@ export default class VeteranStatus extends React.Component {
           <option value="">Select One</option>
           {veteranStatusOptions}
         </Input>
+        <ErrorMessage name="lead.prospect.veteranStatus" component="div"/>
       </FormGroup>
       )
   }

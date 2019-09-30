@@ -85,7 +85,8 @@ function createEmptyContact() {
     phone: {
       number: "",
       type: ""
-    }
+    },
+    veteranStatus: ""
   }
 }
 
@@ -184,6 +185,17 @@ export function createEmptyLead() {
   lead.drivers = createDrivers();
 
   lead.notes = createEmptyNotes();
+
+  lead.umid = '';
+  lead.careType = '';
+  lead.fua = '';
+  lead.callingFor = '';
+  lead.inquiryType = '';
+  lead.careType = '';
+  lead.leadSource = '';
+  lead.leadSourceDetail = '';
+  lead.callerType = '';
+  
   return lead;
 }
 

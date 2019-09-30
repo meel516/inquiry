@@ -26,6 +26,7 @@ export default class Contact extends React.Component {
     } else {
       console.log('do not run duplicate check!');
     }
+    this.props.handleBlur(event);
   }
 
   canDuplicateCheck = (contact) => {
@@ -60,13 +61,13 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Input type="text" name={`lead.${this.props.type}.firstName`} value={contact.firstName} onChange={onChange} onBlur={this.handleDupCheck} autoComplete="off" placeholder="First Name"/>
-              <ErrorMessage name={firstName} component="div"/>
+              <ErrorMessage name={`lead.${this.props.type}.firstName`} component="div" />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
-              <ErrorMessage name={`lead.${this.props.type}.lastName`} />
+              <ErrorMessage name={`lead.${this.props.type}.lastName`} component="div" />
             </FormGroup>
           </Col>
         </Row>
@@ -74,8 +75,8 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
-              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={onChange} placeholder="Phone" />
-              <ErrorMessage name={`lead.${this.props.type}.phone.number`} />
+              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={this.props.onChange} placeholder="Phone" />
+              <ErrorMessage name={`lead.${this.props.type}.phone.number`} component="div" />
             </FormGroup>
           </Col>
           <Col>
@@ -93,7 +94,7 @@ export default class Contact extends React.Component {
             <FormGroup>
               <Label for="email" className="label-format">Email</Label>
               <Input type="email" name={`lead.${this.props.type}.email`} value={contact.email} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Email" />
-              <ErrorMessage component="div" name={`lead.${this.props.type}.email`} />
+              <ErrorMessage component="div" name={`lead.${this.props.type}.email`} component="div" />
             </FormGroup>
           </Col>
         </Row>

@@ -1,7 +1,9 @@
 import React from 'react';
 import {Col, FormGroup, Input, Label, Row} from 'reactstrap'
+import { ErrorMessage } from 'formik';
 
 import {getLeadSources, getLeadSourceDetails} from '../services/SalesServices'
+import { FolderPlus } from 'react-feather';
 
 export default class LeadSource extends React.Component {
   constructor(props) {
@@ -56,10 +58,11 @@ export default class LeadSource extends React.Component {
         <Col>
           <FormGroup>
             <Label for="leadSource" className="label-format">Lead Source</Label>
-            <Input type="select" id="leadSource" name="lead.leadSource" onChange={this.handleOnChange}>
+            <Input type="select" id="leadSource" name="lead.leadSource" onChange={this.handleOnChange} onBlur={this.props.handleBlur} >
               <option value="">Select One</option>
               {leadSourceOptions}
             </Input>
+            <ErrorMessage name="lead.leadSource" component="div"/>
           </FormGroup>
         </Col>
       </Row>
@@ -71,6 +74,7 @@ export default class LeadSource extends React.Component {
               <option value="">Select One</option>
               {leadSourceDetailOptions}
             </Input>
+            <ErrorMessage name="lead.leadSourceDetail" component="div"/>
           </FormGroup>
         </Col>
       </Row>

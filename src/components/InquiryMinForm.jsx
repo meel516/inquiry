@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
-import { Formik, Form, Field, ErrorMessage, withFormik } from 'formik';
+import { Formik, Form, Field, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 
 import AdditionalCareElements from './AdditionalCareElements';
@@ -77,7 +77,7 @@ class InquiryForm extends React.Component {
     }
   }
 
-  render() {
+   render() {
     const {
       values,
       status,
@@ -91,8 +91,6 @@ class InquiryForm extends React.Component {
       handleReset,
       setFieldValue,
       setFieldTouched,
-      mapPropsToValues,
-      validationSchema,
     } = this.props;
     return (
       <Form onSubmit={handleSubmit} className="inquiryForm">
@@ -103,7 +101,7 @@ class InquiryForm extends React.Component {
           </Row>
         </section>
         <section className="influencer-section">
-          <Contact key="influencer-contact" type="influencer" contact={values.lead.influencer} onChange={this.props.handleChange} {...this.props}>
+          <Contact key="influencer-contact" type="influencer" contact={values.lead.influencer} onChange={this.props.handleChange} onBlur={handleBlur} {...this.props}>
             <Address type="influencer" address={values.lead.influencer.address} onChange={this.props.handleChange} {...this.props} />
           </Contact>
         </section>
@@ -173,6 +171,7 @@ class InquiryForm extends React.Component {
                 <option>Friend</option>
                 <option>Other</option>
               </select>
+              <ErrorMessage name="lead.callingFor" component="div"/>
             </FormGroup>
           </Col>
         </Row>
@@ -193,15 +192,16 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource leadSource={this.props.values.lead.leadSource} onChange={this.props.handleChange} {...this.props} />
+            <LeadSource leadSource={values.lead.leadSource} onChange={this.props.handleChange} {...this.props} />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <FormGroup>
               <Label for="umid" className="label-format">UMID</Label>
-              <Input name="umid" type="text" id="umid" placeholder="UMID" />
-              <ErrorMessage name="umid" component="div" />
+              <Input name='lead.umid' type="text" id="umid" 
+                onChange={handleChange} onBlur={handleBlur} placeholder="UMID" />
+              <ErrorMessage name="lead.umid" component="div"/>
             </FormGroup>
           </Col>
         </Row>
@@ -214,6 +214,7 @@ class InquiryForm extends React.Component {
               <option value="F">Female</option>
               <option value="U">Unknown</option>
             </select>
+            <ErrorMessage name="lead.callerType" component="div"/>
           </Col>
         </Row>
         <br />
@@ -222,35 +223,66 @@ class InquiryForm extends React.Component {
           <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
         </div>
 
-        <Debug/>
-
-        { this.state.debug && 
-          <DebugFormikState {...this.props} />}
-
         {this.state.debug &&
-          <DebugFormState {...this.state} />}
+          <Debug />}
 
       </Form>
     );
   }
 }
 
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+let phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
 
-const formSchema = Yup.object().shape({
-  umid: Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Hey, get back here')});
+
+let formSchema = Yup.object().shape({
+  'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')});
 
 const EnhancedInquiryForm = withFormik({
   mapPropsToValues: () => {
+    let newLead = createEmptyLead();
+    // newLead.umid = "xx";
     return {
       communities: [],
-      lead: createEmptyLead(),
+      lead: newLead,
       debug: false,
     }
   },
 
+  // validationSchema: {formSchema},
+
   validationSchema: Yup.object().shape({
-    umid: Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Hey, get back here')}),
+    lead: Yup.object().shape({
+      influencer: Yup.object().shape({
+        firstName: Yup.string().required('Influencer First Name is Required'),
+        lastName: Yup.string().required('Influencer Last Name is Required'),
+        // phone: Yup.object().shape({
+        //   number: Yup.string().phone("Invalid Phone Number"),
+        //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
+        // }),
+        // email: Yup.string().email("Influencer Email Must Be Valid"),
+      }),
+      prospect: Yup.object().shape({
+        firstName: Yup.string().required('Prospect First Name is Required'),
+        lastName: Yup.string().required('Prospect Last Name is Required'),
+        veteranStatus: Yup.string().required('Prospect Veteran Status is Required'),
+        // phone: Yup.object().shape({
+        //   number: Yup.string().matches({phoneRegExp})          
+        // }),
+        // email: Yup.string().email(),
+      }),
+      umid: Yup.string().required("UMID is Required"),
+      careType: Yup.string().required("A Care Type is Required"),
+      fua: Yup.string().required("Result of Call is Required"),
+      callingFor: Yup.string().required('Calling For is Required'),
+      inquiryType: Yup.string().required('Inquiry Method is Required'),
+      inquiryType: Yup.string().required('Inquiry Method is Required'),
+      leadSource: Yup.string().required('Lead Source is Required'),
+      leadSourceDetail: Yup.string().required('Lead Source Detail is Required'),
+      callerType: Yup.string().required('Gender of Caller is Required'),
+    }),
+  }),
+
 
   handleSubmit: (values, { setSubmitting }) => {
     setTimeout(() => {
@@ -292,7 +324,3 @@ const DebugFormState = props =>
   </div>;
 
 export default EnhancedInquiryForm;
-
-// const EnhancedInquiryForm = withFormik()
-//
-// });
