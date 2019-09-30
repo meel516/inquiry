@@ -28,7 +28,7 @@ import { CommunityService } from '../services/CommunityServices';
 export default class InquiryForm extends React.Component {
   state = {
     communities: [],
-    lead: ObjectMappingService.createEmptyLead(),
+    lead: null,
   };
 
   async componentDidMount() {
