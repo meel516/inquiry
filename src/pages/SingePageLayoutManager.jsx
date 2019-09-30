@@ -21,21 +21,21 @@ export default class LayoutManager extends React.Component {
     const props = this.props;
     return (
       <div>
-        <Header />
+        <Header key="header" />
         <div className="container-fluid">
           <div className="row">
             <div className="col-2">
-              <Section />
+              <Section key="sectionlinks" />
             </div>
             <div className="col-7 inquiry-form">
-              <InquiryForm {...props} />
+              <InquiryForm key="inquiryform" {...props} />
             </div>
             <div className="col-3">
-              <LinksManager />
+              <LinksManager key="linksmgr" />
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer key="footer" />
       </div>
     )
   }
