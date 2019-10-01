@@ -60,6 +60,14 @@ div.react-datetime-picker__wrapper {
   border: 0;
 }
 
+label.required-field:before {
+  content: "* ";
+}
+
+div.alert-smaller-size {
+  padding: .3rem 1rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
