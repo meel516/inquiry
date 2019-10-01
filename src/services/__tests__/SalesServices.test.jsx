@@ -116,14 +116,6 @@ describe('test submit prospect needs', () => {
 
     const successful = {objectId: 123, message: 'Successful'}
 
-    beforeEach(() => {
-        global.fetch.resetMocks()
-        global.fetch = jest.fn().mockImplementation(() => {
-            // return new Promise
-            // console.log(url)
-        });
-    })
-
     describe('test happy path submission of prospect (self)', () => {
 
         test('submit lead/community as prospect', async () => {

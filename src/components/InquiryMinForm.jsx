@@ -20,7 +20,6 @@ import Prospect from './Prospect';
 import ReasonForCall from './ReasonForCall';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
-import ValidationAlert from './ValidationAlert';
 import { Debug } from './Debug'
 
 import { SalesAPIService } from "../services/SalesServices";
@@ -161,8 +160,8 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <select className="form-control" id="callingFor" name="lead.callingFor" invalid={(''+(errors.lead&&errors.lead.callingFor) && (touched.lead&&touched.lead.callingFor))} onChange={handleChange} onBlur={handleBlur}>
-                <option>Select One</option>
+              <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
+                <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
                 <option>Spouse</option>
