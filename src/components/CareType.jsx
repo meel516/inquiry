@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { ErrorMessage, Field } from 'formik';
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -24,10 +25,11 @@ export default class CareType extends React.Component {
     return (
       <FormGroup>
         <Label for="careType" className="label-format">Care Level Recommended</Label>
-        <Input type="select" id="careType" name="lead.careType" onChange={handleChange}>
+        <Input type="select" id="careType" name="lead.careType" onChange={this.props.handleChange} onBlur={this.props.onBlur}>
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>
+        <ErrorMessage name="lead.careType" component="div"/>
       </FormGroup>
     )
   }

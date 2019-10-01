@@ -88,7 +88,7 @@ export default class CommunitySelect extends React.Component {
                     <Input type="number"
                       id="communityFee"
                       name={`communities[${index}].communityFee`}
-                      value={community.communityFee | ''}
+                      value={community.communityFee || ''}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Community Fee" />

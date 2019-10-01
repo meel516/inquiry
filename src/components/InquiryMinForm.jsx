@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
-import { Formik, Form } from 'formik';
+import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 
 import AdditionalCareElements from './AdditionalCareElements';
@@ -20,12 +20,14 @@ import Prospect from './Prospect';
 import ReasonForCall from './ReasonForCall';
 import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
+import ValidationAlert from './ValidationAlert';
+import { Debug } from './Debug'
 
 import { SalesAPIService } from "../services/SalesServices";
 import { ObjectMappingService } from "../services/Types";
 import { CommunityService } from '../services/CommunityServices';
 
-export default class InquiryForm extends React.Component {
+class InquiryForm extends React.Component {
   state = {
     communities: [],
     lead: null,
@@ -39,15 +41,11 @@ export default class InquiryForm extends React.Component {
     if (lead) {
       const salesapi = new SalesAPIService();
       leadObj = await salesapi.getLeadById(lead);
-      this.setState({
-        lead: leadObj,
-      })
+      this.props.setFieldValue('lead', leadObj)
     }
     else {
       leadObj = ObjectMappingService.createEmptyLead();
-      this.setState({
-        lead: leadObj,
-      })
+      this.props.setFieldValue('lead', leadObj)
     }
   }
 
@@ -73,201 +71,222 @@ export default class InquiryForm extends React.Component {
   }
 
   render() {
-    if (!this.state.lead) {
-      return 'loading...'
+    const {
+      values,
+      status,
+      touched,
+      errors,
+      dirty,
+      isSubmitting,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      handleReset,
+      setFieldValue,
+      setFieldTouched,
+    } = this.props;
+
+    if (!values.lead) {
+      return 'Loading ...'
     }
+
     return (
-      <Formik
-        initialValues={{ ...this.state }}
-        onSubmit={(values, actions) => {
-          actions.setSubmitting(true);
-          const salesService = new SalesAPIService();
-          let successful = salesService.submitToService({ ...values, actions });
-          console.log(`Was successful: ${successful}`)
-        }}
-        validationSchema={Yup.object().shape({
-          "lead.influencer.email": Yup.string().email(),
-        })}>
-        {props => {
-          const {
-            values,
-            status,
-            touched,
-            errors,
-            dirty,
-            isSubmitting,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            handleReset,
-            setFieldValue,
-            setFieldTouched,
-          } = props;
-          return (
-            <Form onSubmit={handleSubmit} className="inquiryForm">
-              <section className="errors">
-                <Row>
-                  {!!status &&
-                    <Alert color="danger">{status}</Alert>}
-                </Row>
-              </section>
-              <section className="influencer-section">
-                <Contact key="influencer-contact" type="influencer" contact={props.values.lead.influencer} onChange={props.handleChange} {...props}>
-                  <Address type="influencer" address={props.values.lead.influencer.address} onChange={props.handleChange} {...props} />
-                </Contact>
-              </section>
-              <br />
-              <section className="prospect-section">
-                <Note labelId="situationLabel" label="Situation" id="situation" onChange={props.handleChange} onBlur={props.handleBlur} />
-                <Row>
-                  <Col>
-                    <ADLNeeds adlNeeds={props.values.lead.adlNeeds} {...props} />
-                  </Col>
-                </Row>
-                <br />
-                <AdditionalCareElements {...props} />
-                <br />
-                <Prospect contact={props.values.lead.prospect} onChange={props.handleChange} {...props} />
-                <br />
-                <CareType onChange={handleChange} onBlur={handleBlur} {...props} />
-                <br />
-                <Row>
-                  <Col>
-                    <Note labelId="passionPersonalityLabel" label="Passions &amp; Personality" id="passionsPersonality" onChange={props.handleChange} onBlur={props.handleBlur} />
-                  </Col>
-                </Row>
-              </section>
-              <Row>
-                <Col>
-                  <Note labelId="financialSituationLabel" label="Financial Situation" id="financialSituation" onChange={props.handleChange} onBlur={props.handleBlur} />
-                </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col>
-                  <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)}>Add Community</Button>
-                  {props.values.communities.map((community, index) => (
-                    <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() => this.handleRemoveCommunity(community.uuid, values)} {...props} />
-                  ))}
-                </Col>
-              </Row>
-              <br />
-              <hr />
-              <FinancialOptions {...props} />
-              <br />
-              <Row>
-                <Col>
-                  <Note label="Additional Notes" id="additionalNotes" onChange={props.handleChange} onBlur={props.handleBlur} />
-                </Col>
-              </Row>
-              <br />
-              <Drivers {...props} />
-              <br />
-              <SecondPerson contact={props.values.lead.secondPerson} {...props} />
-              <br />
-              <Row>
-                <Col md="5">
-                  <NextSteps id="nextStepsLabel" onChange={handleChange} onBlur={handleBlur} {...props} />
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <FormGroup>
-                    <Label for="callingFor" className="label-format">I am calling for</Label>
-                    <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
-                      <option>Select One</option>
-                      <option>Myself</option>
-                      <option>Parent</option>
-                      <option>Spouse</option>
-                      <option>Friend</option>
-                      <option>Other</option>
-                    </select>
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <ReasonForCall onChange={handleChange} onBlur={handleBlur} {...props} />
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <InquiryType onChange={handleChange} onBlur={handleBlur} {...props} />
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <VeteranStatus onChange={handleChange} onBlur={handleBlur} {...props} />
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <LeadSource leadSource={props.values.lead.leadSource} onChange={props.handleChange} {...props} />
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <FormGroup>
-                    <Label for="umid" className="label-format">UMID</Label>
-                    <Input type="text" id="umid" placeholder="UMID" />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="5">
-                  <Label for="callerType" className="label-format">What is the gender of the caller?</Label>
-                  <select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
-                    <option>Select One</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="U">Unknown</option>
-                  </select>
-                </Col>
-              </Row>
-              <br />
+      <Form onSubmit={handleSubmit} className="inquiryForm">
+        <section className="errors">
+          <Row>
+            {!!status &&
+              <Alert color="danger">{status}</Alert>}
+          </Row>
+        </section>
+        <section className="influencer-section">
+          <Contact key="influencer-contact" type="influencer" contact={values.lead.influencer} onChange={this.props.handleChange} onBlur={handleBlur} {...this.props}>
+            <Address type="influencer" address={values.lead.influencer.address} onChange={this.props.handleChange} {...this.props} />
+          </Contact>
+        </section>
+        <br />
+        <section className="prospect-section">
+          <Note labelId="situationLabel" label="Situation" id="situation" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+          <Row>
+            <Col>
+              <ADLNeeds adlNeeds={values.lead.adlNeeds} {...this.props} />
+            </Col>
+          </Row>
+          <br />
+          <AdditionalCareElements {...this.props} />
+          <br />
+          <Prospect contact={this.props.values.lead.prospect} onChange={this.props.handleChange} {...this.props} />
+          <br />
+          <CareType onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          <br />
+          <Row>
+            <Col>
+              <Note labelId="passionPersonalityLabel" label="Passions &amp; Personality" id="passionsPersonality" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+            </Col>
+          </Row>
+        </section>
+        <Row>
+          <Col>
+            <Note labelId="financialSituationLabel" label="Financial Situation" id="financialSituation" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col>
+            <Button color="primary" size="sm" aria-pressed="false" onClick={() => this.handleAddCommunity(values)}>Add Community</Button>
+            {this.props.values.communities.map((community, index) => (
+              <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() => this.handleRemoveCommunity(community.uuid, values)} {...this.props} />
+            ))}
+          </Col>
+        </Row>
+        <br />
+        <hr />
+        <FinancialOptions {...this.props} />
+        <br />
+        <Row>
+          <Col>
+            <Note label="Additional Notes" id="additionalNotes" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+          </Col>
+        </Row>
+        <br />
+        <Drivers {...this.props} />
+        <br />
+        <SecondPerson contact={this.props.values.lead.secondPerson} {...this.props} />
+        <br />
+        <Row>
+          <Col md="5">
+            <NextSteps id="nextStepsLabel" onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <FormGroup>
+              <Label for="callingFor" className="label-format required-field">I am calling for</Label>
+              <select className="form-control" id="callingFor" name="lead.callingFor" invalid={(''+(errors.lead&&errors.lead.callingFor) && (touched.lead&&touched.lead.callingFor))} onChange={handleChange} onBlur={handleBlur}>
+                <option>Select One</option>
+                <option>Myself</option>
+                <option>Parent</option>
+                <option>Spouse</option>
+                <option>Friend</option>
+                <option>Other</option>
+              </select>
+              <ErrorMessage name="lead.callingFor" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <ReasonForCall onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <InquiryType onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <VeteranStatus onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <LeadSource leadSource={values.lead.leadSource} onChange={this.props.handleChange} {...this.props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <FormGroup>
+              <Label for="umid" className="label-format">UMID</Label>
+              <Input name='lead.umid' type="text" id="umid"
+                onChange={handleChange} onBlur={handleBlur} placeholder="UMID" />
+              <ErrorMessage name="lead.umid" component="div" />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <Label for="callerType" className="label-format">What is the gender of the caller?</Label>
+            <select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
+              <option>Select One</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="U">Unknown</option>
+            </select>
+            <ErrorMessage name="lead.callerType" component="div" />
+          </Col>
+        </Row>
+        <br />
 
-              <div className="float-right">
-                <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
-              </div>
+        <div className="float-right">
+          <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
+        </div>
 
-              {process.env.NODE_ENV !== "production" &&
-                <DebugFormikState {...props} />}
+        {process.env.NODE_ENV !== "production" &&
+          <Debug />}
 
-              {process.env.NODE_ENV !== "production" &&
-                <DebugFormState {...this.state} />}
-
-            </Form>
-          );
-        }}
-      </Formik>
-    )
+      </Form>
+    );
   }
 }
 
-const DebugFormikState = props =>
-  <div style={{ margin: '1rem 0' }}>
-    <pre
-      style={{
-        background: '#f6f8fa',
-        fontSize: '.65rem',
-        padding: '.5rem',
-      }}
-    >
-      <strong>props</strong> ={' '}
-      {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>;
+let phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
 
-const DebugFormState = props =>
-  <div style={{ margin: '1rem 0' }}>
-    <pre
-      style={{
-        background: '#f6f8fa',
-        fontSize: '.65rem',
-        padding: '.5rem',
-      }}
-    >
-      <strong>state</strong> ={' '}
-      {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>;
+
+let formSchema = Yup.object().shape({
+  'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')
+});
+
+const EnhancedInquiryForm = withFormik({
+  enableReinitialize: true,
+
+  mapPropsToValues: () => {
+    return {
+      communities: [],
+      lead: ObjectMappingService.createEmptyLead(),
+    }
+  },
+
+  validationSchema: Yup.object().shape({
+    lead: Yup.object().shape({
+      influencer: Yup.object().shape({
+        firstName: Yup.string().required('Influencer First Name is Required'),
+        lastName: Yup.string().required('Influencer Last Name is Required'),
+        // phone: Yup.object().shape({
+        //   number: Yup.string().phone("Invalid Phone Number"),
+        //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
+        // }),
+        // email: Yup.string().email("Influencer Email Must Be Valid"),
+      }),
+      prospect: Yup.object().shape({
+        firstName: Yup.string().required('Prospect First Name is Required'),
+        lastName: Yup.string().required('Prospect Last Name is Required'),
+        veteranStatus: Yup.string().required('Prospect Veteran Status is Required'),
+        // phone: Yup.object().shape({
+        //   number: Yup.string().matches({phoneRegExp})          
+        // }),
+        // email: Yup.string().email(),
+      }),
+      umid: Yup.string().required("UMID is Required"),
+      careType: Yup.string().required("A Care Type is Required"),
+      fua: Yup.string().required("Result of Call is Required"),
+      callingFor: Yup.string().required('Calling For is Required'),
+      inquiryType: Yup.string().required('Inquiry Method is Required'),
+      leadSource: Yup.string().required('Lead Source is Required'),
+      leadSourceDetail: Yup.string().required('Lead Source Detail is Required'),
+      callerType: Yup.string().required('Gender of Caller is Required'),
+    }),
+  }),
+
+  handleSubmit: (values, { actions, setSubmitting }) => {
+    setSubmitting(true);
+    const salesService = new SalesAPIService();
+    let successful = salesService.submitToService({ ...values, actions });
+    console.log(`Was successful: ${successful}`)
+  },
+
+  displayName: 'InquiryForm',
+
+})(InquiryForm);
+
+export default EnhancedInquiryForm;

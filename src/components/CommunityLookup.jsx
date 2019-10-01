@@ -17,7 +17,8 @@ export default withAuth(class CommunityLookup extends React.Component {
     }
 
     loadCommunities = (userInfo) => {
-        CommunityService.fetchCommunities(userInfo.preferred_username)
+        const communityService = new CommunityService();
+        communityService.fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 //console.log(data);
                 var communities = data.map((com) => {
