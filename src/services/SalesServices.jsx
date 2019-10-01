@@ -281,7 +281,6 @@ class SalesAPIService {
       this.submitNotes(leadId, notes);
     }
 
-    debugger
     const careType = lead.careType
     if (careType) {
       this.submitProspectNeeds(leadId, lead);
