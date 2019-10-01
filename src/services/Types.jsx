@@ -127,6 +127,7 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
+            veteranStatus: "",
         }
     }
 
@@ -169,8 +170,17 @@ class ObjectMappingService {
         lead.nutritionConcerns = this.createNutritionConcerns();
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
-
         lead.notes = this.createEmptyNotes();
+        lead.umid = '';
+        lead.careType = '';
+        lead.fua = '';
+        lead.callingFor = '';
+        lead.inquiryType = '';
+        lead.careType = '';
+        lead.leadSource = '';
+        lead.leadSourceDetail = '';
+        lead.callerType = '';
+
         return lead;
     }
 
