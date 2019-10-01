@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {Label} from 'reactstrap';
+import { Label } from 'reactstrap';
 import Select from 'react-select';
 
-import {getDecisionTimeframe} from '../services/SalesServices';
+import { DropDownService } from '../services/SalesServices';
 
 export default class TimeFrame extends React.Component {
   constructor(props) {
@@ -15,9 +15,9 @@ export default class TimeFrame extends React.Component {
   }
 
   componentDidMount() {
-    getDecisionTimeframe()
+    DropDownService.getDecisionTimeframe()
       .then((data) => {
-        data.map(function(tf) {
+        data.map(function (tf) {
           tf.label = tf.text;
         })
         this.setState({ timeframe: data })
@@ -26,14 +26,14 @@ export default class TimeFrame extends React.Component {
   }
 
   render() {
-    const {timeframe} = this.state || []
+    const { timeframe } = this.state || []
     return (
       <>
-      <Label for="timeframe" className="label-format">Timeframe</Label>
-      <Select
-        options={timeframe}
-        id="timeframe"
-      />
+        <Label for="timeframe" className="label-format">Timeframe</Label>
+        <Select
+          options={timeframe}
+          id="timeframe"
+        />
       </>
     )
   }

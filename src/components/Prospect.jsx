@@ -1,6 +1,7 @@
 import React from 'react';
+import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+
 import Contact from './Contact';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 
 export default function Prospect(props) {
   return (
@@ -10,7 +11,7 @@ export default function Prospect(props) {
           <Label className="section-header" >Prospect</Label>
         </Col>
       </Row>
-      <Contact type="prospect" contact={props.contact} onChange={props.onChange} {...props}/>
+      <Contact type="prospect" contact={props.contact} onChange={props.onChange} {...props} />
       <Row>
         <Col xs="1" md="6">
           <FormGroup>

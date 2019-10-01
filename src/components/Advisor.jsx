@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
 
 const advisorList = [
   {
@@ -56,8 +56,8 @@ export default class Advisor extends React.Component {
           </Col>
           <Col>
             <FormGroup>
-            <Label htmlFor="advisorLastName">Advisor Last Name</Label>
-            <Input type="text" id="advisorLastName" name="advisorLastName" />
+              <Label htmlFor="advisorLastName">Advisor Last Name</Label>
+              <Input type="text" id="advisorLastName" name="advisorLastName" />
             </FormGroup>
           </Col>
         </Row>

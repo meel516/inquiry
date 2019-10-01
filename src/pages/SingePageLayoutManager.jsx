@@ -17,26 +17,26 @@ export default class LayoutManager extends React.Component {
     event.preventDefault();
   }
 
-  render () {
+  render() {
     const props = this.props;
-   return (
-     <div>
-       <Header/>
-       <div className="container-fluid">
-        <div className="row">
-          <div className="col-2">
-            <Section />
-          </div>
-          <div className="col-7 inquiry-form">
-            <InquiryForm {...props} />
-          </div>
-          <div className="col-3">
-            <LinksManager />
+    return (
+      <div>
+        <Header key="header" />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-2">
+              <Section key="sectionlinks" />
+            </div>
+            <div className="col-7 inquiry-form">
+              <InquiryForm key="inquiryform" {...props} />
+            </div>
+            <div className="col-3">
+              <LinksManager key="linksmgr" />
+            </div>
           </div>
         </div>
-       </div>
-       <Footer />
-     </div>
-   )
- }
+        <Footer key="footer" />
+      </div>
+    )
+  }
 }

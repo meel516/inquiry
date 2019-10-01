@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
-import { Formik, Form, Field, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
+import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 
 import AdditionalCareElements from './AdditionalCareElements';
@@ -22,45 +22,37 @@ import SecondPerson from './SecondPerson';
 import VeteranStatus from './VeteranStatus';
 import { Debug } from './Debug'
 
-import { createEmptyLead, createLeadById, submitToService } from "../services/SalesServices";
-import { createCommunity } from '../services/CommunityServices';
+import { SalesAPIService } from "../services/SalesServices";
+import { ObjectMappingService } from "../services/Types";
+import { CommunityService } from '../services/CommunityServices';
 
 class InquiryForm extends React.Component {
   state = {
     communities: [],
-    lead: createEmptyLead(),
-    debug: false,
+    lead: null,
   };
 
-  componentDidMount() {
-    const { lead, debug } = queryString.parse(this.props.location.search);
+  async componentDidMount() {
+    const { lead } = queryString.parse(this.props.location.search);
     console.log(`COID: ${lead}`);
 
     var leadObj = null;
     if (lead) {
-      createLeadById(lead)
-        .then((data) => {
-          this.setState({
-            lead: data,
-            debug: debug
-          })
-        })
-        .catch(error => console.log(error));
+      const salesapi = new SalesAPIService();
+      leadObj = await salesapi.getLeadById(lead);
+      this.props.setFieldValue('lead', leadObj)
     }
     else {
-      leadObj = createEmptyLead();
-      this.setState({
-        lead: leadObj,
-        debug: debug,
-      })
+      leadObj = ObjectMappingService.createEmptyLead();
+      this.props.setFieldValue('lead', leadObj)
     }
   }
 
   handleAddCommunity = (values) => {
     this.setState((state) => {
-      console.log(state);
-      let communities = state.communities;
-      values.communities.push(createCommunity())
+      let communities = state.communities
+      let community = CommunityService.createCommunity()
+      values.communities.push(community)
       return {
         communities: communities
       }
@@ -77,7 +69,7 @@ class InquiryForm extends React.Component {
     }
   }
 
-   render() {
+  render() {
     const {
       values,
       status,
@@ -92,6 +84,11 @@ class InquiryForm extends React.Component {
       setFieldValue,
       setFieldTouched,
     } = this.props;
+
+    if (!values.lead) {
+      return 'Loading ...'
+    }
+
     return (
       <Form onSubmit={handleSubmit} className="inquiryForm">
         <section className="errors">
@@ -162,16 +159,16 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <FormGroup>
-              <Label for="callingFor" className="label-format">I am calling for</Label>
+              <Label for="callingFor" className="label-format required-field">I am calling for</Label>
               <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
-                <option>Select One</option>
+                <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
                 <option>Spouse</option>
                 <option>Friend</option>
                 <option>Other</option>
               </select>
-              <ErrorMessage name="lead.callingFor" component="div"/>
+              <ErrorMessage name="lead.callingFor" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
@@ -192,29 +189,29 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} onChange={this.props.handleChange} {...this.props} />
+            <LeadSource leadSource={values.lead.leadSource} onChange={handleChange} {...this.props} />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <FormGroup>
-              <Label for="umid" className="label-format">UMID</Label>
-              <Input name='lead.umid' type="text" id="umid" 
+              <Label for="umid" className="label-format required-field">UMID</Label>
+              <Input name='lead.umid' type="text" id="umid"
                 onChange={handleChange} onBlur={handleBlur} placeholder="UMID" />
-              <ErrorMessage name="lead.umid" component="div"/>
+              <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <Label for="callerType" className="label-format">What is the gender of the caller?</Label>
+            <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
             <select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
               <option>Select One</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="U">Unknown</option>
             </select>
-            <ErrorMessage name="lead.callerType" component="div"/>
+            <ErrorMessage name="lead.callerType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
           </Col>
         </Row>
         <br />
@@ -223,7 +220,7 @@ class InquiryForm extends React.Component {
           <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
         </div>
 
-        {this.state.debug &&
+        {process.env.NODE_ENV !== "production" &&
           <Debug />}
 
       </Form>
@@ -236,91 +233,64 @@ phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(
 
 
 let formSchema = Yup.object().shape({
-  'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')});
+  'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')
+});
 
 const EnhancedInquiryForm = withFormik({
+  enableReinitialize: true,
+
   mapPropsToValues: () => {
-    let newLead = createEmptyLead();
-    // newLead.umid = "xx";
     return {
       communities: [],
-      lead: newLead,
-      debug: false,
+      lead: ObjectMappingService.createEmptyLead(),
     }
   },
-
-  // validationSchema: {formSchema},
 
   validationSchema: Yup.object().shape({
     lead: Yup.object().shape({
       influencer: Yup.object().shape({
         firstName: Yup.string().required('Influencer First Name is Required'),
         lastName: Yup.string().required('Influencer Last Name is Required'),
+        phone: Yup.object().shape({
+          number: Yup.string().phone,
+        }),
+
         // phone: Yup.object().shape({
         //   number: Yup.string().phone("Invalid Phone Number"),
         //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
         // }),
-        // email: Yup.string().email("Influencer Email Must Be Valid"),
+        email: Yup.string().email("Influencer Email Must Be Valid"),
       }),
       prospect: Yup.object().shape({
-        firstName: Yup.string().required('Prospect First Name is Required'),
-        lastName: Yup.string().required('Prospect Last Name is Required'),
-        veteranStatus: Yup.string().required('Prospect Veteran Status is Required'),
+        firstName: Yup.string().required('First Name is required'),
+        lastName: Yup.string().required('Last Name is fequired'),
+        veteranStatus: Yup.string().required('Veteran Status is required'),
         // phone: Yup.object().shape({
         //   number: Yup.string().matches({phoneRegExp})          
         // }),
-        // email: Yup.string().email(),
+        email: Yup.string().email("Prospect Email Must Be Valid"),
       }),
-      umid: Yup.string().required("UMID is Required"),
-      careType: Yup.string().required("A Care Type is Required"),
-      fua: Yup.string().required("Result of Call is Required"),
-      callingFor: Yup.string().required('Calling For is Required'),
-      inquiryType: Yup.string().required('Inquiry Method is Required'),
-      inquiryType: Yup.string().required('Inquiry Method is Required'),
-      leadSource: Yup.string().required('Lead Source is Required'),
-      leadSourceDetail: Yup.string().required('Lead Source Detail is Required'),
-      callerType: Yup.string().required('Gender of Caller is Required'),
+      umid: Yup.string().required("UMID is required"),
+      careType: Yup.string().required("Care Level is required"),
+      fua: Yup.string().required("Result of Call is required"),
+      callingFor: Yup.string().required('Calling For is required'),
+      inquiryType: Yup.string().required('Inquiry Method is required'),
+      leadSource: Yup.string().required('Lead Source is required'),
+      leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
+      callerType: Yup.string().required('Gender is required'),
     }),
   }),
 
-
   handleSubmit: (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 1000);
+    setSubmitting(true);
+    const salesService = new SalesAPIService();
+    let successful = salesService.submitToService({ ...values });
+    setSubmitting(false);
+    console.log(`Was successful: ${successful}`)
   },
 
   displayName: 'InquiryForm',
 
 })(InquiryForm);
-
-const DebugFormikState = props =>
-  <div style={{ margin: '1rem 0' }}>
-    <pre
-      style={{
-        background: '#f6f8fa',
-        fontSize: '.65rem',
-        padding: '.5rem',
-      }}
-    >
-      <strong>props</strong> ={' '}
-      {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>;
-
-const DebugFormState = props =>
-  <div style={{ margin: '1rem 0' }}>
-    <pre
-      style={{
-        background: '#f6f8fa',
-        fontSize: '.65rem',
-        padding: '.5rem',
-      }}
-    >
-      <strong>state</strong> ={' '}
-      {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>;
 
 export default EnhancedInquiryForm;

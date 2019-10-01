@@ -1,10 +1,11 @@
 import React from 'react';
-import {Col, Input, FormGroup, Label, Row} from 'reactstrap';
-import Contact from './Contact';
-import Note from './Note';
+import { Col, Input, FormGroup, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 
-import {createEmptyContact} from '../services/SalesServices'
+import Contact from './Contact';
+import Note from './Note';
+
+import { ObjectMappingService } from '../services/Types'
 
 PropTypes.SecondPerson = {
   handleChange: PropTypes.func,
@@ -16,9 +17,9 @@ PropTypes.SecondPerson = {
 
 
 export default class SecondPerson extends React.Component {
-state = {
-  containsSecondPerson: false,
-}    
+  state = {
+    containsSecondPerson: false,
+  }
 
   handleSecondPerson = (e) => {
     this.setState({
@@ -30,8 +31,8 @@ state = {
   }
 
   handleContactReset = () => {
-    const {setFieldValue} = this.props;
-    const secondPerson = createEmptyContact();
+    const { setFieldValue } = this.props;
+    const secondPerson = ObjectMappingService.createEmptyContact();
     setFieldValue('lead.secondPerson', secondPerson);
     setFieldValue('lead.notes.secondPerson', '');
   }
@@ -52,20 +53,19 @@ state = {
   }
 
   render() {
-    const { handleChange } = this.props;
-    const { handleBlur } = this.props;
+    const { handleChange, handleBlur } = this.props;
     const isSecondPersonShown = this.state.containsSecondPerson;
     if (isSecondPersonShown) {
       return (
         <>
-        {this.renderQuestion()}
-        <Contact 
-          type="secondPerson" 
-          onChange={ handleChange }
-          onBlur={ handleBlur }
-          contact={ this.props.contact } 
-          {...this.props} />
-        <Note label="2nd Person Situation" id="situation2" name="lead.notes.secondPerson" onChange={handleChange} onBlur={handleBlur}/>
+          {this.renderQuestion()}
+          <Contact
+            type="secondPerson"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            contact={this.props.contact}
+            {...this.props} />
+          <Note label="2nd Person Situation" id="situation2" name="lead.notes.secondPerson" onChange={handleChange} onBlur={handleBlur} />
         </>
       )
     } else {

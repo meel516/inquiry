@@ -1,7 +1,7 @@
 import React from 'react';
-import {Input, FormGroup, Label} from 'reactstrap';
+import { Input, FormGroup, Label } from 'reactstrap';
 
-import {getReasonForInterest} from '../services/SalesServices'
+import { DropDownService } from '../services/SalesServices'
 
 export default class ReasonForCall extends React.Component {
   constructor(props) {
@@ -12,16 +12,16 @@ export default class ReasonForCall extends React.Component {
   }
 
   componentDidMount() {
-    getReasonForInterest()
+    DropDownService.getReasonForInterest()
       .then((data) => this.setState({ reasonForCall: data }))
       .catch(error => console.log(error));
   }
 
   render() {
-    const {reasonForCall} = this.state||[];
-    const {handleChange, handleBlur} = this.props;
+    const { reasonForCall } = this.state || [];
+    const { handleChange, handleBlur } = this.props;
     const reasonForCallOptions = reasonForCall.map((type) => {
-      return  <option key={type.value} value={type.value}>{type.text}</option>
+      return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
     return (
