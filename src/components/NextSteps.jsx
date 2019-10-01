@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 
 const nextStepsOptionsArray = [
@@ -31,12 +31,12 @@ export default class NextStepsSelect extends React.Component {
 
     return (
       <FormGroup>
-        <Label for="nextSteps" id="nextStepsLabel" className="label-format">Result of Call</Label>
+        <Label for="nextSteps" id="nextStepsLabel" className="label-format required-field">Result of Call</Label>
         <Input type="select" id="nextSteps" name='lead.fua' onChange={this.props.handleChange} onBlur={this.props.onBlur} >
           <option value="">Select One</option>
           {nextStepsOptions}
         </Input>
-        <ErrorMessage name="lead.fua" component="div"/>
+        <ErrorMessage name="lead.fua" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>}/>
       </FormGroup>
 
     )

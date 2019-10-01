@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, FormGroup, Label } from 'reactstrap';
+import { Alert, Input, FormGroup, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 
 import { DropDownService } from '../services/SalesServices'
@@ -27,12 +27,12 @@ export default class InquiryType extends React.Component {
 
     return (
       <FormGroup>
-        <Label for="inquiryType" className="label-format">Inquiry Method</Label>
+        <Label for="inquiryType" className="label-format required-field">Inquiry Method</Label>
         <Input type="select" id="inquiryType" name="lead.inquiryType" onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
           <option value="">Select One</option>
           {inquiryTypeOptions}
         </Input>
-        <ErrorMessage name="lead.inquiryType" component="div" />
+        <ErrorMessage name="lead.inquiryType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
       </FormGroup>
     )
   }

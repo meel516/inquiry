@@ -189,29 +189,29 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} onChange={this.props.handleChange} {...this.props} />
+            <LeadSource leadSource={values.lead.leadSource} onChange={handleChange} {...this.props} />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <FormGroup>
-              <Label for="umid" className="label-format">UMID</Label>
+              <Label for="umid" className="label-format required-field">UMID</Label>
               <Input name='lead.umid' type="text" id="umid"
                 onChange={handleChange} onBlur={handleBlur} placeholder="UMID" />
-              <ErrorMessage name="lead.umid" component="div" />
+              <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <Label for="callerType" className="label-format">What is the gender of the caller?</Label>
+            <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
             <select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
               <option>Select One</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="U">Unknown</option>
             </select>
-            <ErrorMessage name="lead.callerType" component="div" />
+            <ErrorMessage name="lead.callerType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
           </Col>
         </Row>
         <br />
@@ -249,13 +249,17 @@ const EnhancedInquiryForm = withFormik({
   validationSchema: Yup.object().shape({
     lead: Yup.object().shape({
       influencer: Yup.object().shape({
-        firstName: Yup.string().required('First Name is required'),
-        lastName: Yup.string().required('Last Name is required'),
+        firstName: Yup.string().required('Influencer First Name is Required'),
+        lastName: Yup.string().required('Influencer Last Name is Required'),
+        phone: Yup.object().shape({
+          number: Yup.string().phone,
+        }),
+
         // phone: Yup.object().shape({
         //   number: Yup.string().phone("Invalid Phone Number"),
         //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
         // }),
-        // email: Yup.string().email("Influencer Email Must Be Valid"),
+        email: Yup.string().email("Influencer Email Must Be Valid"),
       }),
       prospect: Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),
@@ -264,7 +268,7 @@ const EnhancedInquiryForm = withFormik({
         // phone: Yup.object().shape({
         //   number: Yup.string().matches({phoneRegExp})          
         // }),
-        // email: Yup.string().email(),
+        email: Yup.string().email("Prospect Email Must Be Valid"),
       }),
       umid: Yup.string().required("UMID is required"),
       careType: Yup.string().required("Care Level is required"),

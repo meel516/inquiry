@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 
 // <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
@@ -26,12 +26,13 @@ export default class VeteranStatus extends React.Component {
 
     return (
       <FormGroup>
-        <Label for="veteranstatus" className="label-format">Veteran Status</Label>
+        <Label for="veteranstatus" className="label-format required-field">Veteran Status</Label>
         <Input type="select" id="veteranstatus" name={"lead.prospect.veteranStatus"} onChange={this.props.onChange} onBlur={this.props.onBlur}>
           <option value="">Select One</option>
           {veteranStatusOptions}
         </Input>
-        <ErrorMessage name="lead.prospect.veteranStatus" component="div" />
+        <ErrorMessage name="lead.prospect.veteranStatus" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>}
+ />
       </FormGroup>
     )
   }

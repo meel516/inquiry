@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
 import { ErrorMessage } from 'formik';
 
 import { DropDownService } from '../services/SalesServices'
@@ -27,11 +27,13 @@ export default class LeadSource extends React.Component {
   }
 
   handleOnChange = (event) => {
+    const { setFieldValue } = this.props;
     var leadSourceId = event.target.value;
     if (!leadSourceId) {
       this.setState({
         leadSourceDetail: [],
       })
+      setFieldValue('lead.leadSourceDetail', '');
     } else {
       this.fetchAndSetLeadSourceDetail(leadSourceId);
     }
@@ -62,24 +64,24 @@ export default class LeadSource extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="leadSource" className="label-format">Lead Source</Label>
+              <Label for="leadSource" className="label-format required-field">Lead Source</Label>
               <Input type="select" id="leadSource" name="lead.leadSource" onChange={this.handleOnChange} onBlur={this.props.handleBlur} >
                 <option value="">Select One</option>
                 {leadSourceOptions}
               </Input>
-              <ErrorMessage name="lead.leadSource" component="div" />
+              <ErrorMessage name="lead.leadSource" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col>
             <FormGroup>
-              <Label for="leadSourceDetail" className="label-format">Lead Source Detail</Label>
-              <Input type="select" id="leadSourceDetail" name="lead.leadSourceDetail" onChange={handleChange}>
+              <Label for="leadSourceDetail" className="label-format required-field">Lead Source Detail</Label>
+              <Input type="select" id="leadSourceDetail" name="lead.leadSourceDetail" onChange={this.props.onChange}>
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
               </Input>
-              <ErrorMessage name="lead.leadSourceDetail" component="div" />
+              <ErrorMessage name="lead.leadSourceDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
