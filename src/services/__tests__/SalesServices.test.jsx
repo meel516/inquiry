@@ -114,6 +114,8 @@ describe('test lead creation', () => {
 describe('test submit prospect needs', () => {
     const salesService = new SalesAPIService();
 
+    const successful = {objectId: 123, message: 'Successful'}
+
     beforeEach(() => {
         global.fetch.resetMocks()
         global.fetch = jest.fn().mockImplementation(() => {
@@ -125,7 +127,7 @@ describe('test submit prospect needs', () => {
     describe('test happy path submission of prospect (self)', () => {
 
         test('submit lead/community as prospect', async () => {
-            const body = JSON.stringify({ objectId: 123, message: 'Successful'});
+            const body = JSON.stringify(successful);
             const response = new Response(body, {status: 201, statusText: 'CREATED', headers: new Headers({
                 'Content-Type': 'application/json'
             })})
@@ -137,12 +139,15 @@ describe('test submit prospect needs', () => {
             const salesLead = salesService.submitProspect(lead, community);
 
             expect(salesLead).not.toBeNull();
-            expect(salesLead).toEqual();
+            expect(salesLead.leadId).toEqual();
         });
     })
 
     describe('test happy path submission of influencer ()', () => {
 
-        test('submit influencer ')
+        test('submit influencer to service endpoint verification', async () => {
+            const body = JSON.stringify(successful)
+
+        })
     })
 })
