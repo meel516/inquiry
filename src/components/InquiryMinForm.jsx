@@ -277,10 +277,11 @@ const EnhancedInquiryForm = withFormik({
     }),
   }),
 
-  handleSubmit: (values, { actions, setSubmitting }) => {
+  handleSubmit: (values, { setSubmitting }) => {
     setSubmitting(true);
     const salesService = new SalesAPIService();
-    let successful = salesService.submitToService({ ...values, actions });
+    let successful = salesService.submitToService({ ...values });
+    setSubmitting(false);
     console.log(`Was successful: ${successful}`)
   },
 

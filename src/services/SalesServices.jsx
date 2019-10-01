@@ -325,7 +325,7 @@ async retrieveProspect(leadId) {
   return prospect;
 }
 
-async handleNewInquiryForm(lead, communities, actions) {
+async handleNewInquiryForm(lead, communities) {
 
   const communityList = [...communities];
 
@@ -367,25 +367,24 @@ async handleNewInquiryForm(lead, communities, actions) {
   }
 }
 
-handleExistingInquiryForm(lead, communities, actions) {
+handleExistingInquiryForm(lead, communities) {
 
 }
 
-async submitToService({ lead, communities, actions }) {
+async submitToService({ lead, communities,  }) {
   let successful = true;
   try {
     if (lead.leadId) {
       console.log(`LeadId: ${lead.leadId}`);
-      this.handleExistingInquiryForm(lead, communities, actions)
+      this.handleExistingInquiryForm(lead, communities)
     }
     else {
-      this.handleNewInquiryForm(lead, communities, actions)
+      this.handleNewInquiryForm(lead, communities)
     }
   } catch (err) {
     console.log(err);
     successful = false;
   }
-  actions.setSubmitting(false);
   return successful;
 }
 
