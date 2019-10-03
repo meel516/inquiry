@@ -1,4 +1,5 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import {Field, ErrorMessage } from 'formik';
@@ -55,7 +56,7 @@ export default class Contact extends React.Component {
           </Col>
           <Col>
             <FormGroup>
-              <Input className="label-format required-field" type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
+              <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
               <ErrorMessage name={`lead.${this.props.type}.lastName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
@@ -64,7 +65,7 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
-              <Input type="text" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={this.props.onChange} placeholder="Phone" />
+              <NumberFormat className='form-control'  format="(###) ###-####" mask="_" name={`lead.${this.props.type}.phone.number`} value={contact.phone.number||''} onBlur={this.handleDupCheck} onChange={this.props.onChange} placeholder="Phone" />
               <ErrorMessage name={`lead.${this.props.type}.phone.number`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>}  />
             </FormGroup>
           </Col>
