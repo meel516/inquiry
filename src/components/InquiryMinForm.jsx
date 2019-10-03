@@ -3,6 +3,7 @@ import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
 import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
+import { withAuth } from '@okta/okta-react';
 
 import AdditionalCareElements from './AdditionalCareElements';
 import Address from './Address';
@@ -25,6 +26,7 @@ import { Debug } from './Debug'
 import { SalesAPIService } from "../services/SalesServices";
 import { ObjectMappingService } from "../services/Types";
 import { CommunityService } from '../services/CommunityServices';
+import { checkAuthentication } from '../auth/checkAuth';
 
 class InquiryForm extends React.Component {
   state = {
@@ -32,9 +34,13 @@ class InquiryForm extends React.Component {
     lead: null,
   };
 
+  checkAuthentication = checkAuthentication.bind(this);
+
   async componentDidMount() {
     const { lead } = queryString.parse(this.props.location.search);
     console.log(`COID: ${lead}`);
+
+    this.checkAuthentication(this.getAuthCredentials);
 
     var leadObj = null;
     if (lead) {
@@ -46,6 +52,10 @@ class InquiryForm extends React.Component {
       leadObj = ObjectMappingService.createEmptyLead();
       this.props.setFieldValue('lead', leadObj)
     }
+  }
+
+  getAuthCredentials = (userInfo) => {
+    this.props.setFieldValue('oktaFullName', userInfo.name);
   }
 
   handleAddCommunity = (values) => {
@@ -231,7 +241,6 @@ class InquiryForm extends React.Component {
 let phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
 
-
 let formSchema = Yup.object().shape({
   'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')
 });
@@ -293,4 +302,4 @@ const EnhancedInquiryForm = withFormik({
 
 })(InquiryForm);
 
-export default EnhancedInquiryForm;
+export default withAuth(EnhancedInquiryForm);

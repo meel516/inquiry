@@ -6,12 +6,12 @@ function Community(index) {
   this.uuid = index;
   this.communityId = 0;
   this.freeMeal = 0;  // Blank Option
-  this.followupDate = new Date();
+  this.followupDate = new Date(); // TODO - May work with new Date().toISOString() - but SMS Object would need to strip off Offset!
 };
 
 class CommunityService {
 
-  freeMealListing() {
+  static freeMealListing() {
     return [
       { value: 0, label: "" },
       { value: 1, label: "No" },
