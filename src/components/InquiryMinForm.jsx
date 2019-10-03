@@ -1,4 +1,5 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
 import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
@@ -252,13 +253,15 @@ const EnhancedInquiryForm = withFormik({
         firstName: Yup.string().required('Influencer First Name is Required'),
         lastName: Yup.string().required('Influencer Last Name is Required'),
         phone: Yup.object().shape({
-          number: Yup.string().phone,
+          // number: Yup.string().notRequired().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number'),
+          number: Yup.string().notRequired().test('influencerPhoneValid', 'Influencer Phone is not Valid', function(value) {
+            if (!!value) {
+              const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+              return schema.isValidSync(value);
+            }
+            return true;
+          })
         }),
-
-        // phone: Yup.object().shape({
-        //   number: Yup.string().phone("Invalid Phone Number"),
-        //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
-        // }),
         email: Yup.string().email("Influencer Email Must Be Valid"),
       }),
       prospect: Yup.object().shape({
