@@ -28,11 +28,11 @@ export default class InquiryType extends React.Component {
     return (
       <FormGroup>
         <Label for="inquiryType" className="label-format required-field">Inquiry Method</Label>
-        <Input type="select" id="inquiryType" name="lead.inquiryType" onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
+        <Input type="select" id="inquiryType" name="lead.inquiryType" value={this.props.defaultValue || ''} onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
           <option value="">Select One</option>
           {inquiryTypeOptions}
         </Input>
-        <ErrorMessage name="lead.inquiryType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
+        <ErrorMessage name="lead.inquiryType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
       </FormGroup>
     )
   }
