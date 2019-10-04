@@ -103,7 +103,7 @@ class SalesAPIService {
     this.log = new Logger();
   }
 
-  async getLeadById(guid) {
+  async getLeadByGuid(guid) {
     const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
 
     let salesLead = await this.createFetch(leadUrl);
@@ -122,7 +122,7 @@ class SalesAPIService {
           let influencer = (influencers || []).find(function (influencer) {
             return (influencer.primary === true && influencer.active === true);
           });
-          lead.influencer = ObjectMappingService.createContact(influencer);
+          lead.influencer = ObjectMappingService.createInfluencer(influencer);
         }
       }
       return lead;
@@ -359,7 +359,7 @@ async handleNewInquiryForm(lead, communities) {
     let prospect = await this.retrieveProspect(leadId);
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
-      this.handleProspectSubmission(community, prospect);
+      this.handleProspectSubmission(prospect, community);
 
       this.submitFollowup(leadId, community);
 
@@ -371,7 +371,7 @@ handleExistingInquiryForm(lead, communities) {
 
 }
 
-async submitToService({ lead, communities,  }) {
+async submitToService({ lead, communities }, errorHandler) {
   let successful = true;
   try {
     if (lead.leadId) {

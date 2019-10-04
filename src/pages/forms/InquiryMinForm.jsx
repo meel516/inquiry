@@ -36,12 +36,12 @@ class InquiryForm extends React.Component {
 
   async componentDidMount() {
     const { guid, umid } = queryString.parse(this.props.location.search);
-    console.log(`COID: ${guid}`);
+    console.log(`COID: ${guid} and UMID: ${umid}`);
 
     var leadObj = null;
     if (guid) {
       const salesapi = new SalesAPIService()
-      leadObj = await salesapi.getLeadById(guid)
+      leadObj = await salesapi.getLeadByGuid(guid)
       this.props.setFieldValue('lead', leadObj)
     }
     else {
@@ -56,6 +56,7 @@ class InquiryForm extends React.Component {
 
     this.setState({
       loading: false,
+      lead: leadObj,
     })
   }
 
@@ -200,12 +201,12 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <ReasonForCall onChange={handleChange} onBlur={handleBlur} {...this.props} />
+            <ReasonForCall onChange={handleChange} onBlur={handleBlur} defaultValue={values.lead.reasonForCall} {...this.props} />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <InquiryType onChange={handleChange} onBlur={handleBlur} {...this.props} />
+            <InquiryType onChange={handleChange} onBlur={handleBlur} defaultValue={values.lead.inquiryType} {...this.props} />
           </Col>
         </Row>
         <Row>
