@@ -13,7 +13,7 @@ const schema = Yup.object().shape({
             //   number: Yup.string().phone("Invalid Phone Number"),
             //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
             // }),
-            // email: Yup.string().email("Influencer Email Must Be Valid"),
+            // email: Yup.string().email("Email must be valid"),
         }),
         prospect: Yup.object().shape({
             firstName: Yup.string().required('First Name is required'),

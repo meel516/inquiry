@@ -262,7 +262,7 @@ const EnhancedInquiryForm = withFormik({
             return true;
           })
         }),
-        email: Yup.string().email("Email Must Be Valid"),
+        email: Yup.string().email("Email must be valid"),
       }),
       prospect: Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),
@@ -271,7 +271,7 @@ const EnhancedInquiryForm = withFormik({
         // phone: Yup.object().shape({
         //   number: Yup.string().matches({phoneRegExp})          
         // }),
-        email: Yup.string().email("Email Must Be Valid"),
+        email: Yup.string().email("Email must be valid"),
       }),
       umid: Yup.string().required("UMID is required"),
       careType: Yup.string().required("Care Level Recommended is required"),
