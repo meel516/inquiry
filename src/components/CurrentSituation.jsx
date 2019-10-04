@@ -16,6 +16,7 @@ export default class CurrentSituation extends React.Component {
 
   render() {
     const { currentSituation } = this.state || [];
+    const { defaultValue } = this.props || '';
     const currentSituationOptions = currentSituation.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -23,7 +24,7 @@ export default class CurrentSituation extends React.Component {
     return (
       <FormGroup md="9">
         <Label for="currentSituation" className="label-format">Current Living Situation</Label>
-        <Input type="select" id="currentSituation" name="currentSituation" onChange={this.props.onChange}>
+        <Input type="select" id="currentSituation" name="currentSituation" value={defaultValue} onChange={this.props.onChange}>
           <option value="">Select One</option>
           {currentSituationOptions}
         </Input>
