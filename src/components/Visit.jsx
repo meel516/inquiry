@@ -19,7 +19,7 @@ export default class Visit extends React.Component {
 
   render() {
     const { community } = this.props;
-    console.log(`Visit: ${JSON.stringify(community)}`);
+    //console.log(`Visit: ${JSON.stringify(community)}`);
     return (
       <>
         <Row>
