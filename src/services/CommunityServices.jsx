@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import moment from 'moment';
 
 const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`;
 
@@ -6,12 +7,14 @@ function Community(index) {
   this.uuid = index;
   this.communityId = 0;
   this.freeMeal = 0;  // Blank Option
-  this.followupDate = new Date();
+  var formattedFollowUpDate = new Date();
+  formattedFollowUpDate.toJSON = function(){ return moment(this).format("YYYY-MM-DDTHH:mm:ss.SSSZZ"); };
+  this.followupDate = formattedFollowUpDate;
 };
 
 class CommunityService {
 
-  freeMealListing() {
+  static freeMealListing() {
     return [
       { value: 0, label: "" },
       { value: 1, label: "No" },
@@ -57,6 +60,10 @@ class CommunityService {
 
   static isContactCenter(community) {
     return (community && community.buildingId === 225707)
+  }
+
+  static convertToISODate(dateStr) {
+    return moment(dateStr).format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
   }
 
 }

@@ -14,7 +14,6 @@ function ProspectError({ status, message }) {
 }
 
 function SalesContact() {
-
 }
 
 function SalesFollowup(leadId) {
@@ -60,6 +59,93 @@ function SalesAddress({ type = 'Home', active = true, primary = true }) {
 function SalesLead(salesContact, leadTypeId = 4) {
     this.leadTypeId = leadTypeId;
     this.salesContact = salesContact;
+}
+
+function SalesInquiryForm() {
+}
+
+function SalesFormDetails() {
+}
+
+function SalesFormDetailsCustomSalesContact(salesContact) {
+    if (salesContact) {
+        this.firstName = salesContact.firstName;
+        this.lastName = salesContact.lastName;
+        this.gender = salesContact.gender;
+        this.emailAddress = salesContact.email;
+        this.age = salesContact.age;
+        this.veteranStatus = salesContact.veteranStatus;
+    }
+}
+
+function SalesFormDetailsSecondPersonSalesLead(secondPerson) {
+    if (secondPerson) {
+        const salesFormDetailsSecondPerson = new SalesFormDetailsCustomSalesContact(secondPerson);
+        this.salesContact = salesFormDetailsSecondPerson;
+    }
+}
+
+function SalesFormDetailsProspect(lead) {
+    if (lead) {
+        const salesFormDetailsProspect = new SalesFormDetailsCustomSalesContact(lead.prospect);
+
+        this.salesContact = salesFormDetailsProspect;
+        this.interestReasonId = lead.prospect.reasonForCall
+        this.inquiryTypeId = lead.inquiryType
+        this.inquiryLeadSourceId = lead.leadSource
+        this.inquiryLeadSourceDetailId = lead.leadSourceDetail
+    }
+}
+
+function SalesFormDetailsInfluencer(influencer) {
+    if (influencer) {
+        const salesFormDetailsInfluencer = new SalesFormDetailsCustomSalesContact(influencer);
+        this.salesContact = salesFormDetailsInfluencer;
+    }
+}
+
+function SalesFormDetailsSecondPerson(secondPerson) {
+    if (secondPerson) {
+        this.salesLead = new SalesFormDetailsSecondPersonSalesLead(secondPerson);
+    }
+}
+
+function SalesFormDetailsCareType(lead) {
+    if (lead.adlNeeds) {
+        this.bathing = lead.adlNeeds.bathing; 
+        this.incontinence = lead.adlNeeds.incontinence; 
+        this.transferring = lead.adlNeeds.transferring; 
+        this.dressing = lead.adlNeeds.dressing; 
+        this.medications = lead.adlNeeds.medications; 
+        this.feeding = lead.adlNeeds.feeding; 
+        this.toileting = lead.adlNeeds.toileting; 
+    }
+    
+    if (lead.memoryConcerns) {
+        this.alzDiagnosis = lead.memoryConcerns.dementia; 
+        this.argumentative = lead.memoryConcerns.memoryLoss; 
+        this.forgetsRepeats = lead.memoryConcerns.repeatsStories; 
+        this.wandering = lead.memoryConcerns.wandering; 
+    }
+    
+    if (lead.mobilityConcerns) {
+        this.fallRisk = lead.mobilityConcerns.fallRisk; 
+        this.walkerRegularly = lead.mobilityConcerns.regularlyWalks; 
+        this.caneRegularly = lead.mobilityConcerns.usesCane; 
+        this.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair; 
+        this.onePersTransfer = lead.mobilityConcerns.personTransfer; 
+        this.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer; 
+    }
+    
+    if (lead.nutritionConcerns) {
+        this.diabetesDiagnosis = lead.nutritionConcerns.diabetes; 
+        this.lowSaltLowDiet = lead.nutritionConcerns.lowSalt; 
+        this.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet; 
+        this.notEatingWell = lead.nutritionConcerns.notEatingWell;
+    }
+    
+    this.careTypeId = lead.careTypeId;
+    this.currentSituationId = lead.currentSituationId;
 }
 
 class Util {
@@ -327,7 +413,7 @@ class ObjectMappingService {
         if (coid && community && community.followUpAction) {
             const salesFollowup = new SalesFollowup(coid);
             salesFollowup.followUpActionId = community.followUpAction
-            salesFollowup.followUpDate = community.followupDate
+            salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
             salesFollowup.followUpDescText = community.followUpDescText;
 
             if (community.freeMeal && community.freeMeal > 0) {
@@ -462,6 +548,58 @@ class ObjectMappingService {
         salesLead.salesLeadFinancialOption = lead.financialOptions;
 
         return salesLead;
+    }
+    
+    static createEloquaExternalRequest(lead, communities, oktaFullName) {
+        const salesFormDetails = new SalesFormDetails();
+        const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
+        const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
+        const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
+        const salesFormDetailsCareType = new SalesFormDetailsCareType(lead);
+        const salesInquiryForm = new SalesInquiryForm();
+        
+        // Communities
+        salesInquiryForm.communities = communities;
+        
+        // Prospect
+        this.addPhoneToContact(lead.prospect, salesFormDetailsProspect.salesContact);
+        this.addAddressToContact(lead.prospect, salesFormDetailsProspect.salesContact);
+        salesFormDetails.prospect = salesFormDetailsProspect;
+
+        // Influencer
+        this.addPhoneToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
+        this.addAddressToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
+        salesFormDetails.influencer = salesFormDetailsInfluencer;
+        
+        // Second Person
+        this.addPhoneToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
+        this.addAddressToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
+        salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
+        
+        // Care Type
+        salesFormDetails.careType = salesFormDetailsCareType;
+        
+        // Financial Options
+        salesFormDetails.financialOptions = lead.financialOptions;
+        
+        // Drivers
+        salesFormDetails.drivers = lead.drivers;
+        
+        // Notes
+        salesFormDetails.notes = lead.notes;
+        
+        // Misc.
+        salesFormDetails.resultOfCall = lead.fua;
+        salesFormDetails.callingFor = lead.callingFor;
+        salesFormDetails.additionalDetail = lead.additionalDetail;
+        salesFormDetails.callerType = lead.callerType;
+        salesFormDetails.situation2 = lead.notes.secondPerson;
+        salesFormDetails.umid = lead.umid;
+        //salesFormDetails.advisorName = "Matt Matthiessen";
+        salesFormDetails.advisorName = oktaFullName;
+        salesInquiryForm.formDetails = salesFormDetails;
+        
+        return salesInquiryForm;
     }
 }
 
