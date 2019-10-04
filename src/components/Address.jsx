@@ -57,15 +57,17 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label for="state" className="label-format">State</Label>
-              <Input type="select" name={`lead.${this.props.type}.address.state`} onChange={this.props.onChange}>
+              <Input type="select" name={`lead.${this.props.type}.address.state`} value={address.state || ''} onChange={this.props.onChange}>
                 <option value="">Select One</option>
                 {options}
               </Input>
             </FormGroup>
           </Col>
           <Col>
-            <Label for="zip" className="label-format">Zip</Label>
-            <Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Zip" />
+            <FormGroup>
+              <Label for="zip" className="label-format">Zip</Label>
+              <Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zip} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Zip" />
+            </FormGroup>
           </Col>
         </Row>
       </section>

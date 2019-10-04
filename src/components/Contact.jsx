@@ -38,7 +38,7 @@ export default class Contact extends React.Component {
     const { phoneTypes } = this.state || [];
     const { contact, errors, touched, onChange } = this.props;
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
-      return <option key={type.value} value={type.value}>{type.text}</option>
+      return <option key={type.value} value={type.text}>{type.text}</option>
     });
 
     return (
@@ -55,7 +55,7 @@ export default class Contact extends React.Component {
           </Col>
           <Col>
             <FormGroup>
-              <Input className="label-format required-field" type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
+              <Input type="text" name={`lead.${this.props.type}.lastName`} value={contact.lastName} onChange={onChange} onBlur={this.handleDupCheck} placeholder="Last Name" />
               <ErrorMessage name={`lead.${this.props.type}.lastName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>

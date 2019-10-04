@@ -18,10 +18,10 @@ export default class LeadSource extends React.Component {
       .then((data) => this.setState({ leadSource: data }))
       .catch(error => console.log(error));
 
-    if (this.props.leadSource) {
-      const { leadSourceId } = this.props.leadSource;
-      if (leadSourceId) {
-        this.fetchAndSetLeadSourceDetail(leadSourceId);
+    if (this.props.defaultLeadSource) {
+      const { defaultLeadSource } = this.props.defaultLeadSource;
+      if (defaultLeadSource) {
+        this.fetchAndSetLeadSourceDetail(defaultLeadSource);
       }
     }
   }
@@ -51,10 +51,12 @@ export default class LeadSource extends React.Component {
 
   render() {
     const { leadSource, leadSourceDetail } = this.state || [];
-    const { handleChange, handleBlur } = this.props;
+    const { handleChange, handleBlur, defaultLeadSource, defaultLeadSourceDetail } = this.props;
+
     const leadSourceOptions = leadSource.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
+
     const leadSourceDetailOptions = (leadSourceDetail || []).map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -65,7 +67,7 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSource" className="label-format required-field">Lead Source</Label>
-              <Input type="select" id="leadSource" name="lead.leadSource" onChange={this.handleOnChange} onBlur={this.props.handleBlur} >
+              <Input type="select" id="leadSource" name="lead.leadSource" value={defaultLeadSource} onChange={this.handleOnChange} onBlur={this.props.handleBlur} >
                 <option value="">Select One</option>
                 {leadSourceOptions}
               </Input>
@@ -77,7 +79,7 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSourceDetail" className="label-format required-field">Lead Source Detail</Label>
-              <Input type="select" id="leadSourceDetail" name="lead.leadSourceDetail" onChange={this.props.onChange}>
+              <Input type="select" id="leadSourceDetail" name="lead.leadSourceDetail" value={defaultLeadSourceDetail} onChange={this.props.onChange}>
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
               </Input>

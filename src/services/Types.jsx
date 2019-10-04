@@ -184,6 +184,20 @@ class ObjectMappingService {
         return lead;
     }
 
+    static createInfluencer(influencer) {
+        if (influencer) {
+            const {salesContact} = influencer
+            const contact = this.createContact(salesContact)
+            contact.influencerId = influencer.influencerId
+            return contact;
+        }
+        return this.createEmptyContact()
+    }
+
+    /**
+     * translates sales contact to contact form
+     * @param {SalesContact} salesContact 
+     */
     static createContact(salesContact) {
         if (salesContact) {
             const contact = this.createEmptyContact();
@@ -208,6 +222,13 @@ class ObjectMappingService {
                 address.zip = salesAddress.zipPostalCode
             }
             contact.address = address;
+            if (salesContact.phoneNumbers) {
+                const phone = salesContact.phoneNumbers[0];
+                contact.phone.number = phone.phoneNumber
+                contact.phone.type = phone.phoneType
+                contact.phone.phoneId = phone.phoneId
+                contact.phone.primary = phone.primary
+            }
 
             return contact;
         }
@@ -217,6 +238,9 @@ class ObjectMappingService {
         return contact;
     }
 
+    /**
+     * creates an empty address object
+     */
     static createEmptyAddress() {
         return {
             line1: "",
@@ -227,6 +251,9 @@ class ObjectMappingService {
         }
     }
 
+    /**
+     * creates an empty note object
+     */
     static createEmptyNotes() {
         return {
 
