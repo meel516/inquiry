@@ -250,8 +250,8 @@ const EnhancedInquiryForm = withFormik({
   validationSchema: Yup.object().shape({
     lead: Yup.object().shape({
       influencer: Yup.object().shape({
-        firstName: Yup.string().required('Influencer First Name is Required'),
-        lastName: Yup.string().required('Influencer Last Name is Required'),
+        firstName: Yup.string().required('First Name is required'),
+        lastName: Yup.string().required('Last Name is required'),
         phone: Yup.object().shape({
           // number: Yup.string().notRequired().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number'),
           number: Yup.string().notRequired().test('influencerPhoneValid', 'Influencer Phone is not Valid', function(value) {
@@ -262,25 +262,25 @@ const EnhancedInquiryForm = withFormik({
             return true;
           })
         }),
-        email: Yup.string().email("Influencer Email Must Be Valid"),
+        email: Yup.string().email("Email Must Be Valid"),
       }),
       prospect: Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),
-        lastName: Yup.string().required('Last Name is fequired'),
+        lastName: Yup.string().required('Last Name is required'),
         veteranStatus: Yup.string().required('Veteran Status is required'),
         // phone: Yup.object().shape({
         //   number: Yup.string().matches({phoneRegExp})          
         // }),
-        email: Yup.string().email("Prospect Email Must Be Valid"),
+        email: Yup.string().email("Email Must Be Valid"),
       }),
       umid: Yup.string().required("UMID is required"),
-      careType: Yup.string().required("Care Level is required"),
+      careType: Yup.string().required("Care Level Recommended is required"),
       fua: Yup.string().required("Result of Call is required"),
       callingFor: Yup.string().required('Calling For is required'),
       inquiryType: Yup.string().required('Inquiry Method is required'),
       leadSource: Yup.string().required('Lead Source is required'),
       leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
-      callerType: Yup.string().required('Gender is required'),
+      callerType: Yup.string().required('Gender of Caller is required'),
     }),
   }),
 
