@@ -413,7 +413,7 @@ class ObjectMappingService {
         if (coid && community && community.followUpAction) {
             const salesFollowup = new SalesFollowup(coid);
             salesFollowup.followUpActionId = community.followUpAction
-            salesFollowup.followUpDate = community.followupDate
+            salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
             salesFollowup.followUpDescText = community.followUpDescText;
 
             if (community.freeMeal && community.freeMeal > 0) {

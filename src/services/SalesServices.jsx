@@ -285,7 +285,7 @@ class SalesAPIService {
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
   */
-  async processContactCenter(lead, community, oktaFullName) {
+  async processContactCenter(lead, community) {
     const salesLead = await this.submitProspect(lead, community)
     let leadId = lead.leadId = salesLead.leadId
 
@@ -351,7 +351,7 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
   if (!CommunityService.containContactCenter(communities)) {
     let community = CommunityService.createCommunity();
     community.communityId = 225707
-    leadId = await this.processContactCenter(lead, community, oktaFullName);
+    leadId = await this.processContactCenter(lead, community);
   }
   else {
     let contactCenter;
@@ -364,7 +364,7 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
     });
 
     if (contactCenter != null) {
-      leadId = await this.processContactCenter(lead, contactCenter, oktaFullName);
+      leadId = await this.processContactCenter(lead, contactCenter);
     }
   }
 
@@ -378,8 +378,8 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
 
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
-      this.handleProspectSubmission(community, prospect);
-
+      
+      this.handleProspectSubmission(prospect, community);
       this.submitFollowup(leadId, community);
 
       // Check to see if this community has an applicable Follow Up Action that
@@ -390,6 +390,8 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
       // 8	Assessment
       const actionArray = ["5", "6", "8"];
       if (actionArray.indexOf(community.followUpAction) > -1) {
+        // Convert the followupDate accordingly!
+        community.followupDate = CommunityService.convertToISODate(community.followupDate);
         eloquaCommunityList.push(community);
       }
     }
@@ -409,6 +411,7 @@ handleExistingInquiryForm(lead, communities) {
 
 async submitToService({ lead, communities, oktaFullName }) {
   let successful = true;
+
   try {
     if (lead.leadId) {
       console.log(`LeadId: ${lead.leadId}`);
