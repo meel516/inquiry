@@ -158,6 +158,7 @@ class SalesAPIService {
     const fuaUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
 
     let followup = ObjectMappingService.createFollowupRequest(leadId, community)
+    console.log(JSON.stringify(followup));
     if (followup) {
       try {
         let response = await fetch(fuaUrl, {
@@ -236,6 +237,23 @@ class SalesAPIService {
       .catch(err => console.log(err))
   }
 
+  async submitEloquaRequest(eloquaExternalRequest) {
+    const eloquaExternalUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/inquiryForm/eloqua/external`;
+
+    if (this.log.isLoggingEnabled()) {
+      this.log.debug(JSON.stringify(eloquaExternalRequest));
+    }
+    fetch(eloquaExternalUrl, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(eloquaExternalRequest),
+    })
+      .then(res => res.json())
+      .catch(err => console.log(err))
+  }
+
   async submitProspect(lead, community) {
     const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
@@ -295,7 +313,6 @@ class SalesAPIService {
     return leadId;
   }
 
-
 async handleProspectSubmission(lead, community) {
   const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
 
@@ -325,7 +342,7 @@ async retrieveProspect(leadId) {
   return prospect;
 }
 
-async handleNewInquiryForm(lead, communities) {
+async handleNewInquiryForm(lead, communities, oktaFullName) {
 
   const communityList = [...communities];
 
@@ -355,14 +372,35 @@ async handleNewInquiryForm(lead, communities) {
     leadId = lead.leadId;
   }
 
+  const eloquaCommunityList = [];
   if (leadId != null) {
     let prospect = await this.retrieveProspect(leadId);
+
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
+      
       this.handleProspectSubmission(prospect, community);
-
       this.submitFollowup(leadId, community);
 
+      // Check to see if this community has an applicable Follow Up Action that
+      // would deem submission of an External Eloqua Email.  If so, add it to the
+      // eloquaCommunityList.
+      // 5	Visit/Appt - Scheduled
+      // 6	Home Visit
+      // 8	Assessment
+      const actionArray = ["5", "6", "8"];
+      if (actionArray.indexOf(community.followUpAction) > -1) {
+        // Convert the followupDate accordingly!
+        community.followupDate = CommunityService.convertToISODate(community.followupDate);
+        eloquaCommunityList.push(community);
+      }
+    }
+
+    // If we have communities in eloquaCommunityList, submit the request.
+    if (eloquaCommunityList && eloquaCommunityList.length > 0) {
+      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, oktaFullName);
+      console.log(eloquaExternalRequest);
+      this.submitEloquaRequest(eloquaExternalRequest);
     }
   }
 }
@@ -371,15 +409,16 @@ handleExistingInquiryForm(lead, communities) {
 
 }
 
-async submitToService({ lead, communities }, errorHandler) {
+async submitToService({ lead, communities, oktaFullName }) {
   let successful = true;
+
   try {
     if (lead.leadId) {
       console.log(`LeadId: ${lead.leadId}`);
       this.handleExistingInquiryForm(lead, communities)
     }
     else {
-      this.handleNewInquiryForm(lead, communities)
+      this.handleNewInquiryForm(lead, communities, oktaFullName)
     }
   } catch (err) {
     console.log(err);

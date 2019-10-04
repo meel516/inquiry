@@ -1,8 +1,10 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
 import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
+import { withAuth } from '@okta/okta-react';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
 import Address from '../../components/Address';
@@ -20,11 +22,12 @@ import Prospect from '../../components/Prospect';
 import ReasonForCall from '../../components/ReasonForCall';
 import SecondPerson from '../../components/SecondPerson';
 import VeteranStatus from '../../components/VeteranStatus';
-import { Debug } from '../../components/Debug'
+import { Debug } from '../../components/Debug';
 
-import { SalesAPIService } from "../../services/SalesServices";
-import { ObjectMappingService } from "../../services/Types";
-import { CommunityService } from '../../services/CommunityServices';
+import { SalesAPIService } from "../services/SalesServices";
+import { ObjectMappingService } from "../services/Types";
+import { CommunityService } from '../services/CommunityServices';
+import { checkAuthentication } from '../auth/checkAuth';
 
 class InquiryForm extends React.Component {
   state = {
@@ -34,9 +37,13 @@ class InquiryForm extends React.Component {
     loading: true,
   };
 
+  checkAuthentication = checkAuthentication.bind(this);
+
   async componentDidMount() {
     const { guid, umid } = queryString.parse(this.props.location.search);
     console.log(`COID: ${guid} and UMID: ${umid}`);
+
+    this.checkAuthentication(this.getAuthCredentials);
 
     var leadObj = null;
     if (guid) {
@@ -58,6 +65,10 @@ class InquiryForm extends React.Component {
       loading: false,
       lead: leadObj,
     })
+  }
+
+  getAuthCredentials = (userInfo) => {
+    this.props.setFieldValue('oktaFullName', userInfo.name);
   }
 
   handleAddCommunity = (values) => {
@@ -268,7 +279,6 @@ class InquiryForm extends React.Component {
 let phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
 
-
 let formSchema = Yup.object().shape({
   'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')
 });
@@ -289,32 +299,34 @@ const EnhancedInquiryForm = withFormik({
         firstName: Yup.string().required('First Name is required'),
         lastName: Yup.string().required('Last Name is required'),
         phone: Yup.object().shape({
-          number: Yup.string().phone,
+          // number: Yup.string().notRequired().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number'),
+          number: Yup.string().notRequired().test('influencerPhoneValid', 'Influencer Phone is not Valid', function(value) {
+            if (!!value) {
+              const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+              return schema.isValidSync(value);
+            }
+            return true;
+          })
         }),
-
-        // phone: Yup.object().shape({
-        //   number: Yup.string().phone("Invalid Phone Number"),
-        //   number: Yup.string().matches(phoneRegExp, 'Invalid Phone Number').notRequired()         
-        // }),
         email: Yup.string().email("Email must be valid"),
       }),
       prospect: Yup.object().shape({
         firstName: Yup.string().required('First Name is required'),
-        lastName: Yup.string().required('Last Name is fequired'),
+        lastName: Yup.string().required('Last Name is required'),
         veteranStatus: Yup.string().required('Veteran Status is required'),
         // phone: Yup.object().shape({
         //   number: Yup.string().matches({phoneRegExp})          
         // }),
-        email: Yup.string().email("Email Must Be Valid"),
+        email: Yup.string().email("Email must be valid"),
       }),
       umid: Yup.string().required("UMID is required"),
-      careType: Yup.string().required("Care Level is required"),
+      careType: Yup.string().required("Care Level Recommended is required"),
       fua: Yup.string().required("Result of Call is required"),
       callingFor: Yup.string().required('Calling For is required'),
       inquiryType: Yup.string().required('Inquiry Method is required'),
       leadSource: Yup.string().required('Lead Source is required'),
       leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
-      callerType: Yup.string().required('Gender is required'),
+      callerType: Yup.string().required('Gender of Caller is required'),
     }),
   }),
 
@@ -334,4 +346,4 @@ const EnhancedInquiryForm = withFormik({
 
 })(InquiryForm);
 
-export default EnhancedInquiryForm;
+export default withAuth(EnhancedInquiryForm);
