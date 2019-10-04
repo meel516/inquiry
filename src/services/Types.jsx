@@ -145,6 +145,8 @@ class ObjectMappingService {
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
+            lead.inquiryType = salesLead.inquiryTypeId
+            lead.reasonForCall = salesLead.interestReasonId
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
                 lead.currentSituation = salesContact.currentSituation
@@ -478,7 +480,7 @@ class ObjectMappingService {
             this.addPhoneToContact(prospect, salesContact)
         }
 
-        salesLead.inquiryTypeId = prospect.reasonForCall
+        salesLead.inquiryTypeId = prospect.inquiryType
         salesLead.inquirerType = callingFor
         salesLead.buildingId = community.communityId
         salesLead.inquiryLeadSourceId = lead.leadSource
