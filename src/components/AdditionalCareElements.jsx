@@ -43,12 +43,29 @@ export default class AdditionalCareElements extends React.Component {
     this.state = {
       hasMounted: false,
       careElements: [],
+      defaultCareElements: [],
     }
 
     this.handleMemoryConcernsInputChange = this.handleMemoryConcernsInputChange.bind(this);
     this.handleMobilityConcernsInputChange = this.handleMobilityConcernsInputChange.bind(this);
     this.handleNutritionConcernsInputChange = this.handleNutritionConcernsInputChange.bind(this);
     this.differenceOf2Arrays = this.differenceOf2Arrays.bind(this);
+  }
+
+  componentDidMount() {
+    const { values: { lead } } = this.props;
+    const { careElements, defaultCareElements } = this.state;
+
+    if (lead.currentSituation) {
+      const situation = additionalCareElements[3]
+      defaultCareElements.push(situation)
+      careElements.push(situation.value)
+    }
+
+    this.setState({
+      careElements,
+      defaultCareElements
+    })
   }
 
   differenceOf2Arrays(array1, array2) {
@@ -133,7 +150,8 @@ export default class AdditionalCareElements extends React.Component {
 
 
   render() {
-    const { careElements } = this.state || [];
+    const { careElements, defaultCareElements } = this.state || [];
+    const { values } = this.props;
     return (
       <>
         <Row>
@@ -144,6 +162,7 @@ export default class AdditionalCareElements extends React.Component {
                 name="additionalCareElements"
                 onChange={this.handleSelectCareElements}
                 options={additionalCareElements}
+                defaultValue={defaultCareElements}
               />
             </FormGroup>
           </Col>
@@ -151,7 +170,7 @@ export default class AdditionalCareElements extends React.Component {
         {(careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange} /> : null}
         {(careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange} /> : null}
         {(careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange} /> : null}
-        {(careElements.includes(4) === true) ? <CurrentSituation onChange={this.handleCurrentSituationChange} /> : null}
+        {(careElements.includes(4) === true) ? <CurrentSituation defaultValue={values.lead.currentSituation} onChange={this.handleCurrentSituationChange} /> : null}
       </>
     )
   }
