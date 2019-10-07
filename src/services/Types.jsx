@@ -443,13 +443,16 @@ class ObjectMappingService {
             const salesFollowup = new SalesFollowup(coid);
             salesFollowup.followUpActionId = community.followUpAction
             salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
-            salesFollowup.followUpDescText = community.followUpDescText;
 
+            let description = community.note;
             if (community.freeMeal && community.freeMeal > 0) {
                 let index = community.freeMeal;
-                const freeMealItems = CommunityService.freeMealListing();
-                salesFollowup.followUpDescText = `${salesFollowup.followUpDescText} \n\n Does this visit include a free meal? ${freeMealItems[index]}`
+                const freeMealItem = CommunityService.getFreeMealItem(index);
+                if (freeMealItem) {
+                    description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
+                }
             }
+            salesFollowup.followUpDescText = description
 
             return salesFollowup;
         }
@@ -535,7 +538,7 @@ class ObjectMappingService {
         return salesSecondPerson;
     }
 
-    static createProspectRequest(lead, community) {
+    static createProspectRequest(lead, community, user) {
         if (!lead || !community) return;
 
         const { prospect, influencer } = lead;
@@ -575,8 +578,16 @@ class ObjectMappingService {
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
+        salesLead.username = user.username
 
         return salesLead;
+    }
+
+    static createLinkedProspectRequest(lead, community, prospect, user) {
+        const salesLead = this.createProspectRequest(lead, community, user);
+        salesLead.salesContact.contactId = prospect.contactId
+        salesLead.salesContact.masterId = prospect.masterId
+        return salesLead
     }
     
     static createEloquaExternalRequest(lead, communities, oktaFullName) {

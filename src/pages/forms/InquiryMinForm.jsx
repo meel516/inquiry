@@ -36,30 +36,30 @@ class InquiryForm extends React.Component {
     lead: null,
     loading: true,
   };
-
+  salesapi = new SalesAPIService();
   checkAuthentication = checkAuthentication.bind(this);
 
   async componentDidMount() {
-    const { guid, umid } = queryString.parse(this.props.location.search);
-    console.log(`COID: ${guid} and UMID: ${umid}`);
+    const { guid, umid, leadId } = queryString.parse(this.props.location.search);
+    console.log(`(GUID: ${guid} OR COID/LEADID: ${leadId}) and UMID: ${umid}`);
 
     this.checkAuthentication(this.getAuthCredentials);
 
-    var leadObj = null;
+    let leadObj = null;
     if (guid) {
-      const salesapi = new SalesAPIService()
-      leadObj = await salesapi.getLeadByGuid(guid)
-      this.props.setFieldValue('lead', leadObj)
+      leadObj = await this.salesapi.getLeadByGuid(guid)
+    }
+    if (leadId) {
+      leadObj = await this.salesapi.getLeadById(leadId)
     }
     else {
       leadObj = ObjectMappingService.createEmptyLead()
-      this.props.setFieldValue('lead', leadObj)
     }
-
     if (umid) {
       leadObj.umid = umid;
       this.props.setFieldValue('lead.umid', umid)
     }
+    this.props.setFieldValue('lead', leadObj)
 
     this.setState({
       loading: false,
@@ -68,7 +68,16 @@ class InquiryForm extends React.Component {
   }
 
   getAuthCredentials = (userInfo) => {
-    this.props.setFieldValue('oktaFullName', userInfo.name);
+    if (userInfo) {
+      const user = {
+        email: userInfo.email,
+        name: userInfo.name,
+        username: userInfo.preferred_username,
+        zone: userInfo.zoneinfo,
+        locale: userInfo.locale,
+      }
+      this.props.setFieldValue('user', user)
+    }
   }
 
   handleAddCommunity = (values) => {
@@ -336,6 +345,7 @@ const EnhancedInquiryForm = withFormik({
       setErrors,
       setStatus,
     }
+    debugger
     const salesService = new SalesAPIService();
     let successful = salesService.submitToService({ ...values }, errorHandler);
     setSubmitting(false);

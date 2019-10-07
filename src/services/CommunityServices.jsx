@@ -23,6 +23,14 @@ class CommunityService {
     ]
   }
 
+  static getFreeMealItem(item) {
+    const freeMeals = this.freeMealListing();
+    if (freeMeals.length <= item) {
+      return freeMeals[item]
+    }
+    return null;
+  }
+
   async fetchCommunities(username) {
     const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
     console.log(`fetchCommunities username: ${username}`)

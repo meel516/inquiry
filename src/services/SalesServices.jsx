@@ -1,7 +1,7 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ProspectError, ObjectMappingService, Util } from './Types'
+import { ProspectError, ObjectMappingService, Util, SalesContact } from './Types'
 import { CommunityService } from './CommunityServices'
 
 class DuplicationService {
@@ -105,8 +105,17 @@ class SalesAPIService {
 
   async getLeadByGuid(guid) {
     const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+    return await this.getLeadByUrl(leadUrl);
+  }
 
-    let salesLead = await this.createFetch(leadUrl);
+  // TODO: need to build this out, so that system can fetch lead by Id not just guid
+  async getLeadById(leadId) {
+    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}`;
+    return await this.getLeadByUrl(leadUrl);
+  }
+
+  async getLeadByUrl(uri) {
+    let salesLead = await this.createFetch(uri);
     if (salesLead) {
       const lead = ObjectMappingService.createLead(salesLead);
 
@@ -254,24 +263,26 @@ class SalesAPIService {
       .catch(err => console.log(err))
   }
 
-  async submitProspect(lead, community) {
+  async submitProspect(lead, community, user) {
+    const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
+    return await this.sendProspect(prospect);
+  }
+
+  async sendProspect(prospectRequest) {
     const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
-
-    const prospect = ObjectMappingService.createProspectRequest(lead, community);
-
     let response = await fetch(leadUrl, {
       method: 'POST', mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(prospect)
+      body: JSON.stringify(prospectRequest)
     })
     const salesResponse = await response.json();
     if (response.status === 201) {
       const { objectId } = salesResponse;
-      prospect.leadId = objectId
+      prospectRequest.leadId = objectId
 
-      return prospect;
+      return prospectRequest;
     }
     else {
       throw new Error('Sales Lead was not created.')
@@ -285,8 +296,8 @@ class SalesAPIService {
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
   */
-  async processContactCenter(lead, community) {
-    const salesLead = await this.submitProspect(lead, community)
+  async processContactCenter(lead, community, user) {
+    const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
@@ -313,25 +324,40 @@ class SalesAPIService {
     return leadId;
   }
 
-async handleProspectSubmission(lead, community) {
-  const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+  /**
+   * Create a new lead for the community of interest, tying it to the prospect
+   * that was already created
+   * 
+   * @param {lead} the lead information from the form
+   * @param {SalesContact} prospect the sales contact from SMS
+   * @param {Community} community the community to which the lead pertains
+   */
+async handleLeadProspectSubmission(lead, prospect, community, user) {
+  let salesLead = ObjectMappingService.createLinkedProspectRequest(lead, community, prospect, user);
+  salesLead = await this.sendProspect(salesLead);
+  const {leadId} = salesLead;
 
-  let prospect = ObjectMappingService.createProspectRequest(lead, community);
+  if (salesLead.inquirerType !== 'PROSP') {
+    // fetch influencer by leadId
+    const existingInfluencer = await this.retrieveInfluencer(leadId);
 
-  let response = await fetch(leadUrl, {
-    method: 'POST', mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(prospect)
-  })
-  const salesResponse = await response.json();
-  if (response.status === 201) {
-    const { objectId } = salesResponse;
-    lead.leadId = objectId
-    return objectId;
+    const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer);
+    influencer.contactId = existingInfluencer.contactId
+    influencer.masterId = existingInfluencer.masterId
+
+    this.submitInfluencer(influencer);
   }
-  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
+
+  return leadId;
+//  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
+}
+
+async retrieveInfluencer(leadId) {
+  const influencerUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/influencer`
+
+  // already returning json from this fetch
+  const influencer = await this.createFetch(influencerUrl);
+  return influencer;
 }
 
 async retrieveProspect(leadId) {
@@ -342,7 +368,7 @@ async retrieveProspect(leadId) {
   return prospect;
 }
 
-async handleNewInquiryForm(lead, communities, oktaFullName) {
+async handleNewInquiryForm(lead, communities, user) {
 
   const communityList = [...communities];
 
@@ -351,7 +377,7 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
   if (!CommunityService.containContactCenter(communities)) {
     let community = CommunityService.createCommunity();
     community.communityId = 225707
-    leadId = await this.processContactCenter(lead, community);
+    leadId = await this.processContactCenter(lead, community, user);
   }
   else {
     let contactCenter;
@@ -364,7 +390,7 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
     });
 
     if (contactCenter != null) {
-      leadId = await this.processContactCenter(lead, contactCenter);
+      leadId = await this.processContactCenter(lead, contactCenter, user);
     }
   }
 
@@ -374,13 +400,14 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
 
   const eloquaCommunityList = [];
   if (leadId != null) {
-    let prospect = await this.retrieveProspect(leadId);
+    let prospect = await this.retrieveProspect(leadId); // prospect is only the contact
 
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
       
-      this.handleProspectSubmission(prospect, community);
-      this.submitFollowup(leadId, community);
+      debugger
+      let nleadId = await this.handleLeadProspectSubmission(lead, prospect, community, user);
+      this.submitFollowup(nleadId, community);
 
       // Check to see if this community has an applicable Follow Up Action that
       // would deem submission of an External Eloqua Email.  If so, add it to the
@@ -398,27 +425,27 @@ async handleNewInquiryForm(lead, communities, oktaFullName) {
 
     // If we have communities in eloquaCommunityList, submit the request.
     if (eloquaCommunityList && eloquaCommunityList.length > 0) {
-      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, oktaFullName);
+      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
       console.log(eloquaExternalRequest);
       this.submitEloquaRequest(eloquaExternalRequest);
     }
   }
 }
 
-handleExistingInquiryForm(lead, communities) {
+handleExistingInquiryForm(lead, communities, user) {
 
 }
 
-async submitToService({ lead, communities, oktaFullName }) {
+async submitToService({ lead, communities, user }) {
   let successful = true;
 
   try {
     if (lead.leadId) {
       console.log(`LeadId: ${lead.leadId}`);
-      this.handleExistingInquiryForm(lead, communities)
+      this.handleExistingInquiryForm(lead, communities, user)
     }
     else {
-      this.handleNewInquiryForm(lead, communities, oktaFullName)
+      this.handleNewInquiryForm(lead, communities, user)
     }
   } catch (err) {
     console.log(err);
