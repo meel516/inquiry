@@ -7,7 +7,8 @@ const nextStepsOptionsArray = [
   { value: 2, label: 'New Lead No Visit' },
   { value: 3, label: 'Nonqualified Lead' },
   { value: 4, label: 'Non Lead Call' },
-  { value: 5, label: 'Webform No Response' },
+  { value: 5, label: 'Special Event RSVP' },
+  { value: 6, label: 'Webform No Response' },
 ]
 
 export default class NextStepsSelect extends React.Component {
