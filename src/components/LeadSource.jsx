@@ -7,6 +7,7 @@ import { DropDownService } from '../services/SalesServices'
 export default class LeadSource extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       leadSource: [],
       leadSourceDetail: [],
@@ -18,11 +19,9 @@ export default class LeadSource extends React.Component {
       .then((data) => this.setState({ leadSource: data }))
       .catch(error => console.log(error));
 
-    if (this.props.defaultLeadSource) {
-      const { defaultLeadSource } = this.props.defaultLeadSource;
-      if (defaultLeadSource) {
-        this.fetchAndSetLeadSourceDetail(defaultLeadSource);
-      }
+    const { defaultLeadSource } = this.props;
+    if (defaultLeadSource) {
+      this.fetchAndSetLeadSourceDetail(defaultLeadSource);
     }
   }
 
@@ -41,7 +40,6 @@ export default class LeadSource extends React.Component {
   }
 
   fetchAndSetLeadSourceDetail = (leadSourceId) => {
-    console.log(leadSourceId);
     DropDownService.getLeadSourceDetails(leadSourceId)
       .then((data) => {
         this.setState({ leadSourceDetail: data })
