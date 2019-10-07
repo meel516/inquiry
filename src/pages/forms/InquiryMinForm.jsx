@@ -24,10 +24,10 @@ import SecondPerson from '../../components/SecondPerson';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 
-import { SalesAPIService } from "../services/SalesServices";
-import { ObjectMappingService } from "../services/Types";
-import { CommunityService } from '../services/CommunityServices';
-import { checkAuthentication } from '../auth/checkAuth';
+import { SalesAPIService } from "../../services/SalesServices";
+import { ObjectMappingService } from "../../services/Types";
+import { CommunityService } from '../../services/CommunityServices';
+import { checkAuthentication } from '../../auth/checkAuth';
 
 class InquiryForm extends React.Component {
   state = {
