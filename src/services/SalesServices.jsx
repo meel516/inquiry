@@ -103,14 +103,18 @@ class SalesAPIService {
     this.log = new Logger();
   }
 
+  createApiUri(api) {
+    return `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`
+  }
+
   async getLeadByGuid(guid) {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/guid/${guid}`;
+    const leadUrl = this.createApiUri(`leads/guid/${guid}`);
     return await this.getLeadByUrl(leadUrl);
   }
 
   // TODO: need to build this out, so that system can fetch lead by Id not just guid
   async getLeadById(leadId) {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}`;
+    const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl);
   }
 
@@ -125,7 +129,7 @@ class SalesAPIService {
         if (prospect) {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
-          const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencers/${contactId}`
+          const inflUrl = this.createApiUri(`influencers/${contactId}`)
 
           let influencers = await this.createFetch(inflUrl);
           let influencer = (influencers || []).find(function (influencer) {
@@ -141,7 +145,7 @@ class SalesAPIService {
   }
 
   async submitInfluencer(influencer) {
-    const inflUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/influencer`;
+    const inflUrl = this.createApiUri('influencer');
     if (influencer) {
       try {
         let response = await fetch(inflUrl, {
@@ -164,7 +168,7 @@ class SalesAPIService {
   }
 
   async submitFollowup(leadId, community) {
-    const fuaUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/fua`;
+    const fuaUrl = this.createApiUri('leads/fua')
 
     let followup = ObjectMappingService.createFollowupRequest(leadId, community)
     console.log(JSON.stringify(followup));
@@ -195,7 +199,7 @@ class SalesAPIService {
   * @param {note} notes the note object which contains all form notes
   */
   async submitNotes(coid, notes) {
-    const noteUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/note`;
+    const noteUrl = this.createApiUri('leads/note');
 
     for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
@@ -215,7 +219,7 @@ class SalesAPIService {
   }
 
   async submitProspectNeeds(coid, lead) {
-    const prospectNeedsUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/prospectneed`;
+    const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
     let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead);
     fetch(prospectNeedsUrl, {
@@ -230,11 +234,7 @@ class SalesAPIService {
   }
 
   async submitSecondPerson(secondPersonRequest) {
-    const secondPersonUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/secondperson`;
-
-    if (this.log.isLoggingEnabled()) {
-      this.log.debug(JSON.stringify(secondPersonRequest));
-    }
+    const secondPersonUrl = this.createApiUri('secondperson');
     fetch(secondPersonUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -247,11 +247,8 @@ class SalesAPIService {
   }
 
   async submitEloquaRequest(eloquaExternalRequest) {
-    const eloquaExternalUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/inquiryForm/eloqua/external`;
+    const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua/external')
 
-    if (this.log.isLoggingEnabled()) {
-      this.log.debug(JSON.stringify(eloquaExternalRequest));
-    }
     fetch(eloquaExternalUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -268,8 +265,26 @@ class SalesAPIService {
     return await this.sendProspect(prospect);
   }
 
+  async sendAddCoiRequest(request) {
+    const coidUrl = this.createApiUri('addCommunity')
+    let response = await fetch(coidUrl, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request)
+    })
+    if (response.status === 201) {
+      const { objectId } = response;
+      return objectId;
+    }
+    else {
+      throw new Error('Sales Lead was not created.')
+    }
+  }
+
   async sendProspect(prospectRequest) {
-    const leadUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/prospect`;
+    const leadUrl = this.createApiUri('prospect')
     let response = await fetch(leadUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -332,28 +347,14 @@ class SalesAPIService {
    * @param {SalesContact} prospect the sales contact from SMS
    * @param {Community} community the community to which the lead pertains
    */
-async handleLeadProspectSubmission(lead, prospect, community, user) {
-  let salesLead = ObjectMappingService.createLinkedProspectRequest(lead, community, prospect, user);
-  salesLead = await this.sendProspect(salesLead);
-  const {leadId} = salesLead;
-
-  if (salesLead.inquirerType !== 'PROSP') {
-    // fetch influencer by leadId
-    const existingInfluencer = await this.retrieveInfluencer(leadId);
-
-    const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer);
-    influencer.contactId = existingInfluencer.contactId
-    influencer.masterId = existingInfluencer.masterId
-
-    this.submitInfluencer(influencer);
-  }
-
-  return leadId;
+async handleAddCommunitySubmission(lead, community, user) {
+  let salesLead = ObjectMappingService.createAddCoiRequest(lead, community, user);
+  return await this.sendAddCoiRequest(salesLead);
 //  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
 }
 
 async retrieveInfluencer(leadId) {
-  const influencerUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/influencer`
+  const influencerUrl = this.createApiUri(`leads/${leadId}/influencer`)
 
   // already returning json from this fetch
   const influencer = await this.createFetch(influencerUrl);
@@ -361,7 +362,7 @@ async retrieveInfluencer(leadId) {
 }
 
 async retrieveProspect(leadId) {
-  const prospectUrl = `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/leads/${leadId}/prospect`
+  const prospectUrl = this.createApiUri(`leads/${leadId}/prospect`)
 
   // already returning json from this fetch
   const prospect = await this.createFetch(prospectUrl)
@@ -400,13 +401,11 @@ async handleNewInquiryForm(lead, communities, user) {
 
   const eloquaCommunityList = [];
   if (leadId != null) {
-    let prospect = await this.retrieveProspect(leadId); // prospect is only the contact
-
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
       
       debugger
-      let nleadId = await this.handleLeadProspectSubmission(lead, prospect, community, user);
+      let nleadId = await this.handleAddCommunitySubmission(lead, community, user);
       this.submitFollowup(nleadId, community);
 
       // Check to see if this community has an applicable Follow Up Action that

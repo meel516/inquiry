@@ -583,11 +583,34 @@ class ObjectMappingService {
         return salesLead;
     }
 
+    /**
+     * 
+     * @param {*} lead 
+     * @param {*} community 
+     * @param {*} prospect 
+     * @param {*} user 
+     * @deprecated
+     */
     static createLinkedProspectRequest(lead, community, prospect, user) {
         const salesLead = this.createProspectRequest(lead, community, user);
         salesLead.salesContact.contactId = prospect.contactId
         salesLead.salesContact.masterId = prospect.masterId
         return salesLead
+    }
+
+    /**
+     * creates a request that allows additions for coi methods
+     * @param {*} lead 
+     * @param {*} community 
+     * @param {*} user 
+     */
+    static createAddCoiRequest(lead, community, user) {
+        debugger
+        return {
+            leadId: lead.leadId,
+            communityId: community.communityId,
+            username: user.username,
+        }
     }
     
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
