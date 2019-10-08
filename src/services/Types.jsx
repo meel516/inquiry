@@ -438,9 +438,10 @@ class ObjectMappingService {
         }
     }
 
-    static createFollowupRequest(coid, community) {
-        if (coid && community && community.followUpAction) {
-            const salesFollowup = new SalesFollowup(coid);
+    static createFollowupRequest(leadId, community) {
+        if (leadId && community && community.followUpAction) {
+            const salesFollowup = new SalesFollowup(leadId);
+            salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
             salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
 
@@ -605,7 +606,6 @@ class ObjectMappingService {
      * @param {*} user 
      */
     static createAddCoiRequest(lead, community, user) {
-        debugger
         return {
             leadId: lead.leadId,
             communityId: community.communityId,

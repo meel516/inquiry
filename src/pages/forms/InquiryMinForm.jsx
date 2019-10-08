@@ -30,6 +30,7 @@ import { CommunityService } from '../../services/CommunityServices';
 import { checkAuthentication } from '../../auth/checkAuth';
 
 class InquiryForm extends React.Component {
+  MAX_COMMUNITIES = 5;
   state = {
     communities: [],
     allowAddCommunities: true,
@@ -87,7 +88,7 @@ class InquiryForm extends React.Component {
       communities.push(community)
 
       let allowAddCommunities = true;
-      if ( communities.length > 9) {
+      if ( communities.length > (this.MAX_COMMUNITIES-1)) {
         allowAddCommunities = false;
       }
       return {
@@ -102,7 +103,7 @@ class InquiryForm extends React.Component {
       let communities = (values.communities || []).filter((community) => (community.uuid !== uuid));
       let allowAddCommunities = true;
 
-      if (communities.length < 10) {
+      if (communities.length < this.MAX_COMMUNITIES) {
         allowAddCommunities = true
       } else {
         allowAddCommunities = false
