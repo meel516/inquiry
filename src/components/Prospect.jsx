@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import { ErrorMessage } from 'formik';
 
 import Contact from './Contact';
 
@@ -16,7 +17,8 @@ export default function Prospect(props) {
         <Col xs="1" md="6">
           <FormGroup>
             <Label for="age" className="label-format">Age</Label>
-            <Input type="number" id="age" name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} placeholder="Age" />
+            <Input type="number" id="age" name="lead.prospect.age" value={props.contact.age} onChange={props.onChange} onBlur={props.handleBlur} placeholder="Age" />
+            <ErrorMessage name="lead.prospect.age" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
           </FormGroup>
         </Col>
       </Row>

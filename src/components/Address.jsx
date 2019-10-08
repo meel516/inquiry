@@ -1,6 +1,7 @@
 import React from 'react'
-import { Col, Input, FormGroup, Label, Row } from 'reactstrap'
+import { Alert, Col, Input, FormGroup, Label, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
+import { ErrorMessage } from 'formik';
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -37,13 +38,15 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label htmlFor="line1" className="label-format">Address 1</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.line1`} value={address.line1 || ''} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Street Address" />
+              <Input type="text" name={`lead.${this.props.type}.address.line1`} value={address.line1 || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="Street Address" />
+              <ErrorMessage name={`lead.${this.props.type}.address.line1`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for="line2" className="label-format">Address 2</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.line2`} value={address.line2 || ''} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Apartment, Studio, or Floor" />
+              <Input type="text" name={`lead.${this.props.type}.address.line2`} value={address.line2 || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="Apartment, Studio, or Floor" />
+              <ErrorMessage name={`lead.${this.props.type}.address.line2`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
@@ -51,7 +54,8 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label for="city" className="label-format">City</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city || ''} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="City" />
+              <Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="City" />
+              <ErrorMessage name={`lead.${this.props.type}.address.city`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
           <Col>
@@ -65,7 +69,7 @@ export default class Address extends React.Component {
           </Col>
           <Col>
             <Label for="zip" className="label-format">Zip</Label>
-            <Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Zip" />
+            <Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zipcode} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="Zip" />
           </Col>
         </Row>
       </section>

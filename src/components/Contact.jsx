@@ -2,7 +2,7 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import {Field, ErrorMessage } from 'formik';
+import { ErrorMessage } from 'formik';
 
 import { DropDownService, DuplicationService } from '../services/SalesServices'
 
