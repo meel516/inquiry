@@ -317,6 +317,20 @@ const EnhancedInquiryForm = withFormik({
         }),
         age: Yup.number().test('len', 'Age can be at most 3 digits', val => (val && val.toString().length < 4)),
       }),
+      secondPerson: Yup.object().shape({
+        firstName: Yup.string()
+          .required('First Name is required')
+          .max(50, 'First Name can be at most 50 characters')
+          ,
+        lastName: Yup.string()
+          .required('Last Name is required')
+          .max(50, 'Last Name can be at most 50 characters')
+          ,
+        email: Yup.string()
+          .email("Email must be valid")
+          .max(100, 'Email can be at most 100 characters')
+          ,
+      }),
       additionalDetail: Yup.string()
         .max(100, 'Additional Detail can be at most 100 characters')
         ,
