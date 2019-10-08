@@ -425,7 +425,6 @@ const EnhancedInquiryForm = withFormik({
       setErrors,
       setStatus,
     }
-    debugger
     const salesService = new SalesAPIService();
     let successful = salesService.submitToService({ ...values }, errorHandler);
     setSubmitting(false);

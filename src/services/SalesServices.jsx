@@ -405,7 +405,6 @@ async handleNewInquiryForm(lead, communities, user) {
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
       
-      debugger
       let nleadId = await this.handleAddCommunitySubmission(lead, community, user);
       this.submitFollowup(nleadId, community);
 
