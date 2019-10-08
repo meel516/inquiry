@@ -90,6 +90,7 @@ export default class LeadSource extends React.Component {
             <FormGroup>
               <Label for="additionalDetail" className="label-format">Additional Detail</Label>
               <Input type="text" id="additionalDetail" name="lead.additionalDetail" placeholder="Additional Detail" onChange={handleChange} onBlur={handleBlur} />
+              <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
