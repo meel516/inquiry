@@ -14,6 +14,7 @@ import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
 import FinancialOptions from '../../components/FinancialOptions';
+import {formValidationSchema} from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
 import NextSteps from '../../components/NextSteps'
@@ -286,15 +287,10 @@ class InquiryForm extends React.Component {
   }
 }
 
-let phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
-
-let formSchema = Yup.object().shape({
-  'lead.umid': Yup.string().min(5, 'Shorty').max(7, 'Stretch').required('Required')
-});
-
 const EnhancedInquiryForm = withFormik({
+  displayName: 'InquiryForm',
   enableReinitialize: true,
+  validationSchema: formValidationSchema,
 
   mapPropsToValues: () => {
     return {
@@ -302,120 +298,6 @@ const EnhancedInquiryForm = withFormik({
       lead: ObjectMappingService.createEmptyLead(),
     }
   },
-
-  validationSchema: Yup.object().shape({
-    lead: Yup.object().shape({
-      influencer: Yup.object().shape({
-        firstName: Yup.string()
-          .required('First Name is required')
-          .max(50, 'First Name can be at most 50 characters')
-          ,
-        lastName: Yup.string()
-          .required('Last Name is required')
-          .max(50, 'Last Name can be at most 50 characters')
-          ,
-        phone: Yup.object().shape({
-          // number: Yup.string().notRequired().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number'),
-          number: Yup.string().notRequired().test('influencerPhoneValid', 'Influencer Phone is not Valid', function(value) {
-            if (!!value) {
-              const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
-              return schema.isValidSync(value);
-            }
-            return true;
-          })
-        }),
-        email: Yup.string()
-          .email("Email must be valid")
-          .max(100, 'Email can be at most 100 characters')
-          ,
-        address: Yup.object().shape({
-          line1: Yup.string()
-            .max(40, 'Address 1 can be at most 40 characters')
-            ,
-          line2: Yup.string()
-            .max(40, 'Address 2 can be at most 40 characters')
-            ,
-          city: Yup.string()
-            .max(30, 'City can be at most 30 characters')
-            ,
-        }),
-      }),
-      prospect: Yup.object().shape({
-        firstName: Yup.string()
-          .required('First Name is required')
-          .max(50, 'First Name can be at most 50 characters')
-          ,
-        lastName: Yup.string()
-          .required('Last Name is required')
-          .max(50, 'Last Name can be at most 50 characters')
-          ,
-        veteranStatus: Yup.string().required('Veteran Status is required'),
-        // phone: Yup.object().shape({
-        //   number: Yup.string().matches({phoneRegExp})          
-        // }),
-        email: Yup.string()
-          .email("Email must be valid")
-          .max(100, 'Email can be at most 100 characters')
-          ,
-        address: Yup.object().shape({
-          line1: Yup.string()
-            .max(40, 'Address 1 can be at most 40 characters')
-            ,
-        }),
-        age: Yup.number().test('len', 'Age can be at most 3 digits', val => (val && val.toString().length < 4)),
-      }),
-      secondPerson: Yup.object().shape({
-        firstName: Yup.string()
-          .max(50, 'First Name can be at most 50 characters')
-          ,
-        lastName: Yup.string()
-          .max(50, 'Last Name can be at most 50 characters')
-          ,
-        email: Yup.string()
-          .email("Email must be valid")
-          .max(100, 'Email can be at most 100 characters')
-          ,
-      }),
-      additionalDetail: Yup.string()
-        .max(100, 'Additional Detail can be at most 100 characters')
-        ,
-      umid: Yup.string()
-        .required("UMID is required")
-        .max(36, 'UMID can be at most 36 characters')
-        ,
-      careType: Yup.string().required("Care Level Recommended is required"),
-      fua: Yup.string().required("Result of Call is required"),
-      callingFor: Yup.string().required('Calling For is required'),
-      inquiryType: Yup.string().required('Inquiry Method is required'),
-      leadSource: Yup.string().required('Lead Source is required'),
-      leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
-      callerType: Yup.string().required('Gender of Caller is required'),
-      notes: Yup.object().shape({
-        situation: Yup.string()
-          .max(4000, 'Situation can be at most 4000 characters')
-          ,
-        passionsPersonality: Yup.string()
-          .max(4000, 'Passions & Personality can be at most 4000 characters')
-          ,
-        financialSituation: Yup.string()
-          .max(4000, 'Financial Situation can be at most 4000 characters')
-          ,
-        additionalNotes: Yup.string()
-          .max(4000, 'Additional Notes can be at most 4000 characters')
-          ,
-        secondPerson: Yup.string()
-          .max(4000, '2nd Person Situation can be at most 4000 characters')
-          ,
-      }),
-    }),
-    communities: Yup.array().of(
-      Yup.object().shape({
-        note: Yup.string()
-          .max(4000, 'Description can be at most 4000 characters')
-          ,
-      }),
-    )
-  }),
 
   handleSubmit: (values, { setSubmitting, setErrors, setStatus }) => {
     setSubmitting(true);
@@ -428,8 +310,6 @@ const EnhancedInquiryForm = withFormik({
     setSubmitting(false);
     console.log(`Was successful: ${successful}`)
   },
-
-  displayName: 'InquiryForm',
 
 })(InquiryForm);
 
