@@ -104,7 +104,7 @@ class SalesAPIService {
   }
 
   createApiUri(api) {
-    return `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`
+    return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
   async getLeadByGuid(guid) {
