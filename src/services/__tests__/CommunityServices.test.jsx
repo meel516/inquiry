@@ -29,4 +29,9 @@ describe('test free meals', () => {
     const freeMeals = communityService.freeMealListing();
     expect(freeMeals).not.toBeNull();
   })
+
+  test('test fetching the free meal label from the service', () => {
+
+  })
+
 })
