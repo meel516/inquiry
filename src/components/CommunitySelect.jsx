@@ -80,7 +80,7 @@ export default class CommunitySelect extends React.Component {
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="communityFee" className="label-format">Community Fee</Label>
+                  <Label for="communityFee" className="label-format">Common Starting Rate</Label>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>$</InputGroupText>
@@ -91,7 +91,7 @@ export default class CommunitySelect extends React.Component {
                       value={community.communityFee || ''}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="Community Fee" />
+                      placeholder="Common Starting Rate" />
                   </InputGroup>
                 </FormGroup>
               </Col>
