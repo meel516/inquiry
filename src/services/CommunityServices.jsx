@@ -25,10 +25,13 @@ class CommunityService {
 
   static getFreeMealItem(item) {
     const freeMeals = this.freeMealListing();
-    if (freeMeals.length <= item) {
-      return freeMeals[item]
+    let freeMeal = null;
+    if (item) {
+      freeMeal = freeMeals.find((freemeal)=> {
+        return freemeal.value === item
+      })
     }
-    return null;
+    return (freeMeal) ? freeMeal : null;
   }
 
   async fetchCommunities(username) {
