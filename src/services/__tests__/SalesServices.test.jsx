@@ -81,7 +81,6 @@ describe('deduplication checks logic', () => {
 
 })
 
-
 describe('test lead creation', () => {
     describe('test edge cases', () => {
         test('test sales lead is null', () => {
@@ -142,4 +141,19 @@ describe('test submit prospect needs', () => {
 
         })
     })
+})
+
+describe('unit testing javascript dates', () => {
+
+    test('verify UTC with timezone', () => {
+        const d = new Date('1995-05-07T14:35:55')
+
+        expect(d.getUTCDate()).toEqual(7)
+        expect(d.getFullYear()).toEqual(1995)
+        expect(d.getUTCMonth()).toEqual(5-1) // zero based month 0 - Jan
+
+        // TODO: after adding react-momentum to the project write unit tests to verify
+
+    })
+
 })

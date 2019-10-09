@@ -231,6 +231,8 @@ class ObjectMappingService {
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
+            lead.inquiryType = salesLead.inquiryTypeId
+            lead.reasonForCall = salesLead.interestReasonId
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
                 lead.currentSituation = salesContact.currentSituation
@@ -270,6 +272,20 @@ class ObjectMappingService {
         return lead;
     }
 
+    static createInfluencer(influencer) {
+        if (influencer) {
+            const {salesContact} = influencer
+            const contact = this.createContact(salesContact)
+            contact.influencerId = influencer.influencerId
+            return contact;
+        }
+        return this.createEmptyContact()
+    }
+
+    /**
+     * translates sales contact to contact form
+     * @param {SalesContact} salesContact 
+     */
     static createContact(salesContact) {
         if (salesContact) {
             const contact = this.createEmptyContact();
@@ -294,6 +310,13 @@ class ObjectMappingService {
                 address.zip = salesAddress.zipPostalCode
             }
             contact.address = address;
+            if (salesContact.phoneNumbers) {
+                const phone = salesContact.phoneNumbers[0];
+                contact.phone.number = phone.phoneNumber
+                contact.phone.type = phone.phoneType
+                contact.phone.phoneId = phone.phoneId
+                contact.phone.primary = phone.primary
+            }
 
             return contact;
         }
@@ -303,6 +326,9 @@ class ObjectMappingService {
         return contact;
     }
 
+    /**
+     * creates an empty address object
+     */
     static createEmptyAddress() {
         return {
             line1: "",
@@ -313,6 +339,9 @@ class ObjectMappingService {
         }
     }
 
+    /**
+     * creates an empty note object
+     */
     static createEmptyNotes() {
         return {
 
@@ -409,18 +438,22 @@ class ObjectMappingService {
         }
     }
 
-    static createFollowupRequest(coid, community) {
-        if (coid && community && community.followUpAction) {
-            const salesFollowup = new SalesFollowup(coid);
+    static createFollowupRequest(leadId, community) {
+        if (leadId && community && community.followUpAction) {
+            const salesFollowup = new SalesFollowup(leadId);
+            salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
             salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
-            salesFollowup.followUpDescText = community.followUpDescText;
 
+            let description = community.note;
             if (community.freeMeal && community.freeMeal > 0) {
                 let index = community.freeMeal;
-                const freeMealItems = CommunityService.freeMealListing();
-                salesFollowup.followUpDescText = `${salesFollowup.followUpDescText} \n\n Does this visit include a free meal? ${freeMealItems[index]}`
+                const freeMealItem = CommunityService.getFreeMealItem(index);
+                if (freeMealItem) {
+                    description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
+                }
             }
+            salesFollowup.followUpDescText = description
 
             return salesFollowup;
         }
@@ -506,7 +539,7 @@ class ObjectMappingService {
         return salesSecondPerson;
     }
 
-    static createProspectRequest(lead, community) {
+    static createProspectRequest(lead, community, user) {
         if (!lead || !community) return;
 
         const { prospect, influencer } = lead;
@@ -537,7 +570,7 @@ class ObjectMappingService {
             this.addPhoneToContact(prospect, salesContact)
         }
 
-        salesLead.inquiryTypeId = prospect.reasonForCall
+        salesLead.inquiryTypeId = prospect.inquiryType
         salesLead.inquirerType = callingFor
         salesLead.buildingId = community.communityId
         salesLead.inquiryLeadSourceId = lead.leadSource
@@ -546,8 +579,38 @@ class ObjectMappingService {
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
+        salesLead.username = user.username
 
         return salesLead;
+    }
+
+    /**
+     * 
+     * @param {*} lead 
+     * @param {*} community 
+     * @param {*} prospect 
+     * @param {*} user 
+     * @deprecated
+     */
+    static createLinkedProspectRequest(lead, community, prospect, user) {
+        const salesLead = this.createProspectRequest(lead, community, user);
+        salesLead.salesContact.contactId = prospect.contactId
+        salesLead.salesContact.masterId = prospect.masterId
+        return salesLead
+    }
+
+    /**
+     * creates a request that allows additions for coi methods
+     * @param {*} lead 
+     * @param {*} community 
+     * @param {*} user 
+     */
+    static createAddCoiRequest(lead, community, user) {
+        return {
+            leadId: lead.leadId,
+            communityId: community.communityId,
+            username: user.username,
+        }
     }
     
     static createEloquaExternalRequest(lead, communities, oktaFullName) {

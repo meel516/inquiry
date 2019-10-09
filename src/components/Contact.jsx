@@ -39,7 +39,7 @@ export default class Contact extends React.Component {
     const { phoneTypes } = this.state || [];
     const { contact, errors, touched, onChange } = this.props;
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
-      return <option key={type.value} value={type.value}>{type.text}</option>
+      return <option key={type.value} value={type.text}>{type.text}</option>
     });
 
     return (

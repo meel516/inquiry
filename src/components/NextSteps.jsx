@@ -11,21 +11,7 @@ const nextStepsOptionsArray = [
   { value: 6, label: 'Webform No Response' },
 ]
 
-export default class NextStepsSelect extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = props.handleChange.bind(this);
-  }
-
-  componentDidMount() {
-    console.log('called componentDidMount on nextSteps form');
-  }
-
-  componentWillUnmount() {
-    console.log('called componentWillUnmount on nextSteps form');
-  }
-
-  render() {
+export default function NextStepsSelect(props) {
     const nextStepsOptions = (nextStepsOptionsArray || []).map(type => {
       return <option key={type.value} value={type.value}>{type.label}</option>
     });
@@ -33,7 +19,7 @@ export default class NextStepsSelect extends React.Component {
     return (
       <FormGroup>
         <Label for="nextSteps" id="nextStepsLabel" className="label-format required-field">Result of Call</Label>
-        <Input type="select" id="nextSteps" name='lead.fua' onChange={this.props.handleChange} onBlur={this.props.onBlur} >
+        <Input type="select" id="nextSteps" name='lead.fua' onChange={props.handleChange} onBlur={props.onBlur} >
           <option value="">Select One</option>
           {nextStepsOptions}
         </Input>
@@ -41,7 +27,5 @@ export default class NextStepsSelect extends React.Component {
       </FormGroup>
 
     )
-  };
 }
-
 

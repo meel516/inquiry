@@ -2,7 +2,7 @@ import React from 'react';
 import { withAuth } from '@okta/okta-react';
 
 import { checkAuthentication } from '../auth/checkAuth';
-import InquiryForm from '../components/InquiryMinForm';
+import InquiryForm from './forms/InquiryMinForm';
 import LinksManager from '../components/LinksManager';
 import Navigator from './Headers/Navigator';
 import Footer from './Footers/Footer';
