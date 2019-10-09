@@ -1,6 +1,6 @@
 
-import { ObjectMappingService } from '../../services/Types'
-import {formValidationSchema} from '../ValidationSchema'
+import { ObjectMappingService } from '../../../services/Types'
+import { formValidationSchema } from '../ValidationSchema'
 
 describe('Yup testing/validation', () => {
     let lead = null;
@@ -10,11 +10,11 @@ describe('Yup testing/validation', () => {
     })
 
     test('test schema validity', () => {
-        
+
     })
 
     test('perform validation on empty form', async () => {
-        await formValidationSchema.validate(lead, {abortEarly: false})
+        await formValidationSchema.validate(lead, { abortEarly: false })
     })
 
 
