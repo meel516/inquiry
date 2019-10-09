@@ -252,6 +252,7 @@ class ObjectMappingService {
         lead.influencer.address = this.createEmptyAddress();
         lead.secondPerson = this.createEmptyContact();
         lead.prospect = this.createEmptyContact();
+        lead.prospect.age = '';
         lead.adlNeeds = this.createAdlNeeds();
         lead.memoryConcerns = this.createMemoryConcerns();
         lead.mobilityConcerns = this.createMobilityConcerns();
