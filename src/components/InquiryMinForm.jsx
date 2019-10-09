@@ -315,7 +315,18 @@ const EnhancedInquiryForm = withFormik({
             .max(40, 'Address 1 can be at most 40 characters')
             ,
         }),
-        age: Yup.number().test('len', 'Age can be at most 3 digits', val => (val && val.toString().length < 4)),
+        age: Yup.number()
+          .transform((cv, ov) => {
+            return (ov === '' ? undefined : cv);
+          })
+          .test('len', 'Age can be at most 3 digits', function(val) {
+            if (!(typeof val != "undefined")) {
+              // This is undefined...return true.
+              return true;
+            } else {
+              return (val && val.toString().length < 4);
+            }
+          }),
       }),
       secondPerson: Yup.object().shape({
         firstName: Yup.string()
