@@ -570,7 +570,7 @@ class ObjectMappingService {
             this.addPhoneToContact(prospect, salesContact)
         }
 
-        salesLead.inquiryTypeId = prospect.inquiryType
+        salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
         salesLead.buildingId = community.communityId
         salesLead.inquiryLeadSourceId = lead.leadSource
