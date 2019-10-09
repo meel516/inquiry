@@ -4,14 +4,6 @@ import { ObjectMappingService } from '../Types'
 import { DropDownService, DuplicationService, SalesAPIService } from '../SalesServices';
 import { CommunityService } from '../CommunityServices';
 
-// describe('testing api', () => {
-//     beforeEach(() => {
-//       fetch.resetMocks()
-//     })
-
-//     //test('fetch')
-// })
-
 describe('deduplication checks logic', () => {
 
     test('test empty contact if duplicate should be run - no', () => {
