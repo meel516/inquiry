@@ -366,11 +366,9 @@ const EnhancedInquiryForm = withFormik({
       }),
       secondPerson: Yup.object().shape({
         firstName: Yup.string()
-          .required('First Name is required')
           .max(50, 'First Name can be at most 50 characters')
           ,
         lastName: Yup.string()
-          .required('Last Name is required')
           .max(50, 'Last Name can be at most 50 characters')
           ,
         email: Yup.string()
