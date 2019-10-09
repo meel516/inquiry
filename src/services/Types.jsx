@@ -610,6 +610,9 @@ class ObjectMappingService {
             leadId: lead.leadId,
             communityId: community.communityId,
             username: user.username,
+            startingPrice: community.startingPrice,
+            secondPersonFee: community.secondPersonFee,
+            communityFee: community.communityFee,
         }
     }
     
