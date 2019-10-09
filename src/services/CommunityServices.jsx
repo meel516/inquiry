@@ -28,7 +28,7 @@ class CommunityService {
     let freeMeal = null;
     if (item) {
       freeMeal = freeMeals.find((freemeal)=> {
-        return freemeal.value === item
+        return (freemeal.value == item)
       })
     }
     return (freeMeal) ? freeMeal : null;

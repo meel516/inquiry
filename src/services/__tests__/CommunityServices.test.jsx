@@ -31,7 +31,7 @@ describe('test free meals', () => {
   })
 
   test('test fetching free meal that is out of bounce', () => {
-    const freeMealSelected = CommunityService.getFreeMealItem(5)
+    const freeMealSelected = CommunityService.getFreeMealItem('5')
     expect(freeMealSelected).toBeNull()
   })
 
@@ -40,7 +40,7 @@ describe('test free meals', () => {
     const freeMealItem = freeMeals[1]
     expect(freeMealItem).not.toBeNull()
 
-    const freeMealSelected = CommunityService.getFreeMealItem(1)
+    const freeMealSelected = CommunityService.getFreeMealItem('1')
     expect(freeMealSelected).not.toBeNull()
 
     expect(freeMealSelected.value).toEqual(freeMealItem.value)
