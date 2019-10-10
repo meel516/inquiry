@@ -27,7 +27,7 @@ export default class ReasonForCall extends React.Component {
     return (
       <FormGroup>
         <Label for="reasonForCall" className="label-format">Reason for Call</Label>
-        <Input type="select" id="reasonForCall" name="lead.prospect.reasonForCall" value={defaultValue || ''} onChange={handleChange} onBlur={handleBlur}>
+        <Input type="select" id="reasonForCall" name="lead.prospect.reasonForCall" value={defaultValue} onChange={handleChange} onBlur={handleBlur}>
           <option value="">Select One</option>
           {reasonForCallOptions}
         </Input>
