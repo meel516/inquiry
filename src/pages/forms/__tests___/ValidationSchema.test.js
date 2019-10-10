@@ -10,11 +10,17 @@ describe('Yup testing/validation', () => {
     })
 
     test('test schema validity', () => {
-
+        
     })
 
-    test('perform validation on empty form', async () => {
-        await formValidationSchema.validate(lead, { abortEarly: false })
+    test('perform validation on empty form', () => {
+        try {
+            let result = formValidationSchema.validateSync(lead, { abortEarly: false })
+            expect(result).toBeTruthy();
+        }
+        catch(err) {
+            const listOfErrors = err.errors;
+        }
     })
 
 
