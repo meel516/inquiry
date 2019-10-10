@@ -79,7 +79,7 @@ function SalesFormDetailsCustomSalesContact(salesContact) {
 }
 
 function SalesFormDetailsSecondPersonSalesLead(secondPerson) {
-    if (secondPerson) {
+    if (secondPerson && secondPerson.selected) {
         const salesFormDetailsSecondPerson = new SalesFormDetailsCustomSalesContact(secondPerson);
         this.salesContact = salesFormDetailsSecondPerson;
     }
@@ -105,7 +105,7 @@ function SalesFormDetailsInfluencer(influencer) {
 }
 
 function SalesFormDetailsSecondPerson(secondPerson) {
-    if (secondPerson) {
+    if (secondPerson && secondPerson.selected) {
         this.salesLead = new SalesFormDetailsSecondPersonSalesLead(secondPerson);
     }
 }
@@ -251,6 +251,7 @@ class ObjectMappingService {
         lead.influencer = this.createEmptyContact();
         lead.influencer.address = this.createEmptyAddress();
         lead.secondPerson = this.createEmptyContact();
+        lead.secondPerson.selected = false;
         lead.prospect = this.createEmptyContact();
         lead.prospect.age = '';
         lead.adlNeeds = this.createAdlNeeds();
@@ -523,21 +524,24 @@ class ObjectMappingService {
         return salesInfluencer;
     }
 
-    static createSecondPersonRequest(coid, secondperson) {
-        const salesContact = new SalesContact();
-        const salesLead = new SalesLead(salesContact, 5);
-        const salesSecondPerson = new SalesSecondPerson(salesLead);
-
-        salesContact.firstName = ((secondperson && secondperson.firstName) ? secondperson.firstName : '')
-        salesContact.lastName = ((secondperson && secondperson.lastName) ? secondperson.lastName : '')
-        salesContact.emailAddress = secondperson.email
-        this.addPhoneToContact(secondperson, salesContact);
-
-        const primarySalesLead = new SalesLead(null, null);
-        primarySalesLead.leadId = coid;
-        salesSecondPerson.primarySalesLead = primarySalesLead;
-
-        return salesSecondPerson;
+    static createSecondPersonRequest(coid, secondPerson) {
+        if (secondPerson && secondPerson.selected) {
+            const salesContact = new SalesContact();
+            const salesLead = new SalesLead(salesContact, 5);
+            const salesSecondPerson = new SalesSecondPerson(salesLead);
+    
+            salesContact.firstName = ((secondPerson && secondPerson.firstName) ? secondPerson.firstName : '')
+            salesContact.lastName = ((secondPerson && secondPerson.lastName) ? secondPerson.lastName : '')
+            salesContact.emailAddress = secondPerson.email
+            this.addPhoneToContact(secondPerson, salesContact);
+    
+            const primarySalesLead = new SalesLead(null, null);
+            primarySalesLead.leadId = coid;
+            salesSecondPerson.primarySalesLead = primarySalesLead;
+    
+            return salesSecondPerson;
+        }
+        return null;
     }
 
     static createProspectRequest(lead, community, user) {

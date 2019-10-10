@@ -22,17 +22,23 @@ export default class SecondPerson extends React.Component {
   }
 
   handleSecondPerson = (e) => {
+    const {target: {name, checked}} = e;
     this.setState({
-      containsSecondPerson: e.target.checked,
+      containsSecondPerson: checked,
     })
-    if (!e.target.checked) {
+    if (!checked) {
       this.handleContactReset();
+    }
+    else {
+      const { setFieldValue } = this.props;
+      setFieldValue(name, true)
     }
   }
 
   handleContactReset = () => {
     const { setFieldValue } = this.props;
     const secondPerson = ObjectMappingService.createEmptyContact();
+    secondPerson.selected = false
     setFieldValue('lead.secondPerson', secondPerson);
     setFieldValue('lead.notes.secondPerson', '');
   }
@@ -43,7 +49,7 @@ export default class SecondPerson extends React.Component {
         <Col>
           <FormGroup check>
             <Label check className="label-format">
-              <Input type="checkbox" onClick={(e) => this.handleSecondPerson(e)} />
+              <Input type="checkbox" name={'lead.secondPerson.selected'} onClick={(e) => this.handleSecondPerson(e)} />
               Is there a 2nd Prospect?
             </Label>
           </FormGroup>
