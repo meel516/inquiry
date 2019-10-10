@@ -90,7 +90,7 @@ function SalesFormDetailsProspect(lead) {
         const salesFormDetailsProspect = new SalesFormDetailsCustomSalesContact(lead.prospect);
 
         this.salesContact = salesFormDetailsProspect;
-        this.interestReasonId = lead.prospect.reasonForCall
+        this.interestReasonId = lead.reasonForCall
         this.inquiryTypeId = lead.inquiryType
         this.inquiryLeadSourceId = lead.leadSource
         this.inquiryLeadSourceDetailId = lead.leadSourceDetail
@@ -662,7 +662,6 @@ class ObjectMappingService {
         salesFormDetails.callerType = lead.callerType;
         salesFormDetails.situation2 = lead.notes.secondPerson;
         salesFormDetails.umid = lead.umid;
-        //salesFormDetails.advisorName = "Matt Matthiessen";
         salesFormDetails.advisorName = oktaFullName;
         salesInquiryForm.formDetails = salesFormDetails;
         
