@@ -510,7 +510,7 @@ class ObjectMappingService {
         return new SalesNote(leadId, note);
     }
 
-    static createInfluencerRequest(leadId, influencer, user) {
+    static createInfluencerRequest(leadId, influencer, gender, user) {
         const salesContact = new SalesContact();
         const salesInfluencer = new SalesInfluencer(leadId, salesContact);
         salesInfluencer.username = (user) ? user.username : null
@@ -519,6 +519,7 @@ class ObjectMappingService {
         salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
         salesContact.emailAddress = influencer.email
         salesContact.address = influencer.address
+        salesContact.gender = gender
         this.addPhoneToContact(influencer, salesContact);
         this.addAddressToContact(influencer, salesContact);
 
