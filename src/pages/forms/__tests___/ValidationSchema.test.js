@@ -13,14 +13,31 @@ describe('Yup testing/validation', () => {
         
     })
 
-    test('perform validation on empty form', () => {
-        try {
-            let result = formValidationSchema.validateSync(lead, { abortEarly: false })
-            expect(result).toBeTruthy();
-        }
-        catch(err) {
-            const listOfErrors = err.errors;
-        }
+    test('perform validation on empty form - verify default validation messages are listed', () => {
+        formValidationSchema.validate(lead, { abortEarly: false })
+            .catch((err) => {
+                const required = err.errors;
+                const defaultRequired = [
+                    "First Name is required",   // this is called twice [prospect|influencer]
+                    "Last Name is required",    // this is called twice [prospect|influencer]
+                    "Veteran Status is required",
+                    "UMID is required",
+                    "Care Level Recommended is required",
+                    "Result of Call is required",
+                    "Calling For is required",
+                    "Inquiry Method is required",
+                    "Lead Source Detail is required",
+                    "Lead Source is required",
+                    "Gender of Caller is required",
+                ]
+                expect(required).not.toBeNull()
+
+                for (let i = 0; i < required.length; i++) {
+                    let error = required[i];
+                    let isRequired = defaultRequired.includes(error)
+                    expect(isRequired).toBeTruthy()
+                }
+            })
     })
 
 
