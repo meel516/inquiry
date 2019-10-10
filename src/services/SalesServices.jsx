@@ -320,13 +320,13 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
-      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer);
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, user);
       this.submitInfluencer(influencer);
     }
 
     const notes = lead.notes
     if (notes) {
-      this.submitNotes(leadId, notes);
+      this.submitNotes(leadId, notes, user);
     }
 
     const careType = lead.careType
@@ -336,7 +336,7 @@ class SalesAPIService {
 
     const secondPerson = lead.secondPerson;
     if (secondPerson && secondPerson.selected) {
-      const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson);
+      const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
       this.submitSecondPerson(secondPersonRequest);
     }
 

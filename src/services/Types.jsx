@@ -506,13 +506,14 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest(coid, note) {
-        return new SalesNote(coid, note);
+    static createNoteRequest(leadId, note) {
+        return new SalesNote(leadId, note);
     }
 
-    static createInfluencerRequest(coid, influencer) {
+    static createInfluencerRequest(leadId, influencer, user) {
         const salesContact = new SalesContact();
-        const salesInfluencer = new SalesInfluencer(coid, salesContact);
+        const salesInfluencer = new SalesInfluencer(leadId, salesContact);
+        salesInfluencer.username = (user) ? user.username : null
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
         salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
@@ -524,7 +525,7 @@ class ObjectMappingService {
         return salesInfluencer;
     }
 
-    static createSecondPersonRequest(leadId, secondPerson) {
+    static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
             const salesContact = new SalesContact();
             const salesLead = new SalesLead(salesContact, 5);
@@ -537,7 +538,9 @@ class ObjectMappingService {
     
             const primarySalesLead = new SalesLead(null, null);
             primarySalesLead.leadId = leadId;
+            console.log(`Second Person Primary Lead Id: ${leadId}`)
             salesSecondPerson.primarySalesLead = primarySalesLead;
+            salesSecondPerson.username = user.username;
     
             return salesSecondPerson;
         }
