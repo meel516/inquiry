@@ -316,7 +316,7 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
-      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer);
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType);
       this.submitInfluencer(influencer);
     }
 
