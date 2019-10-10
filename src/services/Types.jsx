@@ -35,7 +35,7 @@ function SalesPhone(number, type) {
     return {
         primary: true,
         phoneNumber: number,
-        phoneType: "Home",
+        phoneType: type,
     }
 }
 
@@ -610,6 +610,9 @@ class ObjectMappingService {
             leadId: lead.leadId,
             communityId: community.communityId,
             username: user.username,
+            startingPrice: community.startingPrice,
+            secondPersonFee: community.secondPersonFee,
+            communityFee: community.communityFee,
         }
     }
     
