@@ -11,14 +11,14 @@ export default withAuth(class CommunityLookup extends React.Component {
         communityList: [],
     }
     checkAuthentication = checkAuthentication.bind(this)
+    communityService = new CommunityService();
 
     componentDidMount() {
         this.checkAuthentication(this.loadCommunities);
     }
 
     loadCommunities = (userInfo) => {
-        const communityService = new CommunityService();
-        communityService.fetchCommunities(userInfo.preferred_username)
+        this.communityService.fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 //console.log(data);
                 var communities = data.map((com) => {

@@ -104,7 +104,7 @@ class SalesAPIService {
   }
 
   createApiUri(api) {
-    return `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`
+    return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
   async getLeadByGuid(guid) {
@@ -171,7 +171,6 @@ class SalesAPIService {
     const fuaUrl = this.createApiUri('leads/fua')
 
     let followup = ObjectMappingService.createFollowupRequest(leadId, community)
-    console.log(JSON.stringify(followup));
     if (followup) {
       try {
         let response = await fetch(fuaUrl, {
