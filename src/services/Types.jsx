@@ -35,7 +35,7 @@ function SalesPhone(number, type) {
     return {
         primary: true,
         phoneNumber: number,
-        phoneType: "Home",
+        phoneType: type,
     }
 }
 
@@ -571,7 +571,7 @@ class ObjectMappingService {
             this.addPhoneToContact(prospect, salesContact)
         }
 
-        salesLead.inquiryTypeId = prospect.inquiryType
+        salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
         salesLead.buildingId = community.communityId
         salesLead.inquiryLeadSourceId = lead.leadSource
@@ -611,6 +611,9 @@ class ObjectMappingService {
             leadId: lead.leadId,
             communityId: community.communityId,
             username: user.username,
+            startingPrice: community.startingPrice,
+            secondPersonFee: community.secondPersonFee,
+            communityFee: community.communityFee,
         }
     }
     
