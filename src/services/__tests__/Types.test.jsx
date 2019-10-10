@@ -140,7 +140,7 @@ describe('test influencer mapping', () => {
         }
         const influencer = ObjectMappingService.createInfluencer(salesInfluencer);
 
-        const { salesContact, salesContact: {address, phoneNumbers} } = salesInfluencer;
+        const { salesContact, salesContact: { address, phoneNumbers } } = salesInfluencer;
 
         expect(influencer.influencerId).toEqual(salesInfluencer.influencerId)
         expect(influencer.contactId).toEqual(salesContact.contactId)
@@ -156,7 +156,7 @@ describe('test influencer mapping', () => {
 
 describe('test followup mapping', () => {
 
-    test('test edge case for follow up where undefined', () => {
+    test('test happy path where all fields are filled out', () => {
         const leadId = 1;
         const community = {
             uuid: "f5115381-b32b-4c04-8b10-c5173c1cd128",
@@ -170,10 +170,29 @@ describe('test followup mapping', () => {
             communityFee: 1850
         }
         const request = ObjectMappingService.createFollowupRequest(leadId, community)
+        expect(request).not.toBeNull()
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
         expect(request.followUpDate).toEqual('2019-10-16T12:44:46.987-0500')
+        expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
+    })
+
+    test('test case where follow up action not supplied', () => {
+        const leadId = 1;
+        const community = {
+            uuid: "d976b695-8202-4b49-b0f1-0e597e6a2fd7",
+            communityId: 308049,
+            freeMeal: 0,
+            followupDate: "2019-10-10T08:15:26.594-0500",
+            followUpAction: "",
+            startingPrice: 2500,
+            secondPersonFee: 500,
+            communityFee: 2140
+        }
+        const request = ObjectMappingService.createFollowupRequest(leadId, community);
+        expect(request).toBeNull()
+
     })
 })
 
