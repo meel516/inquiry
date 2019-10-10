@@ -171,7 +171,6 @@ class SalesAPIService {
     const fuaUrl = this.createApiUri('leads/fua')
 
     let followup = ObjectMappingService.createFollowupRequest(leadId, community)
-    console.log(JSON.stringify(followup));
     if (followup) {
       try {
         let response = await fetch(fuaUrl, {
