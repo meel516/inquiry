@@ -35,7 +35,7 @@ function SalesPhone(number, type) {
     return {
         primary: true,
         phoneNumber: number,
-        phoneType: "Home",
+        phoneType: type,
     }
 }
 
