@@ -524,7 +524,7 @@ class ObjectMappingService {
         return salesInfluencer;
     }
 
-    static createSecondPersonRequest(coid, secondPerson) {
+    static createSecondPersonRequest(leadId, secondPerson) {
         if (secondPerson && secondPerson.selected) {
             const salesContact = new SalesContact();
             const salesLead = new SalesLead(salesContact, 5);
@@ -536,7 +536,7 @@ class ObjectMappingService {
             this.addPhoneToContact(secondPerson, salesContact);
     
             const primarySalesLead = new SalesLead(null, null);
-            primarySalesLead.leadId = coid;
+            primarySalesLead.leadId = leadId;
             salesSecondPerson.primarySalesLead = primarySalesLead;
     
             return salesSecondPerson;

@@ -221,28 +221,32 @@ class SalesAPIService {
     const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
     let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead);
-    fetch(prospectNeedsUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospectNeedsRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+    if (prospectNeedsRequest) {
+      fetch(prospectNeedsUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prospectNeedsRequest),
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
   }
 
   async submitSecondPerson(secondPersonRequest) {
-    const secondPersonUrl = this.createApiUri('secondperson');
-    fetch(secondPersonUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(secondPersonRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+    if (secondPersonRequest) {
+      const secondPersonUrl = this.createApiUri('secondperson');
+      fetch(secondPersonUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(secondPersonRequest),
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
   }
 
   async submitEloquaRequest(eloquaExternalRequest) {
@@ -331,7 +335,7 @@ class SalesAPIService {
     }
 
     const secondPerson = lead.secondPerson;
-    if (secondPerson && !Util.isContactEmpty(secondPerson)) {
+    if (secondPerson && secondPerson.selected) {
       const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson);
       this.submitSecondPerson(secondPersonRequest);
     }
