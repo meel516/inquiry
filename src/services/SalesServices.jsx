@@ -221,28 +221,32 @@ class SalesAPIService {
     const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
     let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead);
-    fetch(prospectNeedsUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospectNeedsRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+    if (prospectNeedsRequest) {
+      fetch(prospectNeedsUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prospectNeedsRequest),
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
   }
 
   async submitSecondPerson(secondPersonRequest) {
-    const secondPersonUrl = this.createApiUri('secondperson');
-    fetch(secondPersonUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(secondPersonRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+    if (secondPersonRequest) {
+      const secondPersonUrl = this.createApiUri('secondperson');
+      fetch(secondPersonUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(secondPersonRequest),
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
   }
 
   async submitEloquaRequest(eloquaExternalRequest) {
@@ -316,13 +320,13 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
-      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType);
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
       this.submitInfluencer(influencer);
     }
 
     const notes = lead.notes
     if (notes) {
-      this.submitNotes(leadId, notes);
+      this.submitNotes(leadId, notes, user);
     }
 
     const careType = lead.careType
@@ -331,8 +335,8 @@ class SalesAPIService {
     }
 
     const secondPerson = lead.secondPerson;
-    if (secondPerson && !Util.isContactEmpty(secondPerson)) {
-      const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson);
+    if (secondPerson && secondPerson.selected) {
+      const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
       this.submitSecondPerson(secondPersonRequest);
     }
 
