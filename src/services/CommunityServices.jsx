@@ -7,9 +7,7 @@ function Community(index) {
   this.uuid = index;
   this.communityId = 0;
   this.freeMeal = 0;  // Blank Option
-  var formattedFollowUpDate = new Date();
-  formattedFollowUpDate.toJSON = function(){ return moment(this).format("YYYY-MM-DDTHH:mm:ss.SSSZZ"); };
-  this.followupDate = formattedFollowUpDate;
+  this.followupDate = null;
 };
 
 class CommunityService {
