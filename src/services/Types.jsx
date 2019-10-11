@@ -43,11 +43,12 @@ function SalesSecondPerson(salesLead) {
     this.salesLead = salesLead
 }
 
-function SalesNote(leadId, note) {
+function SalesNote(leadId, note, user) {
     this.deleteInd = false
     this.bhsInd = false
     this.leadId = leadId
     this.noteText = note
+    this.username = user.username
 }
 
 function SalesAddress({ type = 'Home', active = true, primary = true }) {
@@ -440,7 +441,7 @@ class ObjectMappingService {
         }
     }
 
-    static createFollowupRequest(leadId, community) {
+    static createFollowupRequest(leadId, community, user) {
         if (leadId && community && community.followUpAction) {
             const salesFollowup = new SalesFollowup(leadId);
             salesFollowup.buildingId = community.communityId
@@ -456,13 +457,14 @@ class ObjectMappingService {
                 }
             }
             salesFollowup.followUpDescText = description
+            salesFollowup.username = user.username
 
             return salesFollowup;
         }
         return null;
     }
 
-    static createProspectNeedsRequest(coid, lead) {
+    static createProspectNeedsRequest(coid, lead, user) {
         if (coid && lead.careType) {
             const salesProspectNeed = new SalesProspectNeed(coid);
             salesProspectNeed.careTypeId = Number(lead.careType);
@@ -501,13 +503,15 @@ class ObjectMappingService {
                 salesProspectNeed.notEatingWell = nutritionConcerns.notEatingWell;
             }
 
+            salesProspectNeed.username = user.username
+
             return salesProspectNeed;
         }
         return null;
     }
 
-    static createNoteRequest(leadId, note) {
-        return new SalesNote(leadId, note);
+    static createNoteRequest(leadId, note, user) {
+        return new SalesNote(leadId, note, user);
     }
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
