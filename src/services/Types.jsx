@@ -647,9 +647,11 @@ class ObjectMappingService {
         salesFormDetails.influencer = salesFormDetailsInfluencer;
         
         // Second Person
-        this.addPhoneToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
-        this.addAddressToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
-        salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
+        if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
+            this.addPhoneToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
+            this.addAddressToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
+            salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
+        }
         
         // Care Type
         salesFormDetails.careType = salesFormDetailsCareType;
