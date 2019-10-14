@@ -94,7 +94,7 @@ describe('test verify when condition for second person contact', () => {
 
 describe('test 2 level validation', () => {
 
-    test('test validation from 2nd level', async () => {
+    test('test validation from 2nd level', () => {
 
         const schema = Yup.object().shape({
             lead: Yup.object().shape({
@@ -102,10 +102,12 @@ describe('test 2 level validation', () => {
                     firstName: Yup.string()
                         .max(50, 'First Name can be at most 50 characters')
                         .when('../callingFor', {
-                            is: 'MySelf',
+                            is: (callingFor) => callingFor !== 'MySelf',
                             then: Yup.string().required('First name is required')
                         }),
-                    lastName: Yup.string(),
+
+                    lastName: Yup.string()
+                        .max(50, 'First Name can be at most 50 characters')
                 }),
                 callingFor: Yup.string()
             })
@@ -121,10 +123,38 @@ describe('test 2 level validation', () => {
             }
         }
 
-        const result = await schema.validate(values, { abortEarly: false })
+        schema.validate(values, { abortEarly: false })
             .catch((err) => {
                 console.log(`Error: ${err}`);
             })
-        expect(result).toBeFalsy();
+    })
+
+    test('test lead source conditional validation', () => {
+
+        const schema = Yup.object().shape({
+            lead: Yup.object().shape({
+                leadSource: Yup.string().required('Lead Source is required'),
+                leadSourceDetail: Yup.string()
+                    .when('leadSource', {
+                        is: (val) => (!!val),
+                        then: Yup.string().required('Lead Source Detail is required')
+                    })
+            })
+        });
+
+        const values = {
+            lead: {
+                leadSource: 25,
+                leadSourceDetail: '' ,
+            }
+        }
+
+        schema.validate(values, {abortEarly: false})
+            .catch((err) => {
+                const required = err.errors;
+                expect(required).not.toBeNull()
+
+                expect(required[0]).toEqual('Lead Source Detail is required')
+            })
     })
 })
