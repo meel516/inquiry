@@ -613,19 +613,16 @@ class ObjectMappingService {
     }
 
     /**
-     * creates a request that allows additions for coi methods
+     * creates a request that allows additions for COI(s) and FUA(s) methods
      * @param {*} lead 
-     * @param {*} community 
+     * @param {*} communities 
      * @param {*} user 
      */
-    static createAddCoiRequest(lead, community, user) {
+    static createAddCommunityRequest(lead, communities, user) {
         return {
             leadId: lead.leadId,
-            communityId: community.communityId,
+            communities: communities,
             username: user.username,
-            startingPrice: community.startingPrice,
-            secondPersonFee: community.secondPersonFee,
-            communityFee: community.communityFee,
         }
     }
     
