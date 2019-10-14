@@ -61,7 +61,7 @@ function FreeMeal(props) {
 
 class FollowUp extends React.Component {
   state = {
-    followupDate: new Date(),
+    followupDate: null,
   }
 
   onScheduledDateChange = (date) => {

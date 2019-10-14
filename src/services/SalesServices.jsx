@@ -186,10 +186,10 @@ class SalesAPIService {
     }
   }
 
-  async submitFollowup(leadId, community) {
+  async submitFollowup(leadId, community, user) {
     const fuaUrl = this.createApiUri('leads/fua')
 
-    let followup = ObjectMappingService.createFollowupRequest(leadId, community)
+    let followup = ObjectMappingService.createFollowupRequest(leadId, community, user)
     if (followup) {
       try {
         let response = await fetch(fuaUrl, {
@@ -216,13 +216,13 @@ class SalesAPIService {
   * @param {number} coid the lead id used to associate the note
   * @param {note} notes the note object which contains all form notes
   */
-  async submitNotes(coid, notes) {
+  async submitNotes(coid, notes, user) {
     const noteUrl = this.createApiUri('leads/note');
 
     for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(coid, value);
+        let noteRequest = ObjectMappingService.createNoteRequest(coid, value, user);
         fetch(noteUrl, {
           method: 'POST', mode: 'cors',
           headers: {
@@ -236,10 +236,10 @@ class SalesAPIService {
     }
   }
 
-  async submitProspectNeeds(coid, lead) {
+  async submitProspectNeeds(coid, lead, user) {
     const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
-    let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead);
+    let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead, user);
     if (prospectNeedsRequest) {
       fetch(prospectNeedsUrl, {
         method: 'POST', mode: 'cors',
@@ -339,24 +339,24 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
-      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, user);
-      this.submitInfluencer(influencer);
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+      await this.submitInfluencer(influencer);
     }
 
     const notes = lead.notes
     if (notes) {
-      this.submitNotes(leadId, notes, user);
+      await this.submitNotes(leadId, notes, user);
     }
 
     const careType = lead.careType
     if (careType) {
-      this.submitProspectNeeds(leadId, lead);
+      await this.submitProspectNeeds(leadId, lead, user);
     }
 
     const secondPerson = lead.secondPerson;
     if (secondPerson && secondPerson.selected) {
       const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-      this.submitSecondPerson(secondPersonRequest);
+      await this.submitSecondPerson(secondPersonRequest);
     }
 
     return leadId;
@@ -430,7 +430,7 @@ async handleNewInquiryForm(lead, communities, user) {
       
       
       let nleadId = await this.handleAddCommunitySubmission(lead, community, user);
-      this.submitFollowup(nleadId, community);
+      this.submitFollowup(nleadId, community, user);
 
       // Check to see if this community has an applicable Follow Up Action that
       // would deem submission of an External Eloqua Email.  If so, add it to the
