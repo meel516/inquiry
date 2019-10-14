@@ -40,7 +40,7 @@ export default class CommunitySelect extends React.Component {
           <CardBody>
             <Row>
               <Col>
-                <CommunityLookup {...this.props} />
+                <CommunityLookup community={community} index={this.props.index} setFieldValue={this.props.setFieldValue}/>
               </Col>
             </Row>
             <Row>

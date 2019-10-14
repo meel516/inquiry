@@ -53,10 +53,10 @@ export default class AdditionalCareElements extends React.Component {
   }
 
   componentDidMount() {
-    const { values: { lead } } = this.props;
+    const { defaultCurrentSituation } = this.props;
     const { careElements, defaultCareElements } = this.state;
 
-    if (lead.currentSituation) {
+    if (defaultCurrentSituation) {
       const situation = additionalCareElements[3]
       defaultCareElements.push(situation)
       careElements.push(situation.value)
@@ -151,7 +151,7 @@ export default class AdditionalCareElements extends React.Component {
 
   render() {
     const { careElements, defaultCareElements } = this.state || [];
-    const { values } = this.props;
+    const { defaultCurrentSituation } = this.props;
     return (
       <>
         <Row>
@@ -170,7 +170,7 @@ export default class AdditionalCareElements extends React.Component {
         {(careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange} /> : null}
         {(careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange} /> : null}
         {(careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange} /> : null}
-        {(careElements.includes(4) === true) ? <CurrentSituation defaultValue={values.lead.currentSituation} onChange={this.handleCurrentSituationChange} /> : null}
+        {(careElements.includes(4) === true) ? <CurrentSituation defaultValue={defaultCurrentSituation} onChange={this.handleCurrentSituationChange} /> : null}
       </>
     )
   }

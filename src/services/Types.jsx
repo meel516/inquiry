@@ -233,6 +233,7 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
+            lead.careType = salesLead.careTypeId
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
                 lead.currentSituation = salesContact.currentSituation
@@ -262,7 +263,6 @@ class ObjectMappingService {
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
         lead.umid = '';
-        lead.careType = '';
         lead.fua = '';
         lead.callingFor = '';
         lead.inquiryType = '';

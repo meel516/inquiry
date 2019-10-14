@@ -1,9 +1,7 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
-import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
-import * as Yup from 'yup';
+import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
@@ -43,30 +41,27 @@ class InquiryForm extends React.Component {
 
   async componentDidMount() {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
-    console.log(`(GUID: ${guid} OR COID/LEADID: ${leadId}) and UMID: ${umid}`);
-
     this.checkAuthentication(this.getAuthCredentials);
 
-    let leadObj = null;
-    if (guid) {
-      leadObj = await this.salesapi.getLeadByGuid(guid)
-    }
-    if (leadId) {
-      leadObj = await this.salesapi.getLeadById(leadId)
-    }
+    let lead = null;
+    let communities = [];
+    if (guid||leadId) {
+      lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
+      const {prospect: {masterId}} = lead;
+      communities = await this.salesapi.getCOIs(masterId)
+    } 
     else {
-      leadObj = ObjectMappingService.createEmptyLead()
+      lead = ObjectMappingService.createEmptyLead()
     }
     if (umid) {
-      leadObj.umid = umid;
+      lead.umid = umid;
       this.props.setFieldValue('lead.umid', umid)
     }
-    this.props.setFieldValue('lead', leadObj)
+    this.props.setFieldValue('lead', lead)
+    this.props.setFieldValue('communities', communities)
 
-    console.log(`Node Env: ${process.env.NODE_ENV}`)
     this.setState({
       loading: false,
-      lead: leadObj,
     })
   }
 
@@ -123,16 +118,16 @@ class InquiryForm extends React.Component {
     const {
       values,
       status,
-      touched,
-      errors,
-      dirty,
+      // touched,
+      // errors,
+      // dirty,
       isSubmitting,
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
+      // handleReset,
       setFieldValue,
-      setFieldTouched,
+      // setFieldTouched,
     } = this.props;
 
     if (this.state.loading) {
@@ -161,11 +156,11 @@ class InquiryForm extends React.Component {
             </Col>
           </Row>
           <br />
-          <AdditionalCareElements {...this.props} />
+          <AdditionalCareElements setFieldValue={setFieldValue} defaultCurrentSituation={values.lead.currentSituation} />
           <br />
-          <Prospect contact={this.props.values.lead.prospect} onChange={this.props.handleChange} {...this.props} />
+          <Prospect key="prospect" contact={values.lead.prospect} onChange={this.props.handleChange} {...this.props} />
           <br />
-          <CareType onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          <CareType key="careType" handleChange={handleChange} handleBlur={handleBlur} defaultValue={values.lead.careType} {...this.props} />
           <br />
           <Row>
             <Col>

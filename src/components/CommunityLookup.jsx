@@ -20,11 +20,9 @@ export default withAuth(class CommunityLookup extends React.Component {
     loadCommunities = (userInfo) => {
         this.communityService.fetchCommunities(userInfo.preferred_username)
             .then((data) => {
-                //console.log(data);
                 var communities = data.map((com) => {
                     return { value: com.id, label: com.buildingName }
                 });
-                //console.log(communities);
                 this.setState({ communityList: communities });
             })
             .catch((err) => console.error("Error", err));
@@ -36,6 +34,12 @@ export default withAuth(class CommunityLookup extends React.Component {
     }
 
     render() {
+        const { community } = this.props || {};
+        let defaultSelected = {}
+        if (community) {
+            defaultSelected = { value: community.communityId, label: community.name }
+        }
+
         return (
             <FormGroup>
                 <Label for="communityList" className="label-format">Community</Label>
@@ -43,6 +47,7 @@ export default withAuth(class CommunityLookup extends React.Component {
                     name="communityId"
                     onChange={this.handleCommunityChange}
                     options={this.state.communityList}
+                    value={defaultSelected}
                 />
             </FormGroup>
         )
