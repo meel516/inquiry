@@ -321,23 +321,23 @@ class SalesAPIService {
 
     if (salesLead.inquirerType !== 'PROSP') {
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-      this.submitInfluencer(influencer);
+      await this.submitInfluencer(influencer);
     }
 
     const notes = lead.notes
     if (notes) {
-      this.submitNotes(leadId, notes, user);
+      await this.submitNotes(leadId, notes, user);
     }
 
     const careType = lead.careType
     if (careType) {
-      this.submitProspectNeeds(leadId, lead, user);
+      await this.submitProspectNeeds(leadId, lead, user);
     }
 
     const secondPerson = lead.secondPerson;
     if (secondPerson && secondPerson.selected) {
       const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-      this.submitSecondPerson(secondPersonRequest);
+      await this.submitSecondPerson(secondPersonRequest);
     }
 
     return leadId;
