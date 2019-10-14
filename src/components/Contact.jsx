@@ -76,6 +76,7 @@ export default class Contact extends React.Component {
                 <option value="">Select One</option>
                 {displayablePhoneTypes}
               </Input>
+              <ErrorMessage name={`lead.${this.props.type}.phone.type`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>}  />
             </FormGroup>
           </Col>
         </Row>
