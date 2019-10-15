@@ -402,8 +402,19 @@ async handleNewInquiryForm(lead, communities, user) {
   }
 
   if (communityList && communityList.length > 0) {
-    // Submit Add Communities/FUA request.
-    await this.processCommunities(lead, communityList, user);
+    // First, iterate through the communityList and format the followupDate to the ISOString.
+    const formattedCommunityList = [];
+    for (let i = 0; i < communityList.length; i++) {
+      let community = communityList[i];
+      community.followupDate = CommunityService.convertToISODate(community.followupDate);
+      formattedCommunityList.push(community);
+    }
+
+    if (formattedCommunityList && formattedCommunityList.length > 0) {
+      // Submit Add Communities/FUA request.
+      await this.processCommunities(lead, formattedCommunityList, user);
+    }
+
     //this.submitFollowup(nleadId, community, user);
   }
 

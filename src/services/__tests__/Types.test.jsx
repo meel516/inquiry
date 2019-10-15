@@ -161,7 +161,7 @@ describe('test followup mapping', () => {
         const community = {
             uuid: "f5115381-b32b-4c04-8b10-c5173c1cd128",
             communityId: 308282,
-            freeMeal: "2",
+            freeMeal: "Lunch",
             followupDate: "2019-10-16T17:44:46.987Z",
             followUpAction: "5",
             note: "Description",
@@ -183,7 +183,7 @@ describe('test followup mapping', () => {
         const community = {
             uuid: "d976b695-8202-4b49-b0f1-0e597e6a2fd7",
             communityId: 308049,
-            freeMeal: 0,
+            freeMeal: "",
             followupDate: "2019-10-10T08:15:26.594-0500",
             followUpAction: "",
             startingPrice: 2500,
