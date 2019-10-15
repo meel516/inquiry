@@ -52,7 +52,7 @@ function FreeMeal(props) {
       <Label for="freeMeal" className="label-format">Does this Visit include a Free Meal?</Label>
       <Input type="select" id="freeMeal" name="freeMeal" onChange={props.onChange}>
         {freeMealItems.map((optn) => {
-          return <option key={optn.value} value={optn.value}>{optn.label}</option>
+          return <option key={optn.value} value={optn.label}>{optn.label}</option>
         })}
       </Input>
     </React.Fragment>
