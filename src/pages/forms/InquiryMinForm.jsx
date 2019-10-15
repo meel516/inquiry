@@ -280,7 +280,7 @@ class InquiryForm extends React.Component {
           <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
         </div>
 
-        {process.env.NODE_ENV !== "production" &&
+        {process.env.REACT_APP_NODE_ENV !== "production" &&
           <Debug />}
 
       </Form>

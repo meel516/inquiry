@@ -70,6 +70,15 @@ const mainFormValidationSchema = Yup.object().shape({
         .max(50, 'Last Name can be at most 50 characters')
       ,
       veteranStatus: Yup.string().required('Veteran Status is required'),
+      phone: Yup.object().shape({
+        number: Yup.string().notRequired().test('influencerPhoneValid', 'Phone is not Valid', function (value) {
+          if (!!value) {
+            const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+            return schema.isValidSync(value);
+          }
+          return true;
+        })
+      }),
       email: Yup.string()
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters')
@@ -99,6 +108,15 @@ const mainFormValidationSchema = Yup.object().shape({
       lastName: Yup.string()
         .max(50, 'Last Name can be at most 50 characters')
       ,
+      phone: Yup.object().shape({
+        number: Yup.string().notRequired().test('influencerPhoneValid', 'Phone is not Valid', function (value) {
+          if (!!value) {
+            const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+            return schema.isValidSync(value);
+          }
+          return true;
+        })
+      }),
       email: Yup.string()
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters')

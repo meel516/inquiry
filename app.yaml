@@ -25,5 +25,6 @@ env_variables:
   REACT_APP_OKTA_URL: "https://brookdaledev.oktapreview.com"
   REACT_APP_OKTA_CLIENTID: 
   REACT_APP_VERSION:
+  REACT_APP_NODE_ENV: 'production'
 
 # [END app_yaml]
