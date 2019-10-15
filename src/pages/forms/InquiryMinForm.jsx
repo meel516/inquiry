@@ -47,8 +47,8 @@ class InquiryForm extends React.Component {
     let communities = [];
     if (guid||leadId) {
       lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-      const {prospect: {masterId}} = lead;
-      communities = await this.salesapi.getCOIs(masterId)
+      const {prospect: {contactId}} = lead;
+      communities = await this.salesapi.getCommunitiesOfInterest(contactId)
     } 
     else {
       lead = ObjectMappingService.createEmptyLead()

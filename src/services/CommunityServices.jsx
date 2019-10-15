@@ -61,14 +61,19 @@ class CommunityService {
   }
 
   // creates an empty community object
-  static createCommunity() {
+  static createCommunity(com) {
     var community = new Community(uuid.v4());
+
+    if (com) {
+      community.communityId = com.communityId
+      community.name = com.name
+    }
 
     return community;
   }
 
   static isContactCenter(community) {
-    return (community && community.buildingId === 225707)
+    return (community && (community.buildingId === 225707 || community.communityId === 225707))
   }
 
   static convertToISODate(dateStr) {

@@ -239,7 +239,8 @@ class ObjectMappingService {
                 const {salesContact} = salesLead;
                 lead.currentSituation = salesContact.currentSituation
                 lead.veteranStatus = salesContact.veteranStatus
-                lead.prospect = this.createContact(salesContact);
+                lead.prospect = this.createContact(salesContact)
+                lead.gender = salesContact.gender
             }
         }
         else {

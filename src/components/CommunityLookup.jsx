@@ -47,7 +47,7 @@ export default withAuth(class CommunityLookup extends React.Component {
                     name="communityId"
                     onChange={this.handleCommunityChange}
                     options={this.state.communityList}
-                    value={defaultSelected}
+                    defaultValue={defaultSelected}
                 />
             </FormGroup>
         )

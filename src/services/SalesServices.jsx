@@ -153,13 +153,16 @@ class SalesAPIService {
     return ObjectMappingService.createEmptyLead();
   }
 
-  async getCOIs(masterId) {
-    // const comUrl = this.createApiUri('');
-    let community = CommunityService.createCommunity()
-    community.communityId = 52189
-    community.name = 'Brookdale Southside'
-    let communities = []
-    communities.push(community)
+  async getCommunitiesOfInterest(contactId) {
+    const comUrl = this.createApiUri(`/cois/${contactId}`);
+    let listOfCommunities = await this.createFetch(comUrl);
+    let communities = (listOfCommunities || []).map((community) => {
+      if ( !CommunityService.isContactCenter(community) )
+        return CommunityService.createCommunity(community)
+      return null
+    }).filter((community) => {
+      return community != null
+    })
     return communities
   }
 
