@@ -23,7 +23,10 @@ manual_scaling:
 env_variables:
   REACT_APP_SALES_SERVICES_URL: "https://sales-services.uat.brookdale.com"
   REACT_APP_OKTA_URL: "https://brookdaledev.oktapreview.com"
-  REACT_APP_OKTA_CLIENTID: 
+  REACT_APP_OKTA_CLIENTID:
   REACT_APP_VERSION:
+
+readiness_check:
+  app_start_timeout_sec: 1800
 
 # [END app_yaml]
