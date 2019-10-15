@@ -6,7 +6,7 @@ const URL_COMMUNITIES = `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySe
 function Community(index) {
   this.uuid = index;
   this.communityId = 0;
-  this.freeMeal = 0;  // Blank Option
+  this.freeMeal = null;
   this.followupDate = null;
 };
 
@@ -14,10 +14,10 @@ class CommunityService {
 
   static freeMealListing() {
     return [
-      { value: 0, label: "" },
-      { value: 1, label: "No" },
-      { value: 2, label: "Lunch" },
-      { value: 3, label: "Dinner" },
+      { value: "", label: "" },
+      { value: "No", label: "No" },
+      { value: "Lunch", label: "Lunch" },
+      { value: "Dinner", label: "Dinner" },
     ]
   }
 

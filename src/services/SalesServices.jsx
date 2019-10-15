@@ -290,7 +290,7 @@ class SalesAPIService {
     return await this.sendProspect(prospect);
   }
 
-  async sendAddCoiRequest(request) {
+  async sendAddCommunityRequest(request) {
     const coidUrl = this.createApiUri('addCommunity')
     let response = await fetch(coidUrl, {
       method: 'POST', mode: 'cors',
@@ -305,7 +305,7 @@ class SalesAPIService {
       return objectId;
     }
     else {
-      throw new Error('Sales Lead was not created.')
+      throw new Error('Sales Lead(s) were not created.')
     }
   }
 
@@ -366,17 +366,16 @@ class SalesAPIService {
   }
 
   /**
-   * Create a new lead for the community of interest, tying it to the prospect
-   * that was already created
+   * Create a all applicable COIs, tying it to the prospect that was already created.
+   * In addition, this API call will also create applicable follow up activities.
    * 
    * @param {lead} the lead information from the form
-   * @param {SalesContact} prospect the sales contact from SMS
-   * @param {Community} community the community to which the lead pertains
+   * @param {communities} the communities in which to create new COIs
+   * @param {user} user the sales contact from SMS
    */
-async handleAddCommunitySubmission(lead, community, user) {
-  let salesLead = ObjectMappingService.createAddCoiRequest(lead, community, user);
-  return await this.sendAddCoiRequest(salesLead);
-//  throw new ProspectError(response.status, (response.statusText || 'Unable to communicate to server.'))
+async processCommunities(lead, communities, user) {
+  let addCommunityRequest = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
+  return await this.sendAddCommunityRequest(addCommunityRequest);
 }
 
 async retrieveInfluencer(leadId) {
@@ -396,7 +395,6 @@ async retrieveProspect(leadId) {
 }
 
 async handleNewInquiryForm(lead, communities, user) {
-
   const communityList = [...communities];
 
   // IF zero/many community is selected always assume Contact Center community
@@ -425,16 +423,27 @@ async handleNewInquiryForm(lead, communities, user) {
     leadId = lead.leadId;
   }
 
+  if (communityList && communityList.length > 0) {
+    // First, iterate through the communityList and format the followupDate to the ISOString.
+    const formattedCommunityList = [];
+    for (let i = 0; i < communityList.length; i++) {
+      let community = communityList[i];
+      community.followupDate = CommunityService.convertToISODate(community.followupDate);
+      formattedCommunityList.push(community);
+    }
+
+    if (formattedCommunityList && formattedCommunityList.length > 0) {
+      // Submit Add Communities/FUA request.
+      await this.processCommunities(lead, formattedCommunityList, user);
+    }
+
+    //this.submitFollowup(nleadId, community, user);
+  }
+
   const eloquaCommunityList = [];
   if (leadId != null) {
     for (let i = 0; i < communityList.length; i++) {
       let community = communityList[i];
-
-      
-      
-      let nleadId = await this.handleAddCommunitySubmission(lead, community, user);
-      this.submitFollowup(nleadId, community, user);
-
       // Check to see if this community has an applicable Follow Up Action that
       // would deem submission of an External Eloqua Email.  If so, add it to the
       // eloquaCommunityList.
@@ -448,13 +457,13 @@ async handleNewInquiryForm(lead, communities, user) {
         eloquaCommunityList.push(community);
       }
     }
+  }
 
-    // If we have communities in eloquaCommunityList, submit the request.
-    if (eloquaCommunityList && eloquaCommunityList.length > 0) {
-      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-      console.log(eloquaExternalRequest);
-      this.submitEloquaRequest(eloquaExternalRequest);
-    }
+  // If we have communities in eloquaCommunityList, submit the request.
+  if (eloquaCommunityList && eloquaCommunityList.length > 0) {
+    const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
+    console.log(eloquaExternalRequest);
+    this.submitEloquaRequest(eloquaExternalRequest);
   }
 }
 
