@@ -67,6 +67,12 @@ class CommunityService {
     return community;
   }
 
+  static createEmptyUser() {
+    return {
+        username: "mmatthiessen",
+    }
+  }
+
   static isContactCenter(community) {
     return (community && community.buildingId === 225707)
   }
