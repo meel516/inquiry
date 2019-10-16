@@ -72,7 +72,11 @@ class CommunityService {
   }
 
   static convertToISODate(dateStr) {
-    return moment(dateStr).format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
+    if (dateStr) {
+      return moment(dateStr).format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
+    } else {
+      return null;
+    }
   }
 
 }
