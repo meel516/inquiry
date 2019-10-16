@@ -437,10 +437,10 @@ async handleNewInquiryForm(lead, communities, user) {
     }
   }
 
-  // If we have communities in eloquaCommunityList, submit the request.
-  if (eloquaCommunityList && eloquaCommunityList.length > 0) {
+  // If we have an email and communities in eloquaCommunityList, submit the request.
+  if (lead && lead.influencer && lead.influencer.email &&
+      eloquaCommunityList && eloquaCommunityList.length > 0) {
     const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-    console.log(eloquaExternalRequest);
     this.submitEloquaRequest(eloquaExternalRequest);
   }
 }
