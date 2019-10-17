@@ -1,20 +1,19 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
 import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
-import { Form, ErrorMessage, withFormik, yupToFormErrors } from 'formik';
-import * as Yup from 'yup';
+import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
 import Address from '../../components/Address';
 import ADLNeeds from '../../components/ADLNeeds';
+import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
 import FinancialOptions from '../../components/FinancialOptions';
-import {formValidationSchema} from './ValidationSchema';
+import { mainFormValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
 import NextSteps from '../../components/NextSteps'
@@ -90,7 +89,7 @@ class InquiryForm extends React.Component {
       communities.push(community)
 
       let allowAddCommunities = true;
-      if ( communities.length > (this.MAX_COMMUNITIES-1)) {
+      if (communities.length > (this.MAX_COMMUNITIES - 1)) {
         allowAddCommunities = false;
       }
       return {
@@ -119,6 +118,25 @@ class InquiryForm extends React.Component {
     }
   }
 
+  handleFormSubmit = (e) => {
+    const promise = new Promise((resolve, reject) => {
+      try {
+        this.props.handleSubmit(e)
+        if (this.props.isValid) {
+          resolve()
+        }
+        else {
+          reject()
+        }
+      }
+      catch(err) {
+        reject()
+      }
+    })
+
+    return promise;
+  }
+
   render() {
     const {
       values,
@@ -126,6 +144,7 @@ class InquiryForm extends React.Component {
       touched,
       errors,
       dirty,
+      isValid,
       isSubmitting,
       handleChange,
       handleBlur,
@@ -133,7 +152,11 @@ class InquiryForm extends React.Component {
       handleReset,
       setFieldValue,
       setFieldTouched,
+      validateForm,
     } = this.props;
+
+    console.log(`Formik Status: ${JSON.stringify(status)}`)
+    console.log(`Formik Errors: ${JSON.stringify(errors)}`)
 
     if (this.state.loading) {
       return 'Loading Form...'
@@ -239,11 +262,11 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource key="leadsource" 
-              defaultLeadSource={values.lead.leadSource} 
-              defaultLeadSourceDetail={values.lead.leadSourceDetail} 
-              onChange={handleChange} 
-              {...this.props} 
+            <LeadSource key="leadsource"
+              defaultLeadSource={values.lead.leadSource}
+              defaultLeadSourceDetail={values.lead.leadSourceDetail}
+              onChange={handleChange}
+              {...this.props}
             />
           </Col>
         </Row>
@@ -251,12 +274,12 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="umid" className="label-format required-field">UMID</Label>
-              <Input name='lead.umid' 
-                type="text" 
+              <Input name='lead.umid'
+                type="text"
                 id="umid"
                 value={values.lead.umid}
-                onChange={handleChange} 
-                onBlur={handleBlur} 
+                onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="UMID" />
               <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -265,8 +288,8 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
-            <select className="form-control" id="callerType" name="lead.callerType" onChange={handleChange} onBlur={handleBlur}>
-              <option>Select One</option>
+            <select className="form-control" id="callerType" name="lead.callerType" onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
+              <option value="">Select One</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="U">Unknown</option>
@@ -277,7 +300,17 @@ class InquiryForm extends React.Component {
         <br />
 
         <div className="float-right">
-          <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '}
+          {/* <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '} */}
+          <AlertConfirm key="alertConfirm"
+            buttonLabel='Submit'
+            handleSubmit={this.handleFormSubmit}
+            handleValidate={validateForm}
+            handleReset={handleReset}
+            isSubmitting={isSubmitting}
+            setFieldTouched={setFieldTouched}
+            errors={errors}
+            isValid={isValid}
+          />
         </div>
 
         {process.env.REACT_APP_NODE_ENV !== "production" &&
@@ -291,7 +324,7 @@ class InquiryForm extends React.Component {
 const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
-  validationSchema: formValidationSchema,
+  validationSchema: mainFormValidationSchema,
 
   mapPropsToValues: () => {
     return {
@@ -300,16 +333,28 @@ const EnhancedInquiryForm = withFormik({
     }
   },
 
-  handleSubmit: (values, { setSubmitting, setErrors, setStatus }) => {
+  handleSubmit: async (values, { setSubmitting, setErrors, setStatus }) => {
+    debugger
     setSubmitting(true);
-    const errorHandler = {
-      setErrors,
-      setStatus,
-    }
     const salesService = new SalesAPIService();
-    let successful = salesService.submitToService({ ...values }, errorHandler);
-    setSubmitting(false);
-    console.log(`Was successful: ${successful}`)
+    try {
+      const lead = await salesService.submitToService({ ...values });
+      setStatus({
+        successful: true,
+        lead
+      })
+    }
+    catch(err) {
+      setStatus({
+        successful: false,
+      })
+      setErrors({
+        error: err.message
+      })
+    }
+    finally {
+      setSubmitting(false);
+    }
   },
 
 })(InquiryForm);

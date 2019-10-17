@@ -4,12 +4,12 @@ const phonePhoneTypeDependencySchema = Yup.object().shape({
   phone: Yup.object().shape({
     type: Yup.string()
       .when('number', {
-        is: number => number != '',
+        is: number => number !== '',
         then: Yup.string().required("Phone Type is required when Phone is entered"),
         otherwise: Yup.string()
       }),
     number: Yup.string().when('type', {
-      is: type => type != '',
+      is: type => type !== '',
       then: Yup.string().required("Phone is required when Phone Type is entered"),
       otherwise: Yup.string()
     }),
@@ -167,4 +167,6 @@ const formValidationSchema = mainFormValidationSchema.concat(conditionalValidati
 
 export {
   formValidationSchema,
+  mainFormValidationSchema,
+  conditionalValidationSchema,
 };
