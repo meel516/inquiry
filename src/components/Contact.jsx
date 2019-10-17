@@ -24,11 +24,16 @@ export default class Contact extends React.Component {
 
   handleDupCheck = event => {
     const { contact } = this.props;
+    debugger;
     if (DuplicationService.shouldRunDuplicateCheck(contact)) {
-      // console.log('run duplicate check!');
-      // checkForDuplicate()
-      //   .then((data) => this.setState({ duplicate: data }))
+      console.log('run duplicate check!');
+      console.log(JSON.stringify(contact));
+
+
+      // DuplicationService.checkForDuplicate(contact)
+      //   // .then((data) => this.setState({ duplicate: data }))
       //   .catch(error => console.log(error));
+      DuplicationService.checkForDuplicate(contact);
     } else {
       console.log('do not run duplicate check!');
     }
