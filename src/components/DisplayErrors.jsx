@@ -14,17 +14,19 @@ export default function DisplayErrors(props) {
     if (props.status.error) {
         return (
             <section className="errors">
-                <div>Did not work.</div>
+                <Alert color="danger">
+                    {props.status.message}
+                </Alert>
             </section>
         )
     }
 
     return (
         <section className="errors">
-          <Row>
-            {!!props.error &&
-              <Alert color="danger">{props.message}</Alert>}
-          </Row>
+            <Row>
+                {!!props.error &&
+                    <Alert color="danger">{props.message}</Alert>}
+            </Row>
         </section>
     )
 }
@@ -35,12 +37,11 @@ DisplayErrors.propTypes = {
 
     readOnly: PropTypes.bool,
     error: PropTypes.bool,
-  
+
     message: PropTypes.string,
-  }
-  
-  DisplayErrors.defaultProps = {
+}
+
+DisplayErrors.defaultProps = {
     readOnly: false,
     error: false,
-  }
-  
+}
