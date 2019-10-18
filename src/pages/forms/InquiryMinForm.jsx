@@ -12,6 +12,7 @@ import CareType from '../../components/CareType';
 import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
+import DisplayErrors from '../../components/DisplayErrors';
 import FinancialOptions from '../../components/FinancialOptions';
 import { mainFormValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
@@ -156,7 +157,6 @@ class InquiryForm extends React.Component {
     } = this.props;
 
     console.log(`Formik Status: ${JSON.stringify(status)}`)
-    console.log(`Formik Errors: ${JSON.stringify(errors)}`)
 
     if (this.state.loading) {
       return 'Loading Form...'
@@ -164,20 +164,42 @@ class InquiryForm extends React.Component {
 
     return (
       <Form onSubmit={handleSubmit} className="inquiryForm">
-        <section className="errors">
-          <Row>
-            {!!status &&
-              <Alert color="danger">{status}</Alert>}
-          </Row>
-        </section>
+        <DisplayErrors 
+          status={this.props.status} 
+          errors={this.props.errors} 
+          valid={this.props.isValid} 
+        />
         <section className="influencer-section">
-          <Contact key="influencer-contact" type="influencer" contact={values.lead.influencer} onChange={this.props.handleChange} onBlur={handleBlur} {...this.props}>
-            <Address type="influencer" address={values.lead.influencer.address} onChange={this.props.handleChange} {...this.props} />
+          <Contact 
+            key="influencer-contact" 
+            type="influencer" 
+            contact={values.lead.influencer} 
+            handleChange={this.props.handleChange} 
+            handleBlur={this.props.handleBlur} 
+            isReadOnly={status.readOnly} 
+            {...this.props}
+          >
+            <Address 
+              type="influencer" 
+              address={values.lead.influencer.address} 
+              onChange={this.props.handleChange} 
+              onBlur={this.props.handleBlur} 
+              isReadOnly={status.readOnly} 
+              {...this.props} 
+            />
           </Contact>
         </section>
         <br />
         <section className="prospect-section">
-          <Note labelId="situationLabel" label="Situation" id="situation" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+          <Note 
+            labelId="situationLabel" 
+            label="Situation" 
+            id="situation" 
+            onChange={this.props.handleChange} 
+            onBlur={this.props.handleBlur} 
+            isReadOnly={this.props.status.readOnly}
+            rows={6}
+          />
           <Row>
             <Col>
               <ADLNeeds adlNeeds={values.lead.adlNeeds} {...this.props} />
@@ -186,19 +208,40 @@ class InquiryForm extends React.Component {
           <br />
           <AdditionalCareElements {...this.props} />
           <br />
-          <Prospect contact={this.props.values.lead.prospect} onChange={this.props.handleChange} {...this.props} />
+          <Prospect 
+            contact={this.props.values.lead.prospect} 
+            handleChange={this.props.handleChange} 
+            handleBlur={this.props.handleBlur}
+            isReadOnly={status.readOnly}
+            {...this.props} />
           <br />
-          <CareType onChange={handleChange} onBlur={handleBlur} {...this.props} />
+          <CareType 
+            handleChange={handleChange} 
+            handleBlur={handleBlur} 
+            isReadOnly={status.readOnly} 
+          />
           <br />
           <Row>
             <Col>
-              <Note labelId="passionPersonalityLabel" label="Passions &amp; Personality" id="passionsPersonality" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+              <Note 
+                labelId="passionPersonalityLabel" 
+                label="Passions &amp; Personality" 
+                id="passionsPersonality" 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+              />
             </Col>
           </Row>
         </section>
         <Row>
           <Col>
-            <Note labelId="financialSituationLabel" label="Financial Situation" id="financialSituation" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+            <Note 
+              labelId="financialSituationLabel" 
+              label="Financial Situation" 
+              id="financialSituation" 
+              onChange={this.props.handleChange} 
+              onBlur={this.props.handleBlur} 
+            />
           </Col>
         </Row>
         <br />
@@ -216,11 +259,17 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Note label="Additional Notes" id="additionalNotes" onChange={this.props.handleChange} onBlur={this.props.handleBlur} />
+            <Note 
+              labelId="additionalNotesLabel" 
+              label="Additional Notes" 
+              id="additionalNotes" 
+              onChange={this.props.handleChange} 
+              onBlur={this.props.handleBlur} 
+            />
           </Col>
         </Row>
         <br />
-        <Drivers {...this.props} />
+        <Drivers setFieldValue={setFieldValue} />
         <br />
         <SecondPerson contact={this.props.values.lead.secondPerson} {...this.props} />
         <br />
@@ -326,10 +375,17 @@ const EnhancedInquiryForm = withFormik({
   enableReinitialize: true,
   validationSchema: mainFormValidationSchema,
 
-  mapPropsToValues: () => {
+  mapPropsToValues: (props) => {
     return {
       communities: [],
       lead: ObjectMappingService.createEmptyLead(),
+    }
+  },
+
+  mapPropsToStatus: (props) => {
+    return {
+      readOnly: false,
+      successful: false,
     }
   },
 
@@ -341,12 +397,15 @@ const EnhancedInquiryForm = withFormik({
       const lead = await salesService.submitToService({ ...values });
       setStatus({
         successful: true,
-        lead
+        readOnly: true, 
       })
+      this.setFieldValue('lead', lead)
     }
     catch(err) {
       setStatus({
         successful: false,
+        readOnly: false,
+        error: true,
       })
       setErrors({
         error: err.message
