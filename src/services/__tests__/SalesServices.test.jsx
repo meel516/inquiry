@@ -149,3 +149,79 @@ describe('unit testing javascript dates', () => {
     })
 
 })
+
+describe('service send request testing', () => {
+    const salesServiceApi = new SalesAPIService();
+
+    const successful = {objectId: 123, message: 'Successful'}
+    const failure = {message: 'Failure'}
+    let user = TestUtils.createEmptyUser();
+    let communities = [];
+    let lead = ObjectMappingService.createEmptyLead();
+
+    afterEach(() => {
+        communities = [];
+        user = TestUtils.createEmptyUser();
+        lead = ObjectMappingService.createEmptyLead();
+    });
+
+    describe('happy path scenarios', () => {
+
+        test('test submission of add community request', async () => {
+            const mockJsonPromise = Promise.resolve(successful)
+            const mockFetchPromise = Promise.resolve({
+                json: () => mockJsonPromise,
+                status: 201,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+    
+            // set lead id as if it was already processed
+            lead.leadId = 1
+    
+            const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
+            salesServiceApi.sendAddCommunityRequest(request);
+    
+            expect(global.fetch).toHaveBeenCalledTimes(1);
+    
+            global.fetch.mockClear();
+        })
+    
+    })
+
+    describe('500 server error scenarios', () => {
+
+        test('test failure submission of add community request', async () => {
+            const mockJsonPromise = Promise.reject(failure);
+            const mockFetchPromise = Promise.reject({
+                json: () => mockJsonPromise,
+                status: 500,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+    
+            let error = false
+            try {
+                const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user)
+                salesServiceApi.sendAddCommunityRequest(request)
+            }
+            catch(err) {
+                error = true
+            }
+    
+            expect(global.fetch).toHaveBeenCalledTimes(1)
+            expect(error).toBeTruthy()
+    
+            global.fetch.mockClear();
+        })
+    
+    })
+
+})
+
+
+describe('submission of inquiry form', () => {
+
+    test('test successful processing of the entire submission process', () => {
+
+    })
+
+})
