@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, FormGroup, Input, Label } from 'reactstrap';
-import { ErrorMessage, Field } from 'formik';
+import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -33,4 +34,15 @@ export default class CareType extends React.Component {
       </FormGroup>
     )
   }
+}
+
+CareType.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+CareType.defaultProps = {
+  isReadOnly: false,
 }
