@@ -67,9 +67,9 @@ export default class SecondPerson extends React.Component {
           {this.renderQuestion()}
           <Contact
             type="secondPerson"
-            onChange={handleChange}
-            onBlur={handleBlur}
             contact={this.props.contact}
+            onChange={this.props.onChange}
+            onBlur={this.props.onBlur}
             {...this.props} />
           <Note label="2nd Person Situation" id="situation2" name="lead.notes.secondPerson" onChange={handleChange} onBlur={handleBlur} />
         </>
