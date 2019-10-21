@@ -62,6 +62,35 @@ function SalesLead(salesContact, leadTypeId = 4) {
     this.salesContact = salesContact;
 }
 
+function DuplicateContact(dupecontact) {
+    if (dupecontact) {
+        this.name = dupecontact.firstName + " " + dupecontact.lastName
+
+        if (dupecontact.phoneNumbers) {
+            for (let i = 0; i < dupecontact.phoneNumbers.length; i++) {
+                let tmpPhone = dupecontact.phoneNumbers[i];
+                if (tmpPhone) {
+                    if (tmpPhone.primary) {
+                        this.phone = tmpPhone.phoneNumber
+                        this.phonetype = tmpPhone.phoneType
+                        break;
+                    }
+                }
+            }
+        }
+
+        this.email = dupecontact.emailAddress
+        
+        if (dupecontact.address) {
+            this.address1 = dupecontact.address.addressLine1
+            this.address2 = dupecontact.address.addressLine2
+            this.city = dupecontact.address.city
+            this.state = dupecontact.address.stateProv
+            this.zip = dupecontact.address.zipPostalCode
+        }
+    }
+}
+
 function SalesInquiryForm() {
 }
 
@@ -692,6 +721,23 @@ class ObjectMappingService {
         salesInquiryForm.formDetails = salesFormDetails;
         
         return salesInquiryForm;
+    }
+
+    static createContactDuplicateGridContent(duplicatecontacts) {
+        const returnval = [];
+
+        debugger;
+        if (duplicatecontacts) {
+            for (let i = 0; i < duplicatecontacts.length; i++) {
+                let dupecontact = duplicatecontacts[i];
+                console.log("dupecontact is: " + JSON.stringify(dupecontact));
+
+                if (dupecontact) {
+                    const dc = new DuplicateContact(dupecontact);
+                    console.log("newdupecontact is: " + JSON.stringify(dc));
+                }
+            }
+        }
     }
 }
 

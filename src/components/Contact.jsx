@@ -1,10 +1,28 @@
 import React from 'react';
+import ReactDataGrid from 'react-data-grid';
 import NumberFormat from 'react-number-format';
 import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 
 import { DropDownService, DuplicationService } from '../services/SalesServices'
+import { ObjectMappingService } from "../services/Types";
+
+const dupecolumns = [
+  { key: 'name', name: 'Contact Name' },
+  { key: 'phone', name: 'Phone' },
+  { key: 'phonetype', name: 'Phone Type' },
+  { key: 'email', name: 'Email' },
+  { key: 'address1', name: 'Address 1' },  
+  { key: 'address2', name: 'Address 2' },  
+  { key: 'city', name: 'City' },  
+  { key: 'state', name: 'State' },  
+  { key: 'zip', name: 'Zip' }
+];
+
+const rows = [
+  {id: 0, title: 'row1', count: 20}, {id: 1, title: 'row1', count: 40}, {id: 2, title: 'row1', count: 60}
+];
 
 export default class Contact extends React.Component {
 
@@ -22,21 +40,26 @@ export default class Contact extends React.Component {
       .catch(error => console.log(error));
   }
 
-  handleDupCheck = event => {
+  handleDupCheck = async event => {
     const { contact } = this.props;
-    debugger;
-    if (DuplicationService.shouldRunDuplicateCheck(contact)) {
+
+    if (this.dedup.shouldRunDuplicateCheck(contact)) {
+      debugger;
       console.log('run duplicate check!');
       console.log(JSON.stringify(contact));
-
 
       // DuplicationService.checkForDuplicate(contact)
       //   // .then((data) => this.setState({ duplicate: data }))
       //   .catch(error => console.log(error));
-      DuplicationService.checkForDuplicate(contact);
+      const duplicatecontacts = await this.dedup.checkForDuplicate(contact);
+      console.log("Dedupe response is: " + JSON.stringify(duplicatecontacts));
+
+      const newrows = ObjectMappingService.createContactDuplicateGridContent(duplicatecontacts);
+      console.log("newrows is: " + JSON.stringify(newrows));
     } else {
       console.log('do not run duplicate check!');
     }
+    
     this.props.handleBlur(event);
   }
 
@@ -94,6 +117,11 @@ export default class Contact extends React.Component {
             </FormGroup>
           </Col>
         </Row>
+        <ReactDataGrid
+          columns={dupecolumns}
+          rowGetter={i => rows[i]}
+          rowsCount={3}
+          minHeight={150} />
         {this.props.children}
       </>
     )

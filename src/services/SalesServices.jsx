@@ -6,9 +6,9 @@ import { CommunityService } from './CommunityServices'
 
 class DuplicationService {
 
-  static shouldRunDuplicateCheck(contact) {
+  shouldRunDuplicateCheck(contact) {
     if (contact) {
-      const { firstName, lastName, email, phone: { number, type } } = contact;
+      const { email, phone: { number, type } } = contact;
       if ((!number || !type) && !email) {
         return false;
       }
@@ -17,43 +17,27 @@ class DuplicationService {
     return true;
   }
 
-  /*
-  since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
-  just a normal export
-  */
-  static checkForDuplicate(contact) {
+  async checkForDuplicate(contact) {
     debugger;
-
     const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
+    
     const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);
-
     console.log(JSON.stringify(contactDupeRequest));
 
-    // try {
-    //   let response = await fetch(endpoint, {
-    //     method: 'POST', mode: 'cors',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(contactDupeRequest),
-    //   })
-    //   const inf = await response.json();
-    //   if (response.status !== 201) {
-    //     console.log(`Error: ${response.status} ${inf.message}`);
-    //   }
-    // }
-    // catch (err) {
-    //   console.log(err);
-    //   // successful = false;
-    // }
-    // return fetch(endpoint, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   mode: 'cors',
-    //   cache: 'no-cache',
-    //   body: JSON.stringify(dupRequest.payload)
-    // })
-    //   .then((resp) => resp.json())
+    let response = await fetch(endpoint, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactDupeRequest),
+    })
+    const data = await response.json();
+    if (response.status === 200) {
+      console.log(data);
+      return data;
+    } else {
+      throw new Error('Error Performing Duplicate Search')
+    }
   }
 }
 
