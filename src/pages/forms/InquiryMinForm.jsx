@@ -29,14 +29,22 @@ import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
 import { CommunityService } from '../../services/CommunityServices';
 import { checkAuthentication } from '../../auth/checkAuth';
+// import { getRefsMap } from '../../utils/ScrollToError';
 
 class InquiryForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.TOP = React.createRef();
+    // const errorRefsMap = getRefsMap();
+  }
+
   MAX_COMMUNITIES = 5;
   state = {
     communities: [],
     allowAddCommunities: true,
     lead: null,
     loading: true,
+    scrollToTop: false,
   };
   salesapi = new SalesAPIService();
   checkAuthentication = checkAuthentication.bind(this);
@@ -68,6 +76,22 @@ class InquiryForm extends React.Component {
       loading: false,
       lead: leadObj,
     })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentDidUpdate: prevState.scrollToTop: ", prevState.scrollToTop, 'prevState.scrollToTop', prevState.scrollToTop)
+    if (prevState.scrollToTop !== this.state.scrollToTop) {
+      if(this.props.errors === '') {
+        if(this.props.isSubmitting === true) {
+          this.setState({ scrollToTop: false})
+        }
+      }
+    } 
+    if(this.state.scrollToTop) {
+      this.TOP.current.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }
   }
 
   getAuthCredentials = (userInfo) => {
@@ -120,6 +144,9 @@ class InquiryForm extends React.Component {
   }
 
   handleFormSubmit = (e) => {
+    if (this.props.errors !== '') {
+      this.setState({ scrollToTop: true })
+    }
     const promise = new Promise((resolve, reject) => {
       try {
         this.props.handleSubmit(e)
@@ -169,6 +196,12 @@ class InquiryForm extends React.Component {
           errors={this.props.errors} 
           valid={this.props.isValid} 
         />
+        <section>
+          <div ref={this.TOP}></div>
+          {/* <Row>
+          <input type="text" id="topText" name="topText" ref={this.TOP}></input>
+          </Row> */}
+        </section>
         <section className="influencer-section">
           <Contact 
             key="influencer-contact" 
@@ -401,7 +434,7 @@ const EnhancedInquiryForm = withFormik({
       })
       this.setFieldValue('lead', lead)
     }
-    catch(err) {
+    catch(err) {  
       setStatus({
         successful: false,
         readOnly: false,

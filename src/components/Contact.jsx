@@ -55,7 +55,8 @@ export default class Contact extends React.Component {
                 onBlur={this.handleDupCheck} 
                 autoComplete="off" 
                 readOnly={this.props.isReadOnly}
-                placeholder="First Name" />
+                placeholder="First Name" 
+                />
               <ErrorMessage name={`lead.${this.props.type}.firstName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
