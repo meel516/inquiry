@@ -141,8 +141,6 @@ class InquiryForm extends React.Component {
 
   render() {
     const {
-      values,
-      status,
       touched,
       errors,
       dirty,
@@ -150,21 +148,16 @@ class InquiryForm extends React.Component {
       isSubmitting,
       handleChange,
       handleBlur,
-      handleSubmit,
-      handleReset,
       setFieldValue,
       setFieldTouched,
-      validateForm,
     } = this.props;
-
-    console.log(`Formik Status: ${JSON.stringify(status)}`)
 
     if (this.state.loading) {
       return 'Loading Form...'
     }
 
     return (
-      <Form onSubmit={handleSubmit} className="inquiryForm">
+      <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
         <DisplayErrors 
           status={this.props.status} 
           errors={this.props.errors} 
@@ -174,17 +167,18 @@ class InquiryForm extends React.Component {
           <Contact 
             key="influencer-contact" 
             type="influencer" 
-            contact={values.lead.influencer} 
+            contact={this.props.values.lead.influencer} 
             handleChange={this.props.handleChange} 
             handleBlur={this.props.handleBlur} 
-            isReadOnly={status.readOnly} 
+            isReadOnly={this.props.status.readOnly} 
+            duplicateCheck={true}
           >
             <Address 
               type="influencer" 
-              address={values.lead.influencer.address} 
+              address={this.props.values.lead.influencer.address} 
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
-              isReadOnly={status.readOnly} 
+              isReadOnly={this.props.status.readOnly} 
               {...this.props} 
             />
           </Contact>
@@ -203,7 +197,7 @@ class InquiryForm extends React.Component {
           <Row>
             <Col>
               <ADLNeeds 
-                adlNeeds={values.lead.adlNeeds} 
+                adlNeeds={this.props.values.lead.adlNeeds} 
                 setFieldValue={this.props.setFieldValue} 
                 isReadOnly={this.props.status.readOnly}
               />
@@ -220,13 +214,13 @@ class InquiryForm extends React.Component {
             contact={this.props.values.lead.prospect} 
             handleChange={this.props.handleChange} 
             handleBlur={this.props.handleBlur}
-            isReadOnly={status.readOnly}
+            isReadOnly={this.prosps.status.readOnly}
           />
           <br />
           <CareType 
             handleChange={this.props.handleChange} 
             handleBlur={this.props.handleBlur} 
-            isReadOnly={status.readOnly} 
+            isReadOnly={this.props.status.readOnly} 
           />
           <br />
           <Row>
@@ -237,7 +231,7 @@ class InquiryForm extends React.Component {
                 id="passionsPersonality" 
                 handleChange={this.props.handleChange} 
                 handleBlur={this.props.handleBlur} 
-                isReadOnly={status.readOnly}
+                isReadOnly={this.props.status.readOnly}
               />
             </Col>
           </Row>
@@ -250,7 +244,7 @@ class InquiryForm extends React.Component {
               id="financialSituation" 
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
             />
           </Col>
         </Row>
@@ -258,7 +252,7 @@ class InquiryForm extends React.Component {
         <Row>
           <Col>
             <Button color="primary" size="sm" aria-pressed="false" 
-              disabled={!this.state.allowAddCommunities||status.readOnly} onClick={() => this.handleAddCommunity(values)}>Add Community</Button>
+              disabled={!this.state.allowAddCommunities||this.props.status.readOnly} onClick={() => this.handleAddCommunity(this.props.values)}>Add Community</Button>
             {this.props.values.communities.map((community, index) => (
               <CommunitySelect 
                 key={community.uuid} 
@@ -267,7 +261,7 @@ class InquiryForm extends React.Component {
                 handleChange={this.props.handleChange}
                 handleBlur={this.props.handleBlur}
                 setFieldValue={this.props.setFieldValue}
-                onRemove={() => this.handleRemoveCommunity(community.uuid, values)} 
+                onRemove={() => this.handleRemoveCommunity(community.uuid, this.props.values)} 
                 {...this.props} 
               />
             ))}
@@ -285,7 +279,7 @@ class InquiryForm extends React.Component {
               id="additionalNotes" 
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
             />
           </Col>
         </Row>
@@ -293,14 +287,14 @@ class InquiryForm extends React.Component {
         <Drivers 
           key="drivers"
           setFieldValue={this.props.setFieldValue} 
-          isReadOnly={status.readOnly}
+          isReadOnly={this.props.status.readOnly}
         />
         <br />
         <SecondPerson 
           contact={this.props.values.lead.secondPerson} 
           handleChange={this.props.handleChange}
           handleBlur={this.props.handleBlur}
-          isReadOnly={status.readOnly}
+          isReadOnly={this.props.status.readOnly}
           {...this.props}
         />
         <br />
@@ -311,7 +305,7 @@ class InquiryForm extends React.Component {
               id="nextStepsLabel" 
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
               {...this.props} 
             />
           </Col>
@@ -320,7 +314,7 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <Input type="select" id="callingFor" name="lead.callingFor" onChange={this.props.handleChange} onBlur={this.props.handleBlur} disabled={status.readOnly}>
+              <Input type="select" id="callingFor" name="lead.callingFor" onChange={this.props.handleChange} onBlur={this.props.handleBlur} disabled={this.props.status.readOnly}>
                 <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
@@ -338,7 +332,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
               defaultValue={this.props.values.lead.reasonForCall} 
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
             />
           </Col>
         </Row>
@@ -348,7 +342,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
               defaultValue={this.props.values.lead.inquiryType} 
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
               {...this.props} 
             />
           </Col>
@@ -358,8 +352,8 @@ class InquiryForm extends React.Component {
             <VeteranStatus 
               handleChange={this.props.handleChange} 
               handleBlur={this.props.handleBlur} 
-              defaultValue={values.lead.prospect.veteranStatus || ''} 
-              isReadOnly={status.readOnly}
+              defaultValue={this.props.values.lead.prospect.veteranStatus} 
+              isReadOnly={this.props.status.readOnly}
               {...this.props} 
             />
           </Col>
@@ -367,12 +361,12 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <LeadSource key="leadsource"
-              defaultLeadSource={values.lead.leadSource}
-              defaultLeadSourceDetail={values.lead.leadSourceDetail}
+              defaultLeadSource={this.props.values.lead.leadSource}
+              defaultLeadSourceDetail={this.props.values.lead.leadSourceDetail}
               handleChange={this.props.handleChange}
               handleBlur={this.props.handleBlur}
               setFieldValue={this.props.setFieldValue}
-              isReadOnly={status.readOnly}
+              isReadOnly={this.props.status.readOnly}
               {...this.props}
             />
           </Col>
@@ -384,10 +378,10 @@ class InquiryForm extends React.Component {
               <Input name='lead.umid'
                 type="text"
                 id="umid"
-                value={values.lead.umid}
+                value={this.props.values.lead.umid}
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
-                readOnly={status.readOnly}
+                readOnly={this.props.status.readOnly}
                 placeholder="UMID" />
               <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -402,7 +396,7 @@ class InquiryForm extends React.Component {
               name="lead.callerType" 
               onChange={this.props.handleChange} 
               onBlur={this.props.handleBlur}
-              disabled={status.readOnly}
+              disabled={this.props.status.readOnly}
             >
               <option value="">Select One</option>
               <option value="M">Male</option>
@@ -419,12 +413,12 @@ class InquiryForm extends React.Component {
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'
             handleSubmit={this.handleFormSubmit}
-            handleValidate={validateForm}
-            handleReset={handleReset}
-            isSubmitting={isSubmitting}
-            setFieldTouched={setFieldTouched}
-            errors={errors}
-            isValid={isValid}
+            handleValidate={this.props.validateForm}
+            handleReset={this.props.handleReset}
+            isSubmitting={this.props.isSubmitting}
+            setFieldTouched={this.props.setFieldTouched}
+            errors={this.props.errors}
+            isValid={this.props.isValid}
           />
         </div>
 

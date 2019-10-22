@@ -101,7 +101,7 @@ export default class Contact extends React.Component {
                 value={this.props.contact.phone.type || ''} 
                 onBlur={this.handleDupCheck}
                 onChange={this.props.handleChange} 
-                readOnly={this.props.isReadOnly}
+                disabled={this.props.isReadOnly}
               >
                 <option value="">Select One</option>
                 {displayablePhoneTypes}
@@ -141,8 +141,10 @@ Contact.propTypes = {
   handleChange: PropTypes.func.isRequired,
 
   isReadOnly: PropTypes.bool,
+  duplicateCheck: PropTypes.bool,
 }
 
 Contact.defaultProps = {
-  isReadOnly: false
+  isReadOnly: false,
+  duplicateCheck: false,
 }

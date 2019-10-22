@@ -70,7 +70,7 @@ export default class LeadSource extends React.Component {
                 id="leadSource" 
                 name="lead.leadSource" 
                 value={this.props.defaultLeadSource} 
-                onChange={this.handleChange} 
+                onChange={this.handleOnChange} 
                 onBlur={this.props.handleBlur}
                 readOnly={this.isReadOnly}
               >
