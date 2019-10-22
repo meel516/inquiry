@@ -4,7 +4,7 @@ import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
 export default function Navigator(props) { 
   const applicationName = `${process.env.REACT_APP_APPLICATION_NAME}`
   return (
-    <Navbar color="light" light expand="md">
+    <Navbar color="light" light expand="md" className="noTopBottomPadding">
       <NavbarBrand href="/">
         <img
           src="/bsl_logo.jpg"

@@ -64,7 +64,6 @@ class InquiryForm extends React.Component {
     }
     this.props.setFieldValue('lead', leadObj)
 
-    console.log(`Node Env: ${process.env.NODE_ENV}`)
     this.setState({
       loading: false,
       lead: leadObj,
