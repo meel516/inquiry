@@ -163,6 +163,8 @@ describe('service send request testing', () => {
         communities = [];
         user = TestUtils.createEmptyUser();
         lead = ObjectMappingService.createEmptyLead();
+
+        global.fetch.mockClear();
     });
 
     describe('happy path scenarios', () => {
@@ -183,7 +185,6 @@ describe('service send request testing', () => {
     
             expect(global.fetch).toHaveBeenCalledTimes(1);
     
-            global.fetch.mockClear();
         })
     
     })
@@ -201,7 +202,7 @@ describe('service send request testing', () => {
             let error = false
             try {
                 const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user)
-                salesServiceApi.sendAddCommunityRequest(request)
+                await salesServiceApi.sendAddCommunityRequest(request)
             }
             catch(err) {
                 error = true
@@ -210,7 +211,6 @@ describe('service send request testing', () => {
             expect(global.fetch).toHaveBeenCalledTimes(1)
             expect(error).toBeTruthy()
     
-            global.fetch.mockClear();
         })
     
     })
