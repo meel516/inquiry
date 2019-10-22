@@ -83,8 +83,7 @@ export default class AdditionalCareElements extends React.Component {
 
   handleCurrentSituationChange = ({ target: { name, value } }) => {
     const qualifiedName = `lead.${name}`;
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, value);
+    this.props.setFieldValue(qualifiedName, value);
   }
 
   // elmnts - array of elements
@@ -126,20 +125,17 @@ export default class AdditionalCareElements extends React.Component {
 
   handleMemoryConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.memoryConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
   handleMobilityConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.mobilityConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
   handleNutritionConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.nutritionConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
 
@@ -157,6 +153,7 @@ export default class AdditionalCareElements extends React.Component {
                 onChange={this.handleSelectCareElements}
                 options={additionalCareElements}
                 defaultValue={defaultCareElements}
+                isDisabled={this.props.isReadOnly}
               />
             </FormGroup>
           </Col>

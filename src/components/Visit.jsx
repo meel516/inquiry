@@ -25,11 +25,11 @@ export default class Visit extends React.Component {
       <>
         <Row>
           <Col md="4">
-            <FollowUp 
+            <FollowUp
               setFieldValue={this.props.setFieldValue}
-              handleChange={this.props.handleChange} 
-              handleBlur={this.props.handleBlur} 
-              isReadOnly={this.props.isReadOnly} 
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              isReadOnly={this.props.isReadOnly}
               {...this.props}
             />
           </Col>
@@ -37,19 +37,24 @@ export default class Visit extends React.Component {
             <FormGroup>
               {
                 (community && (community.followUpAction === "20" ||
-                  community.followUpAction === "5")) ? <FreeMeal handleChange={this.handleVisitChanges} isReadOnly={this.props.isReadOnly} /> : null
+                  community.followUpAction === "5")) ?
+                  <FreeMeal
+                    handleChange={this.handleVisitChanges}
+                    isReadOnly={this.props.isReadOnly}
+                  />
+                  : null
               }
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col>
-            <Note 
-              label="Description" 
-              id="followupNote" 
-              name={`communities[${this.props.index}].note`} 
-              onChange={this.props.handleChange} 
-              onBlur={this.props.handleBlur} 
+            <Note
+              label="Description"
+              id="followupNote"
+              name={`communities[${this.props.index}].note`}
+              onChange={this.props.handleChange}
+              onBlur={this.props.handleBlur}
               isReadOnly={this.props.isReadOnly}
             />
           </Col>
@@ -79,7 +84,7 @@ function FreeMeal(props) {
   return (
     <React.Fragment>
       <Label for="freeMeal" className="label-format">Does this Visit include a Free Meal?</Label>
-      <Input type="select" id="freeMeal" name="freeMeal" onChange={props.handleChange}>
+      <Input type="select" id="freeMeal" name="freeMeal" onChange={props.handleChange} disabled={props.isReadOnly}>
         {freeMealItems.map((optn) => {
           return <option key={optn.value} value={optn.label}>{optn.label}</option>
         })}
@@ -88,15 +93,23 @@ function FreeMeal(props) {
   )
 }
 
+FreeMeal.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+FreeMeal.defaultProps = {
+  isReadOnly: false
+}
+
 class FollowUp extends React.Component {
   state = {
     followupDate: null,
   }
 
   onScheduledDateChange = (date) => {
-    const { index, setFieldValue } = this.props;
-    setFieldValue(`communities[${index}].followupDate`, date);
-    console.log(`Scheduled Date: ${date}`);
+    this.props.setFieldValue(`communities[${this.props.index}].followupDate`, date);
     this.setState({ followupDate: date })
   }
 
@@ -111,8 +124,21 @@ class FollowUp extends React.Component {
           showWeekNumbers={true}
           onChange={this.onScheduledDateChange}
           value={this.props.community.scheduledDate || this.state.followupDate}
+          disabled={this.props.isReadOnly}
         />
       </FormGroup>
     )
   }
+}
+
+FollowUp.propTypes = {
+  index: PropTypes.number.isRequired,
+
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+FollowUp.defaultProps = {
+  isReadOnly: false,
 }

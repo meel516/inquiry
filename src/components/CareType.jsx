@@ -25,7 +25,14 @@ export default class CareType extends React.Component {
     return (
       <FormGroup>
         <Label for="careType" className="label-format required-field">Care Level Recommended</Label>
-        <Input type="select" id="careType" name="lead.careType" onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
+        <Input 
+          type="select" 
+          id="careType" 
+          name="lead.careType" 
+          onChange={this.props.handleChange} 
+          onBlur={this.props.handleBlur} 
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>

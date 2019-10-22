@@ -1,7 +1,8 @@
 import React from 'react';
 import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types'
 
-export default class Drivers extends React.Component {
+export default class FinancialOptions extends React.Component {
 
   handleInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.financialOptions.".concat(name);
@@ -52,3 +53,12 @@ export default class Drivers extends React.Component {
   }
 }
 
+FinancialOptions.propTypes = {
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+FinancialOptions.defaultProps = {
+  isReadOnly: false,
+}

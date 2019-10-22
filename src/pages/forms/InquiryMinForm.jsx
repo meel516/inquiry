@@ -261,6 +261,7 @@ class InquiryForm extends React.Component {
                 handleBlur={this.props.handleBlur}
                 setFieldValue={this.props.setFieldValue}
                 onRemove={() => this.handleRemoveCommunity(community.uuid, this.props.values)}
+                isReadOnly={this.props.status.readOnly}
                 {...this.props}
               />
             ))}
@@ -268,7 +269,11 @@ class InquiryForm extends React.Component {
         </Row>
         <br />
         <hr />
-        <FinancialOptions {...this.props} />
+        <FinancialOptions 
+          key="financialOptions"
+          setFieldValue={this.props.setFieldValue}
+          isReadOnly={this.props.status.readOnly}
+        />
         <br />
         <Row>
           <Col>
