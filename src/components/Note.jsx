@@ -11,8 +11,8 @@ export default function Note(props) {
         type="textarea" 
         name={props.name || `lead.notes.${props.id}`} 
         id={props.id} 
-        onChange={props.onChange} 
-        onBlur={props.onBlur} 
+        onChange={props.handleChange} 
+        onBlur={props.handleBlur} 
         cols={props.cols}
         rows={props.rows}
         readOnly={props.isReadOnly}
@@ -29,8 +29,8 @@ Note.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string.isRequired,
 
-  onBlur: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 
   isReadOnly: PropTypes.bool,
   rows: PropTypes.number,

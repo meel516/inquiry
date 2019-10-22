@@ -3,6 +3,7 @@ import { Alert, Button, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import queryString from 'query-string';
 import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
+import { toast } from 'react-toastify';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
 import Address from '../../components/Address';
@@ -157,7 +158,7 @@ class InquiryForm extends React.Component {
           reject()
         }
       }
-      catch(err) {
+      catch (err) {
         reject()
       }
     })
@@ -167,8 +168,6 @@ class InquiryForm extends React.Component {
 
   render() {
     const {
-      values,
-      status,
       touched,
       errors,
       dirty,
@@ -176,25 +175,20 @@ class InquiryForm extends React.Component {
       isSubmitting,
       handleChange,
       handleBlur,
-      handleSubmit,
-      handleReset,
       setFieldValue,
       setFieldTouched,
-      validateForm,
     } = this.props;
-
-    console.log(`Formik Status: ${JSON.stringify(status)}`)
 
     if (this.state.loading) {
       return 'Loading Form...'
     }
 
     return (
-      <Form onSubmit={handleSubmit} className="inquiryForm">
-        <DisplayErrors 
-          status={this.props.status} 
-          errors={this.props.errors} 
-          valid={this.props.isValid} 
+      <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
+        <DisplayErrors
+          status={this.props.status}
+          errors={this.props.errors}
+          valid={this.props.isValid}
         />
         <section>
           <div ref={this.TOP}></div>
@@ -203,86 +197,106 @@ class InquiryForm extends React.Component {
           </Row> */}
         </section>
         <section className="influencer-section">
-          <Contact 
-            key="influencer-contact" 
-            type="influencer" 
-            contact={values.lead.influencer} 
-            handleChange={this.props.handleChange} 
-            handleBlur={this.props.handleBlur} 
-            isReadOnly={status.readOnly} 
-            {...this.props}
+          <Contact
+            key="influencer-contact"
+            type="influencer"
+            contact={this.props.values.lead.influencer}
+            handleChange={this.props.handleChange}
+            handleBlur={this.props.handleBlur}
+            isReadOnly={this.props.status.readOnly}
+            duplicateCheck={true}
           >
-            <Address 
-              type="influencer" 
-              address={values.lead.influencer.address} 
-              onChange={this.props.handleChange} 
-              onBlur={this.props.handleBlur} 
-              isReadOnly={status.readOnly} 
-              {...this.props} 
+            <Address
+              type="influencer"
+              address={this.props.values.lead.influencer.address}
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              isReadOnly={this.props.status.readOnly}
+              {...this.props}
             />
           </Contact>
         </section>
         <br />
         <section className="prospect-section">
-          <Note 
-            labelId="situationLabel" 
-            label="Situation" 
-            id="situation" 
-            onChange={this.props.handleChange} 
-            onBlur={this.props.handleBlur} 
+          <Note
+            labelId="situationLabel"
+            label="Situation"
+            id="situation"
+            handleChange={this.props.handleChange}
+            handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             rows={6}
           />
           <Row>
             <Col>
-              <ADLNeeds adlNeeds={values.lead.adlNeeds} {...this.props} />
+              <ADLNeeds
+                adlNeeds={this.props.values.lead.adlNeeds}
+                setFieldValue={this.props.setFieldValue}
+                isReadOnly={this.props.status.readOnly}
+              />
             </Col>
           </Row>
           <br />
-          <AdditionalCareElements {...this.props} />
+          <AdditionalCareElements
+            lead={this.props.values.lead}
+            setFieldValue={this.props.setFieldValue}
+            isReadOnly={this.props.status.readOnly}
+          />
           <br />
-          <Prospect 
-            contact={this.props.values.lead.prospect} 
-            handleChange={this.props.handleChange} 
+          <Prospect
+            contact={this.props.values.lead.prospect}
+            handleChange={this.props.handleChange}
             handleBlur={this.props.handleBlur}
-            isReadOnly={status.readOnly}
-            {...this.props} />
+            isReadOnly={this.props.status.readOnly}
+          />
           <br />
-          <CareType 
-            handleChange={handleChange} 
-            handleBlur={handleBlur} 
-            isReadOnly={status.readOnly} 
+          <CareType
+            handleChange={this.props.handleChange}
+            handleBlur={this.props.handleBlur}
+            isReadOnly={this.props.status.readOnly}
           />
           <br />
           <Row>
             <Col>
-              <Note 
-                labelId="passionPersonalityLabel" 
-                label="Passions &amp; Personality" 
-                id="passionsPersonality" 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
+              <Note
+                labelId="passionPersonalityLabel"
+                label="Passions &amp; Personality"
+                id="passionsPersonality"
+                handleChange={this.props.handleChange}
+                handleBlur={this.props.handleBlur}
+                isReadOnly={this.props.status.readOnly}
               />
             </Col>
           </Row>
         </section>
         <Row>
           <Col>
-            <Note 
-              labelId="financialSituationLabel" 
-              label="Financial Situation" 
-              id="financialSituation" 
-              onChange={this.props.handleChange} 
-              onBlur={this.props.handleBlur} 
+            <Note
+              labelId="financialSituationLabel"
+              label="Financial Situation"
+              id="financialSituation"
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              isReadOnly={this.props.status.readOnly}
             />
           </Col>
         </Row>
         <br />
         <Row>
           <Col>
-            <Button color="primary" size="sm" aria-pressed="false" disabled={!this.state.allowAddCommunities} onClick={() => this.handleAddCommunity(values)}>Add Community</Button>
+            <Button color="primary" size="sm" aria-pressed="false"
+              disabled={!this.state.allowAddCommunities || this.props.status.readOnly} onClick={() => this.handleAddCommunity(this.props.values)}>Add Community</Button>
             {this.props.values.communities.map((community, index) => (
-              <CommunitySelect key={community.uuid} index={index} community={community} onRemove={() => this.handleRemoveCommunity(community.uuid, values)} {...this.props} />
+              <CommunitySelect
+                key={community.uuid}
+                index={index}
+                community={community}
+                handleChange={this.props.handleChange}
+                handleBlur={this.props.handleBlur}
+                setFieldValue={this.props.setFieldValue}
+                onRemove={() => this.handleRemoveCommunity(community.uuid, this.props.values)}
+                {...this.props}
+              />
             ))}
           </Col>
         </Row>
@@ -292,62 +306,100 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Note 
-              labelId="additionalNotesLabel" 
-              label="Additional Notes" 
-              id="additionalNotes" 
-              onChange={this.props.handleChange} 
-              onBlur={this.props.handleBlur} 
+            <Note
+              labelId="additionalNotesLabel"
+              label="Additional Notes"
+              id="additionalNotes"
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              isReadOnly={this.props.status.readOnly}
             />
           </Col>
         </Row>
         <br />
-        <Drivers setFieldValue={setFieldValue} />
+        <Drivers
+          key="drivers"
+          setFieldValue={this.props.setFieldValue}
+          isReadOnly={this.props.status.readOnly}
+        />
         <br />
-        <SecondPerson contact={this.props.values.lead.secondPerson} {...this.props} />
+        <SecondPerson
+          contact={this.props.values.lead.secondPerson}
+          handleChange={this.props.handleChange}
+          handleBlur={this.props.handleBlur}
+          isReadOnly={this.props.status.readOnly}
+          {...this.props}
+        />
         <br />
         <Row>
           <Col md="5">
-            <NextSteps id="nextStepsLabel" onChange={handleChange} onBlur={handleBlur} {...this.props} />
+            <NextSteps
+              key="nextsteps"
+              id="nextStepsLabel"
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              isReadOnly={this.props.status.readOnly}
+              {...this.props}
+            />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <FormGroup>
               <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <select className="form-control" id="callingFor" name="lead.callingFor" onChange={handleChange} onBlur={handleBlur}>
+              <Input type="select" id="callingFor" name="lead.callingFor" onChange={this.props.handleChange} onBlur={this.props.handleBlur} disabled={this.props.status.readOnly}>
                 <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
                 <option>Spouse</option>
                 <option>Friend</option>
                 <option>Other</option>
-              </select>
+              </Input>
               <ErrorMessage name="lead.callingFor" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <ReasonForCall onChange={handleChange} onBlur={handleBlur} defaultValue={values.lead.reasonForCall} {...this.props} />
+            <ReasonForCall
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              defaultValue={this.props.values.lead.reasonForCall}
+              isReadOnly={this.props.status.readOnly}
+            />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <InquiryType onChange={handleChange} onBlur={handleBlur} defaultValue={values.lead.inquiryType} {...this.props} />
+            <InquiryType
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              defaultValue={this.props.values.lead.inquiryType}
+              isReadOnly={this.props.status.readOnly}
+              {...this.props}
+            />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <VeteranStatus onChange={handleChange} onBlur={handleBlur} defaultValue={values.lead.prospect.veteranStatus || ''} {...this.props} />
+            <VeteranStatus
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              defaultValue={this.props.values.lead.prospect.veteranStatus}
+              isReadOnly={this.props.status.readOnly}
+              {...this.props}
+            />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <LeadSource key="leadsource"
-              defaultLeadSource={values.lead.leadSource}
-              defaultLeadSourceDetail={values.lead.leadSourceDetail}
-              onChange={handleChange}
+              defaultLeadSource={this.props.values.lead.leadSource}
+              defaultLeadSourceDetail={this.props.values.lead.leadSourceDetail}
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
+              setFieldValue={this.props.setFieldValue}
+              isReadOnly={this.props.status.readOnly}
               {...this.props}
             />
           </Col>
@@ -359,9 +411,10 @@ class InquiryForm extends React.Component {
               <Input name='lead.umid'
                 type="text"
                 id="umid"
-                value={values.lead.umid}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                value={this.props.values.lead.umid}
+                onChange={this.props.handleChange}
+                onBlur={this.props.handleBlur}
+                readOnly={this.props.status.readOnly}
                 placeholder="UMID" />
               <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -370,7 +423,14 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
-            <select className="form-control" id="callerType" name="lead.callerType" onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
+            <select
+              className="form-control"
+              id="callerType"
+              name="lead.callerType"
+              onChange={this.props.handleChange}
+              onBlur={this.props.handleBlur}
+              disabled={this.props.status.readOnly}
+            >
               <option value="">Select One</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
@@ -386,12 +446,12 @@ class InquiryForm extends React.Component {
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'
             handleSubmit={this.handleFormSubmit}
-            handleValidate={validateForm}
-            handleReset={handleReset}
-            isSubmitting={isSubmitting}
-            setFieldTouched={setFieldTouched}
-            errors={errors}
-            isValid={isValid}
+            handleValidate={this.props.validateForm}
+            handleReset={this.props.handleReset}
+            isSubmitting={this.props.isSubmitting}
+            setFieldTouched={this.props.setFieldTouched}
+            errors={this.props.errors}
+            isValid={this.props.isValid}
           />
         </div>
 
@@ -427,14 +487,16 @@ const EnhancedInquiryForm = withFormik({
     setSubmitting(true);
     const salesService = new SalesAPIService();
     try {
-      const lead = await salesService.submitToService({ ...values });
+      await salesService.submitToService({ ...values });
       setStatus({
         successful: true,
-        readOnly: true, 
+        readOnly: true,
       })
-      this.setFieldValue('lead', lead)
+      toast.success("Request was submitted successfully.", {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
-    catch(err) {  
+    catch (err) {
       setStatus({
         successful: false,
         readOnly: false,

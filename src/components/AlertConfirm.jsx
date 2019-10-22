@@ -26,34 +26,38 @@ export default class AlertConfirm extends React.Component {
 
     handleOk = async (e) => {
         this.props.handleSubmit(e)
-            .then(function() {
-                console.log('no errors, good day')
-            })
-            .catch(function() {
-                console.log('errors in submission')
-            })
-            .finally(this.handleConfirm)
+        .then(function() {
+
+        })
+        .catch(function() {
+            toast.error("Please fix the errors before continuing.", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        })
+        .finally(this.handleConfirm)
     }
 
     render() {
-        const { hasErrors } = this.state;
         return (
             <React.Fragment>
-                <Button type="button" color="primary" size="sm" onClick={this.handleConfirm}>{this.props.buttonLabel || 'Submit'}</Button>
+                <Button 
+                    type="button" 
+                    color="primary" 
+                    size="sm" 
+                    onClick={this.handleConfirm} 
+                    disabled={this.props.isReadOnly}
+                >
+                    {this.props.buttonLabel || 'Submit'}
+                </Button>
                 <Modal isOpen={this.state.shouldSubmit} toggle={this.handleConfirm} className={this.props.className}>
-                    <ModalBody>
-                        {!hasErrors &&
-                            "Are you sure you want to continue?"}
-                        {hasErrors &&
-                            "There are errors on the page, please check required fields before proceeding."}
-                    </ModalBody>
+                    <ModalBody>Are you sure you want to continue?</ModalBody>
                     <ModalFooter>
-                        {!hasErrors &&
-                            <SubmitButtonBar isSubmitting={this.props.isSubmitting} handleConfirm={this.handleConfirm} handleSubmit={this.handleOk} />
-                        }
-                        {hasErrors &&
-                            <Button type="submit" size="sm" color="primary" onClick={this.handleConfirm}>Ok</Button>
-                        }
+                        <SubmitButtonBar 
+                            isSubmitting={this.props.isSubmitting} 
+                            isReadOnly={this.props.isReadOnly} 
+                            handleConfirm={this.handleConfirm} 
+                            handleSubmit={this.handleOk} 
+                        />
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
@@ -75,4 +79,10 @@ AlertConfirm.propTypes = {
     handleValidate: PropTypes.func.isRequired,
     handleReset: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
+
+    isReadOnly: PropTypes.bool,
+}
+
+AlertConfirm.defaultProps = {
+    isReadOnly: false,
 }
