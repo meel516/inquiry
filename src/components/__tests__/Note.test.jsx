@@ -3,7 +3,7 @@ import React from 'react';
 import Note from '../Note';
 import renderer from 'react-test-renderer';
 
-describe.skip('note component testing', () => {
+describe('note component testing', () => {
 
     test('verify note rendering', () => {
         let handleChangeCalled = false,
@@ -17,7 +17,14 @@ describe.skip('note component testing', () => {
         }
     
         const component = renderer.create(
-            <Note label="Additional Notes" id="additionalNotes" onChange={handleChange} onBlur={handleBlur} />
+            <Note 
+                labelId="additionalLabel"
+                label="Additional Notes" 
+                id="additionalNotes" 
+                handleChange={handleChange} 
+                handleBlur={handleBlur} 
+                isReadOnly={false}
+            />
         )
         let output = component.toJSON();
         expect(output).toMatchSnapshot();
