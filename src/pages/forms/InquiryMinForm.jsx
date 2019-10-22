@@ -80,14 +80,12 @@ class InquiryForm extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("componentDidUpdate: prevState.scrollToTop: ", prevState.scrollToTop, 'prevState.scrollToTop', prevState.scrollToTop)
-    if (prevState.scrollToTop !== this.state.scrollToTop) {
+    console.log("componentDidUpdate: prevState.scrollToTop: ", prevState.scrollToTop, 'currState.scrollToTop', this.state.scrollToTop)
       if(this.props.errors === '') {
         if(this.props.isSubmitting === true) {
           this.setState({ scrollToTop: false})
         }
       }
-    } 
     if(this.state.scrollToTop) {
       this.TOP.current.scrollIntoView({
         behavior: 'smooth',
@@ -191,7 +189,7 @@ class InquiryForm extends React.Component {
           valid={this.props.isValid}
         />
         <section>
-          <div ref={this.TOP}></div>
+          <div ref={this.TOP}>ScollToTop: {this.state.scrollIntoView}</div>
           {/* <Row>
           <input type="text" id="topText" name="topText" ref={this.TOP}></input>
           </Row> */}
