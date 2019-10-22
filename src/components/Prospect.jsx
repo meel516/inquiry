@@ -14,12 +14,13 @@ export default function Prospect(props) {
         </Col>
       </Row>
       <Contact 
+        key="prospect-contact"
         type="prospect" 
         contact={props.contact} 
         handleBlur={props.handleBlur}
         handleChange={props.handleChange}
         isReadOnly={props.isReadOnly}
-        {...props} />
+      />
       <Row>
         <Col xs="1" md="6">
           <FormGroup>

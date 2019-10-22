@@ -1,12 +1,13 @@
 import React from 'react'
 import { FormGroup, Label } from 'reactstrap';
-import Select from 'react-select';
 import { withAuth } from '@okta/okta-react';
+import Select from 'react-select';
+import PropTypes from 'prop-types'
 
 import { checkAuthentication } from '../auth/checkAuth';
 import { CommunityService } from '../services/CommunityServices'
 
-export default withAuth(class CommunityLookup extends React.Component {
+export class CommunityLookup extends React.Component {
     state = {
         communityList: [],
     }
@@ -43,8 +44,24 @@ export default withAuth(class CommunityLookup extends React.Component {
                     name="communityId"
                     onChange={this.handleCommunityChange}
                     options={this.state.communityList}
+                    isDisabled={this.props.isReadOnly}
                 />
             </FormGroup>
         )
     }
-});
+}
+
+CommunityLookup.propTypes = {
+  index: PropTypes.number.isRequired,
+
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+CommunityLookup.defaultProps = {
+    isReadOnly: false
+}
+
+
+export default withAuth(CommunityLookup);

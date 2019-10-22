@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types'
 
 import CommunityLookup from './CommunityLookup'
 import Visit from './Visit';
@@ -55,9 +56,11 @@ export default class CommunitySelect extends React.Component {
                       id="startingPrice"
                       name={`communities[${index}].startingPrice`}
                       value={community.startingPrice || ''}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="Starting at Price" />
+                      onChange={this.props.handleChange}
+                      onBlur={this.props.handleBlur}
+                      readOnly={this.props.isReadOnly}
+                      placeholder="Starting at Price"
+                    />
                   </InputGroup>
                 </FormGroup>
               </Col>
@@ -72,8 +75,9 @@ export default class CommunitySelect extends React.Component {
                       id="secondPersonFee"
                       name={`communities[${index}].secondPersonFee`}
                       value={community.secondPersonFee || ''}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      onChange={this.props.handleChange}
+                      onBlur={this.props.handleBlur}
+                      readOnly={this.props.isReadOnly}
                       placeholder="2nd Person Fee" />
                   </InputGroup>
                 </FormGroup>
@@ -89,8 +93,9 @@ export default class CommunitySelect extends React.Component {
                       id="communityFee"
                       name={`communities[${index}].communityFee`}
                       value={community.communityFee || ''}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      onChange={this.props.handleChange}
+                      onBlur={this.props.handleBlur}
+                      readOnly={this.props.isReadOnly}
                       placeholder="Common Starting Rate" />
                   </InputGroup>
                 </FormGroup>
@@ -100,7 +105,7 @@ export default class CommunitySelect extends React.Component {
               <Col md="4">
                 <FormGroup>
                   <Label for="action" className="label-format">Next Steps Action</Label>
-                  <Input type="select" id="action" onChange={this.handleFollowupAction}>
+                  <Input type="select" id="action" onChange={this.handleFollowupAction} disabled={this.props.isReadOnly}>
                     <option value="">Select One</option>
                     {followupOptns}
                   </Input>
@@ -108,7 +113,7 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             {
-              (selectedAction) ? <Visit onChange={this.props.handleChange} {...this.props} /> : null
+              (selectedAction) ? <Visit handleChange={this.props.handleChange} handleBlur={this.props.handleBlur} isReadOnly={this.props.isReadOnly} {...this.props} /> : null
             }
           </CardBody>
           <CardFooter className="text-right">
@@ -120,7 +125,18 @@ export default class CommunitySelect extends React.Component {
   }
 }
 
-// CommunitySelect.propTypes = {
-//   onRemove: PropTypes.func,
-//   onChange: PropTypes.func,
-// }
+CommunitySelect.propTypes = {
+  community: PropTypes.object.isRequired,
+  index: PropTypes.string.isRequired,
+
+  onRemove: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool
+}
+
+CommunitySelect.defaultProps = {
+  isReadOnly: false,
+}

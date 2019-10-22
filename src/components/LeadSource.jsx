@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
 import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -49,7 +50,6 @@ export default class LeadSource extends React.Component {
 
   render() {
     const { leadSource, leadSourceDetail } = this.state || [];
-    const { handleChange, handleBlur, defaultLeadSource, defaultLeadSourceDetail } = this.props;
 
     const leadSourceOptions = leadSource.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
@@ -65,7 +65,15 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSource" className="label-format required-field">Lead Source</Label>
-              <Input type="select" id="leadSource" name="lead.leadSource" value={defaultLeadSource} onChange={this.handleOnChange} onBlur={this.props.handleBlur} >
+              <Input 
+                type="select" 
+                id="leadSource" 
+                name="lead.leadSource" 
+                value={this.props.defaultLeadSource} 
+                onChange={this.handleChange} 
+                onBlur={this.props.handleBlur}
+                readOnly={this.isReadOnly}
+              >
                 <option value="">Select One</option>
                 {leadSourceOptions}
               </Input>
@@ -77,7 +85,15 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSourceDetail" className="label-format required-field">Lead Source Detail</Label>
-              <Input type="select" id="leadSourceDetail" name="lead.leadSourceDetail" value={defaultLeadSourceDetail} onChange={this.props.onChange}>
+              <Input 
+                type="select" 
+                id="leadSourceDetail" 
+                name="lead.leadSourceDetail" 
+                value={this.props.defaultLeadSourceDetail} 
+                onChange={this.props.handleChange}
+                onBlur={this.props.handleBlur}
+                readOnly={this.isReadOnly}
+              >
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
               </Input>
@@ -89,7 +105,15 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="additionalDetail" className="label-format">Additional Detail</Label>
-              <Input type="text" id="additionalDetail" name="lead.additionalDetail" placeholder="Additional Detail" onChange={handleChange} onBlur={handleBlur} />
+              <Input 
+                type="text" 
+                id="additionalDetail" 
+                name="lead.additionalDetail" 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur}
+                readOnly={this.isReadOnly}
+                placeholder="Additional Detail" 
+              />
               <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
@@ -97,4 +121,21 @@ export default class LeadSource extends React.Component {
       </>
     )
   }
+}
+
+LeadSource.propTypes = {
+  defaultLeadSource: PropTypes.number,
+  defaultLeadSourceDetail: PropTypes.number,
+
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+LeadSource.defaultProps = {
+  defaultLeadSource: '',
+  defaultLeadSourceDetail: '',
+  isReadOnly: false,
 }

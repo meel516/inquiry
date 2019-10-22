@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types'
 
 export default class AdlNeeds extends React.Component {
 
@@ -18,8 +19,7 @@ export default class AdlNeeds extends React.Component {
             <Col>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="bathing" onChange={this.handleInputChange}
-                  />{' '}
+                  <Input type="checkbox" name="bathing" onChange={this.handleInputChange} readOnly={this.props.isReadOnly}/>{' '}
                   Bathing
               </Label>
               </FormGroup>
@@ -73,5 +73,15 @@ export default class AdlNeeds extends React.Component {
       </>
     )
   }
-  // }
+}
+
+AdlNeeds.propTypes = {
+  adlNeeds: PropTypes.object.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+AdlNeeds.defaultProps = {
+  isReadOnly: false
 }

@@ -24,13 +24,12 @@ export default class AlertConfirm extends React.Component {
 
     handleOk = async (e) => {
         this.props.handleSubmit(e)
-            .then(function() {
-                console.log('no errors, good day')
-            })
-            .catch(function() {
-                console.log('errors in submission')
-            })
-            .finally(this.handleConfirm)
+        .catch(function() {
+            toast.error("Please fix the errors before continuing.", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        })
+        .finally(this.handleConfirm)
     }
 
     render() {

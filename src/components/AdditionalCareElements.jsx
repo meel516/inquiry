@@ -1,6 +1,8 @@
 import React from 'react';
 import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
+import PropTypes from 'prop-types'
+
 import CurrentSituation from './CurrentSituation';
 
 const additionalCareElements = [
@@ -38,25 +40,17 @@ const additionalCareParams = [
 ];
 
 export default class AdditionalCareElements extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasMounted: false,
-      careElements: [],
-      defaultCareElements: [],
-    }
-
-    this.handleMemoryConcernsInputChange = this.handleMemoryConcernsInputChange.bind(this);
-    this.handleMobilityConcernsInputChange = this.handleMobilityConcernsInputChange.bind(this);
-    this.handleNutritionConcernsInputChange = this.handleNutritionConcernsInputChange.bind(this);
-    this.differenceOf2Arrays = this.differenceOf2Arrays.bind(this);
+  state = {
+    hasMounted: false,
+    careElements: [],
+    defaultCareElements: [],
   }
 
   componentDidMount() {
-    const { values: { lead } } = this.props;
+    const { lead: { currentSituation } } = this.props;
     const { careElements, defaultCareElements } = this.state;
 
-    if (lead.currentSituation) {
+    if (currentSituation) {
       const situation = additionalCareElements[3]
       defaultCareElements.push(situation)
       careElements.push(situation.value)
@@ -68,7 +62,7 @@ export default class AdditionalCareElements extends React.Component {
     })
   }
 
-  differenceOf2Arrays(array1, array2) {
+  differenceOf2Arrays = (array1, array2) => {
     var temp = [];
     array1 = array1.toString().split(',').map(Number);
     array2 = array2.toString().split(',').map(Number);
@@ -151,7 +145,7 @@ export default class AdditionalCareElements extends React.Component {
 
   render() {
     const { careElements, defaultCareElements } = this.state || [];
-    const { values } = this.props;
+    const { lead: { currentSituation } } = this.props;
     return (
       <>
         <Row>
@@ -167,14 +161,25 @@ export default class AdditionalCareElements extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        {(careElements.includes(1) === true) ? <MemoryConcerns onChange={this.handleMemoryConcernsInputChange} /> : null}
-        {(careElements.includes(2) === true) ? <MobilityConcerns onChange={this.handleMobilityConcernsInputChange} /> : null}
-        {(careElements.includes(3) === true) ? <NutritionConcerns onChange={this.handleNutritionConcernsInputChange} /> : null}
-        {(careElements.includes(4) === true) ? <CurrentSituation defaultValue={values.lead.currentSituation} onChange={this.handleCurrentSituationChange} /> : null}
+        {(careElements.includes(1) === true) ? <MemoryConcerns handleChange={this.handleMemoryConcernsInputChange} isReadOnly={this.props.isReadOnly} /> : null}
+        {(careElements.includes(2) === true) ? <MobilityConcerns handleChange={this.handleMobilityConcernsInputChange} isReadOnly={this.props.isReadOnly} /> : null}
+        {(careElements.includes(3) === true) ? <NutritionConcerns handleChange={this.handleNutritionConcernsInputChange} isReadOnly={this.props.isReadOnly} /> : null}
+        {(careElements.includes(4) === true) ? <CurrentSituation defaultValue={currentSituation} handleChange={this.handleCurrentSituationChange} isReadOnly={this.props.isReadOnly} /> : null}
       </>
     )
   }
 }
+
+AdditionalCareElements.propTypes = {
+  lead: PropTypes.object.isRequired,
+
+  isReadOnly: PropTypes.bool
+}
+
+AdditionalCareElements.defaultProps = {
+  isReadOnly: false
+}
+
 
 function NutritionConcerns(props) {
   return (
@@ -185,13 +190,13 @@ function NutritionConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="diabetes" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="diabetes" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Diabetes Diagnosis
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="lowSalt" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="lowSalt" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Low Salt-Low Fat Diet Restrictions
               </Label>
             </FormGroup>
@@ -201,13 +206,13 @@ function NutritionConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="prescribedDiet" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="prescribedDiet" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Other Prescribed Diet Restrictions
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="notEatingWell" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="notEatingWell" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Not Eating Consistently or Well
               </Label>
             </FormGroup>
@@ -216,6 +221,16 @@ function NutritionConcerns(props) {
       </section>
     </>
   )
+}
+
+NutritionConcerns.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+NutritionConcerns.defaultProps = {
+  isReadOnly: false
 }
 
 function MobilityConcerns(props) {
@@ -227,13 +242,13 @@ function MobilityConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="fallRisk" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="fallRisk" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Fall Risk
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="regularlyWalks" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="regularlyWalks" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Regularly Uses Walker
               </Label>
             </FormGroup>
@@ -243,13 +258,13 @@ function MobilityConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="personTransfer" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="personTransfer" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 1 Person Transfer
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="usesWheelChair" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="usesWheelChair" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Regularly Uses Wheelchair
               </Label>
             </FormGroup>
@@ -259,13 +274,13 @@ function MobilityConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="secondPersonTransfer" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="secondPersonTransfer" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 2 Person Transfer
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="usesCane" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="usesCane" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Regularly Uses Cane
               </Label>
             </FormGroup>
@@ -274,6 +289,16 @@ function MobilityConcerns(props) {
       </section>
     </>
   )
+}
+
+MobilityConcerns.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+MobilityConcerns.defaultProps = {
+  isReadOnly: false
 }
 
 function MemoryConcerns(props) {
@@ -285,13 +310,13 @@ function MemoryConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="dementia" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="dementia" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Alzheimer's or Dementia Diagnosis
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="memoryLoss" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="memoryLoss" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Argumentative Caused by Memory Loss
               </Label>
             </FormGroup>
@@ -301,13 +326,13 @@ function MemoryConcerns(props) {
           <Col>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="repeatsStories" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="repeatsStories" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Regularly Forgets Things or Repeats Stories
               </Label>
             </FormGroup>
             <FormGroup check inline className="col-4">
               <Label check>
-                <Input type="checkbox" name="wandering" onChange={props.onChange} />{' '}
+                <Input type="checkbox" name="wandering" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
                 Wandering
               </Label>
             </FormGroup>
@@ -316,4 +341,14 @@ function MemoryConcerns(props) {
       </section>
     </>
   )
+}
+
+MemoryConcerns.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+MemoryConcerns.defaultProps = {
+  isReadOnly: false
 }
