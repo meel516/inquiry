@@ -1,5 +1,6 @@
 import React from 'react'
 import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types'
 
 export default class Drivers extends React.Component {
 
@@ -19,19 +20,19 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="activities" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="activities" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Activities
                 </Label>
               </FormGroup>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="accessToResidents" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="accessToResidents" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Access to Residents
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-3">
                 <Label check>
-                  <Input type="checkbox" name="ageInPlace" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="ageInPlace" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Age in Place
               </Label>
               </FormGroup>
@@ -41,19 +42,19 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="care" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="care" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Care
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="location" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="location" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Location
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-3">
                 <Label check>
-                  <Input type="checkbox" name="peaceOfMind" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="peaceOfMind" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Peace of mind
               </Label>
               </FormGroup>
@@ -63,13 +64,13 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="petFriendly" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="petFriendly" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Pet friendly
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-4">
                 <Label check>
-                  <Input type="checkbox" name="safety" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="safety" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
                   Safety
               </Label>
               </FormGroup>
@@ -79,4 +80,14 @@ export default class Drivers extends React.Component {
       </>
     )
   }
+}
+
+Drivers.propTypes = {
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+Drivers.defaultProps = {
+  isReadOnly: false,
 }

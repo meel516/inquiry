@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 const nextStepsOptionsArray = [
   { value: 1, label: 'Visit/Assessment/Home Visit Scheduled' },
@@ -19,7 +20,7 @@ export default function NextStepsSelect(props) {
     return (
       <FormGroup>
         <Label for="nextSteps" id="nextStepsLabel" className="label-format required-field">Result of Call</Label>
-        <Input type="select" id="nextSteps" name='lead.fua' onChange={props.handleChange} onBlur={props.onBlur} >
+        <Input type="select" id="nextSteps" name='lead.fua' onChange={props.handleChange} onBlur={props.handleBlur} disabled={props.isReadOnly}>
           <option value="">Select One</option>
           {nextStepsOptions}
         </Input>
@@ -29,3 +30,13 @@ export default function NextStepsSelect(props) {
     )
 }
 
+NextStepsSelect.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+NextStepsSelect.defaultProps = {
+  isReadOnly: false,
+}

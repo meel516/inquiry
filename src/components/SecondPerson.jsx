@@ -7,15 +7,6 @@ import Note from './Note';
 
 import { ObjectMappingService } from '../services/Types'
 
-PropTypes.SecondPerson = {
-  handleChange: PropTypes.func,
-  handleBlur: PropTypes.func,
-
-  type: PropTypes.string.isRequired,
-  contact: PropTypes.instanceOf(Contact).isRequired,
-}
-
-
 export default class SecondPerson extends React.Component {
   state = {
     containsSecondPerson: false,
@@ -59,23 +50,46 @@ export default class SecondPerson extends React.Component {
   }
 
   render() {
-    const { handleChange, handleBlur } = this.props;
     const isSecondPersonShown = this.state.containsSecondPerson;
     if (isSecondPersonShown) {
       return (
         <>
           {this.renderQuestion()}
           <Contact
+            key="second-contact"
             type="secondPerson"
-            onChange={handleChange}
-            onBlur={handleBlur}
             contact={this.props.contact}
+            onChange={this.props.handleChange}
+            onBlur={this.props.handleBlur}
+            readOnly={this.props.isReadOnly}
             {...this.props} />
-          <Note label="2nd Person Situation" id="situation2" name="lead.notes.secondPerson" onChange={handleChange} onBlur={handleBlur} />
+          <Note 
+            labelId="situation2Label" 
+            label="2nd Person Situation" 
+            id="situation2" 
+            name="lead.notes.secondPerson" 
+            onChange={this.props.handleChange} 
+            onBlur={this.props.handleBlur}
+            isReadOnly={this.props.readOnly}
+          />
         </>
       )
     } else {
       return this.renderQuestion()
     }
   }
+}
+
+SecondPerson.propTypes = {
+  type: PropTypes.string,
+
+  handleChange: PropTypes.func,
+  handleBlur: PropTypes.func,
+
+  contact: PropTypes.object.isRequired,
+  isReadOnly: PropTypes.bool,
+}
+
+SecondPerson.defaultProps = {
+  isReadOnly: false
 }

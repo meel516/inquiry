@@ -1,17 +1,32 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { CommunityService } from './CommunityServices'
 
+class ServerError extends Error {
+    constructor(status, message, entity, ...params) {
+        super(...params)
+
+        this.status = status;
+        this.message = message;
+        this.entity = entity;
+    }
+}
+
+class AppError extends Error {
+    constructor(status, message, entity, ...params) {
+        super(...params)
+
+        this.status = status;
+        this.message = message;
+        this.entity = entity;
+    }
+}
+
 class Lead {
     constructor(leadId) {
         if (leadId) {
             this.leadId = leadId
         }
     }
-}
-
-function ProspectError({ status, message }) {
-    this.status = status
-    this.message = message
 }
 
 function SalesContact() {
@@ -327,10 +342,10 @@ class ObjectMappingService {
         if (salesContact) {
             const contact = this.createEmptyContact();
             contact.contactId = salesContact.contactId;
+            contact.masterId = salesContact.masterId;
             contact.firstName = salesContact.firstName;
             contact.lastName = salesContact.lastName;
             contact.age = salesContact.age;
-            contact.masterId = salesContact.masterId;
             contact.veteranStatus = salesContact.veteranStatus;
             contact.currentSituation = salesContact.currentSituation;
             const address = this.createEmptyAddress();
@@ -751,7 +766,8 @@ class ObjectMappingService {
 
 export {
     ObjectMappingService,
-    ProspectError,
+    ServerError,
+    AppError,
     SalesContact,
     SalesFollowup,
     SalesProspectNeed,

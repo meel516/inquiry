@@ -26,6 +26,6 @@ env_variables:
   REACT_APP_OKTA_CLIENTID: 
   REACT_APP_VERSION:
   REACT_APP_NODE_ENV: 'production'
-  REACT_APP_SMS_URL: 
+  REACT_APP_APPLICATION_NAME: 'Connection Center Application'
 
 # [END app_yaml]
