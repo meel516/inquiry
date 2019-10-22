@@ -257,7 +257,6 @@ export default class Contact extends React.Component {
                 rowsCount={this.state.rows.length}
                 minHeight={150}
                 minWidth={750}
-                //onRowClick={this.onRowClick}
                 emptyRowsView={EmptyRowsView}
                 rowSelection={{
                   showCheckbox: true,
@@ -277,11 +276,9 @@ export default class Contact extends React.Component {
                   <ReactDataGrid
                     columns={this.secondmodalcolumns}
                     rowGetter={this.secondModalRowGetter}
-                    rowsCount={3}
-                    // rowsCount={this.state.rows2.length}
+                    rowsCount={this.state.rows2.length}
                     minHeight={150}
                     minWidth={750}
-                    //onRowClick={this.onRowClick}
                     emptyRowsView={EmptyRowsView}
                     // rowSelection={{
                     //   showCheckbox: true,
