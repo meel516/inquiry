@@ -214,7 +214,8 @@ class InquiryForm extends React.Component {
             contact={this.props.values.lead.prospect} 
             handleChange={this.props.handleChange} 
             handleBlur={this.props.handleBlur}
-            isReadOnly={this.prosps.status.readOnly}
+            isReadOnly={this.props.status.readOnly}
+            duplicateCheck={false}
           />
           <br />
           <CareType 
@@ -295,6 +296,7 @@ class InquiryForm extends React.Component {
           handleChange={this.props.handleChange}
           handleBlur={this.props.handleBlur}
           isReadOnly={this.props.status.readOnly}
+          duplicateCheck={false}
           {...this.props}
         />
         <br />

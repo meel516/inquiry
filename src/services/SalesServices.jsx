@@ -34,7 +34,7 @@ class DuplicationService {
     const data = await response.json();
     if (response.status === 200) {
       console.log(data);
-      return data;
+      return ObjectMappingService.createContactDuplicateGridContent(data);
     } else {
       throw new Error('Error Performing Duplicate Search')
     }
@@ -117,6 +117,15 @@ class SalesAPIService {
   async getLeadById(leadId) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl);
+  }
+
+  async retrieveLeadDataForContactId (contactId) {
+    debugger;
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/lead/contact/${contactId}`);
+    const output = await this.createFetch(endpoint);
+    
+    console.log(JSON.stringify(output));
+    return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
 
   async getLeadByUrl(uri) {

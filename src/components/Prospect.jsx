@@ -20,6 +20,7 @@ export default function Prospect(props) {
         handleBlur={props.handleBlur}
         handleChange={props.handleChange}
         isReadOnly={props.isReadOnly}
+        duplicateCheck={props.duplicateCheck}
       />
       <Row>
         <Col xs="1" md="6">
@@ -50,8 +51,10 @@ Prospect.propTypes = {
   handleBlur: PropTypes.func.isRequired,
 
   isReadOnly: PropTypes.bool,
+  duplicateCheck: PropTypes.bool,
 }
 
 Prospect.defaultProps = {
   isReadOnly: false,
+  duplicateCheck: false,
 }

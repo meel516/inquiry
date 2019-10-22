@@ -1,19 +1,31 @@
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumberFormat from 'react-number-format';
-import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Alert, Button, Col, FormGroup, Input, Modal, ModalBody, ModalHeader, ModalFooter, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 
-import { DropDownService, DuplicationService } from '../services/SalesServices'
-import { ObjectMappingService } from "../services/Types";
+import { DropDownService, DuplicationService, SalesAPIService } from '../services/SalesServices'
 
-const rows = [];
+const defaultColumnProperties = {
+  resizable: true,
+  width: 120
+};
+
+const EmptyRowsView = () => {
+  const message = "No matches found";
+  return (
+    <div style={{ textAlign: "center", backgroundColor: "#ddd", padding: "100px" }}>
+      <h3>{message}</h3>
+    </div>
+  );
+};
 
 export default class Contact extends React.Component {
   constructor(props) {
     super(props);
-    this._columns = [
+    this.firstmodalcolumns = [
+      { key: 'contactid', name: 'ContactId' }, // NOTE: This will be hidden but used for further API lookup!
       { key: 'name', name: 'Contact Name' },
       { key: 'phone', name: 'Phone' },
       { key: 'phonetype', name: 'Phone Type' },
@@ -23,13 +35,32 @@ export default class Contact extends React.Component {
       { key: 'city', name: 'City' },  
       { key: 'state', name: 'State' },  
       { key: 'zip', name: 'Zip' }
-    ];
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
+
+    this.secondmodalcolumns = [
+      { key: 'leadid', name: 'Lead Id' },
+      { key: 'community', name: 'Community' },  
+      { key: 'pname', name: 'Prospect Name' },
+      { key: 'pphone', name: 'Prospect Phone' },
+      { key: 'pemail', name: 'Prospect Email' },
+      { key: 'iname', name: 'Influencer Name' },
+      { key: 'iphone', name: 'Influencer Phone' },
+      { key: 'iemail', name: 'Influencer Email' },
+      { key: 'spname', name: '2nd Person Name' },
+      { key: 'spphone', name: '2nd Person Phone' },
+      { key: 'spemail', name: '2nd Person Email' },
+      { key: 'hasaddtl', name: 'Has Addtl Influencers' }
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     this.state = {
       phoneTypes: [],
       rows: [],
+      rows2: [],
+      showModal: false,
+      showSecondModal: false,
     }
     this.dedup = new DuplicationService()
+    this.sales = new SalesAPIService()
   }
 
   componentDidMount() {
@@ -48,13 +79,17 @@ export default class Contact extends React.Component {
       // DuplicationService.checkForDuplicate(contact)
       //   // .then((data) => this.setState({ duplicate: data }))
       //   .catch(error => console.log(error));
-      const duplicatecontacts = await this.dedup.checkForDuplicate(contact);
-      console.log("Dedupe response is: " + JSON.stringify(duplicatecontacts));
+      //const duplicatecontacts = await this.dedup.checkForDuplicate(contact);
+      //console.log("Dedupe response is: " + JSON.stringify(duplicatecontacts));
 
-      const newrows = ObjectMappingService.createContactDuplicateGridContent(duplicatecontacts);
-      console.log("newrows is: " + JSON.stringify(newrows));
-
-      this.setState({ rows: newrows });
+      // const newrows = ObjectMappingService.createContactDuplicateGridContent(duplicatecontacts);
+      // console.log("newrows is: " + JSON.stringify(newrows));
+      //this.setState({ rows: newrows });
+      //this.setState({ showModal: true });
+      
+      await this.dedup.checkForDuplicate(contact)
+        .then((data) => this.setState({ rows: data, showModal: true }))
+        .catch(error => console.log(error));
     } else {
       console.log('do not run duplicate check!');
     }
@@ -65,11 +100,24 @@ export default class Contact extends React.Component {
   rowGetter = i => {
     return this.state.rows[i];
   };
+
+  secondModalRowGetter = i => {
+    return this.state.rows2[i];
+  };
   
-  onRowsSelected = rows => {
+  onRowsSelected = async rows => {
+    debugger;
+
+    let contactid = rows[0].row.contactid;
+    console.log("Selected ContactId is: " + contactid);
+    await this.sales.retrieveLeadDataForContactId(contactid)
+      .then((data) => this.setState({ rows2: data, showSecondModal: true }))
+      .catch(error => console.log(error));
+
     this.setState({
-      selectedIndexes: rows.map(r => r.rowIdx)  
+      selectedIndexes: rows.map(r => r.rowIdx)
     });
+
   };
 
   onRowsDeselected = rows => {
@@ -81,8 +129,30 @@ export default class Contact extends React.Component {
     });
   };
 
+  handleConfirm = (e) => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+    }));
+  }
+
+  handleSecondToggle = (e) => {
+    this.setState(prevState => ({
+      showSecondModal: !prevState.showSecondModal,
+    }));
+  }
+
+  handleOk = async (e) => {
+    this.props.handleSubmit(e)
+    // .catch(function() {
+    //     toast.error("Please fix the errors before continuing.", {
+    //         position: toast.POSITION.TOP_CENTER
+    //     });
+    // })
+    // .finally(this.handleConfirm)
+  }
+  
   render() {
-    const { phoneTypes } = this.state || [];
+    const { hasErrors, phoneTypes } = this.state || [];
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
       return <option key={type.value} value={type.text}>{type.text}</option>
     });
@@ -174,25 +244,78 @@ export default class Contact extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <ReactDataGrid
-          columns={this._columns}
-          rowGetter={this.rowGetter}
-          rowsCount={this.state.rows.length}
-          minHeight={150}
-          rowSelection={{
-            showCheckbox: true,
-            enableShiftSelect: false,
-            onRowsSelected: this.onRowsSelected,
-            onRowsDeselected: this.onRowsDeselected,
-            selectBy: {
-              indexes: this.state.selectedIndexes
-            }
-          }}
-          />
+
+        {this.props.duplicateCheck &&
+          <Modal isOpen={this.state.showModal} size="lg">
+            <ModalHeader toggle={this.handleConfirm}>
+              {"Potential Contact Matches"}
+            </ModalHeader>
+            <ModalBody>
+              <ReactDataGrid
+                columns={this.firstmodalcolumns}
+                rowGetter={this.rowGetter}
+                rowsCount={this.state.rows.length}
+                minHeight={150}
+                minWidth={750}
+                //onRowClick={this.onRowClick}
+                emptyRowsView={EmptyRowsView}
+                rowSelection={{
+                  showCheckbox: true,
+                  enableShiftSelect: false,
+                  onRowsSelected: this.onRowsSelected,
+                  //onRowsDeselected: this.onRowsDeselected,
+                  selectBy: {
+                    indexes: this.state.selectedIndexes
+                  }
+                }}
+              />
+              <Modal isOpen={this.state.showSecondModal} size="lg">
+                <ModalHeader toggle={this.handleSecondToggle}>
+                  {"Potential Lead Matches"}
+                </ModalHeader>
+                <ModalBody>
+                  <ReactDataGrid
+                    columns={this.secondmodalcolumns}
+                    rowGetter={this.secondModalRowGetter}
+                    rowsCount={3}
+                    // rowsCount={this.state.rows2.length}
+                    minHeight={150}
+                    minWidth={750}
+                    //onRowClick={this.onRowClick}
+                    emptyRowsView={EmptyRowsView}
+                    // rowSelection={{
+                    //   showCheckbox: true,
+                    //   enableShiftSelect: false,
+                    //   onRowsSelected: this.onRowsSelected,
+                    //   //onRowsDeselected: this.onRowsDeselected,
+                    //   selectBy: {
+                    //     indexes: this.state.selectedIndexes
+                    //   }
+                    // }}
+                  />
+                </ModalBody>
+              </Modal>
+            </ModalBody>
+            <ModalFooter>
+                {!hasErrors &&
+                  <ModalButtonBar handleConfirm={this.handleConfirm} handleSubmit={this.handleOk} />
+                }
+            </ModalFooter>
+          </Modal>
+        }
+
         {this.props.children}
       </>
     )
   }
+}
+
+function ModalButtonBar(props) {
+  return (
+      <React.Fragment>
+          <Button type="button" color="secondary" size="sm" onClick={props.handleConfirm}>Continue</Button>
+      </React.Fragment>
+  )
 }
 
 Contact.propTypes = {

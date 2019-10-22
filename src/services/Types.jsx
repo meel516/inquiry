@@ -80,6 +80,7 @@ function SalesLead(salesContact, leadTypeId = 4) {
 
 function DuplicateContact(dupecontact) {
     if (dupecontact) {
+        this.contactid = dupecontact.contactId
         this.name = dupecontact.firstName + " " + dupecontact.lastName
 
         if (dupecontact.phoneNumbers) {
@@ -107,6 +108,74 @@ function DuplicateContact(dupecontact) {
             this.city = dupecontact.address.city
             this.state = dupecontact.address.stateProv
             this.zip = dupecontact.address.zipPostalCode
+        }
+    }
+}
+
+function LeadDataRecord(record) {
+    if (record) {
+        this.leadid = record.leadId
+        this.community = record.buildingName
+        this.hasaddtl = record.hasAddlInfluencers
+
+        if (record.prospect) {
+            this.pname = record.prospect.firstName + " " + record.prospect.lastName
+            if (record.prospect.phoneNumbers) {
+                for (let i = 0; i < record.prospect.phoneNumbers.length; i++) {
+                    let tmpPhone = record.prospect.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.pphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.pemail = record.prospect.emailAddress
+        }
+
+        if (record.primaryInfluencer) {
+            this.iname = record.primaryInfluencer.firstName + " " + record.primaryInfluencer.lastName
+            if (record.primaryInfluencer.phoneNumbers) {
+                for (let i = 0; i < record.primaryInfluencer.phoneNumbers.length; i++) {
+                    let tmpPhone = record.primaryInfluencer.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.iphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.iemail = record.primaryInfluencer.emailAddress
+        }
+
+        if (record.secondPerson) {
+            this.spname = record.secondPerson.firstName + " " + record.secondPerson.lastName
+            if (record.secondPerson.phoneNumbers) {
+                for (let i = 0; i < record.secondPerson.phoneNumbers.length; i++) {
+                    let tmpPhone = record.secondPerson.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.spphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.spemail = record.secondPerson.emailAddress
         }
     }
 }
@@ -688,6 +757,26 @@ class ObjectMappingService {
             phone1: (contact.phone !== null ? contact.phone.number : ""),
             phoneType: (contact.phone !== null ? contact.phone.type : ""),
         }
+    }
+
+    static buildLeadDataResponseForContactId(payload) {
+        const returnval = [];
+
+        if (payload) {
+            for (let i = 0; i < payload.length; i++) {
+                let leadRow = payload[i];
+                console.log("Lead Row: " + JSON.stringify(leadRow));
+
+                if (leadRow) {
+                    const ldr = new LeadDataRecord(leadRow);
+                    console.log("Lead Data Record is: " + JSON.stringify(ldr));
+
+                    returnval.push(ldr);
+                }
+            }
+        }
+
+        return returnval;
     }
 
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
