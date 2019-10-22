@@ -1,3 +1,4 @@
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { CommunityService } from './CommunityServices'
 
 class Lead {
@@ -71,7 +72,11 @@ function DuplicateContact(dupecontact) {
                 let tmpPhone = dupecontact.phoneNumbers[i];
                 if (tmpPhone) {
                     if (tmpPhone.primary) {
-                        this.phone = tmpPhone.phoneNumber
+                        if (tmpPhone.phoneNumber) {
+                            const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                            this.phone = pn.formatNational();
+                        }
+
                         this.phonetype = tmpPhone.phoneType
                         break;
                     }
@@ -726,7 +731,6 @@ class ObjectMappingService {
     static createContactDuplicateGridContent(duplicatecontacts) {
         const returnval = [];
 
-        debugger;
         if (duplicatecontacts) {
             for (let i = 0; i < duplicatecontacts.length; i++) {
                 let dupecontact = duplicatecontacts[i];
@@ -735,9 +739,13 @@ class ObjectMappingService {
                 if (dupecontact) {
                     const dc = new DuplicateContact(dupecontact);
                     console.log("newdupecontact is: " + JSON.stringify(dc));
+
+                    returnval.push(dc);
                 }
             }
         }
+
+        return returnval;
     }
 }
 

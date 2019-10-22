@@ -18,7 +18,6 @@ class DuplicationService {
   }
 
   async checkForDuplicate(contact) {
-    debugger;
     const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
     
     const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);

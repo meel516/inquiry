@@ -8,28 +8,27 @@ import { ErrorMessage } from 'formik';
 import { DropDownService, DuplicationService } from '../services/SalesServices'
 import { ObjectMappingService } from "../services/Types";
 
-const dupecolumns = [
-  { key: 'name', name: 'Contact Name' },
-  { key: 'phone', name: 'Phone' },
-  { key: 'phonetype', name: 'Phone Type' },
-  { key: 'email', name: 'Email' },
-  { key: 'address1', name: 'Address 1' },  
-  { key: 'address2', name: 'Address 2' },  
-  { key: 'city', name: 'City' },  
-  { key: 'state', name: 'State' },  
-  { key: 'zip', name: 'Zip' }
-];
-
-const rows = [
-  {id: 0, title: 'row1', count: 20}, {id: 1, title: 'row1', count: 40}, {id: 2, title: 'row1', count: 60}
-];
+const rows = [];
 
 export default class Contact extends React.Component {
 
   constructor(props) {
     super(props);
+    this._columns = [
+      { key: 'name', name: 'Contact Name' },
+      { key: 'phone', name: 'Phone' },
+      { key: 'phonetype', name: 'Phone Type' },
+      { key: 'email', name: 'Email' },
+      { key: 'address1', name: 'Address 1' },  
+      { key: 'address2', name: 'Address 2' },  
+      { key: 'city', name: 'City' },  
+      { key: 'state', name: 'State' },  
+      { key: 'zip', name: 'Zip' }
+    ];
+
     this.state = {
       phoneTypes: [],
+      rows: [],
     }
     this.dedup = new DuplicationService()
   }
@@ -44,7 +43,6 @@ export default class Contact extends React.Component {
     const { contact } = this.props;
 
     if (this.dedup.shouldRunDuplicateCheck(contact)) {
-      debugger;
       console.log('run duplicate check!');
       console.log(JSON.stringify(contact));
 
@@ -56,12 +54,33 @@ export default class Contact extends React.Component {
 
       const newrows = ObjectMappingService.createContactDuplicateGridContent(duplicatecontacts);
       console.log("newrows is: " + JSON.stringify(newrows));
+
+      this.setState({ rows: newrows });
     } else {
       console.log('do not run duplicate check!');
     }
     
     this.props.handleBlur(event);
   }
+
+  rowGetter = i => {
+    return this.state.rows[i];
+  };
+  
+  onRowsSelected = rows => {
+    this.setState({
+      selectedIndexes: rows.map(r => r.rowIdx)  
+    });
+  };
+
+  onRowsDeselected = rows => {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({
+      selectedIndexes: this.state.selectedIndexes.filter(
+        i => rowIndexes.indexOf(i) === -1
+      )
+    });
+  };
 
   render() {
     const { phoneTypes } = this.state || [];
@@ -118,10 +137,20 @@ export default class Contact extends React.Component {
           </Col>
         </Row>
         <ReactDataGrid
-          columns={dupecolumns}
-          rowGetter={i => rows[i]}
-          rowsCount={3}
-          minHeight={150} />
+          columns={this._columns}
+          rowGetter={this.rowGetter}
+          rowsCount={this.state.rows.length}
+          minHeight={150}
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: false,
+            onRowsSelected: this.onRowsSelected,
+            onRowsDeselected: this.onRowsDeselected,
+            selectBy: {
+              indexes: this.state.selectedIndexes
+            }
+          }}
+          />
         {this.props.children}
       </>
     )
