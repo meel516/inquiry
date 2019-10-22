@@ -72,7 +72,7 @@ export default class LeadSource extends React.Component {
                 value={this.props.defaultLeadSource} 
                 onChange={this.handleOnChange} 
                 onBlur={this.props.handleBlur}
-                readOnly={this.isReadOnly}
+                disabled={this.props.isReadOnly}
               >
                 <option value="">Select One</option>
                 {leadSourceOptions}
@@ -92,7 +92,7 @@ export default class LeadSource extends React.Component {
                 value={this.props.defaultLeadSourceDetail} 
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
-                readOnly={this.isReadOnly}
+                disabled={this.props.isReadOnly}
               >
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
@@ -111,7 +111,7 @@ export default class LeadSource extends React.Component {
                 name="lead.additionalDetail" 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur}
-                readOnly={this.isReadOnly}
+                readOnly={this.props.isReadOnly}
                 placeholder="Additional Detail" 
               />
               <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />

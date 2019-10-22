@@ -25,7 +25,14 @@ export default class CurrentSituation extends React.Component {
     return (
       <FormGroup md="9">
         <Label for="currentSituation" className="label-format">Current Living Situation</Label>
-        <Input type="select" id="currentSituation" name="currentSituation" value={defaultValue} onChange={this.props.handleChange}>
+        <Input 
+          type="select" 
+          id="currentSituation" 
+          name="currentSituation" 
+          value={defaultValue} 
+          onChange={this.props.handleChange}
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {currentSituationOptions}
         </Input>
