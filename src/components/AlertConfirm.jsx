@@ -37,15 +37,14 @@ export default class AlertConfirm extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Button 
+                {!this.props.isReadOnly && <Button 
                     type="button" 
                     color="primary" 
                     size="sm" 
                     onClick={this.handleConfirm} 
-                    disabled={this.props.isReadOnly}
                 >
                     {this.props.buttonLabel || 'Submit'}
-                </Button>
+                </Button>}
                 <Modal isOpen={this.state.shouldSubmit} toggle={this.handleConfirm} className={this.props.className}>
                     <ModalBody>Are you sure you want to continue?</ModalBody>
                     <ModalFooter>
