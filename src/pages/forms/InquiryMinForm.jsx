@@ -448,6 +448,7 @@ class InquiryForm extends React.Component {
             setFieldTouched={this.props.setFieldTouched}
             errors={this.props.errors}
             isValid={this.props.isValid}
+            isReadOnly={this.props.status.readOnly}
           />
         </div>
 
