@@ -414,6 +414,7 @@ class ObjectMappingService {
             contact.masterId = salesContact.masterId;
             contact.firstName = salesContact.firstName;
             contact.lastName = salesContact.lastName;
+            contact.email = salesContact.emailAddress;
             contact.age = salesContact.age;
             contact.veteranStatus = salesContact.veteranStatus;
             contact.currentSituation = salesContact.currentSituation;

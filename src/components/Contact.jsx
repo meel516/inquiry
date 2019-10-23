@@ -57,7 +57,8 @@ export default class Contact extends React.Component {
       rows2: [],
       showModal: false,
       showSecondModal: false,
-      dupeContactsFound: null
+      dupeContactsFound: null,
+      runDupeCheck: false,
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -72,16 +73,21 @@ export default class Contact extends React.Component {
   handleDupCheck = async event => {
     const { contact } = this.props;
 
-    if (this.dedup.shouldRunDuplicateCheck(contact)) {
+    if (this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
       await this.dedup.checkForDuplicate(contact)
         .then((data) => {
           const mappedData = ObjectMappingService.createContactDuplicateGridContent(data);
-          this.setState({ rows: mappedData, showModal: true, dupeContactsFound: mappedData })
+          this.setState({ rows: mappedData, showModal: true, dupeContactsFound: data, runDupeCheck: false })
         })
         .catch(error => console.log(error));
     }
     
     this.props.handleBlur(event);
+  }
+
+  handleOnChange = (event) => {
+    this.setState({ runDupeCheck: true })
+    this.props.handleChange(event);
   }
 
   firstModalRowGetter = i => {
@@ -100,21 +106,21 @@ export default class Contact extends React.Component {
         .then((data) => this.setState({ rows2: data, showSecondModal: true }))
         .catch(error => console.log(error));
 
-      // I think this is where it goes???
-      // debugger;
-      // if (this.state.dupeContactsFound) {
-      //   // Find the Contact selected from the searched list.
-      //   for (let i = 0; i < this.state.dupeContactsFound.length; i++) {
-      //     let dupeContact = this.state.dupeContactsFound[i];
-      //     if (dupeContact) {
-      //       if (dupeContact.contactid === contactid) {
-      //         const { setFieldValue } = this.props;
-      //         setFieldValue('lead.influencer.firstName', dupeContact.firstName);
-      //         break;
-      //       }
-      //     }
-      //   }
-      // }
+      // Following logic loads Contact data to form.
+      if (this.state.dupeContactsFound) {
+        // Find the Contact selected from the searched list.
+        for (let i = 0; i < this.state.dupeContactsFound.length; i++) {
+          let dupeContact = this.state.dupeContactsFound[i];
+          if (dupeContact) {
+            if (dupeContact.contactId === contactid) {
+              const { setFieldValue } = this.props;
+              const formContact = ObjectMappingService.createContact(dupeContact);
+              setFieldValue(`lead.${this.props.type}`, formContact);
+              break;
+            }
+          }
+        }
+      }
     }
 
     this.setState({
@@ -188,9 +194,9 @@ export default class Contact extends React.Component {
                 format="(###) ###-####" 
                 mask="_" 
                 name={`lead.${this.props.type}.phone.number`} 
-                value={this.props.contact.phone.number || ''} 
-                onBlur={this.handleDupCheck} 
-                onChange={this.props.handleChange} 
+                value={(this.props.contact.phone ? (this.props.contact.phone.number || '') : '')} 
+                onBlur={() => this.handleDupCheck()}
+                onChange={this.handleOnChange}
                 placeholder="Phone" 
                 readOnly={this.props.isReadOnly}
               />
@@ -203,7 +209,7 @@ export default class Contact extends React.Component {
               <Input 
                 type="select" 
                 name={`lead.${this.props.type}.phone.type`} 
-                value={this.props.contact.phone.type || ''} 
+                value={(this.props.contact.phone ? (this.props.contact.phone.type || '') : '')} 
                 onChange={this.props.handleChange} 
                 disabled={this.props.isReadOnly}
               >
@@ -221,9 +227,9 @@ export default class Contact extends React.Component {
               <Input 
                 type="email" 
                 name={`lead.${this.props.type}.email`} 
-                value={this.props.contact.email} 
-                onBlur={this.handleDupCheck} 
-                onChange={this.props.handleChange} 
+                value={this.props.contact.email || ''} 
+                onBlur={() => this.handleDupCheck()}
+                onChange={this.handleOnChange} 
                 placeholder="Email" 
                 readOnly={this.props.isReadOnly}
               />
@@ -279,7 +285,7 @@ export default class Contact extends React.Component {
 Contact.propTypes = {
   type: PropTypes.string.isRequired,
   contact: PropTypes.object.isRequired,
-  setFieldValue: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func,
 
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
