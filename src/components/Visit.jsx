@@ -50,11 +50,12 @@ export default class Visit extends React.Component {
         <Row>
           <Col>
             <Note
+              labelId="followupNoteLabel"
               label="Description"
               id="followupNote"
               name={`communities[${this.props.index}].note`}
-              onChange={this.props.handleChange}
-              onBlur={this.props.handleBlur}
+              handleChange={this.props.handleChange}
+              handleBlur={this.props.handleBlur}
               isReadOnly={this.props.isReadOnly}
             />
           </Col>
