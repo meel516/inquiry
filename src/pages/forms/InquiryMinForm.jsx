@@ -30,13 +30,23 @@ import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
 import { CommunityService } from '../../services/CommunityServices';
 import { checkAuthentication } from '../../auth/checkAuth';
-// import { getRefsMap } from '../../utils/ScrollToError';
 
 class InquiryForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this.MAX_COMMUNITIES = 5;
+    this.state = {
+      communities: [],
+      allowAddCommunities: true,
+      lead: null,
+      loading: true,
+      scrollToTop: true,
+    };
+    this.salesapi = new SalesAPIService();
+    this.checkAuthentication = this.checkAuthentication.bind(this);
+
     this.TOP = React.createRef();
-    // const errorRefsMap = getRefsMap();
   }
 
   MAX_COMMUNITIES = 5;
@@ -77,20 +87,6 @@ class InquiryForm extends React.Component {
       loading: false,
       lead: leadObj,
     })
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log("componentDidUpdate: prevState.scrollToTop: ", prevState.scrollToTop, 'currState.scrollToTop', this.state.scrollToTop)
-      if(this.props.errors === '') {
-        if(this.props.isSubmitting === true) {
-          this.setState({ scrollToTop: false})
-        }
-      }
-    if(this.state.scrollToTop) {
-      this.TOP.current.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }
   }
 
   getAuthCredentials = (userInfo) => {
@@ -143,9 +139,6 @@ class InquiryForm extends React.Component {
   }
 
   handleFormSubmit = (e) => {
-    if (this.props.errors !== '') {
-      this.setState({ scrollToTop: true })
-    }
     const promise = new Promise((resolve, reject) => {
       try {
         this.props.handleSubmit(e)
@@ -153,10 +146,20 @@ class InquiryForm extends React.Component {
           resolve()
         }
         else {
+          setTimeout(() => {
+            this.TOP.current.scrollIntoView({
+              behavior: 'smooth',
+            })
+          }, 500)
           reject()
         }
       }
       catch (err) {
+        setTimeout(() => {
+          this.TOP.current.scrollIntoView({
+            behavior: 'smooth',
+          })
+        }, 500)
         reject()
       }
     })
@@ -190,9 +193,6 @@ class InquiryForm extends React.Component {
         />
         <section>
           <div ref={this.TOP}>ScollToTop: {this.state.scrollIntoView}</div>
-          {/* <Row>
-          <input type="text" id="topText" name="topText" ref={this.TOP}></input>
-          </Row> */}
         </section>
         <section className="influencer-section">
           <Contact

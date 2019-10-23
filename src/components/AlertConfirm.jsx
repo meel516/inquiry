@@ -68,7 +68,7 @@ export default class AlertConfirm extends React.Component {
 function SubmitButtonBar(props) {
     return (
         <React.Fragment>
-            <Button type="submit" size="sm" color="primary" disabled={props.isSubmitting} onClick={props.handleSubmit}>Yes</Button>{' '}
+            <Button type="button" size="sm" color="primary" disabled={props.isSubmitting} onClick={props.handleSubmit}>Yes</Button>{' '}
             <Button type="button" color="secondary" size="sm" disabled={props.isSubmitting} onClick={props.handleConfirm}>No</Button>
         </React.Fragment>
     )
