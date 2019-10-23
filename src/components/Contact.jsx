@@ -74,8 +74,6 @@ export default class Contact extends React.Component {
       await this.dedup.checkForDuplicate(contact)
         .then((data) => this.setState({ rows: data, showModal: true }))
         .catch(error => console.log(error));
-    } else {
-      console.log('do not run duplicate check!');
     }
     
     this.props.handleBlur(event);

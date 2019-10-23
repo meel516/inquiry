@@ -19,9 +19,7 @@ class DuplicationService {
 
   async checkForDuplicate(contact) {
     const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
-    
     const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);
-    console.log(JSON.stringify(contactDupeRequest));
 
     let response = await fetch(endpoint, {
       method: 'POST', mode: 'cors',
@@ -32,7 +30,6 @@ class DuplicationService {
     })
     const data = await response.json();
     if (response.status === 200) {
-      console.log(data);
       return ObjectMappingService.createContactDuplicateGridContent(data);
     } else {
       throw new Error('Error Performing Duplicate Search')

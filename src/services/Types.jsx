@@ -834,12 +834,8 @@ class ObjectMappingService {
         if (duplicatecontacts) {
             for (let i = 0; i < duplicatecontacts.length; i++) {
                 let dupecontact = duplicatecontacts[i];
-                console.log("dupecontact is: " + JSON.stringify(dupecontact));
-
                 if (dupecontact) {
                     const dc = new DuplicateContact(dupecontact);
-                    console.log("newdupecontact is: " + JSON.stringify(dc));
-
                     returnval.push(dc);
                 }
             }
