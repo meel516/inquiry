@@ -24,7 +24,8 @@ env_variables:
   REACT_APP_SALES_SERVICES_URL: "https://sales-services.uat.brookdale.com"
   REACT_APP_OKTA_URL: "https://brookdaledev.oktapreview.com"
   REACT_APP_OKTA_CLIENTID: 
-  REACT_APP_VERSION:
+  REACT_APP_VERSION: 1.0.12-rc2
   REACT_APP_NODE_ENV: 'production'
+  REACT_APP_APPLICATION_NAME: 'Connection Center Application'
 
 # [END app_yaml]
