@@ -30,7 +30,7 @@ class DuplicationService {
     })
     const data = await response.json();
     if (response.status === 200) {
-      return ObjectMappingService.createContactDuplicateGridContent(data);
+      return data;
     } else {
       throw new Error('Error Performing Duplicate Search')
     }

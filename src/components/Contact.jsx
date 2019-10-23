@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 
 import { DropDownService, DuplicationService, SalesAPIService } from '../services/SalesServices'
+import { ObjectMappingService } from '../services/Types'
 
 const defaultColumnProperties = {
   resizable: true,
@@ -56,6 +57,7 @@ export default class Contact extends React.Component {
       rows2: [],
       showModal: false,
       showSecondModal: false,
+      dupeContactsFound: null
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -72,7 +74,10 @@ export default class Contact extends React.Component {
 
     if (this.dedup.shouldRunDuplicateCheck(contact)) {
       await this.dedup.checkForDuplicate(contact)
-        .then((data) => this.setState({ rows: data, showModal: true }))
+        .then((data) => {
+          const mappedData = ObjectMappingService.createContactDuplicateGridContent(data);
+          this.setState({ rows: mappedData, showModal: true, dupeContactsFound: mappedData })
+        })
         .catch(error => console.log(error));
     }
     
@@ -94,6 +99,22 @@ export default class Contact extends React.Component {
       await this.sales.retrieveLeadDataForContactId(contactid)
         .then((data) => this.setState({ rows2: data, showSecondModal: true }))
         .catch(error => console.log(error));
+
+      // I think this is where it goes???
+      // debugger;
+      // if (this.state.dupeContactsFound) {
+      //   // Find the Contact selected from the searched list.
+      //   for (let i = 0; i < this.state.dupeContactsFound.length; i++) {
+      //     let dupeContact = this.state.dupeContactsFound[i];
+      //     if (dupeContact) {
+      //       if (dupeContact.contactid === contactid) {
+      //         const { setFieldValue } = this.props;
+      //         setFieldValue('lead.influencer.firstName', dupeContact.firstName);
+      //         break;
+      //       }
+      //     }
+      //   }
+      // }
     }
 
     this.setState({
@@ -258,6 +279,7 @@ export default class Contact extends React.Component {
 Contact.propTypes = {
   type: PropTypes.string.isRequired,
   contact: PropTypes.object.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
 
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,

@@ -172,6 +172,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur} 
             isReadOnly={this.props.status.readOnly} 
             duplicateCheck={true}
+            setFieldValue={this.props.setFieldValue}
           >
             <Address 
               type="influencer" 
