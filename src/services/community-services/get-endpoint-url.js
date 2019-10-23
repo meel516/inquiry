@@ -1,0 +1,1 @@
+export default () => `${process.env.REACT_APP_SALES_SERVICES_URL}/CommunitySearch/service`
