@@ -38,9 +38,9 @@ export default class SecondPerson extends React.Component {
     return (
       <Row>
         <Col>
-          <FormGroup check>
+          <FormGroup check disabled={this.props.isReadOnly}>
             <Label check className="label-format">
-              <Input type="checkbox" name={'lead.secondPerson.selected'} onClick={(e) => this.handleSecondPerson(e)} />
+              <Input type="checkbox" name={'lead.secondPerson.selected'} onClick={(e) => this.handleSecondPerson(e)} disabled={this.props.isReadOnly} />
               Is there a 2nd Prospect?
             </Label>
           </FormGroup>
@@ -71,7 +71,7 @@ export default class SecondPerson extends React.Component {
             name="lead.notes.secondPerson" 
             onChange={this.props.handleChange} 
             onBlur={this.props.handleBlur}
-            isReadOnly={this.props.readOnly}
+            isReadOnly={this.props.isReadOnly}
           />
         </>
       )

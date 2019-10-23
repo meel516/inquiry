@@ -17,21 +17,21 @@ export default class AdlNeeds extends React.Component {
           <Label for="adlNeeds" className="label-format">ADL Needs</Label>
           <Row>
             <Col>
-              <FormGroup check inline className="col-4">
+              <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="bathing" onChange={this.handleInputChange} readOnly={this.props.isReadOnly}/>{' '}
+                  <Input type="checkbox" name="bathing" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Bathing
               </Label>
               </FormGroup>
-              <FormGroup check inline className="col-4">
+              <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="dressing" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="dressing" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Dressing
               </Label>
               </FormGroup>
-              <FormGroup check inline className="col-3">
+              <FormGroup check inline className="col-3" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="feeding" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="feeding" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Feeding
               </Label>
               </FormGroup>
@@ -39,21 +39,21 @@ export default class AdlNeeds extends React.Component {
           </Row>
           <Row>
             <Col>
-              <FormGroup check inline className="col-4">
+              <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="incontinence" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="incontinence" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Incontinence
               </Label>
               </FormGroup>
-              <FormGroup check inline className="col-4">
+              <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="medications" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="medications" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Medications
               </Label>
               </FormGroup>
-              <FormGroup check inline className="col-3">
+              <FormGroup check inline className="col-3" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="toileting" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="toileting" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Toileting
               </Label>
               </FormGroup>
@@ -61,9 +61,9 @@ export default class AdlNeeds extends React.Component {
           </Row>
           <Row>
             <Col>
-              <FormGroup check inline className="col-4">
+              <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="transferring" onChange={this.handleInputChange} />{' '}
+                  <Input type="checkbox" name="transferring" onChange={this.handleInputChange} disabled={this.props.isReadOnly}/>{' '}
                   Transferring
               </Label>
               </FormGroup>

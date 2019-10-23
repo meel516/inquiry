@@ -83,8 +83,7 @@ export default class AdditionalCareElements extends React.Component {
 
   handleCurrentSituationChange = ({ target: { name, value } }) => {
     const qualifiedName = `lead.${name}`;
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, value);
+    this.props.setFieldValue(qualifiedName, value);
   }
 
   // elmnts - array of elements
@@ -126,20 +125,17 @@ export default class AdditionalCareElements extends React.Component {
 
   handleMemoryConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.memoryConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
   handleMobilityConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.mobilityConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
   handleNutritionConcernsInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.nutritionConcerns.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
 
 
@@ -157,6 +153,7 @@ export default class AdditionalCareElements extends React.Component {
                 onChange={this.handleSelectCareElements}
                 options={additionalCareElements}
                 defaultValue={defaultCareElements}
+                isDisabled={this.props.isReadOnly}
               />
             </FormGroup>
           </Col>
@@ -188,15 +185,15 @@ function NutritionConcerns(props) {
         <Label className="label-format">Nutrition Concerns</Label>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="diabetes" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="diabetes" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Diabetes Diagnosis
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="lowSalt" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="lowSalt" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Low Salt-Low Fat Diet Restrictions
               </Label>
             </FormGroup>
@@ -204,15 +201,15 @@ function NutritionConcerns(props) {
         </Row>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="prescribedDiet" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="prescribedDiet" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Other Prescribed Diet Restrictions
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="notEatingWell" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="notEatingWell" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Not Eating Consistently or Well
               </Label>
             </FormGroup>
@@ -240,15 +237,15 @@ function MobilityConcerns(props) {
         <Label className="label-format">Mobility Concerns</Label>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="fallRisk" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="fallRisk" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Fall Risk
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="regularlyWalks" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="regularlyWalks" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Regularly Uses Walker
               </Label>
             </FormGroup>
@@ -256,15 +253,15 @@ function MobilityConcerns(props) {
         </Row>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="personTransfer" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="personTransfer" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 1 Person Transfer
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="usesWheelChair" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="usesWheelChair" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Regularly Uses Wheelchair
               </Label>
             </FormGroup>
@@ -272,15 +269,15 @@ function MobilityConcerns(props) {
         </Row>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="secondPersonTransfer" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="secondPersonTransfer" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 2 Person Transfer
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="usesCane" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="usesCane" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Regularly Uses Cane
               </Label>
             </FormGroup>
@@ -308,15 +305,15 @@ function MemoryConcerns(props) {
         <Label className="label-format">Memory Concerns</Label>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="dementia" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="dementia" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Alzheimer's or Dementia Diagnosis
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="memoryLoss" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="memoryLoss" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Argumentative Caused by Memory Loss
               </Label>
             </FormGroup>
@@ -324,15 +321,15 @@ function MemoryConcerns(props) {
         </Row>
         <Row>
           <Col>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="repeatsStories" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="repeatsStories" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Regularly Forgets Things or Repeats Stories
               </Label>
             </FormGroup>
-            <FormGroup check inline className="col-4">
+            <FormGroup check inline className="col-4" disabled={props.isReadOnly}>
               <Label check>
-                <Input type="checkbox" name="wandering" onChange={props.handleChange} readOnly={props.isReadOnly} />{' '}
+                <Input type="checkbox" name="wandering" onChange={props.handleChange} disabled={props.isReadOnly} />{' '}
                 Wandering
               </Label>
             </FormGroup>
