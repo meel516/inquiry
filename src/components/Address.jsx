@@ -90,7 +90,7 @@ export default class Address extends React.Component {
                 name={`lead.${this.props.type}.address.state`} 
                 value={address.state || ''} 
                 onChange={this.props.handleChange}
-                readOnly={this.props.isReadOnly}
+                disabled={this.props.isReadOnly}
               >
                 <option value="">Select One</option>
                 {options}
