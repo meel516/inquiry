@@ -212,6 +212,10 @@ describe('service send request testing', () => {
             expect(error).toBeTruthy()
     
         })
+
+        test('test failure ping testing server', async () => {
+
+        })
     
     })
 

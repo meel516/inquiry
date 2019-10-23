@@ -155,6 +155,10 @@ class InquiryForm extends React.Component {
       return 'Loading Form...'
     }
 
+    if (this.props.value && this.props.value.lead) {
+      console.log(`Lead Submitted: ${this.props.value.lead.leadId}`)
+    }
+
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
         <DisplayErrors
@@ -458,11 +462,12 @@ const EnhancedInquiryForm = withFormik({
     setSubmitting(true);
     const salesService = new SalesAPIService();
     try {
-      await salesService.submitToService({ ...values });
+      const lead = await salesService.submitToService({ ...values });
       setStatus({
         successful: true,
         readOnly: true,
       })
+      console.log(`Lead Id: ${lead.leadId}`)
       toast.success("Request was submitted successfully.", {
         position: toast.POSITION.TOP_CENTER
       });
