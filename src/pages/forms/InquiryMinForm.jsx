@@ -182,7 +182,7 @@ class InquiryForm extends React.Component {
           valid={this.props.isValid}
         />
         <section>
-          <div ref={this.TOP}>ScollToTop: {this.state.scrollIntoView}</div>
+          <div ref={this.TOP}></div>
         </section>
         <section className="influencer-section">
           <Contact
