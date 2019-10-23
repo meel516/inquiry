@@ -461,7 +461,6 @@ const EnhancedInquiryForm = withFormik({
   },
 
   handleSubmit: async (values, { setSubmitting, setErrors, setStatus }) => {
-    debugger
     setSubmitting(true);
     const salesService = new SalesAPIService();
     try {

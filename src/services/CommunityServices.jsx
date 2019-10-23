@@ -34,8 +34,6 @@ class CommunityService {
 
   async fetchCommunities(username) {
     const endpoint = window.encodeURI(`${URL_COMMUNITIES}/searchByAppAndUser`)
-    console.log(`fetchCommunities username: ${username}`)
-
     const commRequest = {
       "communitySearchText": "",
       "appShortName": "SIMS",
