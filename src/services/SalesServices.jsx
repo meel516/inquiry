@@ -1,8 +1,9 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ProspectError, ObjectMappingService, Util, SalesContact } from './Types'
+import { ServerError, ObjectMappingService } from './Types'
 import { CommunityService } from './CommunityServices'
+import { AppError } from './Types';
 
 class DuplicationService {
 
@@ -144,29 +145,37 @@ class SalesAPIService {
     return ObjectMappingService.createEmptyLead();
   }
 
+  /**
+   * Submits an influencer to the server api
+   * @param {object} influencer the influencer request
+   * @returns the influencer id
+   */
   async submitInfluencer(influencer) {
     const inflUrl = this.createApiUri('influencer');
     if (influencer) {
-      try {
-        let response = await fetch(inflUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(influencer),
-        })
-        const inf = await response.json();
-        if (response.status !== 201) {
-          console.log(`Error: ${response.status} ${inf.message}`);
-        }
+      let response = await fetch(inflUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(influencer),
+      })
+      const salesResponse = await response.json();
+      if (response.status === 201) {
+        return salesResponse.objectId;
       }
-      catch (err) {
-        console.log(err);
-        // successful = false;
-      }
+      throw new ServerError(response.status, salesResponse.message);
     }
   }
 
+  /**
+   * Creates a new followup request and pushs the request to the service api.
+   * There will never be updates to followups only new ones created.
+   * 
+   * @param {number} leadId the lead key to which the follow up pertains
+   * @param {object} community the community to which the follow up pertains
+   * @param {object} user the user logged in
+   */
   async submitFollowup(leadId, community, user) {
     const fuaUrl = this.createApiUri('leads/fua')
 
@@ -183,11 +192,12 @@ class SalesAPIService {
         const fua = await response.json();
         if (response.status !== 201) {
           console.log(`Error: ${response.status} ${fua.message}`);
+          throw new ServerError(response.status, fua.message, 'followup')
         }
       }
       catch (err) {
-        console.log(err);
-        //successful = false;
+        console.log(`Error: ${JSON.stringify(err)}`)
+        throw new ServerError('', 'Could not connect to follow up service.');
       }
     }
   }
@@ -234,6 +244,30 @@ class SalesAPIService {
     }
   }
 
+  async performServerPingTest() {
+    const pingUrl = this.createApiUri(`echo`);
+
+    const payload = {message: 'test'}
+    const hres = await this._createPOST(pingUrl, payload)
+    const response = await hres.json();
+    if (hres.status === 200) {
+      if (response.message === 'test') {
+        return true;
+      }
+    }
+    throw new ServerError(hres.status, 'Ping test failed.')
+  }
+
+  async _createPOST(url, payload) {
+    return fetch(url, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+  
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
@@ -282,9 +316,7 @@ class SalesAPIService {
       const { objectId } = salesResponse;
       return objectId;
     }
-    else {
-      throw new Error('Sales Lead(s) were not created.')
-    }
+    throw new ServerError({status: response.status, message: response.message, entity: 'community'});
   }
 
   async sendProspect(prospectRequest) {
@@ -296,6 +328,7 @@ class SalesAPIService {
       },
       body: JSON.stringify(prospectRequest)
     })
+
     const salesResponse = await response.json();
     if (response.status === 201) {
       const { objectId } = salesResponse;
@@ -303,9 +336,7 @@ class SalesAPIService {
 
       return prospectRequest;
     }
-    else {
-      throw new Error('Sales Lead was not created.')
-    }
+    throw new ServerError({status: response.status, message: response.message, entity: 'prospect'});
   }
 
   /**
@@ -321,7 +352,8 @@ class SalesAPIService {
 
     if (salesLead.inquirerType !== 'PROSP') {
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-      await this.submitInfluencer(influencer);
+      const influencerId = await this.submitInfluencer(influencer);
+      lead.influencer.influencerId = influencerId
     }
 
     const notes = lead.notes
@@ -377,51 +409,45 @@ async handleNewInquiryForm(lead, communities, user) {
 
   // IF zero/many community is selected always assume Contact Center community
   let leadId = null;
-  if (!CommunityService.containContactCenter(communities)) {
-    let community = CommunityService.createCommunity();
-    community.communityId = 225707
-    leadId = await this.processContactCenter(lead, community, user);
-  }
-  else {
-    let contactCenter;
-    communityList.map((community) => {
-      if (CommunityService.isContactCenter(community)) {
-        contactCenter = community;
-        return null;
-      }
-      return community;
-    });
-
-    if (contactCenter != null) {
-      leadId = await this.processContactCenter(lead, contactCenter, user);
+  try {
+    if (!CommunityService.containContactCenter(communities)) {
+      let community = CommunityService.createCommunity();
+      community.communityId = 225707
+      leadId = await this.processContactCenter(lead, community, user);
     }
+    else {
+      let contactCenter;
+      communityList.map((community) => {
+        if (CommunityService.isContactCenter(community)) {
+          contactCenter = community;
+          return null;
+        }
+        return community;
+      });
+  
+      if (contactCenter != null) {
+        leadId = await this.processContactCenter(lead, contactCenter, user);
+      }
+    }
+  }
+  catch(err) {
+
   }
 
   if (leadId == null) {
-    leadId = lead.leadId;
+    // throw new error due to lead was not created due to errors
+    throw new AppError('412', 'Lead was not created in Sales System.')
   }
 
+  const formattedCommunityList = [];
+  const eloquaCommunityList = [];
   if (communityList && communityList.length > 0) {
     // First, iterate through the communityList and format the followupDate to the ISOString.
-    const formattedCommunityList = [];
-    for (let i = 0; i < communityList.length; i++) {
-      let community = communityList[i];
+    communityList.forEach((community) => {
+
       community.followupDate = CommunityService.convertToISODate(community.followupDate);
       formattedCommunityList.push(community);
-    }
 
-    if (formattedCommunityList && formattedCommunityList.length > 0) {
-      // Submit Add Communities/FUA request.
-      await this.processCommunities(lead, formattedCommunityList, user);
-    }
-
-    //this.submitFollowup(nleadId, community, user);
-  }
-
-  const eloquaCommunityList = [];
-  if (leadId != null) {
-    for (let i = 0; i < communityList.length; i++) {
-      let community = communityList[i];
       // Check to see if this community has an applicable Follow Up Action that
       // would deem submission of an External Eloqua Email.  If so, add it to the
       // eloquaCommunityList.
@@ -430,41 +456,54 @@ async handleNewInquiryForm(lead, communities, user) {
       // 8	Assessment
       const actionArray = ["5", "6", "8"];
       if (actionArray.indexOf(community.followUpAction) > -1) {
-        // Convert the followupDate accordingly!
-        community.followupDate = CommunityService.convertToISODate(community.followupDate);
         eloquaCommunityList.push(community);
       }
-    }
+
+    })
   }
 
-  // If we have an email and communities in eloquaCommunityList, submit the request.
-  if (lead && lead.influencer && lead.influencer.email &&
+  try {
+      // Submit Add Communities/FUA request.
+      if (formattedCommunityList && formattedCommunityList.length > 0) {
+        await this.processCommunities(lead, formattedCommunityList, user);
+      }
+  }
+  catch(err) {
+
+  }
+
+  try {
+    // If we have an email and communities in eloquaCommunityList, submit the request.
+    if (lead && lead.influencer && lead.influencer.email &&
       eloquaCommunityList && eloquaCommunityList.length > 0) {
-    const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-    this.submitEloquaRequest(eloquaExternalRequest);
+      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
+      this.submitEloquaRequest(eloquaExternalRequest);
+    }
+  }
+  catch(err) {
+
   }
 }
 
-handleExistingInquiryForm(lead, communities, user) {
+async handleExistingInquiryForm(lead, communities, user) {
 
 }
 
 async submitToService({ lead, communities, user }) {
-  let successful = true;
 
   try {
+    await this.performServerPingTest();
     if (lead.leadId) {
-      console.log(`LeadId: ${lead.leadId}`);
-      this.handleExistingInquiryForm(lead, communities, user)
+      await this.handleExistingInquiryForm(lead, communities, user)
     }
     else {
-      this.handleNewInquiryForm(lead, communities, user)
+      await this.handleNewInquiryForm(lead, communities, user)
     }
+    return lead
+
   } catch (err) {
     console.log(err);
-    successful = false;
   }
-  return successful;
 }
 
 createFetch(url) {

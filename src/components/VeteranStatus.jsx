@@ -1,8 +1,8 @@
 import React from 'react';
 import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
-// <VeteranStatus status={this.state.veteranStatus} onChange={this.handleVeteranStatusChange}/>
 import { DropDownService } from '../services/SalesServices'
 
 export default class VeteranStatus extends React.Component {
@@ -19,7 +19,6 @@ export default class VeteranStatus extends React.Component {
   }
 
   render() {
-    const { defaultValue } = this.props || {};
     const { vetstatus } = this.state || [];
     const veteranStatusOptions = (vetstatus || []).map((status) => {
       return <option key={status.value} value={status.value}>{status.text}</option>
@@ -28,7 +27,15 @@ export default class VeteranStatus extends React.Component {
     return (
       <FormGroup>
         <Label for="veteranstatus" className="label-format required-field">Veteran Status</Label>
-        <Input type="select" id="veteranstatus" name={"lead.prospect.veteranStatus"} value={defaultValue || ''} onChange={this.props.onChange} onBlur={this.props.onBlur}>
+        <Input 
+          type="select" 
+          id="veteranstatus" 
+          name={"lead.prospect.veteranStatus"} 
+          value={this.props.defaultValue} 
+          onChange={this.props.handleChange} 
+          onBlur={this.props.handleBlur}
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {veteranStatusOptions}
         </Input>
@@ -37,4 +44,18 @@ export default class VeteranStatus extends React.Component {
       </FormGroup>
     )
   }
+}
+
+VeteranStatus.propTypes = {
+  defaultValue: PropTypes.string,
+
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+VeteranStatus.defaultProps = {
+  defaultValue: '',
+  isReadOnly: false,
 }

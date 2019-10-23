@@ -4,6 +4,8 @@ import ScrollingLayoutManager from './pages/ScrollingLayoutManager';
 import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import Home from './Home';
 import Redirect from './Redirect';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 
@@ -23,6 +25,7 @@ class App extends Component {
           <Route path='/redirect' component={Redirect} />
           <Route path='/implicit/callback' component={ImplicitCallback} />
         </Security>
+        <ToastContainer />
       </BrowserRouter>
     );
   }
