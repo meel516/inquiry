@@ -1,16 +1,15 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ProspectError, ServerError, ObjectMappingService } from './Types'
+import { AppError, ProspectError, ServerError, ObjectMappingService } from './Types'
 import { CommunityService } from './CommunityServices'
-import { AppError } from './Types';
 
 class DuplicationService {
 
   shouldRunDuplicateCheck(contact) {
     if (contact) {
-      const { email, phone: { number, type } } = contact;
-      if ((!number || !type) && !email) {
+      const { email, phone: { number } } = contact;
+      if (!number && !email) {
         return false;
       }
       return true;
@@ -119,12 +118,9 @@ class SalesAPIService {
     return await this.getLeadByUrl(leadUrl);
   }
 
-  async retrieveLeadDataForContactId (contactId) {
-    debugger;
+  async retrieveLeadDataForContactId(contactId) {
     const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/lead/contact/${contactId}`);
     const output = await this.createFetch(endpoint);
-    
-    console.log(JSON.stringify(output));
     return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
 

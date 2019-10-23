@@ -25,7 +25,6 @@ export default class Contact extends React.Component {
   constructor(props) {
     super(props);
     this.firstmodalcolumns = [
-      { key: 'contactid', name: 'ContactId' }, // NOTE: This will be hidden but used for further API lookup!
       { key: 'name', name: 'Contact Name' },
       { key: 'phone', name: 'Phone' },
       { key: 'phonetype', name: 'Phone Type' },
@@ -38,7 +37,6 @@ export default class Contact extends React.Component {
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     this.secondmodalcolumns = [
-      { key: 'leadid', name: 'Lead Id' },
       { key: 'community', name: 'Community' },  
       { key: 'pname', name: 'Prospect Name' },
       { key: 'pphone', name: 'Prospect Phone' },
@@ -73,20 +71,6 @@ export default class Contact extends React.Component {
     const { contact } = this.props;
 
     if (this.dedup.shouldRunDuplicateCheck(contact)) {
-      console.log('run duplicate check!');
-      console.log(JSON.stringify(contact));
-
-      // DuplicationService.checkForDuplicate(contact)
-      //   // .then((data) => this.setState({ duplicate: data }))
-      //   .catch(error => console.log(error));
-      //const duplicatecontacts = await this.dedup.checkForDuplicate(contact);
-      //console.log("Dedupe response is: " + JSON.stringify(duplicatecontacts));
-
-      // const newrows = ObjectMappingService.createContactDuplicateGridContent(duplicatecontacts);
-      // console.log("newrows is: " + JSON.stringify(newrows));
-      //this.setState({ rows: newrows });
-      //this.setState({ showModal: true });
-      
       await this.dedup.checkForDuplicate(contact)
         .then((data) => this.setState({ rows: data, showModal: true }))
         .catch(error => console.log(error));
@@ -97,7 +81,7 @@ export default class Contact extends React.Component {
     this.props.handleBlur(event);
   }
 
-  rowGetter = i => {
+  firstModalRowGetter = i => {
     return this.state.rows[i];
   };
 
@@ -106,26 +90,16 @@ export default class Contact extends React.Component {
   };
   
   onRowsSelected = async rows => {
-    debugger;
-
-    let contactid = rows[0].row.contactid;
-    console.log("Selected ContactId is: " + contactid);
-    await this.sales.retrieveLeadDataForContactId(contactid)
-      .then((data) => this.setState({ rows2: data, showSecondModal: true }))
-      .catch(error => console.log(error));
+    if (rows[0].row) {
+      let contactid = rows[0].row.contactid;
+      console.log("Selected ContactId is: " + contactid);
+      await this.sales.retrieveLeadDataForContactId(contactid)
+        .then((data) => this.setState({ rows2: data, showSecondModal: true }))
+        .catch(error => console.log(error));
+    }
 
     this.setState({
       selectedIndexes: rows.map(r => r.rowIdx)
-    });
-
-  };
-
-  onRowsDeselected = rows => {
-    let rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({
-      selectedIndexes: this.state.selectedIndexes.filter(
-        i => rowIndexes.indexOf(i) === -1
-      )
     });
   };
 
@@ -141,14 +115,11 @@ export default class Contact extends React.Component {
     }));
   }
 
-  handleOk = async (e) => {
-    this.props.handleSubmit(e)
-    // .catch(function() {
-    //     toast.error("Please fix the errors before continuing.", {
-    //         position: toast.POSITION.TOP_CENTER
-    //     });
-    // })
-    // .finally(this.handleConfirm)
+  handleToggleAll = (e) => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+      showSecondModal: !prevState.showSecondModal,
+    }));
   }
   
   render() {
@@ -169,7 +140,6 @@ export default class Contact extends React.Component {
                 name={`lead.${this.props.type}.firstName`} 
                 value={this.props.contact.firstName} 
                 onChange={this.props.handleChange} 
-                onBlur={this.handleDupCheck} 
                 autoComplete="off" 
                 readOnly={this.props.isReadOnly}
                 placeholder="First Name" />
@@ -183,7 +153,6 @@ export default class Contact extends React.Component {
                 name={`lead.${this.props.type}.lastName`} 
                 value={this.props.contact.lastName} 
                 onChange={this.props.handleChange} 
-                onBlur={this.handleDupCheck} 
                 readOnly={this.props.isReadOnly}
                 placeholder="Last Name" 
               />
@@ -216,7 +185,6 @@ export default class Contact extends React.Component {
                 type="select" 
                 name={`lead.${this.props.type}.phone.type`} 
                 value={this.props.contact.phone.type || ''} 
-                onBlur={this.handleDupCheck}
                 onChange={this.props.handleChange} 
                 disabled={this.props.isReadOnly}
               >
@@ -253,20 +221,12 @@ export default class Contact extends React.Component {
             <ModalBody>
               <ReactDataGrid
                 columns={this.firstmodalcolumns}
-                rowGetter={this.rowGetter}
+                rowGetter={this.firstModalRowGetter}
                 rowsCount={this.state.rows.length}
                 minHeight={150}
                 minWidth={750}
                 emptyRowsView={EmptyRowsView}
-                rowSelection={{
-                  showCheckbox: true,
-                  enableShiftSelect: false,
-                  onRowsSelected: this.onRowsSelected,
-                  //onRowsDeselected: this.onRowsDeselected,
-                  selectBy: {
-                    indexes: this.state.selectedIndexes
-                  }
-                }}
+                onRowClick={( rowId, row )=>this.onRowsSelected([{ row:row, rowIdx:rowId }])}
               />
               <Modal isOpen={this.state.showSecondModal} size="lg">
                 <ModalHeader toggle={this.handleSecondToggle}>
@@ -280,24 +240,14 @@ export default class Contact extends React.Component {
                     minHeight={150}
                     minWidth={750}
                     emptyRowsView={EmptyRowsView}
-                    // rowSelection={{
-                    //   showCheckbox: true,
-                    //   enableShiftSelect: false,
-                    //   onRowsSelected: this.onRowsSelected,
-                    //   //onRowsDeselected: this.onRowsDeselected,
-                    //   selectBy: {
-                    //     indexes: this.state.selectedIndexes
-                    //   }
-                    // }}
+                    //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
                   />
                 </ModalBody>
+                <ModalFooter>
+                  <Button type="button" color="secondary" size="sm" onClick={this.handleToggleAll}>None of These</Button>
+                </ModalFooter>
               </Modal>
             </ModalBody>
-            <ModalFooter>
-                {!hasErrors &&
-                  <ModalButtonBar handleConfirm={this.handleConfirm} handleSubmit={this.handleOk} />
-                }
-            </ModalFooter>
           </Modal>
         }
 
@@ -305,14 +255,6 @@ export default class Contact extends React.Component {
       </>
     )
   }
-}
-
-function ModalButtonBar(props) {
-  return (
-      <React.Fragment>
-          <Button type="button" color="secondary" size="sm" onClick={props.handleConfirm}>Continue</Button>
-      </React.Fragment>
-  )
 }
 
 Contact.propTypes = {

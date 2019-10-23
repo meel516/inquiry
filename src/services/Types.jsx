@@ -754,7 +754,7 @@ class ObjectMappingService {
             email: contact.email,
             prospectFirstName: contact.firstName,
             prospectLastName: contact.lastName,
-            phone1: (contact.phone !== null ? contact.phone.number : ""),
+            phone1: (contact.phone !== null ? Util.stripPhoneFormatting(contact.phone.number) : ""),
             phoneType: (contact.phone !== null ? contact.phone.type : ""),
         }
     }
@@ -765,12 +765,8 @@ class ObjectMappingService {
         if (payload) {
             for (let i = 0; i < payload.length; i++) {
                 let leadRow = payload[i];
-                console.log("Lead Row: " + JSON.stringify(leadRow));
-
                 if (leadRow) {
                     const ldr = new LeadDataRecord(leadRow);
-                    console.log("Lead Data Record is: " + JSON.stringify(ldr));
-
                     returnval.push(ldr);
                 }
             }
