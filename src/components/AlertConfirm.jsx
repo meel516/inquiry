@@ -3,8 +3,6 @@ import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify';
 
-// import { getRef } from '../../utils/ScrollToError';
-
 export default class AlertConfirm extends React.Component {
     state = {
         shouldSubmit: false,
