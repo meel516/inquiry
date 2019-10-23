@@ -32,6 +32,8 @@ import { CommunityService } from '../../services/CommunityServices';
 import { checkAuthentication } from '../../auth/checkAuth';
 
 class InquiryForm extends React.Component {
+  TOP = React.createRef();
+
   MAX_COMMUNITIES = 5;
   state = {
     communities: [],
@@ -39,6 +41,7 @@ class InquiryForm extends React.Component {
     lead: null,
     loading: true,
   };
+
   salesapi = new SalesAPIService();
   checkAuthentication = checkAuthentication.bind(this);
 
@@ -127,10 +130,20 @@ class InquiryForm extends React.Component {
           resolve()
         }
         else {
+          setTimeout(() => {
+            this.TOP.current.scrollIntoView({
+              behavior: 'smooth',
+            })
+          }, 500)
           reject()
         }
       }
       catch (err) {
+        setTimeout(() => {
+          this.TOP.current.scrollIntoView({
+            behavior: 'smooth',
+          })
+        }, 500)
         reject()
       }
     })
@@ -168,6 +181,9 @@ class InquiryForm extends React.Component {
           errors={this.props.errors}
           valid={this.props.isValid}
         />
+        <section>
+          <div ref={this.TOP}></div>
+        </section>
         <section className="influencer-section">
           <Contact
             key="influencer-contact"
@@ -420,7 +436,6 @@ class InquiryForm extends React.Component {
         <br />
 
         <div className="float-right">
-          {/* <Button type="submit" color="primary" size="sm" disabled={isSubmitting}>Submit</Button>{' '} */}
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'
             handleSubmit={this.handleFormSubmit}
