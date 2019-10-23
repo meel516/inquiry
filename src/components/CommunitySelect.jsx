@@ -30,7 +30,6 @@ export default class CommunitySelect extends React.Component {
 
   render() {
     const { selectedAction, followupActions } = this.state;
-    const { community, index } = this.props;
     const followupOptns = (followupActions || []).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
