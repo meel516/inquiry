@@ -10,7 +10,6 @@ export default class AlertConfirm extends React.Component {
     }
 
     componentDidMount() {
-        console.log('AlertConfirm.componentDidMount()')
         this.setState({
             shouldSubmit: false,
         })

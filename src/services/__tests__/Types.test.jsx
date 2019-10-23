@@ -168,7 +168,8 @@ describe('test followup mapping', () => {
             secondPersonFee: 500,
             communityFee: 1850
         }
-        const request = ObjectMappingService.createFollowupRequest(leadId, community)
+        const user = TestUtils.createEmptyUser();
+        const request = ObjectMappingService.createFollowupRequest(leadId, community, user)
         expect(request).not.toBeNull()
 
         expect(request.buildingId).toEqual(community.communityId)

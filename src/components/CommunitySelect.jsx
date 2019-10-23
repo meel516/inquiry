@@ -30,7 +30,7 @@ export default class CommunitySelect extends React.Component {
 
   render() {
     const { selectedAction, followupActions } = this.state;
-    const { community, index, handleChange, handleBlur } = this.props;
+    const { community, index } = this.props;
     const followupOptns = (followupActions || []).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
@@ -41,7 +41,11 @@ export default class CommunitySelect extends React.Component {
           <CardBody>
             <Row>
               <Col>
-                <CommunityLookup {...this.props} />
+                <CommunityLookup 
+                  index={this.props.index}
+                  isReadOnly={this.props.isReadOnly}
+                  setFieldValue={this.props.setFieldValue}
+                />
               </Col>
             </Row>
             <Row>
@@ -54,8 +58,8 @@ export default class CommunitySelect extends React.Component {
                     </InputGroupAddon>
                     <Input type="number"
                       id="startingPrice"
-                      name={`communities[${index}].startingPrice`}
-                      value={community.startingPrice || ''}
+                      name={`communities[${this.props.index}].startingPrice`}
+                      value={this.props.community.startingPrice || ''}
                       onChange={this.props.handleChange}
                       onBlur={this.props.handleBlur}
                       readOnly={this.props.isReadOnly}
@@ -73,8 +77,8 @@ export default class CommunitySelect extends React.Component {
                     </InputGroupAddon>
                     <Input type="number"
                       id="secondPersonFee"
-                      name={`communities[${index}].secondPersonFee`}
-                      value={community.secondPersonFee || ''}
+                      name={`communities[${this.props.index}].secondPersonFee`}
+                      value={this.props.community.secondPersonFee || ''}
                       onChange={this.props.handleChange}
                       onBlur={this.props.handleBlur}
                       readOnly={this.props.isReadOnly}
@@ -91,8 +95,8 @@ export default class CommunitySelect extends React.Component {
                     </InputGroupAddon>
                     <Input type="number"
                       id="communityFee"
-                      name={`communities[${index}].communityFee`}
-                      value={community.communityFee || ''}
+                      name={`communities[${this.props.index}].communityFee`}
+                      value={this.props.community.communityFee || ''}
                       onChange={this.props.handleChange}
                       onBlur={this.props.handleBlur}
                       readOnly={this.props.isReadOnly}
@@ -113,11 +117,21 @@ export default class CommunitySelect extends React.Component {
               </Col>
             </Row>
             {
-              (selectedAction) ? <Visit handleChange={this.props.handleChange} handleBlur={this.props.handleBlur} isReadOnly={this.props.isReadOnly} {...this.props} /> : null
+              (selectedAction) ? 
+                <Visit 
+                  handleChange={this.props.handleChange} 
+                  handleBlur={this.props.handleBlur} 
+                  isReadOnly={this.props.isReadOnly} 
+                  {...this.props} 
+                /> 
+              : null
             }
           </CardBody>
           <CardFooter className="text-right">
-            <Button color="primary" size="sm" onClick={this.handleRemoveCommunity}>Remove</Button>
+            { (this.props.isReadOnly === false) 
+              ? <Button color="primary" size="sm" onClick={this.handleRemoveCommunity}>Remove</Button>
+              : null
+            }
           </CardFooter>
         </Card>
       </div>
@@ -127,7 +141,7 @@ export default class CommunitySelect extends React.Component {
 
 CommunitySelect.propTypes = {
   community: PropTypes.object.isRequired,
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 
   onRemove: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,

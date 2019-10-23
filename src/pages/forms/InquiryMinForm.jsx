@@ -15,7 +15,7 @@ import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
 import DisplayErrors from '../../components/DisplayErrors';
 import FinancialOptions from '../../components/FinancialOptions';
-import { mainFormValidationSchema } from './ValidationSchema';
+import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
 import NextSteps from '../../components/NextSteps'
@@ -67,7 +67,6 @@ class InquiryForm extends React.Component {
     }
     this.props.setFieldValue('lead', leadObj)
 
-    console.log(`Node Env: ${process.env.NODE_ENV}`)
     this.setState({
       loading: false,
       lead: leadObj,
@@ -154,6 +153,8 @@ class InquiryForm extends React.Component {
 
   render() {
     const {
+      values,
+      status,
       touched,
       errors,
       dirty,
@@ -167,6 +168,10 @@ class InquiryForm extends React.Component {
 
     if (this.state.loading) {
       return 'Loading Form...'
+    }
+
+    if (this.props.value && this.props.value.lead) {
+      console.log(`Lead Submitted: ${this.props.value.lead.leadId}`)
     }
 
     return (
@@ -188,6 +193,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={true}
+            {...this.props}
           >
             <Address
               type="influencer"
@@ -278,6 +284,7 @@ class InquiryForm extends React.Component {
                 handleBlur={this.props.handleBlur}
                 setFieldValue={this.props.setFieldValue}
                 onRemove={() => this.handleRemoveCommunity(community.uuid, this.props.values)}
+                isReadOnly={this.props.status.readOnly}
                 {...this.props}
               />
             ))}
@@ -285,7 +292,11 @@ class InquiryForm extends React.Component {
         </Row>
         <br />
         <hr />
-        <FinancialOptions {...this.props} />
+        <FinancialOptions 
+          key="financialOptions"
+          setFieldValue={this.props.setFieldValue}
+          isReadOnly={this.props.status.readOnly}
+        />
         <br />
         <Row>
           <Col>
@@ -448,7 +459,7 @@ class InquiryForm extends React.Component {
 const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
-  validationSchema: mainFormValidationSchema,
+  validationSchema: formValidationSchema,
 
   mapPropsToValues: (props) => {
     return {
@@ -469,11 +480,12 @@ const EnhancedInquiryForm = withFormik({
     setSubmitting(true);
     const salesService = new SalesAPIService();
     try {
-      await salesService.submitToService({ ...values });
+      const lead = await salesService.submitToService({ ...values });
       setStatus({
         successful: true,
         readOnly: true,
       })
+      console.log(`Lead Id: ${lead.leadId}`)
       toast.success("Request was submitted successfully.", {
         position: toast.POSITION.TOP_CENTER
       });

@@ -68,6 +68,11 @@ div.alert-smaller-size {
   padding: .3rem 1rem;
 }
 
+nav.noTopBottomPadding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,7 +1,7 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ProspectError, ServerError, ObjectMappingService } from './Types'
+import { ServerError, ObjectMappingService } from './Types'
 import { CommunityService } from './CommunityServices'
 import { AppError } from './Types';
 
@@ -244,6 +244,30 @@ class SalesAPIService {
     }
   }
 
+  async performServerPingTest() {
+    const pingUrl = this.createApiUri(`echo`);
+
+    const payload = {message: 'test'}
+    const hres = await this._createPOST(pingUrl, payload)
+    const response = await hres.json();
+    if (hres.status === 200) {
+      if (response.message === 'test') {
+        return true;
+      }
+    }
+    throw new ServerError(hres.status, 'Ping test failed.')
+  }
+
+  async _createPOST(url, payload) {
+    return fetch(url, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+  
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
@@ -461,18 +485,19 @@ async handleNewInquiryForm(lead, communities, user) {
   }
 }
 
-handleExistingInquiryForm(lead, communities, user) {
+async handleExistingInquiryForm(lead, communities, user) {
 
 }
 
 async submitToService({ lead, communities, user }) {
 
   try {
+    await this.performServerPingTest();
     if (lead.leadId) {
-      this.handleExistingInquiryForm(lead, communities, user)
+      await this.handleExistingInquiryForm(lead, communities, user)
     }
     else {
-      this.handleNewInquiryForm(lead, communities, user)
+      await this.handleNewInquiryForm(lead, communities, user)
     }
     return lead
 

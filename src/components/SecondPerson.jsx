@@ -70,7 +70,7 @@ export default class SecondPerson extends React.Component {
             name="lead.notes.secondPerson" 
             onChange={this.props.handleChange} 
             onBlur={this.props.handleBlur}
-            isReadOnly={this.props.readOnly}
+            isReadOnly={this.props.isReadOnly}
           />
         </>
       )

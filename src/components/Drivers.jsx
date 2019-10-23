@@ -6,10 +6,8 @@ export default class Drivers extends React.Component {
 
   handleInputChange = ({ target: { name, checked } }) => {
     const qualifiedName = "lead.drivers.".concat(name);
-    const { setFieldValue } = this.props;
-    setFieldValue(qualifiedName, checked);
+    this.props.setFieldValue(qualifiedName, checked);
   };
-
 
   render() {
     return (
@@ -20,19 +18,19 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="activities" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="activities" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Activities
                 </Label>
               </FormGroup>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="accessToResidents" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="accessToResidents" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Access to Residents
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-3" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="ageInPlace" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="ageInPlace" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Age in Place
               </Label>
               </FormGroup>
@@ -42,19 +40,19 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="care" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="care" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Care
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="location" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="location" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Location
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-3" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="peaceOfMind" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="peaceOfMind" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Peace of mind
               </Label>
               </FormGroup>
@@ -64,13 +62,13 @@ export default class Drivers extends React.Component {
             <Col>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="petFriendly" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="petFriendly" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Pet friendly
               </Label>
               </FormGroup>
               <FormGroup check inline className="col-4" disabled={this.props.isReadOnly}>
                 <Label check>
-                  <Input type="checkbox" name="safety" onChange={this.handleInputChange} readOnly={this.props.isReadOnly} />{' '}
+                  <Input type="checkbox" name="safety" onChange={this.handleInputChange} disabled={this.props.isReadOnly} />{' '}
                   Safety
               </Label>
               </FormGroup>
