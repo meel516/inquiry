@@ -141,7 +141,7 @@ export default class CommunitySelect extends React.Component {
 
 CommunitySelect.propTypes = {
   community: PropTypes.object.isRequired,
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 
   onRemove: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
