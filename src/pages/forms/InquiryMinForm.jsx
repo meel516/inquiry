@@ -15,7 +15,7 @@ import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
 import DisplayErrors from '../../components/DisplayErrors';
 import FinancialOptions from '../../components/FinancialOptions';
-import { mainFormValidationSchema } from './ValidationSchema';
+import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
 import NextSteps from '../../components/NextSteps'
@@ -140,6 +140,8 @@ class InquiryForm extends React.Component {
 
   render() {
     const {
+      values,
+      status,
       touched,
       errors,
       dirty,
@@ -175,6 +177,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={true}
+            {...this.props}
           >
             <Address
               type="influencer"
@@ -441,7 +444,7 @@ class InquiryForm extends React.Component {
 const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
-  validationSchema: mainFormValidationSchema,
+  validationSchema: formValidationSchema,
 
   mapPropsToValues: (props) => {
     return {
