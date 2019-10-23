@@ -6,7 +6,6 @@ import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import Address from '../../components/Address';
 import ADLNeeds from '../../components/ADLNeeds';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
@@ -177,17 +176,10 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={true}
+            hasAddress={true}
             setFieldValue={this.props.setFieldValue}
             {...this.props}
           >
-            <Address
-              type="influencer"
-              address={this.props.values.lead.influencer.address}
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              isReadOnly={this.props.status.readOnly}
-              {...this.props}
-            />
           </Contact>
         </section>
         <br />

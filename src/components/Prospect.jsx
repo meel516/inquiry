@@ -21,6 +21,7 @@ export default function Prospect(props) {
         handleChange={props.handleChange}
         isReadOnly={props.isReadOnly}
         duplicateCheck={props.duplicateCheck}
+        hasAddress={false}
       />
       <Row>
         <Col xs="1" md="6">

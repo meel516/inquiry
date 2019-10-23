@@ -4,6 +4,7 @@ import NumberFormat from 'react-number-format';
 import { Alert, Button, Col, FormGroup, Input, Modal, ModalBody, ModalHeader, ModalFooter, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
+import Address from './Address';
 
 import { DropDownService, DuplicationService, SalesAPIService } from '../services/SalesServices'
 import { ObjectMappingService } from '../services/Types'
@@ -59,6 +60,7 @@ export default class Contact extends React.Component {
       showSecondModal: false,
       dupeContactsFound: null,
       runDupeCheck: false,
+      locked: false,
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -73,7 +75,7 @@ export default class Contact extends React.Component {
   handleDupCheck = async event => {
     const { contact } = this.props;
 
-    if (this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
+    if (this.props.duplicateCheck && this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
       await this.dedup.checkForDuplicate(contact)
         .then((data) => {
           const mappedData = ObjectMappingService.createContactDuplicateGridContent(data);
@@ -116,6 +118,7 @@ export default class Contact extends React.Component {
               const { setFieldValue } = this.props;
               const formContact = ObjectMappingService.createContact(dupeContact);
               setFieldValue(`lead.${this.props.type}`, formContact);
+              this.setState({ locked: true });
               break;
             }
           }
@@ -148,7 +151,8 @@ export default class Contact extends React.Component {
   }
   
   render() {
-    const { hasErrors, phoneTypes } = this.state || [];
+    const { locked, phoneTypes } = this.state || [];
+    const makeFieldsLocked = this.props.isReadOnly || locked;
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
       return <option key={type.value} value={type.text}>{type.text}</option>
     });
@@ -166,7 +170,7 @@ export default class Contact extends React.Component {
                 value={this.props.contact.firstName} 
                 onChange={this.props.handleChange} 
                 autoComplete="off" 
-                readOnly={this.props.isReadOnly}
+                readOnly={makeFieldsLocked}
                 placeholder="First Name" />
               <ErrorMessage name={`lead.${this.props.type}.firstName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -178,7 +182,7 @@ export default class Contact extends React.Component {
                 name={`lead.${this.props.type}.lastName`} 
                 value={this.props.contact.lastName} 
                 onChange={this.props.handleChange} 
-                readOnly={this.props.isReadOnly}
+                readOnly={makeFieldsLocked}
                 placeholder="Last Name" 
               />
               <ErrorMessage name={`lead.${this.props.type}.lastName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
@@ -198,7 +202,7 @@ export default class Contact extends React.Component {
                 onBlur={() => this.handleDupCheck()}
                 onChange={this.handleOnChange}
                 placeholder="Phone" 
-                readOnly={this.props.isReadOnly}
+                readOnly={makeFieldsLocked}
               />
               <ErrorMessage name={`lead.${this.props.type}.phone.number`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -211,7 +215,7 @@ export default class Contact extends React.Component {
                 name={`lead.${this.props.type}.phone.type`} 
                 value={(this.props.contact.phone ? (this.props.contact.phone.type || '') : '')} 
                 onChange={this.props.handleChange} 
-                disabled={this.props.isReadOnly}
+                disabled={makeFieldsLocked}
               >
                 <option value="">Select One</option>
                 {displayablePhoneTypes}
@@ -231,12 +235,22 @@ export default class Contact extends React.Component {
                 onBlur={() => this.handleDupCheck()}
                 onChange={this.handleOnChange} 
                 placeholder="Email" 
-                readOnly={this.props.isReadOnly}
+                readOnly={makeFieldsLocked}
               />
               <ErrorMessage name={`lead.${this.props.type}.email`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
+
+        {this.props.hasAddress &&
+          <Address
+            type="influencer"
+            address={this.props.contact.address}
+            handleChange={this.props.handleChange}
+            handleBlur={this.props.handleBlur}
+            isReadOnly={makeFieldsLocked}
+          />
+        }
 
         {this.props.duplicateCheck &&
           <Modal isOpen={this.state.showModal} size="lg">
@@ -275,8 +289,6 @@ export default class Contact extends React.Component {
             </ModalBody>
           </Modal>
         }
-
-        {this.props.children}
       </>
     )
   }
@@ -286,6 +298,7 @@ Contact.propTypes = {
   type: PropTypes.string.isRequired,
   contact: PropTypes.object.isRequired,
   setFieldValue: PropTypes.func,
+  hasAddress: PropTypes.bool,
 
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
@@ -297,4 +310,5 @@ Contact.propTypes = {
 Contact.defaultProps = {
   isReadOnly: false,
   duplicateCheck: false,
+  hasAddress: false,
 }

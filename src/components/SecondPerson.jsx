@@ -63,6 +63,7 @@ export default class SecondPerson extends React.Component {
             onBlur={this.props.handleBlur}
             readOnly={this.props.isReadOnly}
             duplicateCheck={this.props.duplicateCheck}
+            hasAddress={false}
             {...this.props} />
           <Note 
             labelId="situation2Label" 
