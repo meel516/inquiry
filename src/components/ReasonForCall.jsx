@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, FormGroup, Label } from 'reactstrap';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -19,7 +20,6 @@ export default class ReasonForCall extends React.Component {
 
   render() {
     const { reasonForCall } = this.state || [];
-    const { defaultValue, handleChange, handleBlur } = this.props;
     const reasonForCallOptions = reasonForCall.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -27,11 +27,33 @@ export default class ReasonForCall extends React.Component {
     return (
       <FormGroup>
         <Label for="reasonForCall" className="label-format">Reason for Call</Label>
-        <Input type="select" id="reasonForCall" name="lead.reasonForCall" value={defaultValue || ''} onChange={handleChange} onBlur={handleBlur}>
+        <Input 
+          type="select" 
+          id="reasonForCall" 
+          name="lead.reasonForCall" 
+          value={this.props.defaultValue} 
+          onChange={this.props.handleChange} 
+          onBlur={this.props.handleBlur} 
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {reasonForCallOptions}
         </Input>
       </FormGroup>
     )
   }
+}
+
+ReasonForCall.propTypes = {
+  defaultValue: PropTypes.string,
+
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+ReasonForCall.defaultProps = {
+  isReadOnly: false,
+  defaultValue: '',
 }

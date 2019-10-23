@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -24,11 +25,30 @@ export default class CurrentSituation extends React.Component {
     return (
       <FormGroup md="9">
         <Label for="currentSituation" className="label-format">Current Living Situation</Label>
-        <Input type="select" id="currentSituation" name="currentSituation" value={defaultValue} onChange={this.props.onChange}>
+        <Input 
+          type="select" 
+          id="currentSituation" 
+          name="currentSituation" 
+          value={defaultValue} 
+          onChange={this.props.handleChange}
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {currentSituationOptions}
         </Input>
       </FormGroup>
     )
   }
+}
+
+CurrentSituation.propTypes = {
+  defaultValue: PropTypes.string,
+
+  handleChange: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+CurrentSituation.defaultProps = {
+  isReadOnly: false
 }
