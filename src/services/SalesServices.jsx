@@ -2,8 +2,9 @@
 import DedupRequest from './DedupRequest'
 
 import { ServerError, ObjectMappingService } from './Types'
-import { CommunityService } from './CommunityServices'
 import { AppError } from './Types';
+import { isContactCenter, createCommunity, containContactCenter } from './community-services'
+import convertToISODate from '../common/convert-to-iso-date'
 
 class DuplicationService {
 
@@ -410,15 +411,15 @@ async handleNewInquiryForm(lead, communities, user) {
   // IF zero/many community is selected always assume Contact Center community
   let leadId = null;
   try {
-    if (!CommunityService.containContactCenter(communities)) {
-      let community = CommunityService.createCommunity();
+    if (!containContactCenter(communities)) {
+      let community = createCommunity();
       community.communityId = 225707
       leadId = await this.processContactCenter(lead, community, user);
     }
     else {
       let contactCenter;
       communityList.map((community) => {
-        if (CommunityService.isContactCenter(community)) {
+        if (isContactCenter(community)) {
           contactCenter = community;
           return null;
         }
@@ -445,7 +446,7 @@ async handleNewInquiryForm(lead, communities, user) {
     // First, iterate through the communityList and format the followupDate to the ISOString.
     communityList.forEach((community) => {
 
-      community.followupDate = CommunityService.convertToISODate(community.followupDate);
+      community.followupDate = convertToISODate(community.followupDate);
       formattedCommunityList.push(community);
 
       // Check to see if this community has an applicable Follow Up Action that
