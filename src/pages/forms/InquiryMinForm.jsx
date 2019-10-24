@@ -28,7 +28,7 @@ import { Debug } from '../../components/Debug';
 
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
-import { CommunityService } from '../../services/CommunityServices';
+import createCommunity from '../../services/community-services'
 import { checkAuthentication } from '../../auth/checkAuth';
 
 class InquiryForm extends React.Component {
@@ -89,7 +89,7 @@ class InquiryForm extends React.Component {
   handleAddCommunity = (values) => {
     this.setState((state) => {
       let communities = values.communities
-      let community = CommunityService.createCommunity()
+      let community = createCommunity()
       communities.push(community)
 
       let allowAddCommunities = true;
