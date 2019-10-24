@@ -643,6 +643,8 @@ class ObjectMappingService {
         salesContact.emailAddress = influencer.email
         salesContact.address = influencer.address
         salesContact.gender = gender
+        salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
+        salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
         this.addPhoneToContact(influencer, salesContact);
         this.addAddressToContact(influencer, salesContact);
 
