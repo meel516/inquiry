@@ -2,7 +2,7 @@ import request from '../request'
 import getEndpointUrl from './get-endpoint-url'
 
 export default username => {
-    return request.post(encodeURI(`${getEndpointUrl()}/searchByAppAndUser`),
+    return request.post(`${getEndpointUrl()}/searchByAppAndUser`,
         {
             communitySearchText: '',
             appShortName: 'SIMS',

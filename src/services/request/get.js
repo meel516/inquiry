@@ -1,3 +1,3 @@
-import getHeaders from './get-headers'
+import createFetch from './create-fetch'
 
-export default (url) => fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache', headers: { ...getHeaders() }})
+export default (url) => createFetch(url, 'GET')

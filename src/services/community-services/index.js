@@ -1,6 +1,13 @@
-export { default as containContactCenter } from './contain-contact-center'
-export { default as createCommunity } from './create-community'
-export { default as fetchCommunities } from './fetch-communities'
-export { default as getFreeMealListing } from './get-free-meal-listing'
-export { default as getFreeMealItem } from './get-free-meal-item'
-export { default as isContactCenter } from './is-contact-center'
+import containContactCenter from './contain-contact-center'
+import createCommunity from './create-community'
+import fetchCommunities from './fetch-communities'
+import  getFreeMealItem from './get-free-meal-item'
+import isContactCenter from './is-contact-center'
+
+export default {
+    containContactCenter,
+    createCommunity,
+    fetchCommunities,
+    getFreeMealItem,
+    isContactCenter
+}

@@ -1,4 +1,4 @@
-import getFreeMealListing from './get-free-meal-listing'
 import { find } from 'lodash'
+import freeMealListings from '../../constants/free-meal-listings'
 
-export default item => find(getFreeMealListing(), { value: item }) || null
+export default item => find(freeMealListings, { value: item }) || null
