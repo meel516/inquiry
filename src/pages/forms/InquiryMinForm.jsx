@@ -137,7 +137,6 @@ class InquiryForm extends React.Component {
 
   handleFormSubmit = (e) => {
     try {
-      debugger
       this.props.handleSubmit(e)
       if (!this.props.isValid) {
         this.scrollToTop();
