@@ -1,3 +1,4 @@
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { CommunityService } from './CommunityServices'
 
 class ServerError extends Error {
@@ -75,6 +76,108 @@ function SalesAddress({ type = 'Home', active = true, primary = true }) {
 function SalesLead(salesContact, leadTypeId = 4) {
     this.leadTypeId = leadTypeId;
     this.salesContact = salesContact;
+}
+
+function DuplicateContact(dupecontact) {
+    if (dupecontact) {
+        this.contactid = dupecontact.contactId
+        this.name = dupecontact.firstName + " " + dupecontact.lastName
+
+        if (dupecontact.phoneNumbers) {
+            for (let i = 0; i < dupecontact.phoneNumbers.length; i++) {
+                let tmpPhone = dupecontact.phoneNumbers[i];
+                if (tmpPhone) {
+                    if (tmpPhone.primary) {
+                        if (tmpPhone.phoneNumber) {
+                            const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                            this.phone = pn.formatNational();
+                        }
+
+                        this.phonetype = tmpPhone.phoneType
+                        break;
+                    }
+                }
+            }
+        }
+
+        this.email = dupecontact.emailAddress
+        
+        if (dupecontact.address) {
+            this.address1 = dupecontact.address.addressLine1
+            this.address2 = dupecontact.address.addressLine2
+            this.city = dupecontact.address.city
+            this.state = dupecontact.address.stateProv
+            this.zip = dupecontact.address.zipPostalCode
+        }
+    }
+}
+
+function LeadDataRecord(record) {
+    if (record) {
+        this.leadid = record.leadId
+        this.community = record.buildingName
+        this.hasaddtl = record.hasAddlInfluencers
+
+        if (record.prospect) {
+            this.pname = record.prospect.firstName + " " + record.prospect.lastName
+            if (record.prospect.phoneNumbers) {
+                for (let i = 0; i < record.prospect.phoneNumbers.length; i++) {
+                    let tmpPhone = record.prospect.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.pphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.pemail = record.prospect.emailAddress
+        }
+
+        if (record.primaryInfluencer) {
+            this.iname = record.primaryInfluencer.firstName + " " + record.primaryInfluencer.lastName
+            if (record.primaryInfluencer.phoneNumbers) {
+                for (let i = 0; i < record.primaryInfluencer.phoneNumbers.length; i++) {
+                    let tmpPhone = record.primaryInfluencer.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.iphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.iemail = record.primaryInfluencer.emailAddress
+        }
+
+        if (record.secondPerson) {
+            this.spname = record.secondPerson.firstName + " " + record.secondPerson.lastName
+            if (record.secondPerson.phoneNumbers) {
+                for (let i = 0; i < record.secondPerson.phoneNumbers.length; i++) {
+                    let tmpPhone = record.secondPerson.phoneNumbers[i];
+                    if (tmpPhone) {
+                        if (tmpPhone.primary) {
+                            if (tmpPhone.phoneNumber) {
+                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
+                                this.spphone = pn.formatNational();
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            this.spemail = record.secondPerson.emailAddress
+        }
+    }
 }
 
 function SalesInquiryForm() {
@@ -311,6 +414,7 @@ class ObjectMappingService {
             contact.masterId = salesContact.masterId;
             contact.firstName = salesContact.firstName;
             contact.lastName = salesContact.lastName;
+            contact.email = salesContact.emailAddress;
             contact.age = salesContact.age;
             contact.veteranStatus = salesContact.veteranStatus;
             contact.currentSituation = salesContact.currentSituation;
@@ -641,6 +745,37 @@ class ObjectMappingService {
         }
     }
     
+    static createContactDuplicationRequest(contact) {
+        return {
+            address1: (contact.address !== null ? contact.address.line1 : ""),
+            address2: (contact.address !== null ? contact.address.line2 : ""),
+            city: (contact.address !== null ? contact.address.city : ""),
+            state: (contact.address !== null ? contact.address.state : ""),
+            zip: (contact.address !== null ? contact.address.zip : ""),
+            email: contact.email,
+            prospectFirstName: contact.firstName,
+            prospectLastName: contact.lastName,
+            phone1: (contact.phone !== null ? Util.stripPhoneFormatting(contact.phone.number) : ""),
+            phoneType: (contact.phone !== null ? contact.phone.type : ""),
+        }
+    }
+
+    static buildLeadDataResponseForContactId(payload) {
+        const returnval = [];
+
+        if (payload) {
+            for (let i = 0; i < payload.length; i++) {
+                let leadRow = payload[i];
+                if (leadRow) {
+                    const ldr = new LeadDataRecord(leadRow);
+                    returnval.push(ldr);
+                }
+            }
+        }
+
+        return returnval;
+    }
+
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
         const salesFormDetails = new SalesFormDetails();
         const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
@@ -692,6 +827,22 @@ class ObjectMappingService {
         salesInquiryForm.formDetails = salesFormDetails;
         
         return salesInquiryForm;
+    }
+
+    static createContactDuplicateGridContent(duplicatecontacts) {
+        const returnval = [];
+
+        if (duplicatecontacts) {
+            for (let i = 0; i < duplicatecontacts.length; i++) {
+                let dupecontact = duplicatecontacts[i];
+                if (dupecontact) {
+                    const dc = new DuplicateContact(dupecontact);
+                    returnval.push(dc);
+                }
+            }
+        }
+
+        return returnval;
     }
 }
 

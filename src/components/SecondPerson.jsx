@@ -62,6 +62,8 @@ export default class SecondPerson extends React.Component {
             onChange={this.props.handleChange}
             onBlur={this.props.handleBlur}
             readOnly={this.props.isReadOnly}
+            duplicateCheck={this.props.duplicateCheck}
+            hasAddress={false}
             {...this.props} />
           <Note 
             labelId="situation2Label" 
@@ -88,8 +90,10 @@ SecondPerson.propTypes = {
 
   contact: PropTypes.object.isRequired,
   isReadOnly: PropTypes.bool,
+  duplicateCheck: PropTypes.bool,
 }
 
 SecondPerson.defaultProps = {
-  isReadOnly: false
+  isReadOnly: false,
+  duplicateCheck: false,
 }

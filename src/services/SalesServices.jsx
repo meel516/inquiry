@@ -1,43 +1,39 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ServerError, ObjectMappingService } from './Types'
+import { AppError, ProspectError, ServerError, ObjectMappingService } from './Types'
 import { CommunityService } from './CommunityServices'
-import { AppError } from './Types';
 
 class DuplicationService {
 
-  static shouldRunDuplicateCheck(contact) {
+  shouldRunDuplicateCheck(contact) {
     if (contact) {
-      const { firstName, lastName, email, phone: { number, type } } = contact;
-      if (!firstName && !lastName) {
-        return false;
-      }
-      if ((!number || !type) && !email) {
+      const { email, phone: { number } } = contact;
+      if (!number && !email) {
         return false;
       }
       return true;
     }
-    return false;
+    return true;
   }
 
-  /*
-  since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
-  just a normal export
-  */
-  checkForDuplicate(contact, address) {
-    // const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
+  async checkForDuplicate(contact) {
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
+    const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);
 
-    // const dupRequest = new DedupRequest(contact, address);
-
-    // return fetch(endpoint, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   mode: 'cors',
-    //   cache: 'no-cache',
-    //   body: JSON.stringify(dupRequest.payload)
-    // })
-    //   .then((resp) => resp.json())
+    let response = await fetch(endpoint, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactDupeRequest),
+    })
+    const data = await response.json();
+    if (response.status === 200) {
+      return data;
+    } else {
+      throw new Error('Error Performing Duplicate Search')
+    }
   }
 }
 
@@ -117,6 +113,12 @@ class SalesAPIService {
   async getLeadById(leadId) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl);
+  }
+
+  async retrieveLeadDataForContactId(contactId) {
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/lead/contact/${contactId}`);
+    const output = await this.createFetch(endpoint);
+    return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
 
   async getLeadByUrl(uri) {

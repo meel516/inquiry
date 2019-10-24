@@ -41,7 +41,7 @@ export default class Address extends React.Component {
               <Input 
                 type="text" 
                 name={`lead.${this.props.type}.address.line1`} 
-                value={address.line1 || ''} 
+                value={(address ? (address.line1 || '') : '')} 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur} 
                 readOnly={this.props.isReadOnly}
@@ -56,7 +56,7 @@ export default class Address extends React.Component {
               <Input 
                 type="text" 
                 name={`lead.${this.props.type}.address.line2`} 
-                value={address.line2 || ''} 
+                value={(address ? (address.line2 || '') : '')} 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur} 
                 readOnly={this.props.isReadOnly}
@@ -73,7 +73,7 @@ export default class Address extends React.Component {
               <Input 
                 type="text" 
                 name={`lead.${this.props.type}.address.city`} 
-                value={address.city || ''} 
+                value={(address ? (address.city || '') : '')} 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur} 
                 readOnly={this.props.isReadOnly}
@@ -88,7 +88,7 @@ export default class Address extends React.Component {
               <Input 
                 type="select" 
                 name={`lead.${this.props.type}.address.state`} 
-                value={address.state || ''} 
+                value={(address ? (address.state || '') : '')} 
                 onChange={this.props.handleChange}
                 disabled={this.props.isReadOnly}
               >
@@ -103,7 +103,7 @@ export default class Address extends React.Component {
               <Input 
                 type="number" 
                 name={`lead.${this.props.type}.address.zip`} 
-                value={address.zip} 
+                value={(address ? (address.zip || '') : '')} 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur} 
                 readOnly={this.props.isReadOnly}
@@ -119,7 +119,7 @@ export default class Address extends React.Component {
 
 Address.propTypes = {
   type: PropTypes.string.isRequired,
-  address: PropTypes.object.isRequired,
+  address: PropTypes.object,
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
 
