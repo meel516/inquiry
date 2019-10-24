@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import Note from './Note'
 
-import { CommunityService } from '../services/CommunityServices'
+import freeMealListings from '../constants/free-meal-listings'
 
 export default class Visit extends React.Component {
   state = {
@@ -81,12 +81,11 @@ Visit.defaultProps = {
 }
 
 function FreeMeal(props) {
-  const freeMealItems = CommunityService.freeMealListing()
   return (
     <React.Fragment>
       <Label for="freeMeal" className="label-format">Does this Visit include a Free Meal?</Label>
       <Input type="select" id="freeMeal" name="freeMeal" onChange={props.handleChange} disabled={props.isReadOnly}>
-        {freeMealItems.map((optn) => {
+        {freeMealListings.map((optn) => {
           return <option key={optn.value} value={optn.label}>{optn.label}</option>
         })}
       </Input>
