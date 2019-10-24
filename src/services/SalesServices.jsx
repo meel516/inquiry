@@ -4,7 +4,7 @@ import DedupRequest from './DedupRequest'
 import { ServerError, ObjectMappingService } from './Types'
 import { AppError } from './Types';
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
-import convertToISODate from '../common/convert-to-iso-date'
+import convertToISODate from '../utils/convert-to-iso-date'
 
 class DuplicationService {
 

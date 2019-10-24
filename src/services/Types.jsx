@@ -1,4 +1,4 @@
-import convertToISODate from '../common/convert-to-iso-date'
+import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 
 class ServerError extends Error {
