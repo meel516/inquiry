@@ -121,33 +121,31 @@ class InquiryForm extends React.Component {
     }
   }
 
-  handleFormSubmit = (e) => {
-    const promise = new Promise((resolve, reject) => {
-      try {
-        this.props.handleSubmit(e)
-        if (this.props.isValid) {
-          resolve()
-        }
-        else {
-          setTimeout(() => {
-            this.TOP.current.scrollIntoView({
-              behavior: 'smooth',
-            })
-          }, 500)
-          reject()
-        }
-      }
-      catch (err) {
-        setTimeout(() => {
-          this.TOP.current.scrollIntoView({
-            behavior: 'smooth',
-          })
-        }, 500)
-        reject()
-      }
-    })
+  displayValidationError = () => {
+    toast.error("Please fix the errors before continuing.", {
+      position: toast.POSITION.TOP_CENTER
+    });
+  }
 
-    return promise;
+  scrollToTop = () => {
+    setTimeout(() => {
+      this.TOP.current.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }, 500)
+  }
+
+  handleFormSubmit = (e) => {
+    try {
+      this.props.handleSubmit(e)
+      if (!this.props.isValid) {
+        this.scrollToTop();
+        this.displayValidationError();
+      }
+    }
+    catch (err) {
+      this.scrollToTop();
+    }
   }
 
   render() {
@@ -177,11 +175,11 @@ class InquiryForm extends React.Component {
 
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
-        <DisplayErrors
+        {false && <DisplayErrors
           status={this.props.status}
           errors={this.props.errors}
           valid={this.props.isValid}
-        />
+        />}
         <section>
           <div ref={this.TOP}></div>
         </section>
@@ -288,7 +286,7 @@ class InquiryForm extends React.Component {
         </Row>
         <br />
         <hr />
-        <FinancialOptions 
+        <FinancialOptions
           key="financialOptions"
           setFieldValue={this.props.setFieldValue}
           isReadOnly={this.props.status.readOnly}
@@ -494,9 +492,9 @@ const EnhancedInquiryForm = withFormik({
         readOnly: false,
         error: true,
       })
-      setErrors({
-        error: err.message
-      })
+      toast.error(err.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
     finally {
       setSubmitting(false);

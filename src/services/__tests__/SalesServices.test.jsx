@@ -151,10 +151,13 @@ describe('unit testing javascript dates', () => {
 })
 
 describe('service send request testing', () => {
-    const salesServiceApi = new SalesAPIService();
+    const salesService = new SalesAPIService();
 
+    // payload messages
     const successful = {objectId: 123, message: 'Successful'}
     const failure = {message: 'Failure'}
+    const pingSuccess = {message: 'test'}
+
     let user = TestUtils.createEmptyUser();
     let communities = [];
     let lead = ObjectMappingService.createEmptyLead();
@@ -181,7 +184,7 @@ describe('service send request testing', () => {
             lead.leadId = 1
     
             const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
-            salesServiceApi.sendAddCommunityRequest(request);
+            salesService.sendAddCommunityRequest(request);
     
             expect(global.fetch).toHaveBeenCalledTimes(1);
     
@@ -202,7 +205,7 @@ describe('service send request testing', () => {
             let error = false
             try {
                 const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user)
-                await salesServiceApi.sendAddCommunityRequest(request)
+                await salesService.sendAddCommunityRequest(request)
             }
             catch(err) {
                 error = true
@@ -214,6 +217,23 @@ describe('service send request testing', () => {
         })
 
         test('test failure ping testing server', async () => {
+            const mockFetchPromise = Promise.reject({
+                json: () => {throw new Error('Server is not responding.')},
+                status: 500,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+
+            let error = null
+            try {
+                const ret = salesService.checkServerStatus();
+            }
+            catch(err) {
+                error = err
+            }
+
+            expect(global.fetch).toHaveBeenCalledTimes(1)
+            expect(error).not.toBeNull()
+            expect(error.message).toEqual('Server is not responding.')
 
         })
     
