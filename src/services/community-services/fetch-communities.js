@@ -1,12 +1,12 @@
 import * as request from '../request'
 import getEndpointUrl from './get-endpoint-url'
 
-export default username => {
+export default userName => {
     return request.post(`${getEndpointUrl()}/searchByAppAndUser`,
         {
             communitySearchText: '',
             appShortName: 'SIMS',
-            username
+            userName
         }
     ).then(res => res.json())
 }
