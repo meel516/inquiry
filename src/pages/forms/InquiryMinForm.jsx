@@ -28,7 +28,7 @@ import { Debug } from '../../components/Debug';
 
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
-import createCommunity from '../../services/community-services'
+import createCommunity from '../../services/community-services/create-community'
 import { checkAuthentication } from '../../auth/checkAuth';
 
 class InquiryForm extends React.Component {
