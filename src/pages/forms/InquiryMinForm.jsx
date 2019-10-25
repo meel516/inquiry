@@ -6,14 +6,12 @@ import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import Address from '../../components/Address';
 import ADLNeeds from '../../components/ADLNeeds';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
-import DisplayErrors from '../../components/DisplayErrors';
 import FinancialOptions from '../../components/FinancialOptions';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
@@ -122,33 +120,31 @@ class InquiryForm extends React.Component {
     }
   }
 
-  handleFormSubmit = (e) => {
-    const promise = new Promise((resolve, reject) => {
-      try {
-        this.props.handleSubmit(e)
-        if (this.props.isValid) {
-          resolve()
-        }
-        else {
-          setTimeout(() => {
-            this.TOP.current.scrollIntoView({
-              behavior: 'smooth',
-            })
-          }, 500)
-          reject()
-        }
-      }
-      catch (err) {
-        setTimeout(() => {
-          this.TOP.current.scrollIntoView({
-            behavior: 'smooth',
-          })
-        }, 500)
-        reject()
-      }
-    })
+  displayValidationError = () => {
+    toast.error("Please fix the errors before continuing.", {
+      position: toast.POSITION.TOP_CENTER
+    });
+  }
 
-    return promise;
+  scrollToTop = () => {
+    setTimeout(() => {
+      this.TOP.current.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }, 500)
+  }
+
+  handleFormSubmit = (e) => {
+    try {
+      this.props.handleSubmit(e)
+      if (!this.props.isValid) {
+        this.scrollToTop();
+        this.displayValidationError();
+      }
+    }
+    catch (err) {
+      this.scrollToTop();
+    }
   }
 
   render() {
@@ -178,11 +174,6 @@ class InquiryForm extends React.Component {
 
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
-        <DisplayErrors
-          status={this.props.status}
-          errors={this.props.errors}
-          valid={this.props.isValid}
-        />
         <section>
           <div ref={this.TOP}></div>
         </section>
@@ -195,16 +186,10 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={true}
+            hasAddress={true}
+            setFieldValue={this.props.setFieldValue}
             {...this.props}
           >
-            <Address
-              type="influencer"
-              address={this.props.values.lead.influencer.address}
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              isReadOnly={this.props.status.readOnly}
-              {...this.props}
-            />
           </Contact>
         </section>
         <br />
@@ -239,6 +224,7 @@ class InquiryForm extends React.Component {
             handleChange={this.props.handleChange}
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
+            duplicateCheck={false}
           />
           <br />
           <CareType
@@ -294,7 +280,7 @@ class InquiryForm extends React.Component {
         </Row>
         <br />
         <hr />
-        <FinancialOptions 
+        <FinancialOptions
           key="financialOptions"
           setFieldValue={this.props.setFieldValue}
           isReadOnly={this.props.status.readOnly}
@@ -325,6 +311,7 @@ class InquiryForm extends React.Component {
           handleChange={this.props.handleChange}
           handleBlur={this.props.handleBlur}
           isReadOnly={this.props.status.readOnly}
+          duplicateCheck={false}
           {...this.props}
         />
         <br />
@@ -499,9 +486,9 @@ const EnhancedInquiryForm = withFormik({
         readOnly: false,
         error: true,
       })
-      setErrors({
-        error: err.message
-      })
+      toast.error(err.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
     finally {
       setSubmitting(false);

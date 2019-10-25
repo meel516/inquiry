@@ -5,40 +5,39 @@ import { ServerError, ObjectMappingService } from './Types'
 import { AppError } from './Types';
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
+import { AppError, ProspectError, ServerError, ObjectMappingService } from './Types'
+
 
 class DuplicationService {
 
-  static shouldRunDuplicateCheck(contact) {
+  shouldRunDuplicateCheck(contact) {
     if (contact) {
-      const { firstName, lastName, email, phone: { number, type } } = contact;
-      if (!firstName && !lastName) {
-        return false;
-      }
-      if ((!number || !type) && !email) {
+      const { email, phone: { number } } = contact;
+      if (!number && !email) {
         return false;
       }
       return true;
     }
-    return false;
+    return true;
   }
 
-  /*
-  since this export is not default... on the import you need to do ... import { duplicateCheck } from '../services/duplicateCheck' this is because we don't have a default export
-  just a normal export
-  */
-  checkForDuplicate(contact, address) {
-    // const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/ContactService/api/duplicate/check`);
+  async checkForDuplicate(contact) {
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
+    const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);
 
-    // const dupRequest = new DedupRequest(contact, address);
-
-    // return fetch(endpoint, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   mode: 'cors',
-    //   cache: 'no-cache',
-    //   body: JSON.stringify(dupRequest.payload)
-    // })
-    //   .then((resp) => resp.json())
+    let response = await fetch(endpoint, {
+      method: 'POST', mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactDupeRequest),
+    })
+    const data = await response.json();
+    if (response.status === 200) {
+      return data;
+    } else {
+      throw new Error('Error Performing Duplicate Search')
+    }
   }
 }
 
@@ -118,6 +117,12 @@ class SalesAPIService {
   async getLeadById(leadId) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl);
+  }
+
+  async retrieveLeadDataForContactId(contactId) {
+    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/lead/contact/${contactId}`);
+    const output = await this.createFetch(endpoint);
+    return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
 
   async getLeadByUrl(uri) {
@@ -245,18 +250,23 @@ class SalesAPIService {
     }
   }
 
-  async performServerPingTest() {
+  async checkServerStatus() {
     const pingUrl = this.createApiUri(`echo`);
 
-    const payload = {message: 'test'}
-    const hres = await this._createPOST(pingUrl, payload)
-    const response = await hres.json();
-    if (hres.status === 200) {
-      if (response.message === 'test') {
-        return true;
+    const payload = { message: 'test' }
+    try {
+      const hres = await this._createPOST(pingUrl, payload)
+      if (hres.status === 200) {
+        const response = await hres.json();
+        if (response.message === 'test') {
+          return true;
+        }
       }
+      throw new ServerError(hres.status, 'Server responded with wrong status code.')
     }
-    throw new ServerError(hres.status, 'Ping test failed.')
+    catch (err) {
+      throw new ServerError(500, 'Server is not responding.')
+    }
   }
 
   async _createPOST(url, payload) {
@@ -268,7 +278,7 @@ class SalesAPIService {
       body: JSON.stringify(payload),
     })
   }
-  
+
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
@@ -317,7 +327,7 @@ class SalesAPIService {
       const { objectId } = salesResponse;
       return objectId;
     }
-    throw new ServerError({status: response.status, message: response.message, entity: 'community'});
+    throw new ServerError({ status: response.status, message: response.message, entity: 'community' });
   }
 
   async sendProspect(prospectRequest) {
@@ -337,7 +347,7 @@ class SalesAPIService {
 
       return prospectRequest;
     }
-    throw new ServerError({status: response.status, message: response.message, entity: 'prospect'});
+    throw new ServerError({ status: response.status, message: response.message, entity: 'prospect' });
   }
 
   /**
@@ -384,30 +394,31 @@ class SalesAPIService {
    * @param {communities} the communities in which to create new COIs
    * @param {user} user the sales contact from SMS
    */
-async processCommunities(lead, communities, user) {
-  let addCommunityRequest = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
-  return await this.sendAddCommunityRequest(addCommunityRequest);
-}
+  async processCommunities(lead, communities, user) {
+    let addCommunityRequest = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
+    return await this.sendAddCommunityRequest(addCommunityRequest);
+  }
 
-async retrieveInfluencer(leadId) {
-  const influencerUrl = this.createApiUri(`leads/${leadId}/influencer`)
+  async retrieveInfluencer(leadId) {
+    const influencerUrl = this.createApiUri(`leads/${leadId}/influencer`)
 
-  // already returning json from this fetch
-  const influencer = await this.createFetch(influencerUrl);
-  return influencer;
-}
+    // already returning json from this fetch
+    const influencer = await this.createFetch(influencerUrl);
+    return influencer;
+  }
 
-async retrieveProspect(leadId) {
-  const prospectUrl = this.createApiUri(`leads/${leadId}/prospect`)
+  async retrieveProspect(leadId) {
+    const prospectUrl = this.createApiUri(`leads/${leadId}/prospect`)
 
-  // already returning json from this fetch
-  const prospect = await this.createFetch(prospectUrl)
-  return prospect;
-}
+    // already returning json from this fetch
+    const prospect = await this.createFetch(prospectUrl)
+    return prospect;
+  }
 
-async handleNewInquiryForm(lead, communities, user) {
-  const communityList = [...communities];
+  async handleNewInquiryForm(lead, communities, user) {
+    const communityList = [...communities];
 
+<<<<<<< HEAD
   // IF zero/many community is selected always assume Contact Center community
   let leadId = null;
   try {
@@ -422,78 +433,97 @@ async handleNewInquiryForm(lead, communities, user) {
         if (isContactCenter(community)) {
           contactCenter = community;
           return null;
+=======
+    // IF zero/many community is selected always assume Contact Center community
+    let leadId = null;
+    try {
+      if (!CommunityService.containContactCenter(communities)) {
+        let community = CommunityService.createCommunity();
+        community.communityId = 225707
+        leadId = await this.processContactCenter(lead, community, user);
+      }
+      else {
+        let contactCenter;
+        communityList.map((community) => {
+          if (CommunityService.isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+
+        if (contactCenter != null) {
+          leadId = await this.processContactCenter(lead, contactCenter, user);
+>>>>>>> develop
         }
-        return community;
-      });
-  
-      if (contactCenter != null) {
-        leadId = await this.processContactCenter(lead, contactCenter, user);
       }
     }
-  }
-  catch(err) {
+    catch (err) {
 
-  }
+    }
 
-  if (leadId == null) {
-    // throw new error due to lead was not created due to errors
-    throw new AppError('412', 'Lead was not created in Sales System.')
-  }
-
-  const formattedCommunityList = [];
-  const eloquaCommunityList = [];
-  if (communityList && communityList.length > 0) {
-    // First, iterate through the communityList and format the followupDate to the ISOString.
-    communityList.forEach((community) => {
-
+<<<<<<< HEAD
       community.followupDate = convertToISODate(community.followupDate);
       formattedCommunityList.push(community);
+=======
+    if (leadId == null) {
+      // throw new error due to lead was not created due to errors
+      throw new AppError('412', 'Lead was not created in Sales System.')
+    }
+>>>>>>> develop
 
-      // Check to see if this community has an applicable Follow Up Action that
-      // would deem submission of an External Eloqua Email.  If so, add it to the
-      // eloquaCommunityList.
-      // 5	Visit/Appt - Scheduled
-      // 6	Home Visit
-      // 8	Assessment
-      const actionArray = ["5", "6", "8"];
-      if (actionArray.indexOf(community.followUpAction) > -1) {
-        eloquaCommunityList.push(community);
-      }
+    const formattedCommunityList = [];
+    const eloquaCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
 
-    })
-  }
+        community.followupDate = CommunityService.convertToISODate(community.followupDate);
+        formattedCommunityList.push(community);
 
-  try {
+        // Check to see if this community has an applicable Follow Up Action that
+        // would deem submission of an External Eloqua Email.  If so, add it to the
+        // eloquaCommunityList.
+        // 5	Visit/Appt - Scheduled
+        // 6	Home Visit
+        // 8	Assessment
+        const actionArray = ["5", "6", "8"];
+        if (actionArray.indexOf(community.followUpAction) > -1) {
+          eloquaCommunityList.push(community);
+        }
+
+      })
+    }
+
+    try {
       // Submit Add Communities/FUA request.
       if (formattedCommunityList && formattedCommunityList.length > 0) {
         await this.processCommunities(lead, formattedCommunityList, user);
       }
-  }
-  catch(err) {
+    }
+    catch (err) {
 
-  }
+    }
 
-  try {
-    // If we have an email and communities in eloquaCommunityList, submit the request.
-    if (lead && lead.influencer && lead.influencer.email &&
-      eloquaCommunityList && eloquaCommunityList.length > 0) {
-      const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-      this.submitEloquaRequest(eloquaExternalRequest);
+    try {
+      // If we have an email and communities in eloquaCommunityList, submit the request.
+      if (lead && lead.influencer && lead.influencer.email &&
+        eloquaCommunityList && eloquaCommunityList.length > 0) {
+        const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
+        this.submitEloquaRequest(eloquaExternalRequest);
+      }
+    }
+    catch (err) {
+
     }
   }
-  catch(err) {
+
+  async handleExistingInquiryForm(lead, communities, user) {
 
   }
-}
 
-async handleExistingInquiryForm(lead, communities, user) {
-
-}
-
-async submitToService({ lead, communities, user }) {
-
-  try {
-    await this.performServerPingTest();
+  async submitToService({ lead, communities, user }) {
+    await this.checkServerStatus();
     if (lead.leadId) {
       await this.handleExistingInquiryForm(lead, communities, user)
     }
@@ -501,22 +531,18 @@ async submitToService({ lead, communities, user }) {
       await this.handleNewInquiryForm(lead, communities, user)
     }
     return lead
-
-  } catch (err) {
-    console.log(err);
   }
-}
 
-createFetch(url) {
-  return fetch(url, { mode: 'cors', cache: 'no-cache' })
-    .then((res) => res.json())
-}
-
-log(msg) {
-  if (process.env.NODE_ENV !== "production") {
-    console.log(msg);
+  createFetch(url) {
+    return fetch(url, { mode: 'cors', cache: 'no-cache' })
+      .then((res) => res.json())
   }
-}
+
+  log(msg) {
+    if (process.env.NODE_ENV !== "production") {
+      console.log(msg);
+    }
+  }
 }
 
 class Logger {
