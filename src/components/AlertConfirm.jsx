@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { toast } from 'react-toastify';
 
 export default class AlertConfirm extends React.Component {
     state = {
