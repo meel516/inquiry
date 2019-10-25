@@ -1,4 +1,4 @@
-import request from '../request'
+import * as request from '../request'
 import getEndpointUrl from './get-endpoint-url'
 
 export default username => {

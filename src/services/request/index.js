@@ -1,7 +1,3 @@
-import get from './get'
-import post from './post'
-
-export default {
-    get,
-    post
-}
+export { default as get } from './get'
+export { default as post } from './post'
+export default {}

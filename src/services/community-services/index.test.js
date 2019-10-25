@@ -1,4 +1,4 @@
-import service from './index'
+import * as service from './index'
 
 describe('communityServices Service', () => {
     test('should contain all pieces', () => {

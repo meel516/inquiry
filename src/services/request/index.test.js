@@ -1,4 +1,4 @@
-import request from './index'
+import * as request from './index'
 
 describe('request Service', () => {
     test('should contain all pieces', () => {
