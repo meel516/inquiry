@@ -12,7 +12,6 @@ import CareType from '../../components/CareType';
 import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
-import DisplayErrors from '../../components/DisplayErrors';
 import FinancialOptions from '../../components/FinancialOptions';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
@@ -175,11 +174,6 @@ class InquiryForm extends React.Component {
 
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
-        {false && <DisplayErrors
-          status={this.props.status}
-          errors={this.props.errors}
-          valid={this.props.isValid}
-        />}
         <section>
           <div ref={this.TOP}></div>
         </section>
