@@ -1,5 +1,7 @@
+import convertToISODate from '../utils/convert-to-iso-date'
+import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
-import { CommunityService } from './CommunityServices'
+
 
 class ServerError extends Error {
     constructor(status, message, entity, ...params) {
@@ -565,12 +567,12 @@ class ObjectMappingService {
             const salesFollowup = new SalesFollowup(leadId);
             salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
-            salesFollowup.followUpDate = CommunityService.convertToISODate(community.followupDate);
+            salesFollowup.followUpDate = convertToISODate(community.followupDate);
 
             let description = community.note;
             if (community.freeMeal && community.freeMeal > 0) {
                 let index = community.freeMeal;
-                const freeMealItem = CommunityService.getFreeMealItem(index);
+                const freeMealItem = getFreeMealItem(index);
                 if (freeMealItem) {
                     description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
                 }

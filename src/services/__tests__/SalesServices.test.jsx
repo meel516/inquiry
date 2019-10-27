@@ -2,7 +2,7 @@
 import { TestUtils } from '../../utils/test-utils'
 import { ObjectMappingService } from '../Types'
 import { DropDownService, DuplicationService, SalesAPIService } from '../SalesServices';
-import { CommunityService } from '../CommunityServices';
+import createCommunity from '../community-services/create-community'
 
 describe('deduplication checks logic', () => {
 
@@ -117,7 +117,7 @@ describe('test submit prospect needs', () => {
             fetch.mockReturnValue(Promise.resolve(response));
             const lead = ObjectMappingService.createEmptyLead();
 
-            const community = CommunityService.createCommunity();
+            const community = createCommunity();
 
             const salesLead = salesService.submitProspect(lead, community);
 

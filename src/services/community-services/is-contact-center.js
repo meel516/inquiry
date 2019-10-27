@@ -1,0 +1,1 @@
+export default community => community && community.buildingId === 225707

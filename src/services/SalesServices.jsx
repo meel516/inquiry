@@ -1,8 +1,12 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
+import { ServerError, ObjectMappingService } from './Types'
+import { AppError } from './Types';
+import { isContactCenter, createCommunity, containContactCenter } from './community-services'
+import convertToISODate from '../utils/convert-to-iso-date'
 import { AppError, ProspectError, ServerError, ObjectMappingService } from './Types'
-import { CommunityService } from './CommunityServices'
+
 
 class DuplicationService {
 
@@ -414,25 +418,24 @@ class SalesAPIService {
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
-    // IF zero/many community is selected always assume Contact Center community
-    let leadId = null;
-    try {
-      if (!CommunityService.containContactCenter(communities)) {
-        let community = CommunityService.createCommunity();
-        community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
-      }
-      else {
-        let contactCenter;
-        communityList.map((community) => {
-          if (CommunityService.isContactCenter(community)) {
-            contactCenter = community;
-            return null;
-          }
-          return community;
-        });
-
-        if (contactCenter != null) {
+  // IF zero/many community is selected always assume Contact Center community
+  let leadId = null;
+  try {
+    if (!containContactCenter(communities)) {
+      let community = createCommunity();
+      community.communityId = 225707
+      leadId = await this.processContactCenter(lead, community, user);
+    }
+    else {
+      let contactCenter;
+      communityList.map((community) => {
+        if (isContactCenter(community)) {
+          contactCenter = community;
+          return null;
+        }
+        return community;
+      });
+      if (contactCenter != null) {
           leadId = await this.processContactCenter(lead, contactCenter, user);
         }
       }

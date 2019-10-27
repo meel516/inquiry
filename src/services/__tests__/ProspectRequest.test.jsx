@@ -1,6 +1,6 @@
 import { TestUtils } from '../../utils/test-utils'
 import { ObjectMappingService } from '../Types'
-import { CommunityService } from '../CommunityServices'
+import createCommunity from '../community-services/create-community'
 
 describe.skip('prospect request mappings', () => {
 
@@ -13,7 +13,7 @@ describe.skip('prospect request mappings', () => {
     
     test('creates prospect request based upon self', () => {
         const lead = ObjectMappingService.createEmptyLead();
-        const community = CommunityService.createCommunity();
+        const community = createCommunity();
         const user = TestUtils.createEmptyUser();
 
         const {prospect, influencer} = lead;

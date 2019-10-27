@@ -5,21 +5,20 @@ import Select from 'react-select';
 import PropTypes from 'prop-types'
 
 import { checkAuthentication } from '../auth/checkAuth';
-import { CommunityService } from '../services/CommunityServices'
+import fetchCommunities from '../services/community-services/fetch-communities'
 
 export class CommunityLookup extends React.Component {
     state = {
         communityList: [],
     }
     checkAuthentication = checkAuthentication.bind(this)
-    communityService = new CommunityService();
 
     componentDidMount() {
         this.checkAuthentication(this.loadCommunities);
     }
 
     loadCommunities = (userInfo) => {
-        this.communityService.fetchCommunities(userInfo.preferred_username)
+        fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 //console.log(data);
                 var communities = data.map((com) => {
