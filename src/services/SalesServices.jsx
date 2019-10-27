@@ -418,7 +418,6 @@ class SalesAPIService {
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
-<<<<<<< HEAD
   // IF zero/many community is selected always assume Contact Center community
   let leadId = null;
   try {
@@ -433,28 +432,11 @@ class SalesAPIService {
         if (isContactCenter(community)) {
           contactCenter = community;
           return null;
-=======
-    // IF zero/many community is selected always assume Contact Center community
-    let leadId = null;
-    try {
-      if (!CommunityService.containContactCenter(communities)) {
-        let community = CommunityService.createCommunity();
-        community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
-      }
-      else {
-        let contactCenter;
-        communityList.map((community) => {
-          if (CommunityService.isContactCenter(community)) {
-            contactCenter = community;
-            return null;
-          }
-          return community;
-        });
-
-        if (contactCenter != null) {
+        }
+        return community;
+      });
+      if (contactCenter != null) {
           leadId = await this.processContactCenter(lead, contactCenter, user);
->>>>>>> develop
         }
       }
     }
@@ -462,15 +444,10 @@ class SalesAPIService {
 
     }
 
-<<<<<<< HEAD
-      community.followupDate = convertToISODate(community.followupDate);
-      formattedCommunityList.push(community);
-=======
     if (leadId == null) {
       // throw new error due to lead was not created due to errors
       throw new AppError('412', 'Lead was not created in Sales System.')
     }
->>>>>>> develop
 
     const formattedCommunityList = [];
     const eloquaCommunityList = [];
