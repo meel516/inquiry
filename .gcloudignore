@@ -18,8 +18,18 @@
 .vscode
 .storybook
 
+// folder exclusions
 coverage
 node_modules
+
+# file exclusions
 npm-debug.log
 yarn-error.log
 package-lock.json
+README.md
+
+# excludes certain files from the source
+src/stories/*
+*.snap
+*.test.*
+*/__tests__
