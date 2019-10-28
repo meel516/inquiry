@@ -9,6 +9,9 @@ This project consists of a re-write of the Inquiry Form, which is currently host
   - https://developer.okta.com/code/react/okta_react/
 * React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
 	- https://react-select.com/home#getting-started
+* PropTypes - used to define the components
+* React Date/Time picker - used in the community section for the user to have a visual way of changing the date/time used in defining in Follow Up
+* Toastify - used for alerting the user for errors and successful messages
 
 
 ## Getting Started
