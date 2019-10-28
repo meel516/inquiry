@@ -1,6 +1,7 @@
 {
   "name": "inquiry-form",
   "version": "0.1.0",
+  "description": ""
   "private": true,
   "dependencies": {
     "@okta/okta-auth-js": "2.9.0",
@@ -40,6 +41,10 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
   },
+  engines: {
+    "npm": ">=6.9.x",
+    "node": ">=10.16.3"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -56,13 +61,13 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.2.3",
-    "@storybook/addon-links": "^5.2.3",
-    "@storybook/addons": "^5.2.3",
-    "@storybook/react": "^5.2.3",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "jest-fetch-mock": "^2.1.2",
-    "react-test-renderer": "^16.10.2"
+    "@storybook/addon-actions": "5.2.3",
+    "@storybook/addon-links": "5.2.3",
+    "@storybook/addons": "5.2.3",
+    "@storybook/react": "5.2.3",
+    "enzyme": "3.10.0",
+    "enzyme-adapter-react-16": "1.14.0",
+    "jest-fetch-mock": "2.1.2",
+    "react-test-renderer": "16.10.2"
   }
 }
