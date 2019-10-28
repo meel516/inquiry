@@ -68,10 +68,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Launches only the single test suite based upon the file supplied.
 
-### `npm run test:debug`
-
-Launches the test runn in debugger mode so that you can debug into your unit tests if necessary.  The way to set a break point is to add debugger statement and run the test and chrome will stop at the debug point. [debugging tests](https://facebook.github.io/create-react-app/docs/debugging-tests)
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br>
@@ -87,11 +83,11 @@ minor version, until we reach production.
 
 ## GDK Installation
 
-This
+In order to deploy the applications to the GCP (Google Cloud Platform) you need to install the [Google SDK (GDK)](https://cloud.google.com/sdk/).
 
 ## Deployment
 
-This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following
+This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following script to deploy the application to the GCP environment.
 
 ```
 gcloud app deploy --verbosity=debug --no-promote --version 1.0.12rc1
