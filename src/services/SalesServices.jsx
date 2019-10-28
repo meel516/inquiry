@@ -1,11 +1,9 @@
 //import React from 'react'
 import DedupRequest from './DedupRequest'
 
-import { ServerError, ObjectMappingService } from './Types'
-import { AppError } from './Types';
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
-import { AppError, ProspectError, ServerError, ObjectMappingService } from './Types'
+import { AppError, ServerError, ObjectMappingService } from './Types'
 
 
 class DuplicationService {
@@ -455,7 +453,7 @@ class SalesAPIService {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
 
-        community.followupDate = CommunityService.convertToISODate(community.followupDate);
+        community.followupDate = convertToISODate(community.followupDate);
         formattedCommunityList.push(community);
 
         // Check to see if this community has an applicable Follow Up Action that
