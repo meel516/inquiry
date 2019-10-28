@@ -2,12 +2,12 @@
 
 This project consists of a re-write of the Inquiry Form, which is currently hosted on a Wordpress VM, used by the Brookdale Contact Center.  The technology chosen was to write the new application using React along with several installed modules, which are listed below. (As more modules are used they will be listed here and documented as to why they were choosen, for future reference.)
 
-Formik - do I need to use this - the main reason is for validation and form framework
-React Bootstrap - is used to apply bootstrap formatting to the output of the React UI
-React Router - to route between page requests
-Okta - used for SSO to know who is signed into the application and for cloud security 
+* Formik - do I need to use this - the main reason is for validation and form framework
+* React Bootstrap - is used to apply bootstrap formatting to the output of the React UI
+* React Router - to route between page requests
+* Okta - used for SSO to know who is signed into the application and for cloud security 
   - https://developer.okta.com/code/react/okta_react/
-React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
+* React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
 	- https://react-select.com/home#getting-started
 
 
@@ -26,7 +26,7 @@ There are several IDEs that are available on the market that can be used for edi
 *VS Code - most developers are using this for their IDE
 *Atom
 
-# Available Scripts
+## Available Scripts
 
 In the project directory, you can run the following commands:
 
@@ -80,16 +80,16 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
-# Versioning
+## Versioning
 
 The application version will conform to semantic versioning.  Each release feature release (at this point after each review) a new release will be cut incrementing the
 minor version, until we reach production.
 
-# GDK Installation
+## GDK Installation
 
 This
 
-# Deployment
+## Deployment
 
 This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following
 
