@@ -68,10 +68,9 @@ export default class SecondPerson extends React.Component {
           <Note 
             labelId="situation2Label" 
             label="2nd Person Situation" 
-            id="situation2" 
-            name="lead.notes.secondPerson" 
-            onChange={this.props.handleChange} 
-            onBlur={this.props.handleBlur}
+            id="secondPersonNote" 
+            handleChange={this.props.handleChange} 
+            handleBlur={this.props.handleBlur}
             isReadOnly={this.props.isReadOnly}
           />
         </>
