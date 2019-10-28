@@ -1,9 +1,8 @@
 
 class DedupRequest {
 
-  constructor(contact, address) {
+  constructor(contact) {
     this.contact = contact;
-    this.address = address || {};
   }
 
   getAddress() {

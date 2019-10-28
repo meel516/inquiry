@@ -4,12 +4,12 @@ const phonePhoneTypeDependencySchema = Yup.object().shape({
   phone: Yup.object().shape({
     type: Yup.string()
       .when('number', {
-        is: number => number != '',
+        is: number => number !== '',
         then: Yup.string().required("Phone Type is required when Phone is entered"),
         otherwise: Yup.string()
       }),
     number: Yup.string().when('type', {
-      is: type => type != '',
+      is: type => type !== '',
       then: Yup.string().required("Phone is required when Phone Type is entered"),
       otherwise: Yup.string()
     }),
@@ -74,6 +74,15 @@ const mainFormValidationSchema = Yup.object().shape({
         .max(50, 'Last Name can be at most 50 characters')
       ,
       veteranStatus: Yup.string().required('Veteran Status is required'),
+      phone: Yup.object().shape({
+        number: Yup.string().notRequired().test('influencerPhoneValid', 'Phone is not Valid', function (value) {
+          if (!!value) {
+            const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+            return schema.isValidSync(value);
+          }
+          return true;
+        })
+      }),
       email: Yup.string()
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters')
@@ -104,6 +113,15 @@ const mainFormValidationSchema = Yup.object().shape({
       lastName: Yup.string()
         .max(50, 'Last Name can be at most 50 characters')
       ,
+      phone: Yup.object().shape({
+        number: Yup.string().notRequired().test('influencerPhoneValid', 'Phone is not Valid', function (value) {
+          if (!!value) {
+            const schema = Yup.string().matches(/^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/, 'Invalid Phone Number');
+            return schema.isValidSync(value);
+          }
+          return true;
+        })
+      }),
       email: Yup.string()
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters')
@@ -147,4 +165,6 @@ export {
   mainFormValidationSchema,
 
   formValidationSchema,
+  mainFormValidationSchema,
+  conditionalValidationSchema,
 };

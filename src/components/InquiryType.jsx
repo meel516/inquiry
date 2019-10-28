@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, Input, FormGroup, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -18,7 +19,6 @@ export default class InquiryType extends React.Component {
       .catch(error => console.log(error));
   }
 
-
   render() {
     const { inquiryTypes } = this.state || [];
     const inquiryTypeOptions = inquiryTypes.map((type) => {
@@ -28,7 +28,15 @@ export default class InquiryType extends React.Component {
     return (
       <FormGroup>
         <Label for="inquiryType" className="label-format required-field">Inquiry Method</Label>
-        <Input type="select" id="inquiryType" name="lead.inquiryType" value={this.props.defaultValue || ''} onChange={this.props.handleChange} onBlur={this.props.handleBlur}>
+        <Input 
+          type="select" 
+          id="inquiryType" 
+          name="lead.inquiryType" 
+          value={this.props.defaultValue} 
+          onChange={this.props.handleChange} 
+          onBlur={this.props.handleBlur} 
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {inquiryTypeOptions}
         </Input>
@@ -36,4 +44,18 @@ export default class InquiryType extends React.Component {
       </FormGroup>
     )
   }
+}
+
+InquiryType.propTypes = {
+  defaultValue: PropTypes.string,
+
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+InquiryType.defaultProps = {
+  defaultValue: '',
+  isReadOnly: false,
 }

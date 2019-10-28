@@ -55,6 +55,12 @@ class TestUtils {
         console.log(JSON.stringify(o));
     }
 
+    static createEmptyUser() {
+        return {
+            username: "jdoe",
+        }
+    }
+
     static createSampleLead(inquiryType = "INFLU") {
         return {
             salesContact: {

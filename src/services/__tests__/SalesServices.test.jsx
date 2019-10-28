@@ -2,7 +2,7 @@
 import { TestUtils } from '../../utils/test-utils'
 import { ObjectMappingService } from '../Types'
 import { DropDownService, DuplicationService, SalesAPIService } from '../SalesServices';
-import { CommunityService } from '../CommunityServices';
+import createCommunity from '../community-services/create-community'
 
 describe('deduplication checks logic', () => {
 
@@ -117,7 +117,7 @@ describe('test submit prospect needs', () => {
             fetch.mockReturnValue(Promise.resolve(response));
             const lead = ObjectMappingService.createEmptyLead();
 
-            const community = CommunityService.createCommunity();
+            const community = createCommunity();
 
             const salesLead = salesService.submitProspect(lead, community);
 
@@ -145,6 +145,106 @@ describe('unit testing javascript dates', () => {
         expect(d.getUTCMonth()).toEqual(5-1) // zero based month 0 - Jan
 
         // TODO: after adding react-momentum to the project write unit tests to verify
+
+    })
+
+})
+
+describe('service send request testing', () => {
+    const salesService = new SalesAPIService();
+
+    // payload messages
+    const successful = {objectId: 123, message: 'Successful'}
+    const failure = {message: 'Failure'}
+    const pingSuccess = {message: 'test'}
+
+    let user = TestUtils.createEmptyUser();
+    let communities = [];
+    let lead = ObjectMappingService.createEmptyLead();
+
+    afterEach(() => {
+        communities = [];
+        user = TestUtils.createEmptyUser();
+        lead = ObjectMappingService.createEmptyLead();
+
+        global.fetch.mockClear();
+    });
+
+    describe('happy path scenarios', () => {
+
+        test('test submission of add community request', async () => {
+            const mockJsonPromise = Promise.resolve(successful)
+            const mockFetchPromise = Promise.resolve({
+                json: () => mockJsonPromise,
+                status: 201,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+    
+            // set lead id as if it was already processed
+            lead.leadId = 1
+    
+            const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user);
+            salesService.sendAddCommunityRequest(request);
+    
+            expect(global.fetch).toHaveBeenCalledTimes(1);
+    
+        })
+    
+    })
+
+    describe('500 server error scenarios', () => {
+
+        test('test failure submission of add community request', async () => {
+            const mockJsonPromise = Promise.reject(failure);
+            const mockFetchPromise = Promise.reject({
+                json: () => mockJsonPromise,
+                status: 500,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+    
+            let error = false
+            try {
+                const request = ObjectMappingService.createAddCommunityRequest(lead, communities, user)
+                await salesService.sendAddCommunityRequest(request)
+            }
+            catch(err) {
+                error = true
+            }
+    
+            expect(global.fetch).toHaveBeenCalledTimes(1)
+            expect(error).toBeTruthy()
+    
+        })
+
+        test('test failure ping testing server', async () => {
+            const mockFetchPromise = Promise.reject({
+                json: () => {throw new Error('Server is not responding.')},
+                status: 500,
+            })
+            jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise)
+
+            let error = null
+            try {
+                const ret = salesService.checkServerStatus();
+            }
+            catch(err) {
+                error = err
+            }
+
+            expect(global.fetch).toHaveBeenCalledTimes(1)
+            expect(error).not.toBeNull()
+            expect(error.message).toEqual('Server is not responding.')
+
+        })
+    
+    })
+
+})
+
+
+describe('submission of inquiry form', () => {
+
+    test('test successful processing of the entire submission process', () => {
 
     })
 

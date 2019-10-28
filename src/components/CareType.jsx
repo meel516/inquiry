@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
+import PropTypes from 'prop-types'
 
 import { DropDownService } from '../services/SalesServices'
 
@@ -17,7 +18,6 @@ export default class CareType extends React.Component {
 
   render() {
     const { careTypes } = this.state || [];
-    const { handleChange, handleBlur, defaultValue } = this.props;
     const careTypeOptions = careTypes.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
@@ -25,7 +25,14 @@ export default class CareType extends React.Component {
     return (
       <FormGroup>
         <Label for="careType" className="label-format required-field">Care Level Recommended</Label>
-        <Input type="select" id="careType" name="lead.careType" onChange={handleChange} onBlur={handleBlur} value={defaultValue || ''}>
+        <Input 
+          type="select" 
+          id="careType" 
+          name="lead.careType" 
+          onChange={this.props.handleChange} 
+          onBlur={this.props.handleBlur} 
+          disabled={this.props.isReadOnly}
+        >
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>
@@ -33,4 +40,15 @@ export default class CareType extends React.Component {
       </FormGroup>
     )
   }
+}
+
+CareType.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+CareType.defaultProps = {
+  isReadOnly: false,
 }

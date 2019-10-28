@@ -24,6 +24,7 @@ yarn-error.log*
 
 # packaging
 package-lock.json
+jsconfig.json
 
 # ignore snapshot test files
 */__snapshots__/*

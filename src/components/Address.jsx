@@ -38,14 +38,30 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label htmlFor="line1" className="label-format">Address 1</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.line1`} value={address.line1 || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="Street Address" />
+              <Input 
+                type="text" 
+                name={`lead.${this.props.type}.address.line1`} 
+                value={(address ? (address.line1 || '') : '')} 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                readOnly={this.props.isReadOnly}
+                placeholder="Street Address" 
+              />
               <ErrorMessage name={`lead.${this.props.type}.address.line1`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for="line2" className="label-format">Address 2</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.line2`} value={address.line2 || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="Apartment, Studio, or Floor" />
+              <Input 
+                type="text" 
+                name={`lead.${this.props.type}.address.line2`} 
+                value={(address ? (address.line2 || '') : '')} 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                readOnly={this.props.isReadOnly}
+                placeholder="Apartment, Studio, or Floor" 
+              />
               <ErrorMessage name={`lead.${this.props.type}.address.line2`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
@@ -54,14 +70,28 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label for="city" className="label-format">City</Label>
-              <Input type="text" name={`lead.${this.props.type}.address.city`} value={address.city || ''} onChange={this.props.onChange} onBlur={this.props.handleBlur} placeholder="City" />
+              <Input 
+                type="text" 
+                name={`lead.${this.props.type}.address.city`} 
+                value={(address ? (address.city || '') : '')} 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                readOnly={this.props.isReadOnly}
+                placeholder="City"
+              />
               <ErrorMessage name={`lead.${this.props.type}.address.city`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for="state" className="label-format">State</Label>
-              <Input type="select" name={`lead.${this.props.type}.address.state`} value={address.state || ''} onChange={this.props.onChange}>
+              <Input 
+                type="select" 
+                name={`lead.${this.props.type}.address.state`} 
+                value={(address ? (address.state || '') : '')} 
+                onChange={this.props.handleChange}
+                disabled={this.props.isReadOnly}
+              >
                 <option value="">Select One</option>
                 {options}
               </Input>
@@ -70,7 +100,15 @@ export default class Address extends React.Component {
           <Col>
             <FormGroup>
               <Label for="zip" className="label-format">Zip</Label>
-              <Input type="number" name={`lead.${this.props.type}.address.zip`} value={address.zip} onChange={this.props.onChange} onBlur={this.props.onBlur} placeholder="Zip" />
+              <Input 
+                type="number" 
+                name={`lead.${this.props.type}.address.zip`} 
+                value={(address ? (address.zip || '') : '')} 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                readOnly={this.props.isReadOnly}
+                placeholder="Zip" 
+              />
             </FormGroup>
           </Col>
         </Row>
@@ -81,6 +119,13 @@ export default class Address extends React.Component {
 
 Address.propTypes = {
   type: PropTypes.string.isRequired,
-  address: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
+  address: PropTypes.object,
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+Address.defaultProps = {
+  isReadOnly: false
 }

@@ -1,24 +1,24 @@
 import React from 'react'
 import { FormGroup, Label } from 'reactstrap';
-import Select from 'react-select';
 import { withAuth } from '@okta/okta-react';
+import Select from 'react-select';
+import PropTypes from 'prop-types'
 
 import { checkAuthentication } from '../auth/checkAuth';
-import { CommunityService } from '../services/CommunityServices'
+import fetchCommunities from '../services/community-services/fetch-communities'
 
-export default withAuth(class CommunityLookup extends React.Component {
+export class CommunityLookup extends React.Component {
     state = {
         communityList: [],
     }
     checkAuthentication = checkAuthentication.bind(this)
-    communityService = new CommunityService();
 
     componentDidMount() {
         this.checkAuthentication(this.loadCommunities);
     }
 
     loadCommunities = (userInfo) => {
-        this.communityService.fetchCommunities(userInfo.preferred_username)
+        fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 var communities = data.map((com) => {
                     return { value: com.id, label: com.buildingName }
@@ -47,9 +47,24 @@ export default withAuth(class CommunityLookup extends React.Component {
                     name="communityId"
                     onChange={this.handleCommunityChange}
                     options={this.state.communityList}
-                    defaultValue={defaultSelected}
+                    isDisabled={this.props.isReadOnly}
                 />
             </FormGroup>
         )
     }
-});
+}
+
+CommunityLookup.propTypes = {
+  index: PropTypes.number.isRequired,
+
+  setFieldValue: PropTypes.func.isRequired,
+
+  isReadOnly: PropTypes.bool,
+}
+
+CommunityLookup.defaultProps = {
+    isReadOnly: false
+}
+
+
+export default withAuth(CommunityLookup);

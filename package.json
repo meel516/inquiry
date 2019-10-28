@@ -1,31 +1,36 @@
 {
   "name": "inquiry-form",
-  "version": "0.1.0",
+  "version": "1.0.12",
+  "description": "Contact Center Application",
   "private": true,
   "dependencies": {
-    "@okta/okta-auth-js": "^2.9.0",
-    "@okta/okta-react": "^1.2.3",
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "formik": "^1.5.8",
-    "moment": "^2.24.0",
-    "prop-types": "^15.7.2",
-    "query-string": "^6.8.3",
-    "react": "^16.10.2",
-    "react-datetime-picker": "^2.7.1",
-    "react-dom": "^16.10.2",
-    "react-feather": "^2.0.3",
-    "react-icons": "^3.7.0",
-    "react-number-format": "^4.3.0",
-    "react-router-dom": "^5.1.2",
+    "@okta/okta-auth-js": "2.9.0",
+    "@okta/okta-react": "1.2.3",
+    "bootstrap": "4.3.1",
+    "formik": "1.5.8",
+    "libphonenumber-js": "1.7.26",
+    "lodash": "4.17.15",
+    "moment": "2.24.0",
+    "prop-types": "15.7.2",
+    "query-string": "6.8.3",
+    "react": "16.10.2",
+    "react-data-grid": "6.1.0",
+    "react-datetime-picker": "2.7.1",
+    "react-dom": "16.10.2",
+    "react-feather": "2.0.3",
+    "react-icons": "3.7.0",
+    "react-number-format": "4.3.0",
+    "react-router-dom": "5.1.2",
     "react-scripts": "3.0.1",
-    "react-select": "^3.0.8",
-    "reactstrap": "^8.0.1",
-    "uuid": "^3.3.3",
-    "yup": "^0.27.0"
+    "react-select": "3.0.8",
+    "react-toastify": "5.4.0",
+    "reactstrap": "8.1.1",
+    "uuid": "3.3.3",
+    "yup": "0.27.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
+    "prestart": "npm install -g serve",
     "local": "react-scripts start --env=local",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -38,6 +43,10 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x"
   },
   "browserslist": {
     "production": [
@@ -52,13 +61,13 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.2.3",
-    "@storybook/addon-links": "^5.2.3",
-    "@storybook/addons": "^5.2.3",
-    "@storybook/react": "^5.2.3",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "jest-fetch-mock": "^2.1.2",
-    "react-test-renderer": "^16.10.2"
+    "@storybook/addon-actions": "5.2.3",
+    "@storybook/addon-links": "5.2.3",
+    "@storybook/addons": "5.2.3",
+    "@storybook/react": "5.2.3",
+    "enzyme": "3.10.0",
+    "enzyme-adapter-react-16": "1.14.0",
+    "jest-fetch-mock": "2.1.2",
+    "react-test-renderer": "16.10.2"
   }
 }
