@@ -3,7 +3,7 @@ import { Alert, Col, Input, FormGroup, Label, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 
-import { DropDownService } from '../services/SalesServices'
+import { getAddressStates } from '../services/dropdowns'
 
 export default class Address extends React.Component {
   state = {
@@ -12,7 +12,7 @@ export default class Address extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getAddressStates()
+    getAddressStates()
       .then((data) => {
         this.setState({ states: data })
       })

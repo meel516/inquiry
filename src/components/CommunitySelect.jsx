@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import CommunityLookup from './CommunityLookup'
 import Visit from './Visit';
-import { DropDownService } from '../services/SalesServices'
+import { getFollowupActions } from '../services/dropdowns'
 
 export default class CommunitySelect extends React.Component {
   state = {
@@ -13,7 +13,7 @@ export default class CommunitySelect extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getFollowupActions()
+    getFollowupActions()
       .then((data) => this.setState({ followupActions: data }))
       .catch((err) => console.error("Error", err));
   }

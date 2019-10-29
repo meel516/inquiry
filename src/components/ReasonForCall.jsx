@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getReasonForInterest } from '../services/dropdowns'
 
 export default class ReasonForCall extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class ReasonForCall extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getReasonForInterest()
+    getReasonForInterest()
       .then((data) => this.setState({ reasonForCall: data }))
       .catch(error => console.log(error));
   }

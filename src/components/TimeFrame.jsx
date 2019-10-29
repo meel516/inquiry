@@ -3,7 +3,7 @@ import React from 'react';
 import { Label } from 'reactstrap';
 import Select from 'react-select';
 
-import { DropDownService } from '../services/SalesServices';
+import { getDecisionTimeframe } from '../services/dropdowns';
 
 export default class TimeFrame extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class TimeFrame extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getDecisionTimeframe()
+    getDecisionTimeframe()
       .then((data) => {
         data.map(function (tf) {
           tf.label = tf.text;

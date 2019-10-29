@@ -3,7 +3,7 @@ import { Alert, Input, FormGroup, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getInquiryTypes } from '../services/dropdowns'
 
 export default class InquiryType extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ export default class InquiryType extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getInquiryTypes()
+    getInquiryTypes()
       .then((data) => this.setState({ inquiryTypes: data }))
       .catch(error => console.log(error));
   }

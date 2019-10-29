@@ -3,7 +3,7 @@ import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getCareTypes } from '../services/dropdowns'
 
 export default class CareType extends React.Component {
   state = {
@@ -11,7 +11,7 @@ export default class CareType extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getCareTypes()
+    getCareTypes()
       .then((data) => this.setState({ careTypes: data }))
       .catch(error => console.log(error));
   }

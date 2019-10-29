@@ -3,7 +3,7 @@ import { Alert, FormGroup, Input, Label } from 'reactstrap';
 import { ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getVeteranStatus } from '../services/dropdowns'
 
 export default class VeteranStatus extends React.Component {
   state = {
@@ -11,7 +11,7 @@ export default class VeteranStatus extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getVeteranStatus()
+    getVeteranStatus()
       .then((data) => {
         this.setState({ vetstatus: data })
       })
