@@ -221,6 +221,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={false}
+            {...this.props}
           />
           <br />
           <CareType

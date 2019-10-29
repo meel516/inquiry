@@ -265,8 +265,8 @@ function SalesFormDetailsCareType(lead) {
         this.notEatingWell = lead.nutritionConcerns.notEatingWell;
     }
     
-    this.careTypeId = lead.careTypeId;
-    this.currentSituationId = lead.currentSituationId;
+    this.careTypeId = lead.careType;
+    this.currentSituationId = lead.currentSituation;
 }
 
 class Util {
@@ -752,19 +752,19 @@ class ObjectMappingService {
     
     static createContactDuplicationRequest(contact) {
         return {
-            address1: (contact.address !== null ? contact.address.line1 : ""),
-            address2: (contact.address !== null ? contact.address.line2 : ""),
-            city: (contact.address !== null ? contact.address.city : ""),
-            state: (contact.address !== null ? contact.address.state : ""),
-            zip: (contact.address !== null ? contact.address.zip : ""),
+            address1: "",
+            address2: "",
+            city: "",
+            state: "",
+            zip: "",
             email: contact.email,
-            prospectFirstName: contact.firstName,
-            prospectLastName: contact.lastName,
+            prospectFirstName: "",
+            prospectLastName: "",
             phone1: (contact.phone !== null ? Util.stripPhoneFormatting(contact.phone.number) : ""),
-            phoneType: (contact.phone !== null ? contact.phone.type : ""),
+            phoneType: "",
         }
     }
-
+    
     static buildLeadDataResponseForContactId(payload) {
         const returnval = [];
 

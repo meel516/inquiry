@@ -11,7 +11,7 @@ import { ObjectMappingService } from '../services/Types'
 
 const defaultColumnProperties = {
   resizable: true,
-  width: 120
+  width: 200
 };
 
 const EmptyRowsView = () => {
@@ -29,17 +29,17 @@ export default class Contact extends React.Component {
     this.firstmodalcolumns = [
       { key: 'name', name: 'Contact Name' },
       { key: 'phone', name: 'Phone' },
-      { key: 'phonetype', name: 'Phone Type' },
+      //{ key: 'phonetype', name: 'Phone Type' },
       { key: 'email', name: 'Email' },
-      { key: 'address1', name: 'Address 1' },  
-      { key: 'address2', name: 'Address 2' },  
-      { key: 'city', name: 'City' },  
-      { key: 'state', name: 'State' },  
+      { key: 'address1', name: 'Address 1' },
+      //{ key: 'address2', name: 'Address 2' },  
+      { key: 'city', name: 'City' },
+      { key: 'state', name: 'State' },
       { key: 'zip', name: 'Zip' }
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     this.secondmodalcolumns = [
-      { key: 'community', name: 'Community' },  
+      { key: 'community', name: 'Community' },
       { key: 'pname', name: 'Prospect Name' },
       { key: 'pphone', name: 'Prospect Phone' },
       { key: 'pemail', name: 'Prospect Email' },
@@ -61,6 +61,8 @@ export default class Contact extends React.Component {
       dupeContactsFound: null,
       runDupeCheck: false,
       locked: false,
+      savedPhone: null,
+      savedEmail: null,
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -73,7 +75,13 @@ export default class Contact extends React.Component {
   }
 
   handleDupCheck = async event => {
-    const { contact } = this.props;
+    this.props.handleBlur(event);
+
+    const { target: { name } } = event
+    const { contact, errors } = this.props
+
+    // Save off Phone and Email.
+    this.setState({ savedPhone: contact.phone.number, savedEmail: contact.email });
 
     if (this.props.duplicateCheck && this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
       await this.dedup.checkForDuplicate(contact)
@@ -83,8 +91,6 @@ export default class Contact extends React.Component {
         })
         .catch(error => console.log(error));
     }
-    
-    this.props.handleBlur(event);
   }
 
   handleOnChange = (event) => {
@@ -99,7 +105,7 @@ export default class Contact extends React.Component {
   secondModalRowGetter = i => {
     return this.state.rows2[i];
   };
-  
+
   onRowsSelected = async rows => {
     if (rows[0].row) {
       let contactid = rows[0].row.contactid;
@@ -131,9 +137,22 @@ export default class Contact extends React.Component {
     });
   };
 
-  handleConfirm = (e) => {
+  handleFirstToggle = (e) => {
+    const { setFieldValue } = this.props;
+    const formContact = ObjectMappingService.createEmptyContact();
+    setFieldValue(`lead.${this.props.type}`, formContact);
+
+    // Now reset phone and email if they were saved in state.
+    if (this.state.savedPhone) {
+      setFieldValue(`lead.influencer.phone.number`, this.state.savedPhone);
+    }
+    if (this.state.savedEmail) {
+      setFieldValue(`lead.influencer.email`, this.state.savedEmail);
+    }
+
     this.setState(prevState => ({
       showModal: !prevState.showModal,
+      locked: false,
     }));
   }
 
@@ -149,7 +168,7 @@ export default class Contact extends React.Component {
       showSecondModal: !prevState.showSecondModal,
     }));
   }
-  
+
   render() {
     const { locked, phoneTypes } = this.state || [];
     const makeFieldsLocked = this.props.isReadOnly || locked || this.props.contact.contactId;
@@ -165,11 +184,12 @@ export default class Contact extends React.Component {
         <Row>
           <Col>
             <FormGroup>
-              <Input type="text" 
-                name={`lead.${this.props.type}.firstName`} 
-                value={this.props.contact.firstName} 
-                onChange={this.props.handleChange} 
-                autoComplete="off" 
+              <Input type="text"
+                name={`lead.${this.props.type}.firstName`}
+                value={this.props.contact.firstName}
+                onChange={this.props.handleChange}
+                onBlur={this.props.handleBlur}
+                autoComplete="off"
                 readOnly={makeFieldsLocked}
                 placeholder="First Name" />
               <ErrorMessage name={`lead.${this.props.type}.firstName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
@@ -177,13 +197,14 @@ export default class Contact extends React.Component {
           </Col>
           <Col>
             <FormGroup>
-              <Input 
-                type="text" 
-                name={`lead.${this.props.type}.lastName`} 
-                value={this.props.contact.lastName} 
-                onChange={this.props.handleChange} 
+              <Input
+                type="text"
+                name={`lead.${this.props.type}.lastName`}
+                value={this.props.contact.lastName}
+                onChange={this.props.handleChange}
+                onBlur={this.props.handleBlur}
                 readOnly={makeFieldsLocked}
-                placeholder="Last Name" 
+                placeholder="Last Name"
               />
               <ErrorMessage name={`lead.${this.props.type}.lastName`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -193,15 +214,15 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="phone" className="label-format">Phone</Label>
-              <NumberFormat 
-                className='form-control' 
-                format="(###) ###-####" 
-                mask="_" 
-                name={`lead.${this.props.type}.phone.number`} 
-                value={(this.props.contact.phone ? (this.props.contact.phone.number || '') : '')} 
-                onBlur={() => this.handleDupCheck()}
+              <NumberFormat
+                className='form-control'
+                format="(###) ###-####"
+                mask="_"
+                name={`lead.${this.props.type}.phone.number`}
+                value={(this.props.contact.phone ? (this.props.contact.phone.number || '') : '')}
+                onBlur={(e) => this.handleDupCheck(e)}
                 onChange={this.handleOnChange}
-                placeholder="Phone" 
+                placeholder="Phone"
                 readOnly={makeFieldsLocked}
               />
               <ErrorMessage name={`lead.${this.props.type}.phone.number`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
@@ -210,11 +231,12 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="phoneTypes" className="label-format">Phone Type</Label>
-              <Input 
-                type="select" 
-                name={`lead.${this.props.type}.phone.type`} 
-                value={(this.props.contact.phone ? (this.props.contact.phone.type || '') : '')} 
-                onChange={this.props.handleChange} 
+              <Input
+                type="select"
+                name={`lead.${this.props.type}.phone.type`}
+                value={(this.props.contact.phone ? (this.props.contact.phone.type || '') : '')}
+                onChange={this.props.handleChange}
+                onBlur={this.props.handleBlur}
                 disabled={makeFieldsLocked}
               >
                 <option value="">Select One</option>
@@ -228,13 +250,13 @@ export default class Contact extends React.Component {
           <Col>
             <FormGroup>
               <Label for="email" className="label-format">Email</Label>
-              <Input 
-                type="email" 
-                name={`lead.${this.props.type}.email`} 
-                value={this.props.contact.email || ''} 
-                onBlur={() => this.handleDupCheck()}
-                onChange={this.handleOnChange} 
-                placeholder="Email" 
+              <Input
+                type="email"
+                name={`lead.${this.props.type}.email`}
+                value={this.props.contact.email || ''}
+                onBlur={(e) => this.handleDupCheck(e)}
+                onChange={this.handleOnChange}
+                placeholder="Email"
                 readOnly={makeFieldsLocked}
               />
               <ErrorMessage name={`lead.${this.props.type}.email`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
@@ -253,40 +275,46 @@ export default class Contact extends React.Component {
         }
 
         {this.props.duplicateCheck &&
-          <Modal isOpen={this.state.showModal} size="lg">
-            <ModalHeader toggle={this.handleConfirm}>
+          <Modal isOpen={this.state.showModal} size="xl">
+            <ModalHeader>
               {"Potential Contact Matches"}
             </ModalHeader>
             <ModalBody>
+              <p>Select Contact by clicking on the row.</p>
               <ReactDataGrid
                 columns={this.firstmodalcolumns}
                 rowGetter={this.firstModalRowGetter}
                 rowsCount={this.state.rows.length}
-                minHeight={150}
-                minWidth={750}
+                minHeight={250}
+                minWidth={1100}
                 emptyRowsView={EmptyRowsView}
-                onRowClick={( rowId, row )=>this.onRowsSelected([{ row:row, rowIdx:rowId }])}
+                onRowClick={(rowId, row) => this.onRowsSelected([{ row: row, rowIdx: rowId }])}
               />
-              <Modal isOpen={this.state.showSecondModal} size="lg">
-                <ModalHeader toggle={this.handleSecondToggle}>
+              <Modal isOpen={this.state.showSecondModal} size="xl">
+                <ModalHeader>
                   {"Potential Lead Matches"}
                 </ModalHeader>
                 <ModalBody>
+                  <p>Contact is associated with the Prospect leads below.  Select existing Prospect by clicking on the row or "None of These" to create new Prospect.</p>
                   <ReactDataGrid
                     columns={this.secondmodalcolumns}
                     rowGetter={this.secondModalRowGetter}
                     rowsCount={this.state.rows2.length}
-                    minHeight={150}
-                    minWidth={750}
+                    minHeight={250}
+                    minWidth={1100}
                     emptyRowsView={EmptyRowsView}
-                    //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
+                  //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
                   />
                 </ModalBody>
                 <ModalFooter>
-                  <Button type="button" color="secondary" size="sm" onClick={this.handleToggleAll}>None of These</Button>
+                  <Button type="button" color="info" size="sm" onClick={this.handleSecondToggle}>Go Back</Button>
+                  <Button type="button" color="info" size="sm" onClick={this.handleToggleAll}>None of These</Button>
                 </ModalFooter>
               </Modal>
             </ModalBody>
+            <ModalFooter>
+              <Button type="button" color="info" size="sm" onClick={this.handleFirstToggle}>Cancel</Button>
+            </ModalFooter>
           </Modal>
         }
       </>
