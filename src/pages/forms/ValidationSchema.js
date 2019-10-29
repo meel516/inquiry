@@ -163,8 +163,5 @@ export {
   phonePhoneTypeDependencySchema,
   conditionalValidationSchema,
   mainFormValidationSchema,
-
   formValidationSchema,
-  mainFormValidationSchema,
-  conditionalValidationSchema,
 };

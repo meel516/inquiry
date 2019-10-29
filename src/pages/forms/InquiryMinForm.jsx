@@ -34,9 +34,7 @@ class InquiryForm extends React.Component {
 
   MAX_COMMUNITIES = 5;
   state = {
-    communities: [],
     allowAddCommunities: true,
-    lead: null,
     loading: true,
   };
 
@@ -47,19 +45,20 @@ class InquiryForm extends React.Component {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     this.checkAuthentication(this.getAuthCredentials);
 
-    let lead = null;
-    let communities = [];
+    let locked = false
+    let lead = null
+    let communities = []
     if (guid||leadId) {
       lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-      const {prospect: {contactId}} = lead;
-      communities = await this.salesapi.getCommunitiesOfInterest(contactId)
+      //const {prospect: {contactId}} = lead;
+      //communities = await this.salesapi.getCommunitiesOfInterest(contactId)
+      locked = true
     } 
     else {
       lead = ObjectMappingService.createEmptyLead()
     }
     if (umid) {
       lead.umid = umid;
-      this.props.setFieldValue('lead.umid', umid)
     }
     this.props.setFieldValue('lead', lead)
     this.props.setFieldValue('communities', communities)
@@ -157,7 +156,6 @@ class InquiryForm extends React.Component {
       handleChange,
       handleBlur,
       setFieldValue,
-      // setFieldTouched,
     } = this.props;
 
     if (this.state.loading) {
