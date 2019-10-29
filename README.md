@@ -90,8 +90,24 @@ In order to deploy the applications to the GCP (Google Cloud Platform) you need 
 
 ## Deployment
 
-This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following script to deploy the application to the GCP environment.
+This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following script to deploy the application to the GCP environment.  
 
+These are the steps in order to complete the deployment.
+
+1. Run gcloud update.  While this is not required for the actual deployment of the application, it keeps your GDK updated with any fixes.
 ```
-gcloud app deploy --verbosity=debug --no-promote --version 1.0.12rc1
+gcloud components update
+```
+2. Check the app.yaml file to make sure all environment variables are properly set for the environment being posted to.  The version used in the deployment should match the version in the app.yaml.  At the current time the app.yaml contains the following environment variables.
+```yaml
+REACT_APP_SALES_SERVICES_URL:
+REACT_APP_OKTA_URL:
+REACT_APP_OKTA_CLIENTID:
+REACT_APP_VERSION:
+REACT_APP_NODE_ENV:
+REACT_APP_APPLICATION_NAME:
+```
+3. Run the deployment script via a command line to deploy the application to GCP.  The version value must but a string value, so replace all dots (.) with dashes (-).
+```
+gcloud app deploy --verbosity=debug --no-promote --version 1-0-12-rc1
 ```
