@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumberFormat from 'react-number-format';
+import Draggable from 'react-draggable';
 import { Alert, Button, Col, FormGroup, Input, Modal, ModalBody, ModalHeader, ModalFooter, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
@@ -29,28 +30,25 @@ export default class Contact extends React.Component {
     this.firstmodalcolumns = [
       { key: 'name', name: 'Contact Name' },
       { key: 'phone', name: 'Phone' },
-      //{ key: 'phonetype', name: 'Phone Type' },
       { key: 'email', name: 'Email' },
-      { key: 'address1', name: 'Address 1' },
-      //{ key: 'address2', name: 'Address 2' },  
       { key: 'city', name: 'City' },
-      { key: 'state', name: 'State' },
-      { key: 'zip', name: 'Zip' }
+      { key: 'state', name: 'State' }
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     this.secondmodalcolumns = [
-      { key: 'community', name: 'Community' },
-      { key: 'pname', name: 'Prospect Name' },
-      { key: 'pphone', name: 'Prospect Phone' },
-      { key: 'pemail', name: 'Prospect Email' },
-      { key: 'iname', name: 'Influencer Name' },
-      { key: 'iphone', name: 'Influencer Phone' },
-      { key: 'iemail', name: 'Influencer Email' },
-      { key: 'spname', name: '2nd Person Name' },
-      { key: 'spphone', name: '2nd Person Phone' },
-      { key: 'spemail', name: '2nd Person Email' },
-      { key: 'hasaddtl', name: 'Has Addtl Influencers' }
-    ].map(c => ({ ...c, ...defaultColumnProperties }));
+      { key: 'prospectid', name: 'Prospect ID', width: 100, resizable: true },
+      { key: 'community', name: 'Community', width: 200, resizable: true },
+      { key: 'iname', name: 'Influencer Name', width: 200, resizable: true },
+      { key: 'iphone', name: 'Influencer Phone', width: 200, resizable: true },
+      { key: 'iemail', name: 'Influencer Email', width: 200, resizable: true },
+      { key: 'pname', name: 'Prospect Name', width: 200, resizable: true },
+      { key: 'pphone', name: 'Prospect Phone', width: 200, resizable: true },
+      { key: 'pemail', name: 'Prospect Email', width: 200, resizable: true },
+      { key: 'spname', name: '2nd Person Name', width: 200, resizable: true },
+      { key: 'spphone', name: '2nd Person Phone', width: 200, resizable: true },
+      { key: 'spemail', name: '2nd Person Email', width: 200, resizable: true },
+      { key: 'hasaddtl', name: 'Has Addtl Influencers', width: 200, resizable: true }
+    ].map(c => ({ ...c }));
 
     this.state = {
       phoneTypes: [],
@@ -63,6 +61,7 @@ export default class Contact extends React.Component {
       locked: false,
       savedPhone: null,
       savedEmail: null,
+      activeDrags: 0,
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -169,12 +168,22 @@ export default class Contact extends React.Component {
     }));
   }
 
+  onStart = () => {
+    this.setState({activeDrags: ++this.state.activeDrags});
+  };
+
+  onStop = () => {
+    this.setState({activeDrags: --this.state.activeDrags});
+  };
+
   render() {
     const { locked, phoneTypes } = this.state || [];
     const makeFieldsLocked = this.props.isReadOnly || locked;
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
       return <option key={type.value} value={type.text}>{type.text}</option>
     });
+
+    const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
 
     return (
       <>
@@ -275,47 +284,51 @@ export default class Contact extends React.Component {
         }
 
         {this.props.duplicateCheck &&
-          <Modal isOpen={this.state.showModal} size="xl">
-            <ModalHeader>
-              {"Potential Contact Matches"}
-            </ModalHeader>
-            <ModalBody>
-              <p>Select Contact by clicking on the row.</p>
-              <ReactDataGrid
-                columns={this.firstmodalcolumns}
-                rowGetter={this.firstModalRowGetter}
-                rowsCount={this.state.rows.length}
-                minHeight={250}
-                minWidth={1100}
-                emptyRowsView={EmptyRowsView}
-                onRowClick={(rowId, row) => this.onRowsSelected([{ row: row, rowIdx: rowId }])}
-              />
-              <Modal isOpen={this.state.showSecondModal} size="xl">
-                <ModalHeader>
-                  {"Potential Lead Matches"}
-                </ModalHeader>
-                <ModalBody>
-                  <p>Contact is associated with the Prospect leads below.  Select existing Prospect by clicking on the row or "None of These" to create new Prospect.</p>
-                  <ReactDataGrid
-                    columns={this.secondmodalcolumns}
-                    rowGetter={this.secondModalRowGetter}
-                    rowsCount={this.state.rows2.length}
-                    minHeight={250}
-                    minWidth={1100}
-                    emptyRowsView={EmptyRowsView}
-                  //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
-                  />
-                </ModalBody>
-                <ModalFooter>
-                  <Button type="button" color="info" size="sm" onClick={this.handleSecondToggle}>Go Back</Button>
-                  <Button type="button" color="info" size="sm" onClick={this.handleToggleAll}>None of These</Button>
-                </ModalFooter>
-              </Modal>
-            </ModalBody>
-            <ModalFooter>
-              <Button type="button" color="info" size="sm" onClick={this.handleFirstToggle}>Cancel</Button>
-            </ModalFooter>
-          </Modal>
+          <Draggable handle=".modalone" {...dragHandlers}>
+            <Modal className="modalone" isOpen={this.state.showModal} size="xl">
+              <ModalHeader>
+                {"Potential Contact Matches"}
+              </ModalHeader>
+              <ModalBody>
+                <p>Is this who you are talking to? If so, click the name below, otherwise click "None of These".</p>
+                <ReactDataGrid
+                  columns={this.firstmodalcolumns}
+                  rowGetter={this.firstModalRowGetter}
+                  rowsCount={this.state.rows.length}
+                  minHeight={250}
+                  minWidth={1100}
+                  emptyRowsView={EmptyRowsView}
+                  onRowClick={(rowId, row) => this.onRowsSelected([{ row: row, rowIdx: rowId }])}
+                />
+                <Draggable handle=".modaltwo" {...dragHandlers}>
+                  <Modal className="modaltwo" isOpen={this.state.showSecondModal} size="xl">
+                    <ModalHeader>
+                      {"Potential Lead Matches"}
+                    </ModalHeader>
+                    <ModalBody>
+                      <p>Below are leads that this person is associated with. Click the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
+                      <ReactDataGrid
+                        columns={this.secondmodalcolumns}
+                        rowGetter={this.secondModalRowGetter}
+                        rowsCount={this.state.rows2.length}
+                        minHeight={250}
+                        minWidth={1100}
+                        emptyRowsView={EmptyRowsView}
+                      //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button type="button" color="info" size="sm" onClick={this.handleSecondToggle}>Go Back</Button>
+                      <Button type="button" color="info" size="sm" onClick={this.handleToggleAll}>None of These</Button>
+                    </ModalFooter>
+                  </Modal>
+                </Draggable>
+              </ModalBody>
+              <ModalFooter>
+                <Button type="button" color="info" size="sm" onClick={this.handleFirstToggle}>None of These</Button>
+              </ModalFooter>
+            </Modal>
+          </Draggable>
         }
       </>
     )
