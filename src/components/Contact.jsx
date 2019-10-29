@@ -80,7 +80,6 @@ export default class Contact extends React.Component {
     const { target: { name } } = event
     const { contact, errors } = this.props
 
-    debugger
     // Save off Phone and Email.
     this.setState({ savedPhone: contact.phone.number, savedEmail: contact.email });
 
