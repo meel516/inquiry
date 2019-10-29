@@ -22,7 +22,7 @@ export class CommunityLookup extends React.Component {
             .then((data) => {
                 //console.log(data);
                 var communities = data.map((com) => {
-                    return { value: com.id, label: com.buildingName }
+                    return { value: com.id, label: (com.buildingName + " - " + com.accountingCode) }
                 });
                 //console.log(communities);
                 this.setState({ communityList: communities });
