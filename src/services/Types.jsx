@@ -121,6 +121,7 @@ function LeadDataRecord(record) {
         this.hasaddtl = record.hasAddlInfluencers
 
         if (record.prospect) {
+            this.prospectid = record.prospect.contactId
             this.pname = record.prospect.firstName + " " + record.prospect.lastName
             if (record.prospect.phoneNumbers) {
                 for (let i = 0; i < record.prospect.phoneNumbers.length; i++) {
