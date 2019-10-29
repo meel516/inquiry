@@ -11,7 +11,7 @@ import { ObjectMappingService } from '../services/Types'
 
 const defaultColumnProperties = {
   resizable: true,
-  width: 120
+  width: 200
 };
 
 const EmptyRowsView = () => {
@@ -29,10 +29,10 @@ export default class Contact extends React.Component {
     this.firstmodalcolumns = [
       { key: 'name', name: 'Contact Name' },
       { key: 'phone', name: 'Phone' },
-      { key: 'phonetype', name: 'Phone Type' },
+      //{ key: 'phonetype', name: 'Phone Type' },
       { key: 'email', name: 'Email' },
       { key: 'address1', name: 'Address 1' },  
-      { key: 'address2', name: 'Address 2' },  
+      //{ key: 'address2', name: 'Address 2' },  
       { key: 'city', name: 'City' },  
       { key: 'state', name: 'State' },  
       { key: 'zip', name: 'Zip' }
@@ -61,6 +61,8 @@ export default class Contact extends React.Component {
       dupeContactsFound: null,
       runDupeCheck: false,
       locked: false,
+      savedPhone: null,
+      savedEmail: null,
     }
     this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
@@ -74,6 +76,8 @@ export default class Contact extends React.Component {
 
   handleDupCheck = async event => {
     const { contact } = this.props;
+    // Save off Phone and Email.
+    this.setState({ savedPhone: contact.phone.number, savedEmail: contact.email });
 
     if (this.props.duplicateCheck && this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
       await this.dedup.checkForDuplicate(contact)
@@ -131,9 +135,22 @@ export default class Contact extends React.Component {
     });
   };
 
-  handleConfirm = (e) => {
+  handleFirstToggle = (e) => {
+    const { setFieldValue } = this.props;
+    const formContact = ObjectMappingService.createEmptyContact();
+    setFieldValue(`lead.${this.props.type}`, formContact);
+
+    // Now reset phone and email if they were saved in state.
+    if (this.state.savedPhone) {
+      setFieldValue(`lead.influencer.phone.number`, this.state.savedPhone);
+    }
+    if (this.state.savedEmail) {
+      setFieldValue(`lead.influencer.email`, this.state.savedEmail);
+    }
+
     this.setState(prevState => ({
       showModal: !prevState.showModal,
+      locked: false,
     }));
   }
 
@@ -253,40 +270,46 @@ export default class Contact extends React.Component {
         }
 
         {this.props.duplicateCheck &&
-          <Modal isOpen={this.state.showModal} size="lg">
-            <ModalHeader toggle={this.handleConfirm}>
+          <Modal isOpen={this.state.showModal} size="xl">
+            <ModalHeader>
               {"Potential Contact Matches"}
             </ModalHeader>
             <ModalBody>
+              <p>Select Contact by clicking on the row.</p>
               <ReactDataGrid
                 columns={this.firstmodalcolumns}
                 rowGetter={this.firstModalRowGetter}
                 rowsCount={this.state.rows.length}
-                minHeight={150}
-                minWidth={750}
+                minHeight={250}
+                minWidth={1100}
                 emptyRowsView={EmptyRowsView}
                 onRowClick={( rowId, row )=>this.onRowsSelected([{ row:row, rowIdx:rowId }])}
               />
-              <Modal isOpen={this.state.showSecondModal} size="lg">
-                <ModalHeader toggle={this.handleSecondToggle}>
+              <Modal isOpen={this.state.showSecondModal} size="xl">
+                <ModalHeader>
                   {"Potential Lead Matches"}
                 </ModalHeader>
                 <ModalBody>
+                  <p>Contact is associated with the Prospect leads below.  Select existing Prospect by clicking on the row or "None of These" to create new Prospect.</p>
                   <ReactDataGrid
                     columns={this.secondmodalcolumns}
                     rowGetter={this.secondModalRowGetter}
                     rowsCount={this.state.rows2.length}
-                    minHeight={150}
-                    minWidth={750}
+                    minHeight={250}
+                    minWidth={1100}
                     emptyRowsView={EmptyRowsView}
                     //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
                   />
                 </ModalBody>
                 <ModalFooter>
-                  <Button type="button" color="secondary" size="sm" onClick={this.handleToggleAll}>None of These</Button>
+                  <Button type="button" color="info" size="sm" onClick={this.handleSecondToggle}>Go Back</Button>
+                  <Button type="button" color="info" size="sm" onClick={this.handleToggleAll}>None of These</Button>
                 </ModalFooter>
               </Modal>
             </ModalBody>
+            <ModalFooter>
+              <Button type="button" color="info" size="sm" onClick={this.handleFirstToggle}>Cancel</Button>
+            </ModalFooter>
           </Modal>
         }
       </>
