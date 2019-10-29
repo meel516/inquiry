@@ -39,61 +39,6 @@ class DuplicationService {
   }
 }
 
-class DropDownService {
-
-  static getAddressStates() {
-    return this.createFetch(this.createDropDownUrl('stateProv'))
-  }
-
-  static getLeadSources() {
-    return this.createFetch(this.createDropDownUrl('inquiryLeadSource'))
-  }
-
-  static getLeadSourceDetails(leadSourceId) {
-    return this.createFetch(`${this.createDropDownUrl('inquiryLeadSource')}/${leadSourceId}/inquiryLeadSourceDetails`);
-  }
-
-  static getPhoneTypes() {
-    return this.createFetch(this.createDropDownUrl('phoneTypes'))
-  }
-
-  static getInquiryTypes() {
-    return this.createFetch(this.createDropDownUrl('inquiryTypes'))
-  }
-
-  static getVeteranStatus() {
-    return this.createFetch(this.createDropDownUrl('veteranStatus'))
-  }
-
-  static getDecisionTimeframe() {
-    return this.createFetch(this.createDropDownUrl('decisionTimeframe'))
-  }
-
-  static getReasonForInterest() {
-    return this.createFetch(this.createDropDownUrl('interestReason'))
-  }
-
-  static getCurrentSituation() {
-    return this.createFetch(this.createDropDownUrl('currentSituation'))
-  }
-
-  static getCareTypes() {
-    return this.createFetch(this.createDropDownUrl('careTypes'))
-  }
-
-  static getFollowupActions() {
-    return this.createFetch(this.createDropDownUrl('followUpActions'))
-  }
-
-  static createDropDownUrl(action) {
-    return `${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/dropdowns/${action}`
-  }
-
-  static createFetch(url) {
-    return fetch(url, { mode: 'cors', cache: 'no-cache' })
-      .then((res) => res.json())
-  }
-}
 
 // business logic ------
 class SalesAPIService {
@@ -535,7 +480,6 @@ class Logger {
 }
 
 export {
-  DropDownService,
   DuplicationService,
   SalesAPIService,
 }
