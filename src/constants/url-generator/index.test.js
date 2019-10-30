@@ -1,0 +1,27 @@
+import * as urlGenerator from './index'
+import reactAppSalesServicesUrl from './react-app-sales-services-url'
+import { keys } from 'lodash'
+
+jest.mock('./react-app-sales-services-url')
+
+describe('constants.urlGenerator', () => {
+    beforeEach(() => {
+        reactAppSalesServicesUrl.mockClear()
+        reactAppSalesServicesUrl.mockReturnValue('REACT_APP_SALES_SERVICES_URL')
+    });
+    test('should contain proper members', () => {
+        expect(typeof urlGenerator.createDropDownUrl).toEqual('function')
+        expect(typeof urlGenerator.createLeadSourceDropDownUrl).toEqual('function')
+        expect(keys(urlGenerator).length).toEqual(2)
+    })
+    describe('createDropDownUrl', () => {
+        test('should construct properly', () => {
+            expect(urlGenerator.createDropDownUrl('foo')).toEqual(`REACT_APP_SALES_SERVICES_URL/Sims/api/dropdowns/foo`)
+        })
+    })
+    describe('createLeadSourceDropDownUrl', () => {
+        test('should construct properly', () => {
+            expect(urlGenerator.createLeadSourceDropDownUrl('foo', 'bar')).toEqual(`REACT_APP_SALES_SERVICES_URL/Sims/api/dropdowns/foo/bar/inquiryLeadSourceDetails`)
+        })
+    })
+})

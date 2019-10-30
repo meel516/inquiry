@@ -21,7 +21,7 @@ export class CommunityLookup extends React.Component {
         fetchCommunities(userInfo.preferred_username)
             .then((data) => {
                 var communities = data.map((com) => {
-                    return { value: com.id, label: com.buildingName }
+                    return { value: com.id, label: (com.buildingName + " - " + com.accountingCode) }
                 });
                 this.setState({ communityList: communities });
             })

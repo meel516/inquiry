@@ -1,7 +1,7 @@
 
 import { TestUtils } from '../../utils/test-utils'
 import { ObjectMappingService } from '../Types'
-import { DropDownService, DuplicationService, SalesAPIService } from '../SalesServices';
+import { DuplicationService, SalesAPIService } from '../SalesServices';
 import createCommunity from '../community-services/create-community'
 
 describe('deduplication checks logic', () => {
