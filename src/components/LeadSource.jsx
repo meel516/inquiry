@@ -3,7 +3,7 @@ import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
 import { ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns'
 
 export default class LeadSource extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class LeadSource extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getLeadSources()
+    getLeadSources()
       .then((data) => this.setState({ leadSource: data }))
       .catch(error => console.log(error));
 
@@ -41,7 +41,7 @@ export default class LeadSource extends React.Component {
   }
 
   fetchAndSetLeadSourceDetail = (leadSourceId) => {
-    DropDownService.getLeadSourceDetails(leadSourceId)
+    getLeadSourceDetails(leadSourceId)
       .then((data) => {
         this.setState({ leadSourceDetail: data })
       })

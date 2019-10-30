@@ -2,7 +2,7 @@ import React from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 import PropTypes from 'prop-types'
 
-import { DropDownService } from '../services/SalesServices'
+import { getCurrentSituation } from '../services/dropdowns'
 
 export default class CurrentSituation extends React.Component {
   state = {
@@ -10,7 +10,7 @@ export default class CurrentSituation extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getCurrentSituation()
+    getCurrentSituation()
       .then((data) => this.setState({ currentSituation: data }))
       .catch(error => console.log(error));
   }

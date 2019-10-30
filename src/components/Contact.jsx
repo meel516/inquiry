@@ -7,7 +7,8 @@ import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 import Address from './Address';
 
-import { DropDownService, DuplicationService, SalesAPIService } from '../services/SalesServices'
+import { DuplicationService, SalesAPIService } from '../services/SalesServices'
+import { getPhoneTypes } from '../services/dropdowns'
 import { ObjectMappingService } from '../services/Types'
 
 const defaultColumnProperties = {
@@ -68,7 +69,7 @@ export default class Contact extends React.Component {
   }
 
   componentDidMount() {
-    DropDownService.getPhoneTypes()
+    getPhoneTypes()
       .then((data) => this.setState({ phoneTypes: data }))
       .catch(error => console.log(error));
   }
