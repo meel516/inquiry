@@ -124,8 +124,8 @@ export default class LeadSource extends React.Component {
 }
 
 LeadSource.propTypes = {
-  defaultLeadSource: PropTypes.string,
-  defaultLeadSourceDetail: PropTypes.string,
+  defaultLeadSource: PropTypes.number,
+  defaultLeadSourceDetail: PropTypes.number,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -135,7 +135,7 @@ LeadSource.propTypes = {
 }
 
 LeadSource.defaultProps = {
-  defaultLeadSource: '',
-  defaultLeadSourceDetail: '',
+  defaultLeadSource: 0,
+  defaultLeadSourceDetail: 0,
   isReadOnly: false,
 }

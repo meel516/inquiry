@@ -17,10 +17,15 @@ export default class CurrentSituation extends React.Component {
 
   render() {
     const { currentSituation } = this.state || [];
-    const { defaultValue } = this.props || '';
     const currentSituationOptions = currentSituation.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
+
+    let defaultCurrentSituation = this.props.defaultValue
+    if (this.props.defaultValue == null) {
+      defaultCurrentSituation = '';
+    }
+    console.log(`Current Situation: ${defaultCurrentSituation}`)
 
     return (
       <FormGroup md="9">
@@ -29,7 +34,7 @@ export default class CurrentSituation extends React.Component {
           type="select" 
           id="currentSituation" 
           name="currentSituation" 
-          value={defaultValue} 
+          value={defaultCurrentSituation} 
           onChange={this.props.handleChange}
           disabled={this.props.isReadOnly}
         >
@@ -42,7 +47,7 @@ export default class CurrentSituation extends React.Component {
 }
 
 CurrentSituation.propTypes = {
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.number,
 
   handleChange: PropTypes.func.isRequired,
 
@@ -50,5 +55,6 @@ CurrentSituation.propTypes = {
 }
 
 CurrentSituation.defaultProps = {
-  isReadOnly: false
+  isReadOnly: false,
+  defaultValue: -1,
 }

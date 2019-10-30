@@ -340,15 +340,15 @@ class ObjectMappingService {
     }
 
     static createLead(salesLead) {
-        const lead = new Lead();
+        const lead = new Lead(salesLead.leadId);
         if (salesLead) {
-            lead.leadId = salesLead.leadId
             lead.adlNeeds = this.createAdlNeeds();
             lead.memoryConcerns = this.createMemoryConcerns();
             lead.mobilityConcerns = this.createMobilityConcerns();
             lead.nutritionConcerns = this.createNutritionConcerns();
             lead.financialOptions = this.createFinancialOptions();
             lead.drivers = this.createDrivers();
+            lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadTypeId = salesLead.leadTypeId
@@ -356,9 +356,9 @@ class ObjectMappingService {
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
             lead.careType = salesLead.careTypeId
+            lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
-                lead.currentSituation = salesContact.currentSituation
                 lead.veteranStatus = salesContact.veteranStatus
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
@@ -421,7 +421,7 @@ class ObjectMappingService {
             contact.email = salesContact.emailAddress;
             contact.age = salesContact.age;
             contact.veteranStatus = salesContact.veteranStatus;
-            contact.currentSituation = salesContact.currentSituation;
+            //contact.currentSituation = salesContact.currentSituation;
             const address = this.createEmptyAddress();
             if (salesContact.address) {
                 const salesAddress = salesContact.address

@@ -47,7 +47,7 @@ export default class InquiryType extends React.Component {
 }
 
 InquiryType.propTypes = {
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.number,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -56,6 +56,6 @@ InquiryType.propTypes = {
 }
 
 InquiryType.defaultProps = {
-  defaultValue: '',
+  defaultValue: -1,
   isReadOnly: false,
 }

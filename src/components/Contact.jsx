@@ -179,7 +179,7 @@ export default class Contact extends React.Component {
 
   render() {
     const { locked, phoneTypes } = this.state || [];
-    const makeFieldsLocked = this.props.isReadOnly || locked || this.props.contact.contactId;
+    const makeFieldsLocked = this.props.isReadOnly || locked || (this.props.contact.contactId != null);
     const displayablePhoneTypes = (phoneTypes || []).map(type => {
       return <option key={type.value} value={type.text}>{type.text}</option>
     });

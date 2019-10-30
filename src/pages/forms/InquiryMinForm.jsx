@@ -50,8 +50,6 @@ class InquiryForm extends React.Component {
     let communities = []
     if (guid||leadId) {
       lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-      //const {prospect: {contactId}} = lead;
-      //communities = await this.salesapi.getCommunitiesOfInterest(contactId)
       locked = true
     } 
     else {
@@ -157,6 +155,7 @@ class InquiryForm extends React.Component {
       handleBlur,
       setFieldValue,
     } = this.props;
+    const isLocked = (this.props.values.lead.leadId != null)
 
     if (this.state.loading) {
       return (
@@ -328,7 +327,15 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <Input type="select" id="callingFor" name="lead.callingFor" onChange={this.props.handleChange} onBlur={this.props.handleBlur} disabled={this.props.status.readOnly}>
+              <Input 
+                type="select" 
+                id="callingFor" 
+                name="lead.callingFor" 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                disabled={this.props.status.readOnly || isLocked}
+                value={this.props.values.lead.callingFor}
+              >
                 <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
@@ -380,7 +387,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange}
               handleBlur={this.props.handleBlur}
               setFieldValue={this.props.setFieldValue}
-              isReadOnly={this.props.status.readOnly}
+              isReadOnly={this.props.status.readOnly || isLocked}
               {...this.props}
             />
           </Col>
