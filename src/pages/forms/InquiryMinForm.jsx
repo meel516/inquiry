@@ -42,7 +42,6 @@ class InquiryForm extends React.Component {
   checkAuthentication = checkAuthentication.bind(this);
 
   async componentDidMount() {
-    debugger;
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     this.checkAuthentication(this.getAuthCredentials);
 
@@ -401,7 +400,7 @@ class InquiryForm extends React.Component {
               <Input name='lead.umid'
                 type="text"
                 id="umid"
-                value={this.props.values.lead.umid}
+                value={this.props.values.lead.umid || ''}
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
                 readOnly={this.props.status.readOnly}

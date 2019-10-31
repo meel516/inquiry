@@ -300,7 +300,7 @@ class SalesAPIService {
 
     // Check if this is an add or update and process accordingly.
     let response;
-    if (prospectRequest && prospectRequest.leadId) {
+    if (prospectRequest && !prospectRequest.leadId) {
       // Add - call the POST
       response = await fetch(leadUrl, {
         method: 'POST', mode: 'cors',
@@ -476,7 +476,6 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
-    debugger;
 
     // IF zero/many community is selected always assume Contact Center community
     let leadId = lead.leadId;
@@ -485,27 +484,42 @@ class SalesAPIService {
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
-    // Process any Prospect changes.
-    // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
-    //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
-    await this.submitProspect(lead, null, user);
+    try {
+      // Process any Prospect changes.
+      // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
+      //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
+      await this.submitProspect(lead, null, user);
+    }
+    catch (err) {
 
-    // Process any Notes changes.
-    const notes = lead.notes
-    if (notes) {
-      await this.submitNotes(leadId, notes, user);
     }
 
-    // Process any Prospect Needs changes.
-    const careType = lead.careType
-    if (careType) {
-      await this.submitProspectNeeds(leadId, lead, user);
+    try {
+      // Process any Notes changes.
+      const notes = lead.notes
+      if (notes) {
+        await this.submitNotes(leadId, notes, user);
+      }
+    }
+    catch (err) {
+
     }
 
-    // Process COI list.
+    try {
+      // Process any Prospect Needs changes.
+      const careType = lead.careType
+      if (careType) {
+        await this.submitProspectNeeds(leadId, lead, user);
+      }
+    }
+    catch (err) {
+
+    }
+
     const communityList = [...communities];
 
     try {
+      // Process COI list.
       if (!containContactCenter(communities)) {
         let community = createCommunity();
         community.communityId = 225707
