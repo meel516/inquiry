@@ -51,19 +51,28 @@ class SalesAPIService {
     return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
+  async getLeadById({guid, leadId}) {
+    if (guid) {
+      return await this.getLeadByGuid(guid)
+    }
+    if (leadId) {
+      return await this.getLeadByLeadId(leadId)
+    }
+  }
+
   async getLeadByGuid(guid) {
     const leadUrl = this.createApiUri(`leads/guid/${guid}`);
     return await this.getLeadByUrl(leadUrl);
   }
 
   // TODO: need to build this out, so that system can fetch lead by Id not just guid
-  async getLeadById(leadId) {
+  async getLeadByLeadId(leadId) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl);
   }
 
   async retrieveLeadDataForContactId(contactId) {
-    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/lead/contact/${contactId}`);
+    const endpoint = this.createApiUri(`lead/contact/${contactId}`);
     const output = await this.createFetch(endpoint);
     return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
@@ -92,6 +101,19 @@ class SalesAPIService {
     }
     // TODO: do we create an empty lead knowning that the system cannot find the lead? or alert the user?
     return ObjectMappingService.createEmptyLead();
+  }
+
+  async getCommunitiesOfInterest(contactId) {
+    const comUrl = this.createApiUri(`/cois/${contactId}`);
+    let listOfCommunities = await this.createFetch(comUrl);
+    let communities = (listOfCommunities || []).map((community) => {
+      if ( !isContactCenter(community) )
+        return createCommunity(community)
+      return null
+    }).filter((community) => {
+      return community != null
+    })
+    return communities
   }
 
   /**

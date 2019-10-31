@@ -32,3 +32,4 @@ jsconfig.json
 
 # ignore vscode
 .vscode
+*.cmd

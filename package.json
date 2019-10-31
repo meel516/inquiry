@@ -1,6 +1,6 @@
 {
   "name": "inquiry-form",
-  "version": "1.0.12",
+  "version": "1.0.1",
   "description": "Contact Center Application",
   "private": true,
   "dependencies": {
@@ -46,7 +46,8 @@
   },
   "engines": {
     "node": "10.x",
-    "npm": "6.x"
+    "npm": "6.x",
+    "yarn": "1.19.x"
   },
   "browserslist": {
     "production": [
