@@ -8,7 +8,5 @@ export default userName => {
             appShortName: 'SIMS',
             userName
         }
-    ).then(res => res.json())
-    //  TODO: Migrate the previous line to the next line after MR #76 is complete
-    //  ).then(request.jsonResponse)
+    ).then(request.jsonResponse)
 }
