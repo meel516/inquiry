@@ -34,9 +34,7 @@ class InquiryForm extends React.Component {
 
   MAX_COMMUNITIES = 5;
   state = {
-    communities: [],
     allowAddCommunities: true,
-    lead: null,
     loading: true,
   };
 
@@ -45,29 +43,26 @@ class InquiryForm extends React.Component {
 
   async componentDidMount() {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
-    console.log(`(GUID: ${guid} OR COID/LEADID: ${leadId}) and UMID: ${umid}`);
-
     this.checkAuthentication(this.getAuthCredentials);
 
-    let leadObj = null;
-    if (guid) {
-      leadObj = await this.salesapi.getLeadByGuid(guid)
-    }
-    if (leadId) {
-      leadObj = await this.salesapi.getLeadById(leadId)
-    }
+    let locked = false
+    let lead = null
+    let communities = []
+    if (guid||leadId) {
+      lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
+      locked = true
+    } 
     else {
-      leadObj = ObjectMappingService.createEmptyLead()
+      lead = ObjectMappingService.createEmptyLead()
     }
     if (umid) {
-      leadObj.umid = umid;
-      this.props.setFieldValue('lead.umid', umid)
+      lead.umid = umid;
     }
-    this.props.setFieldValue('lead', leadObj)
+    this.props.setFieldValue('lead', lead)
+    this.props.setFieldValue('communities', communities)
 
     this.setState({
       loading: false,
-      lead: leadObj,
     })
   }
 
@@ -159,8 +154,8 @@ class InquiryForm extends React.Component {
       handleChange,
       handleBlur,
       setFieldValue,
-      setFieldTouched,
     } = this.props;
+    const isLocked = (this.props.values.lead.leadId != null)
 
     if (this.state.loading) {
       return (
@@ -225,6 +220,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={false}
+            showProspect={this.props.values.lead.callingFor === 'Myself'}
             {...this.props}
           />
           <br />
@@ -332,7 +328,15 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <Input type="select" id="callingFor" name="lead.callingFor" onChange={this.props.handleChange} onBlur={this.props.handleBlur} disabled={this.props.status.readOnly}>
+              <Input 
+                type="select" 
+                id="callingFor" 
+                name="lead.callingFor" 
+                onChange={this.props.handleChange} 
+                onBlur={this.props.handleBlur} 
+                disabled={this.props.status.readOnly || isLocked}
+                value={this.props.values.lead.callingFor}
+              >
                 <option value="">Select One</option>
                 <option>Myself</option>
                 <option>Parent</option>
@@ -360,7 +364,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange}
               handleBlur={this.props.handleBlur}
               defaultValue={this.props.values.lead.inquiryType}
-              isReadOnly={this.props.status.readOnly}
+              isReadOnly={this.props.status.readOnly || isLocked}
               {...this.props}
             />
           </Col>
@@ -384,7 +388,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange}
               handleBlur={this.props.handleBlur}
               setFieldValue={this.props.setFieldValue}
-              isReadOnly={this.props.status.readOnly}
+              isReadOnly={this.props.status.readOnly || isLocked}
               {...this.props}
             />
           </Col>

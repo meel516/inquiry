@@ -36,7 +36,7 @@ export default class CareType extends React.Component {
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>
-        <ErrorMessage name="lead.careType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>}/>
+        <ErrorMessage name="lead.careType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
       </FormGroup>
     )
   }
