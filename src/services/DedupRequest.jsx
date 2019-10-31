@@ -1,4 +1,4 @@
-
+//  TODO: Remove this if no longer needed
 class DedupRequest {
 
   constructor(contact) {
