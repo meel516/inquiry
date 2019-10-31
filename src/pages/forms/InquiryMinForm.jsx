@@ -220,6 +220,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={false}
+            isProspect={this.props.values.lead.callingFor === 'Myself'}
             {...this.props}
           />
           <br />
@@ -363,7 +364,7 @@ class InquiryForm extends React.Component {
               handleChange={this.props.handleChange}
               handleBlur={this.props.handleBlur}
               defaultValue={this.props.values.lead.inquiryType}
-              isReadOnly={this.props.status.readOnly}
+              isReadOnly={this.props.status.readOnly || isLocked}
               {...this.props}
             />
           </Col>
