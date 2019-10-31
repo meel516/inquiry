@@ -24,6 +24,10 @@ const conditionalValidationSchema = Yup.object().shape({
   }),
 })
 
+const fieldLengthCheck = function(len, msg) {
+  return Yup.string().max(len, msg);
+}
+
 const mainFormValidationSchema = Yup.object().shape({
   lead: Yup.object().shape({
     influencer: Yup.object().shape({
@@ -102,6 +106,7 @@ const mainFormValidationSchema = Yup.object().shape({
         }),
     }),
     secondPerson: Yup.object().shape({
+      selected: Yup.boolean(),
       firstName: Yup.string()
         .max(50, 'First Name can be at most 50 characters')
       ,
@@ -137,27 +142,16 @@ const mainFormValidationSchema = Yup.object().shape({
     leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
     callerType: Yup.string().required('Gender of Caller is required'),
     notes: Yup.object().shape({
-      situation: Yup.string()
-        .max(4000, 'Situation can be at most 4000 characters')
-      ,
-      passionsPersonality: Yup.string()
-        .max(4000, 'Passions & Personality can be at most 4000 characters')
-      ,
-      financialSituation: Yup.string()
-        .max(4000, 'Financial Situation can be at most 4000 characters')
-      ,
-      additionalNotes: Yup.string()
-        .max(4000, 'Additional Notes can be at most 4000 characters')
-      ,
-      secondPerson: Yup.string()
-        .max(4000, '2nd Person Situation can be at most 4000 characters')
-      ,
+      situation: fieldLengthCheck(4000, 'Situation can be at most 4000 characters'),
+      passionsPersonality: fieldLengthCheck(4000, 'Passions & Personality can be at most 4000 characters'),
+      financialSituation: fieldLengthCheck(4000, 'Financial Situation can be at most 4000 characters'),
+      additionalNotes: fieldLengthCheck(4000, 'Additional Notes can be at most 4000 characters'),
+      secondPerson: fieldLengthCheck(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
   }),
   communities: Yup.array().of(
     Yup.object().shape({
-      note: Yup.string()
-        .max(4000, 'Description can be at most 4000 characters')
+      note: fieldLengthCheck(4000, 'Description can be at most 4000 characters')
       ,
     }),
   )
@@ -166,7 +160,8 @@ const mainFormValidationSchema = Yup.object().shape({
 const formValidationSchema = mainFormValidationSchema.concat(conditionalValidationSchema);
 
 export {
-  formValidationSchema,
-  mainFormValidationSchema,
+  phonePhoneTypeDependencySchema,
   conditionalValidationSchema,
+  mainFormValidationSchema,
+  formValidationSchema,
 };

@@ -17,7 +17,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Security issuer={process.env.REACT_APP_OKTA_URL + '/oauth2/default'}
+        <Security issuer={process.env.REACT_APP_OKTA_URL}
           clientId={process.env.REACT_APP_OKTA_CLIENTID}
           redirectUri={window.location.origin + '/implicit/callback'}>
           <SecureRoute path='/' exact={true} component={Home} />

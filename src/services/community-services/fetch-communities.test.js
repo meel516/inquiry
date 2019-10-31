@@ -7,7 +7,7 @@ jest.mock('../request', () => ({ post: jest.fn() }))
 //  jest.mock('../request', () => ({ post: jest.fn(), jsonResponse: jest.fn() }))
 jest.mock('../../constants/url-generator', () => ({ createCommunitiesFetchUrl: jest.fn() }))
 
-describe('communityServices.createCommunity Service', () => {
+describe('communityServices.fetchCommunities Service', () => {
     beforeEach(() => {
         createCommunitiesFetchUrl.mockClear()
         request.post.mockResolvedValue({ json: () => 'test' })
@@ -19,12 +19,14 @@ describe('communityServices.createCommunity Service', () => {
         const payload = {
             communitySearchText: '',
             appShortName: 'SIMS',
-            username: 'foo'
+            userName: 'foo'
         }
         await fetchCommunities(payload.username)
         expect(request.post).toHaveBeenCalledWith(`URL`, payload)
         //  TODO: Add following after MR # 76
         //  expect(request.jsonResponse).toHaveBeenCalled()
+        await fetchCommunities(payload.userName)
+        expect(request.post).toHaveBeenCalledWith(`URL/searchByAppAndUser`, payload)
     })
     //  TODO: Remove following after MR # 76
     test('should return json', async () => {
