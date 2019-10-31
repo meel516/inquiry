@@ -1,6 +1,4 @@
 //import React from 'react'
-import DedupRequest from './DedupRequest'
-
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
 import { AppError, ServerError, ObjectMappingService } from './Types'
@@ -68,19 +66,6 @@ class SalesAPIService {
     return ObjectMappingService.createEmptyLead();
   }
 
-  async getCommunitiesOfInterest(contactId) {
-    const comUrl = this.createApiUri(`/cois/${contactId}`);
-    let listOfCommunities = await this.createFetch(comUrl);
-    let communities = (listOfCommunities || []).map((community) => {
-      if ( !isContactCenter(community) )
-        return createCommunity(community)
-      return null
-    }).filter((community) => {
-      return community != null
-    })
-    return communities
-  }
-
   /**
    * Submits an influencer to the server api
    * @param {object} influencer the influencer request
@@ -101,40 +86,6 @@ class SalesAPIService {
         return salesResponse.objectId;
       }
       throw new ServerError(response.status, salesResponse.message);
-    }
-  }
-
-  /**
-   * Creates a new followup request and pushs the request to the service api.
-   * There will never be updates to followups only new ones created.
-   * 
-   * @param {number} leadId the lead key to which the follow up pertains
-   * @param {object} community the community to which the follow up pertains
-   * @param {object} user the user logged in
-   */
-  async submitFollowup(leadId, community, user) {
-    const fuaUrl = this.createApiUri('leads/fua')
-
-    let followup = ObjectMappingService.createFollowupRequest(leadId, community, user)
-    if (followup) {
-      try {
-        let response = await fetch(fuaUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(followup),
-        })
-        const fua = await response.json();
-        if (response.status !== 201) {
-          console.log(`Error: ${response.status} ${fua.message}`);
-          throw new ServerError(response.status, fua.message, 'followup')
-        }
-      }
-      catch (err) {
-        console.log(`Error: ${JSON.stringify(err)}`)
-        throw new ServerError('', 'Could not connect to follow up service.');
-      }
     }
   }
 

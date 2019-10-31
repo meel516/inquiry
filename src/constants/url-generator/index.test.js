@@ -8,7 +8,7 @@ describe('constants.urlGenerator', () => {
     beforeEach(() => {
         reactAppSalesServicesUrl.mockClear()
         reactAppSalesServicesUrl.mockReturnValue('REACT_APP_SALES_SERVICES_URL')
-    });
+    })
     test('should contain proper members', () => {
         expect(typeof urlGenerator.createDropDownUrl).toEqual('function')
         expect(typeof urlGenerator.createLeadSourceDropDownUrl).toEqual('function')
@@ -28,6 +28,8 @@ describe('constants.urlGenerator', () => {
     describe('createCommunitiesFetchUrl', () => {
         test('should construct properly', () => {
             expect(urlGenerator.createCommunitiesFetchUrl()).toEqual(`REACT_APP_SALES_SERVICES_URL/CommunitySearch/service/searchByAppAndUser`)
+        })
+    })
     describe('createDuplicateSearchUrl', () => {
         test('should construct properly', () => {
             expect(urlGenerator.createDuplicateSearchUrl()).toEqual(`REACT_APP_SALES_SERVICES_URL/Sims/api/contact/duplication`)
