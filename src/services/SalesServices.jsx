@@ -445,6 +445,5 @@ class Logger {
 }
 
 export {
-  DuplicationService,
   SalesAPIService,
 }
