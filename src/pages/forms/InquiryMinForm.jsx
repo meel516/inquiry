@@ -400,7 +400,7 @@ class InquiryForm extends React.Component {
               <Input name='lead.umid'
                 type="text"
                 id="umid"
-                value={this.props.values.lead.umid}
+                value={this.props.values.lead.umid || ''}
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
                 readOnly={this.props.status.readOnly}
