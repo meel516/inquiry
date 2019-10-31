@@ -4,7 +4,7 @@ import { Col, ListGroup, ListGroupItem, Row } from 'reactstrap';
 const systemLinks = [
   { name: "Advisor Admin Form", location: "http://bkdcontactcenter.host/advisoradmin/" },
   { name: "CC Helpful Numbers", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Helpful%20Numbers%202.12.19.docx" },
-  { name: "SMS", location: "http://sales.uat.assisted.com/Sims" },
+  { name: "SMS", location: `${process.env.REACT_APP_SALES_URL}` },
   { name: "Nurse on Call Locations", location: "http://www.nurseoncallfl.com/locations/" },
   { name: "Entry Fee & CCRC", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CCRC%20%20EF.docx" },
   { name: "Entry Fee Communities", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/Entry%20Fee%20Communities.docx" },
