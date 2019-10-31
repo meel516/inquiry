@@ -7,9 +7,11 @@ import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 import Address from './Address';
 
-import { DuplicationService, SalesAPIService } from '../services/SalesServices'
+import { SalesAPIService } from '../services/SalesServices'
 import { getPhoneTypes } from '../services/dropdowns'
 import { ObjectMappingService } from '../services/Types'
+import findDuplicates from '../services/sales-services/find-duplicates'
+import canHaveDuplicates from '../services/sales-services/can-have-duplicates'
 
 const defaultColumnProperties = {
   resizable: true,
@@ -64,7 +66,6 @@ export default class Contact extends React.Component {
       savedEmail: null,
       activeDrags: 0,
     }
-    this.dedup = new DuplicationService()
     this.sales = new SalesAPIService()
   }
 
@@ -83,8 +84,8 @@ export default class Contact extends React.Component {
     // Save off Phone and Email.
     this.setState({ savedPhone: contact.phone.number, savedEmail: contact.email });
 
-    if (this.props.duplicateCheck && this.state.runDupeCheck && this.dedup.shouldRunDuplicateCheck(contact)) {
-      await this.dedup.checkForDuplicate(contact)
+    if (this.props.duplicateCheck && this.state.runDupeCheck && canHaveDuplicates(contact)) {
+      await findDuplicates(contact)
         .then((data) => {
           const mappedData = ObjectMappingService.createContactDuplicateGridContent(data);
           this.setState({ rows: mappedData, showModal: true, dupeContactsFound: data, runDupeCheck: false })
