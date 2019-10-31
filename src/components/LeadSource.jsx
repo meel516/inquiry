@@ -33,7 +33,7 @@ export default class LeadSource extends React.Component {
       this.setState({
         leadSourceDetail: [],
       })
-      setFieldValue('lead.leadSourceDetail', '');
+      setFieldValue('lead.leadSourceDetail', -1);
     } else {
       this.fetchAndSetLeadSourceDetail(leadSourceId);
     }
