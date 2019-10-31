@@ -18,13 +18,13 @@ describe('communityServices.fetchCommunities Service', () => {
             appShortName: 'SIMS',
             userName: 'foo'
         }
-        await fetchCommunities(payload.username)
+        await fetchCommunities(payload.userName)
         expect(request.post).toHaveBeenCalledWith(`URL`, payload)
         expect(request.jsonResponse).toHaveBeenCalled()
     })
     test('should output properly', () => {
         request.jsonResponse.mockReturnValue('RESPONSE')
-        service().then((response) => {
+        fetchCommunities().then((response) => {
             expect(response).toEqual('RESPONSE')
         })
     })
