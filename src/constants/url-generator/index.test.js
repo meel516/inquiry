@@ -12,7 +12,8 @@ describe('constants.urlGenerator', () => {
     test('should contain proper members', () => {
         expect(typeof urlGenerator.createDropDownUrl).toEqual('function')
         expect(typeof urlGenerator.createLeadSourceDropDownUrl).toEqual('function')
-        expect(keys(urlGenerator).length).toEqual(2)
+        expect(typeof urlGenerator.createCommunitiesFetchUrl).toEqual('function')
+        expect(keys(urlGenerator).length).toEqual(3)
     })
     describe('createDropDownUrl', () => {
         test('should construct properly', () => {
@@ -22,6 +23,11 @@ describe('constants.urlGenerator', () => {
     describe('createLeadSourceDropDownUrl', () => {
         test('should construct properly', () => {
             expect(urlGenerator.createLeadSourceDropDownUrl('foo', 'bar')).toEqual(`REACT_APP_SALES_SERVICES_URL/Sims/api/dropdowns/foo/bar/inquiryLeadSourceDetails`)
+        })
+    })
+    describe('createCommunitiesFetchUrl', () => {
+        test('should construct properly', () => {
+            expect(urlGenerator.createCommunitiesFetchUrl()).toEqual(`REACT_APP_SALES_SERVICES_URL/CommunitySearch/service/searchByAppAndUser`)
         })
     })
 })

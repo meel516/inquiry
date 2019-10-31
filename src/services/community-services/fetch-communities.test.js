@@ -1,27 +1,43 @@
 import * as request from '../request'
-import getEndpointUrl from './get-endpoint-url'
+import { createCommunitiesFetchUrl } from '../../constants/url-generator'
 import fetchCommunities from './fetch-communities'
 
 jest.mock('../request', () => ({ post: jest.fn() }))
-jest.mock('./get-endpoint-url')
+//  TODO: Migrate the previous line to the following after MR # 76
+//  jest.mock('../request', () => ({ post: jest.fn(), jsonResponse: jest.fn() }))
+jest.mock('../../constants/url-generator', () => ({ createCommunitiesFetchUrl: jest.fn() }))
 
 describe('communityServices.createCommunity Service', () => {
     beforeEach(() => {
-        getEndpointUrl.mockClear()
+        createCommunitiesFetchUrl.mockClear()
         request.post.mockResolvedValue({ json: () => 'test' })
+        //  TODO: Add following after MR # 76
+        //  request.jsonResponse.mockClear()
     })
     test('should properly call post', async () => {
-        getEndpointUrl.mockReturnValue('URL')
+        createCommunitiesFetchUrl.mockReturnValue('URL')
         const payload = {
             communitySearchText: '',
             appShortName: 'SIMS',
             username: 'foo'
         }
         await fetchCommunities(payload.username)
-        expect(request.post).toHaveBeenCalledWith(`URL/searchByAppAndUser`, payload)
+        expect(request.post).toHaveBeenCalledWith(`URL`, payload)
+        //  TODO: Add following after MR # 76
+        //  expect(request.jsonResponse).toHaveBeenCalled()
     })
+    //  TODO: Remove following after MR # 76
     test('should return json', async () => {
         const response = await fetchCommunities('')
         expect(response).toEqual('test')
     })
+    //  TODO: Add following after MR # 76
+    /*
+    test('should output properly', () => {
+        request.jsonResponse.mockReturnValue('RESPONSE')
+        service().then((response) => {
+            expect(response).toEqual('RESPONSE')
+        })
+    })
+    */
 })
