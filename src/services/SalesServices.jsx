@@ -257,7 +257,7 @@ class SalesAPIService {
   }
 
   async sendAddCommunityRequest(request) {
-    const coidUrl = this.createApiUri('addCommunity')
+    const coidUrl = this.createApiUri('communities')
     let response = await fetch(coidUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -275,16 +275,31 @@ class SalesAPIService {
 
   async sendProspect(prospectRequest) {
     const leadUrl = this.createApiUri('prospect')
-    let response = await fetch(leadUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(prospectRequest)
-    })
+
+    // Check if this is an add or update and process accordingly.
+    let response;
+    if (prospectRequest && prospectRequest.leadId) {
+      // Add - call the POST
+      response = await fetch(leadUrl, {
+        method: 'POST', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prospectRequest)
+      })
+    } else {
+      // Update - call the PUT
+      response = await fetch(leadUrl, {
+        method: 'PUT', mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prospectRequest)
+      })
+    }
 
     const salesResponse = await response.json();
-    if (response.status === 201) {
+    if (response.status === 200 || response.status === 201) {
       const { objectId } = salesResponse;
       prospectRequest.leadId = objectId
 
@@ -361,27 +376,27 @@ class SalesAPIService {
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
-  // IF zero/many community is selected always assume Contact Center community
-  let leadId = null;
-  try {
-    if (!containContactCenter(communities)) {
-      let community = createCommunity();
-      community.communityId = 225707
-      leadId = await this.processContactCenter(lead, community, user);
-    }
-    else {
-      let contactCenter;
-      communityList.map((community) => {
-        if (isContactCenter(community)) {
-          contactCenter = community;
-          return null;
-        }
-        return community;
-      });
-      if (contactCenter != null) {
-          leadId = await this.processContactCenter(lead, contactCenter, user);
-        }
+    // IF zero/many community is selected always assume Contact Center community
+    let leadId = null;
+    try {
+      if (!containContactCenter(communities)) {
+        let community = createCommunity();
+        community.communityId = 225707
+        leadId = await this.processContactCenter(lead, community, user);
       }
+      else {
+        let contactCenter;
+        communityList.map((community) => {
+          if (isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+        if (contactCenter != null) {
+            leadId = await this.processContactCenter(lead, contactCenter, user);
+          }
+        }
     }
     catch (err) {
 
@@ -439,7 +454,90 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
+    debugger;
 
+    // IF zero/many community is selected always assume Contact Center community
+    let leadId = lead.leadId;
+    if (leadId == null) {
+      // We should have a leadId here, if not throw new error.
+      throw new AppError('412', 'Update attempted, but Lead record does not exist.')
+    }
+
+    // Process any Prospect changes.
+    // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
+    //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
+    await this.submitProspect(lead, null, user);
+
+    // Process any Notes changes.
+    const notes = lead.notes
+    if (notes) {
+      await this.submitNotes(leadId, notes, user);
+    }
+
+    // Process any Prospect Needs changes.
+    const careType = lead.careType
+    if (careType) {
+      await this.submitProspectNeeds(leadId, lead, user);
+    }
+
+    // Process COI list.
+    const communityList = [...communities];
+
+    try {
+      if (!containContactCenter(communities)) {
+        let community = createCommunity();
+        community.communityId = 225707
+        communityList.push(community);
+      }
+    }
+    catch (err) {
+
+    }
+
+    const formattedCommunityList = [];
+    const eloquaCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
+
+        community.followupDate = convertToISODate(community.followupDate);
+        formattedCommunityList.push(community);
+
+        // Check to see if this community has an applicable Follow Up Action that
+        // would deem submission of an External Eloqua Email.  If so, add it to the
+        // eloquaCommunityList.
+        // 5	Visit/Appt - Scheduled
+        // 6	Home Visit
+        // 8	Assessment
+        const actionArray = ["5", "6", "8"];
+        if (actionArray.indexOf(community.followUpAction) > -1) {
+          eloquaCommunityList.push(community);
+        }
+
+      })
+    }
+
+    try {
+      // Submit Add Communities/FUA request.
+      if (formattedCommunityList && formattedCommunityList.length > 0) {
+        await this.processCommunities(lead, formattedCommunityList, user);
+      }
+    }
+    catch (err) {
+
+    }
+
+    try {
+      // If we have an email and communities in eloquaCommunityList, submit the request.
+      if (lead && lead.influencer && lead.influencer.email &&
+        eloquaCommunityList && eloquaCommunityList.length > 0) {
+        const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
+        this.submitEloquaRequest(eloquaExternalRequest);
+      }
+    }
+    catch (err) {
+
+    }
   }
 
   async submitToService({ lead, communities, user }) {

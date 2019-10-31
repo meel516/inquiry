@@ -44,6 +44,7 @@ class InquiryForm extends React.Component {
   checkAuthentication = checkAuthentication.bind(this);
 
   async componentDidMount() {
+    debugger;
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     console.log(`(GUID: ${guid} OR COID/LEADID: ${leadId}) and UMID: ${umid}`);
 

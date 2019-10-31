@@ -677,7 +677,7 @@ class ObjectMappingService {
     }
 
     static createProspectRequest(lead, community, user) {
-        if (!lead || !community) return;
+        if (!lead) return;
 
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
@@ -709,7 +709,11 @@ class ObjectMappingService {
 
         salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
-        salesLead.buildingId = community.communityId
+
+        if (community) {
+            salesLead.buildingId = community.communityId
+        }
+        
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.interestReasonId = lead.reasonForCall
@@ -717,6 +721,11 @@ class ObjectMappingService {
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
         salesLead.username = user.username
+
+        // For updates, we will have a leadId...set it.
+        if (lead.leadId) {
+            salesLead.leadId = lead.leadId;
+        }
 
         return salesLead;
     }
