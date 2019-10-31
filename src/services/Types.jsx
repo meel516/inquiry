@@ -750,22 +750,7 @@ class ObjectMappingService {
             username: user.username,
         }
     }
-    
-    static createContactDuplicationRequest(contact) {
-        return {
-            address1: "",
-            address2: "",
-            city: "",
-            state: "",
-            zip: "",
-            email: contact.email,
-            prospectFirstName: "",
-            prospectLastName: "",
-            phone1: (contact.phone !== null ? Util.stripPhoneFormatting(contact.phone.number) : ""),
-            phoneType: "",
-        }
-    }
-    
+   
     static buildLeadDataResponseForContactId(payload) {
         const returnval = [];
 

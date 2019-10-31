@@ -5,41 +5,6 @@ import { isContactCenter, createCommunity, containContactCenter } from './commun
 import convertToISODate from '../utils/convert-to-iso-date'
 import { AppError, ServerError, ObjectMappingService } from './Types'
 
-
-class DuplicationService {
-
-  shouldRunDuplicateCheck(contact) {
-    if (contact) {
-      const { email, phone: { number } } = contact;
-      if (!number && !email) {
-        return false;
-      }
-      return true;
-    }
-    return true;
-  }
-
-  async checkForDuplicate(contact) {
-    const endpoint = window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/contact/duplication`);
-    const contactDupeRequest = ObjectMappingService.createContactDuplicationRequest(contact);
-
-    let response = await fetch(endpoint, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(contactDupeRequest),
-    })
-    const data = await response.json();
-    if (response.status === 200) {
-      return data;
-    } else {
-      throw new Error('Error Performing Duplicate Search')
-    }
-  }
-}
-
-
 // business logic ------
 class SalesAPIService {
 
@@ -502,6 +467,5 @@ class Logger {
 }
 
 export {
-  DuplicationService,
   SalesAPIService,
 }

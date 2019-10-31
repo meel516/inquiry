@@ -5,7 +5,7 @@ import fetchCommunities from './fetch-communities'
 jest.mock('../request', () => ({ post: jest.fn() }))
 jest.mock('./get-endpoint-url')
 
-describe('communityServices.createCommunity Service', () => {
+describe('communityServices.fetchCommunities Service', () => {
     beforeEach(() => {
         getEndpointUrl.mockClear()
         request.post.mockResolvedValue({ json: () => 'test' })
@@ -15,9 +15,9 @@ describe('communityServices.createCommunity Service', () => {
         const payload = {
             communitySearchText: '',
             appShortName: 'SIMS',
-            username: 'foo'
+            userName: 'foo'
         }
-        await fetchCommunities(payload.username)
+        await fetchCommunities(payload.userName)
         expect(request.post).toHaveBeenCalledWith(`URL/searchByAppAndUser`, payload)
     })
     test('should return json', async () => {
