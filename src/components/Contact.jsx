@@ -10,8 +10,8 @@ import Address from './Address';
 import { SalesAPIService } from '../services/SalesServices'
 import { getPhoneTypes } from '../services/dropdowns'
 import { ObjectMappingService } from '../services/Types'
-import findDuplicates from '../services/sales-services/find-duplicates'
-import canHaveDuplicates from '../services/sales-services/can-have-duplicates'
+import findDuplicates from '../services/deduplication/find-duplicates'
+import canHaveDuplicates from '../services/deduplication/can-have-duplicates'
 
 const defaultColumnProperties = {
   resizable: true,
