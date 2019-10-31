@@ -1,6 +1,4 @@
 //import React from 'react'
-import DedupRequest from './DedupRequest'
-
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
 import { AppError, ServerError, ObjectMappingService } from './Types'
