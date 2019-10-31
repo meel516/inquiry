@@ -1,7 +1,7 @@
 import service from './can-have-duplicates'
 import { set } from 'lodash'
 
-describe('salesServices.canHaveDuplicates', () => {
+describe('canHaveDuplicates', () => {
     test('should return true if email is present', () => {
         expect(service(set({}, 'email', 'foo'))).toBeTruthy()
     })

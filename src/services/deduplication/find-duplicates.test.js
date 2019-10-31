@@ -7,7 +7,7 @@ jest.mock('../../constants/url-generator', () => ({ createDuplicateSearchUrl: je
 jest.mock('./strip-phone-formatting')
 jest.mock('../request', () => ({ post: jest.fn(), jsonResponse: jest.fn() }))
 
-describe('salesServices.findDuplicates', () => {
+describe('findDuplicates', () => {
     beforeEach(() => {
         createDuplicateSearchUrl.mockClear()
         request.post.mockClear()
