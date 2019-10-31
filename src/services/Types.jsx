@@ -335,7 +335,7 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
-            veteranStatus: "",
+            veteranStatus: -1,
         }
     }
 
@@ -388,10 +388,10 @@ class ObjectMappingService {
         lead.umid = '';
         lead.fua = '';
         lead.callingFor = '';
-        lead.inquiryType = '';
+        lead.inquiryType = -1;
         lead.careType = '';
-        lead.leadSource = '';
-        lead.leadSourceDetail = '';
+        lead.leadSource = -1;
+        lead.leadSourceDetail = -1;
         lead.callerType = '';
 
         return lead;
