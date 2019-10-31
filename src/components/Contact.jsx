@@ -137,6 +137,17 @@ export default class Contact extends React.Component {
     });
   };
 
+  onRows2Selected = async rows => {
+    if(rows[0].row) {
+      console.log("rows[0].row: ", rows[0].row);
+
+      const leadRow = rows[0].row;
+
+      
+
+    }
+  }
+
   handleFirstToggle = (e) => {
     const { setFieldValue } = this.props;
     const formContact = ObjectMappingService.createEmptyContact();
@@ -315,7 +326,7 @@ export default class Contact extends React.Component {
                         minHeight={250}
                         minWidth={1100}
                         emptyRowsView={EmptyRowsView}
-                      //onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
+                        onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
                       />
                     </ModalBody>
                     <ModalFooter>
