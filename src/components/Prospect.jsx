@@ -13,7 +13,7 @@ export default function Prospect(props) {
           <Label className="section-header" >Prospect</Label>
         </Col>
       </Row>
-      <Contact 
+      {!props.showProspect && <Contact 
         key="prospect-contact"
         type="prospect" 
         contact={props.contact} 
@@ -23,7 +23,7 @@ export default function Prospect(props) {
         duplicateCheck={props.duplicateCheck}
         hasAddress={false}
         {...props}
-      />
+      />}
       <Row>
         <Col xs="1" md="6">
           <FormGroup>
@@ -52,6 +52,7 @@ Prospect.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
 
+  showProspect: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   duplicateCheck: PropTypes.bool,
 }
@@ -59,4 +60,5 @@ Prospect.propTypes = {
 Prospect.defaultProps = {
   isReadOnly: false,
   duplicateCheck: false,
+  showProspect: true,
 }

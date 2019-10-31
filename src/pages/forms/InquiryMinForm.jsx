@@ -220,7 +220,7 @@ class InquiryForm extends React.Component {
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
             duplicateCheck={false}
-            isProspect={this.props.values.lead.callingFor === 'Myself'}
+            showProspect={this.props.values.lead.callingFor === 'Myself'}
             {...this.props}
           />
           <br />
