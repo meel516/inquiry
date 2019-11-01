@@ -47,6 +47,9 @@ A file needs to be created called .env.local in the base of the project.  Using 
 # sales services api
 REACT_APP_SALES_SERVICES_URL=https://sales-services.uat.brookdale.com
 
+# sales system
+REACT_APP_SALES_URL=https://sales.uat.assisted.com/Sims
+
 # community api
 REACT_APP_COMMUNITY_URL=http://unit-api.brookdale.com/bu-master
 
@@ -100,6 +103,7 @@ gcloud components update
 ```
 2. Check the app.yaml file to make sure all environment variables are properly set for the environment being posted to.  The version used in the deployment should match the version in the app.yaml.  At the current time the app.yaml contains the following environment variables.
 ```yaml
+REACT_APP_SALES_URL:
 REACT_APP_SALES_SERVICES_URL:
 REACT_APP_OKTA_URL:
 REACT_APP_OKTA_CLIENTID:
@@ -107,7 +111,7 @@ REACT_APP_VERSION:
 REACT_APP_NODE_ENV:
 REACT_APP_APPLICATION_NAME:
 ```
-3. Run the deployment script via a command line to deploy the application to GCP.  The version value must but a string value, so replace all dots (.) with dashes (-).
+3. Run the deployment script via a command line to deploy the application to GCP.  The version value must but a string value, so replace all dots (.) with dashes (-). The project is optional if you have your local GSDK profile setup to that project.
 ```
-gcloud app deploy --verbosity=debug --no-promote --version 1-0-12-rc1
+gcloud app deploy --verbosity=debug --no-promote --version <version/> --project </projectId>
 ```
