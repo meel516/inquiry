@@ -15,7 +15,7 @@ class SalesAPIService {
     return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
-  async getLeadById({ guid, leadId }) {
+  async getLeadById({guid, leadId}) {
     if (guid) {
       return await this.getLeadByGuid(guid)
     }
@@ -73,19 +73,6 @@ class SalesAPIService {
     }
     // TODO: do we create an empty lead knowning that the system cannot find the lead? or alert the user?
     return ObjectMappingService.createEmptyLead();
-  }
-
-  async getCommunitiesOfInterest(contactId) {
-    const comUrl = this.createApiUri(`/cois/${contactId}`);
-    let listOfCommunities = await this.createFetch(comUrl);
-    let communities = (listOfCommunities || []).map((community) => {
-      if (!isContactCenter(community))
-        return createCommunity(community)
-      return null
-    }).filter((community) => {
-      return community != null
-    })
-    return communities
   }
 
   /**
@@ -354,9 +341,9 @@ class SalesAPIService {
           return community;
         });
         if (contactCenter != null) {
-          leadId = await this.processContactCenter(lead, contactCenter, user);
+            leadId = await this.processContactCenter(lead, contactCenter, user);
+          }
         }
-      }
     }
     catch (err) {
 

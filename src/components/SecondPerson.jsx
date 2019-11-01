@@ -10,24 +10,10 @@ import { ObjectMappingService } from '../services/Types'
 export default class SecondPerson extends React.Component {
   state = {
     containsSecondPerson: false,
-    locked: false,
-  }
-
-  componentDidMount() {
-    debugger
-    if (this.props.contact) {
-      const { selected, contactId } = this.props.contact;
-      let containsSecondPerson = (selected) ? selected : false;
-      let locked = (contactId) ? true : false
-      this.setState({
-        containsSecondPerson,
-        locked
-      })
-    }
   }
 
   handleSecondPerson = (e) => {
-    const { target: { name, checked } } = e;
+    const {target: {name, checked}} = e;
     this.setState({
       containsSecondPerson: checked,
     })
@@ -35,7 +21,8 @@ export default class SecondPerson extends React.Component {
       this.handleContactReset();
     }
     else {
-      this.props.setFieldValue(name, true)
+      const { setFieldValue } = this.props;
+      setFieldValue(name, true)
     }
   }
 
@@ -51,15 +38,9 @@ export default class SecondPerson extends React.Component {
     return (
       <Row>
         <Col>
-          <FormGroup check disabled={this.props.isReadOnly || this.state.locked}>
+          <FormGroup check disabled={this.props.isReadOnly}>
             <Label check className="label-format">
-              <Input 
-                type="checkbox" 
-                name={'lead.secondPerson.selected'} 
-                onChange={(e) => this.handleSecondPerson(e)}
-                checked={this.state.containsSecondPerson}
-                disabled={this.props.isReadOnly || this.state.locked}
-              />
+              <Input type="checkbox" name={'lead.secondPerson.selected'} onClick={(e) => this.handleSecondPerson(e)} disabled={this.props.isReadOnly} />
               Is there a 2nd Prospect?
             </Label>
           </FormGroup>
@@ -84,11 +65,11 @@ export default class SecondPerson extends React.Component {
             duplicateCheck={this.props.duplicateCheck}
             hasAddress={false}
             {...this.props} />
-          <Note
-            labelId="situation2Label"
-            label="2nd Person Situation"
-            id="secondPersonNote"
-            handleChange={this.props.handleChange}
+          <Note 
+            labelId="situation2Label" 
+            label="2nd Person Situation" 
+            id="secondPersonNote" 
+            handleChange={this.props.handleChange} 
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.isReadOnly}
           />
