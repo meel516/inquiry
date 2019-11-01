@@ -2,6 +2,7 @@
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
 import { AppError, ServerError, ObjectMappingService } from './Types'
+import { get } from 'lodash'
 
 // business logic ------
 class SalesAPIService {
@@ -58,6 +59,14 @@ class SalesAPIService {
             return (influencer.primary === true && influencer.active === true);
           });
           lead.influencer = ObjectMappingService.createInfluencer(influencer);
+
+          const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
+          let secondPerson = await this.createFetch(secondPersonUrl);
+          if (get(secondPerson, 'salesLead.salesContact')) {
+            const { salesLead: { salesContact } } = secondPerson
+            lead.secondPerson = ObjectMappingService.createContact(salesContact);
+            lead.secondPerson.selected = true
+          }
         }
       }
       return lead;
