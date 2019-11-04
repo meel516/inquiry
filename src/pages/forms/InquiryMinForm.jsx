@@ -405,6 +405,7 @@ class InquiryForm extends React.Component {
               onChange={this.props.handleChange}
               onBlur={this.props.handleBlur}
               disabled={this.props.status.readOnly}
+              value={this.props.values.lead.callerType}
             >
               <option value="">Select One</option>
               <option value="M">Male</option>

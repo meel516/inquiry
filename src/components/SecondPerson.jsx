@@ -14,7 +14,6 @@ export default class SecondPerson extends React.Component {
   }
 
   componentDidMount() {
-    debugger
     if (this.props.contact) {
       const { selected, contactId } = this.props.contact;
       let containsSecondPerson = (selected) ? selected : false;
