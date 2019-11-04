@@ -52,15 +52,28 @@ class SalesAPIService {
         if (prospect) {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
-          const inflUrl = this.createApiUri(`influencers/${contactId}`)
 
-          let influencers = await this.createFetch(inflUrl);
-          let influencer = (influencers || []).find(function (influencer) {
-            return (influencer.primary === true && influencer.active === true);
-          });
-          lead.influencer = ObjectMappingService.createInfluencer(influencer);
-          if (lead.influencer) {
-            lead.callerType = get(lead, 'influencer.gender')
+          let influencers = [] 
+          try {
+            const inflUrl = this.createApiUri(`influencers/${contactId}`)
+            influencers = await this.createFetch(inflUrl);
+          } 
+          catch(e) {
+            influencers = null
+          }
+
+          if (influencers != null) {
+            let influencer = influencers.find(function (influencer) {
+              return (influencer.primary === true && influencer.active === true);
+            });
+            lead.influencer = ObjectMappingService.createInfluencer(influencer);
+            if (lead.influencer) {
+              lead.callerType = get(lead, 'influencer.gender')
+            }
+          }
+          else {
+            lead.influencer = prospect
+            lead.callerType = get(lead, 'prospect.gender')
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
