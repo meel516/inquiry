@@ -59,6 +59,9 @@ class SalesAPIService {
             return (influencer.primary === true && influencer.active === true);
           });
           lead.influencer = ObjectMappingService.createInfluencer(influencer);
+          if (lead.influencer) {
+            lead.callerType = get(lead, 'influencer.gender')
+          }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
           let secondPerson = await this.createFetch(secondPersonUrl);
