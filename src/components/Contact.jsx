@@ -79,8 +79,7 @@ export default class Contact extends React.Component {
   handleDupCheck = async event => {
     this.props.handleBlur(event);
 
-    const { target: { name } } = event
-    const { contact, errors } = this.props
+    const { contact } = this.props
 
     // Save off Phone and Email.
     this.setState({ savedPhone: contact.phone.number, savedEmail: contact.email });
@@ -193,11 +192,11 @@ export default class Contact extends React.Component {
   }
 
   onStart = () => {
-    this.setState({ activeDrags: ++this.state.activeDrags });
+    this.setState({activeDrags: this.state.activeDrags + 1});
   };
 
   onStop = () => {
-    this.setState({ activeDrags: --this.state.activeDrags });
+    this.setState({activeDrags: this.state.activeDrags - 1});
   };
 
   render() {
