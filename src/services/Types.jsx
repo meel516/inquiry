@@ -27,6 +27,8 @@ class Lead {
     constructor(leadId) {
         if (leadId) {
             this.leadId = leadId
+            this.umid = undefined
+            this.resultOfCall = undefined
         }
     }
 }
@@ -355,7 +357,7 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
-            lead.careType = salesLead.careTypeId
+            lead.careType = undefined
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -386,7 +388,7 @@ class ObjectMappingService {
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
         lead.umid = '';
-        lead.fua = '';
+        lead.resultOfCall = '';
         lead.callingFor = '';
         lead.inquiryType = -1;
         lead.careType = '';
@@ -818,7 +820,7 @@ class ObjectMappingService {
         salesFormDetails.notes = lead.notes;
         
         // Misc.
-        salesFormDetails.resultOfCall = lead.fua;
+        salesFormDetails.resultOfCall = lead.resultOfCall;
         salesFormDetails.callingFor = lead.callingFor;
         salesFormDetails.additionalDetail = lead.additionalDetail;
         salesFormDetails.callerType = lead.callerType;
