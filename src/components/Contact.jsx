@@ -65,7 +65,6 @@ export default class Contact extends React.Component {
       locked: false,
       savedPhone: null,
       savedEmail: null,
-      contactLead: null,
       activeDrags: 0,
     }
     this.sales = new SalesAPIService()
@@ -146,7 +145,8 @@ export default class Contact extends React.Component {
 
       const leadRow = rows[0].row;
       if (get(leadRow, ('leadid'))) {
-        await this.sales.getLeadByLeadId(get(leadRow, ('leadid'), '')) // retrieveLeadDataForContactId
+        const { leadid } = leadRow
+        await this.sales.getLeadByLeadId(leadid)
           .then((data) => {
             const { setFieldValue } = this.props
             setFieldValue('lead', data)

@@ -32,7 +32,7 @@ export default function Prospect(props) {
               type="number" 
               id="age" 
               name="lead.prospect.age" 
-              value={props.contact.age} 
+              value={props.contact.age || ''} 
               onChange={props.handleChange} 
               onBlur={props.handleBlur} 
               readOnly={props.isReadOnly} 
