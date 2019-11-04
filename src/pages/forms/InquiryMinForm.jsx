@@ -45,12 +45,10 @@ class InquiryForm extends React.Component {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     this.checkAuthentication(this.getAuthCredentials);
 
-    let locked = false
     let lead = null
     let communities = []
     if (guid||leadId) {
       lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-      locked = true
     } 
     else {
       lead = ObjectMappingService.createEmptyLead()
@@ -143,18 +141,6 @@ class InquiryForm extends React.Component {
   }
 
   render() {
-    const {
-      values,
-      status,
-      touched,
-      errors,
-      dirty,
-      isValid,
-      isSubmitting,
-      handleChange,
-      handleBlur,
-      setFieldValue,
-    } = this.props;
     const isLocked = (this.props.values.lead.leadId != null)
 
     if (this.state.loading) {

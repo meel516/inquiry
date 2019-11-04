@@ -9,10 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 
-function onAuthRequired({ history }) {
-  history.push('/redirect');
-}
-
 class App extends Component {
   render() {
     return (

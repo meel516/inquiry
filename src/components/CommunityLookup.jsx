@@ -34,12 +34,6 @@ export class CommunityLookup extends React.Component {
     }
 
     render() {
-        const { community } = this.props || {};
-        let defaultSelected = {}
-        if (community) {
-            defaultSelected = { value: community.communityId, label: community.name }
-        }
-
         return (
             <FormGroup>
                 <Label for="communityList" className="label-format">Community</Label>
