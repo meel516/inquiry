@@ -420,6 +420,7 @@ class ObjectMappingService {
             contact.lastName = salesContact.lastName;
             contact.email = salesContact.emailAddress;
             contact.age = salesContact.age;
+            contact.gender = salesContact.gender;
             contact.veteranStatus = salesContact.veteranStatus;
             //contact.currentSituation = salesContact.currentSituation;
             const address = this.createEmptyAddress();
