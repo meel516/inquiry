@@ -45,7 +45,7 @@ export default class ReasonForCall extends React.Component {
 }
 
 ReasonForCall.propTypes = {
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.number,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -55,5 +55,5 @@ ReasonForCall.propTypes = {
 
 ReasonForCall.defaultProps = {
   isReadOnly: false,
-  defaultValue: '',
+  defaultValue: -1,
 }

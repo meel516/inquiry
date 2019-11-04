@@ -47,7 +47,7 @@ export default class VeteranStatus extends React.Component {
 }
 
 VeteranStatus.propTypes = {
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.number,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -56,6 +56,6 @@ VeteranStatus.propTypes = {
 }
 
 VeteranStatus.defaultProps = {
-  defaultValue: '',
+  defaultValue: -1,
   isReadOnly: false,
 }

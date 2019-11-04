@@ -335,31 +335,33 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
-            veteranStatus: "",
+            veteranStatus: -1,
         }
     }
 
     static createLead(salesLead) {
-        const lead = new Lead();
+        const lead = new Lead(salesLead.leadId);
         if (salesLead) {
-            lead.leadId = salesLead.leadId
             lead.adlNeeds = this.createAdlNeeds();
             lead.memoryConcerns = this.createMemoryConcerns();
             lead.mobilityConcerns = this.createMobilityConcerns();
             lead.nutritionConcerns = this.createNutritionConcerns();
             lead.financialOptions = this.createFinancialOptions();
             lead.drivers = this.createDrivers();
+            lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
+            lead.careType = salesLead.careTypeId
+            lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
-                lead.currentSituation = salesContact.currentSituation
                 lead.veteranStatus = salesContact.veteranStatus
-                lead.prospect = this.createContact(salesContact);
+                lead.prospect = this.createContact(salesContact)
+                lead.gender = salesContact.gender
             }
         }
         else {
@@ -384,13 +386,12 @@ class ObjectMappingService {
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
         lead.umid = '';
-        lead.careType = '';
         lead.fua = '';
         lead.callingFor = '';
-        lead.inquiryType = '';
+        lead.inquiryType = -1;
         lead.careType = '';
-        lead.leadSource = '';
-        lead.leadSourceDetail = '';
+        lead.leadSource = -1;
+        lead.leadSourceDetail = -1;
         lead.callerType = '';
 
         return lead;
@@ -420,7 +421,7 @@ class ObjectMappingService {
             contact.email = salesContact.emailAddress;
             contact.age = salesContact.age;
             contact.veteranStatus = salesContact.veteranStatus;
-            contact.currentSituation = salesContact.currentSituation;
+            //contact.currentSituation = salesContact.currentSituation;
             const address = this.createEmptyAddress();
             if (salesContact.address) {
                 const salesAddress = salesContact.address
@@ -677,7 +678,7 @@ class ObjectMappingService {
     }
 
     static createProspectRequest(lead, community, user) {
-        if (!lead || !community) return;
+        if (!lead) return;
 
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
@@ -709,7 +710,11 @@ class ObjectMappingService {
 
         salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
-        salesLead.buildingId = community.communityId
+
+        if (community) {
+            salesLead.buildingId = community.communityId
+        }
+        
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.interestReasonId = lead.reasonForCall
@@ -717,6 +722,11 @@ class ObjectMappingService {
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
         salesLead.username = user.username
+
+        // For updates, we will have a leadId...set it.
+        if (lead.leadId) {
+            salesLead.leadId = lead.leadId;
+        }
 
         return salesLead;
     }
@@ -749,22 +759,7 @@ class ObjectMappingService {
             username: user.username,
         }
     }
-    
-    static createContactDuplicationRequest(contact) {
-        return {
-            address1: "",
-            address2: "",
-            city: "",
-            state: "",
-            zip: "",
-            email: contact.email,
-            prospectFirstName: "",
-            prospectLastName: "",
-            phone1: (contact.phone !== null ? Util.stripPhoneFormatting(contact.phone.number) : ""),
-            phoneType: "",
-        }
-    }
-    
+   
     static buildLeadDataResponseForContactId(payload) {
         const returnval = [];
 

@@ -7,6 +7,6 @@ describe('communityServices Service', () => {
         expect(typeof service['fetchCommunities']).toEqual('function')
         expect(typeof service['getFreeMealItem']).toEqual('function')
         expect(typeof service['isContactCenter']).toEqual('function')
-        expect(Object.keys(service).length).toEqual(5)
+        expect(Object.keys(service).length).toEqual(6)
     })
 })
