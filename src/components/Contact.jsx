@@ -6,6 +6,7 @@ import { Alert, Button, Col, FormGroup, Input, Modal, ModalBody, ModalHeader, Mo
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
 import Address from './Address';
+import { get } from 'lodash'
 
 import { SalesAPIService } from '../services/SalesServices'
 import { getPhoneTypes } from '../services/dropdowns'
@@ -64,6 +65,7 @@ export default class Contact extends React.Component {
       locked: false,
       savedPhone: null,
       savedEmail: null,
+      contactLead: null,
       activeDrags: 0,
     }
     this.sales = new SalesAPIService()
@@ -139,13 +141,22 @@ export default class Contact extends React.Component {
   };
 
   onRows2Selected = async rows => {
-    if(rows[0].row) {
+    if (rows[0].row) {
       console.log("rows[0].row: ", rows[0].row);
 
       const leadRow = rows[0].row;
-
-      
-
+      if (get(leadRow, ('leadid'))) {
+        await this.sales.getLeadByLeadId(get(leadRow, ('leadid'), '')) // retrieveLeadDataForContactId
+          .then((data) => {
+            const { setFieldValue } = this.props
+            setFieldValue('lead', data)
+            this.setState({ showSecondModal: false, showModal: false })
+          }
+          ).catch(error => (console.log(error)))
+        console.log('leadRow: ', leadRow)
+      } else {
+        console.log("Invalid lead returned: ", leadRow);
+      }
     }
   }
 
@@ -182,11 +193,11 @@ export default class Contact extends React.Component {
   }
 
   onStart = () => {
-    this.setState({activeDrags: ++this.state.activeDrags});
+    this.setState({ activeDrags: ++this.state.activeDrags });
   };
 
   onStop = () => {
-    this.setState({activeDrags: --this.state.activeDrags});
+    this.setState({ activeDrags: --this.state.activeDrags });
   };
 
   render() {
@@ -196,7 +207,7 @@ export default class Contact extends React.Component {
       return <option key={type.value} value={type.text}>{type.text}</option>
     });
 
-    const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
+    const dragHandlers = { onStart: this.onStart, onStop: this.onStop };
 
     return (
       <>
@@ -327,7 +338,7 @@ export default class Contact extends React.Component {
                         minHeight={250}
                         minWidth={1100}
                         emptyRowsView={EmptyRowsView}
-                        onRowClick={( rowId, row )=>this.onRows2Selected([{ row:row, rowIdx:rowId }])}
+                        onRowClick={(rowId, row) => this.onRows2Selected([{ row: row, rowIdx: rowId }])}
                       />
                     </ModalBody>
                     <ModalFooter>
