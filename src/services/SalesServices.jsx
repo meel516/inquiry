@@ -52,10 +52,10 @@ class SalesAPIService {
         if (prospect) {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
-          const inflUrl = this.createApiUri(`influencers/${contactId}`)
 
           let influencers = [] 
           try {
+            const inflUrl = this.createApiUri(`influencers/${contactId}`)
             influencers = await this.createFetch(inflUrl);
           } 
           catch(e) {
