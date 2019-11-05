@@ -26,6 +26,16 @@ export default class LeadSource extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    const {defaultLeadSource} = this.state;
+    if (this.props.defaultLeadSource !== defaultLeadSource && this.props.defaultLeadSource !== -1) {
+      this.fetchAndSetLeadSourceDetail(this.props.defaultLeadSource);
+      this.setState({
+        defaultLeadSource: this.props.defaultLeadSource
+      })
+    }
+  }
+
   handleOnChange = (event) => {
     const { setFieldValue } = this.props;
     var leadSourceId = event.target.value;
