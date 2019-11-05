@@ -119,6 +119,11 @@ function DuplicateContact(dupecontact) {
 function LeadDataRecord(record) {
     if (record) {
         this.leadid = record.leadId
+        
+        if (record.ccLeadId) {
+            this.ccleadid = record.ccLeadId
+        }
+        
         this.community = record.buildingName
         this.hasaddtl = record.hasAddlInfluencers
 
