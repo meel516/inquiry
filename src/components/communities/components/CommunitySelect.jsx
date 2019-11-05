@@ -1,12 +1,11 @@
 import React from 'react';
 import { Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
-import PropTypes from 'prop-types'
-
-import CommunityLookup from './CommunityLookup'
+import PropTypes from 'prop-types';
+import CommunityLookup from './CommunityLookup';
 import Visit from './Visit';
-import { getFollowupActions } from '../services/dropdowns'
+import { getFollowupActions } from '../../../services/dropdowns';
 
-export default class CommunitySelect extends React.Component {
+export class CommunitySelect extends React.Component {
   state = {
     selectedAction: null,
     followupActions: [],
@@ -23,9 +22,9 @@ export default class CommunitySelect extends React.Component {
   }
 
   handleFollowupAction = (optn) => {
-    const { index, setFieldValue } = this.props;
-    setFieldValue(`communities[${index}].followUpAction`, optn.target.value);
-    this.setState({ selectedAction: optn.target.value })
+    const { index, onFollowupActionChange } = this.props;
+    onFollowupActionChange(optn.target.value, index);
+    this.setState({ selectedAction: optn.target.value });
   }
 
   render() {
@@ -33,7 +32,7 @@ export default class CommunitySelect extends React.Component {
     const followupOptns = (followupActions || []).map((optn) => {
       return <option key={optn.value} value={optn.value}>{optn.text}</option>
     })
-
+  
     return (
       <div className="communities-container">
         <Card>
@@ -43,7 +42,7 @@ export default class CommunitySelect extends React.Component {
                 <CommunityLookup 
                   index={this.props.index}
                   isReadOnly={this.props.isReadOnly}
-                  setFieldValue={this.props.setFieldValue}
+                  onCommunityChange={this.props.onCommunityChange}
                 />
               </Col>
             </Row>
@@ -118,7 +117,8 @@ export default class CommunitySelect extends React.Component {
             {
               (selectedAction) ? 
                 <Visit 
-                  handleChange={this.props.handleChange} 
+                  handleChange={this.props.handleVisitChanges}
+                  onFollowupDateChange={this.props.onFollowupDateChange}
                   handleBlur={this.props.handleBlur} 
                   isReadOnly={this.props.isReadOnly} 
                   {...this.props} 
@@ -141,12 +141,13 @@ export default class CommunitySelect extends React.Component {
 CommunitySelect.propTypes = {
   community: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-
   onRemove: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
-  setFieldValue: PropTypes.func.isRequired,
-
+  onCommunityChange: PropTypes.func.isRequired,
+  onFollowupActionChange: PropTypes.func.isRequired,
+  onFollowupDateChange: PropTypes.func.isRequired,
+  handleVisitChanges: PropTypes.func.isRequired,
   isReadOnly: PropTypes.bool
 }
 

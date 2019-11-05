@@ -1,15 +1,13 @@
 import React from 'react';
-import { Alert, Button, Col, FormGroup, Input, Label, Row, Spinner } from 'reactstrap';
+import { Alert, Col, FormGroup, Input, Label, Row, Spinner } from 'reactstrap';
 import queryString from 'query-string';
 import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
-
 import AdditionalCareElements from '../../components/AdditionalCareElements';
 import ADLNeeds from '../../components/ADLNeeds';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
-import CommunitySelect from '../../components/CommunitySelect';
 import Contact from '../../components/Contact';
 import Drivers from '../../components/Drivers';
 import FinancialOptions from '../../components/FinancialOptions';
@@ -23,11 +21,11 @@ import ReasonForCall from '../../components/ReasonForCall';
 import SecondPerson from '../../components/SecondPerson';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
-
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
 import createCommunity from '../../services/community-services/create-community'
 import { checkAuthentication } from '../../auth/checkAuth';
+import Communities from '../../components/communities';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
@@ -258,21 +256,11 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Button color="primary" size="sm" aria-pressed="false"
-              disabled={!this.state.allowAddCommunities || this.props.status.readOnly} onClick={() => this.handleAddCommunity(this.props.values)}>Add Community</Button>
-            {this.props.values.communities.map((community, index) => (
-              <CommunitySelect
-                key={community.uuid}
-                index={index}
-                community={community}
-                handleChange={this.props.handleChange}
-                handleBlur={this.props.handleBlur}
-                setFieldValue={this.props.setFieldValue}
-                onRemove={() => this.handleRemoveCommunity(community.uuid, this.props.values)}
-                isReadOnly={this.props.status.readOnly}
-                {...this.props}
-              />
-            ))}
+            <Communities
+              allowAddCommunities={this.state.allowAddCommunities}
+              onAddCommunity={() => this.handleAddCommunity(this.props.values)}
+              onRemoveCommunity={community => this.handleRemoveCommunity(community.uuid, this.props.values)}
+            />
           </Col>
         </Row>
         <br />

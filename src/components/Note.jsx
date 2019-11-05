@@ -8,8 +8,9 @@ export default function Note(props) {
     <FormGroup>
       <Label for={props.id} id={props.labelId} className="label-format">{props.label}</Label>
       <Input 
-        type="textarea" 
+        type="textarea"
         name={props.name || `lead.notes.${props.id}`} 
+        value={props.value}
         id={props.id} 
         onChange={props.handleChange} 
         onBlur={props.handleBlur} 
@@ -25,15 +26,13 @@ export default function Note(props) {
 Note.propTypes = {
   id: PropTypes.string,
   labelId: PropTypes.string.isRequired,
-
   name: PropTypes.string,
   label: PropTypes.string.isRequired,
-
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-
   isReadOnly: PropTypes.bool,
   rows: PropTypes.number,
+  value: PropTypes.string,
 }
 
 Note.defaultProps = {
