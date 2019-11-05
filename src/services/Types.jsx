@@ -2,36 +2,7 @@ import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
-
-class ServerError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class AppError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class Lead {
-    constructor(leadId) {
-        if (leadId) {
-            this.leadId = leadId
-            this.umid = undefined
-            this.resultOfCall = undefined
-        }
-    }
-}
+import Lead from '../types/lead'
 
 function SalesContact() {
 }
@@ -858,8 +829,6 @@ class ObjectMappingService {
 
 export {
     ObjectMappingService,
-    ServerError,
-    AppError,
     SalesContact,
     SalesFollowup,
     SalesProspectNeed,
@@ -869,6 +838,5 @@ export {
     SalesNote,
     SalesAddress,
     SalesLead,
-    Lead,
     Util,
 }
