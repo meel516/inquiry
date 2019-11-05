@@ -43,23 +43,18 @@ class InquiryForm extends React.Component {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     this.checkAuthentication(this.getAuthCredentials);
 
-    let lead = null
-    let communities = []
-    if (guid||leadId) {
-      lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-    } 
-    else {
-      lead = ObjectMappingService.createEmptyLead()
-    }
+    let lead = {};
     if (umid) {
       lead.umid = umid;
+    } else if (guid || leadId) {
+      lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId});
+    } else {
+      lead = ObjectMappingService.createEmptyLead();
     }
-    this.props.setFieldValue('lead', lead)
-    this.props.setFieldValue('communities', communities)
 
-    this.setState({
-      loading: false,
-    })
+    this.props.setFieldValue('lead', lead)
+    this.props.setFieldValue('communities', []);
+    this.setState({ loading: false });
   }
 
   getAuthCredentials = (userInfo) => {
@@ -142,9 +137,7 @@ class InquiryForm extends React.Component {
     const {
       values,
       status,
-      touched,
       errors,
-      dirty,
       isValid,
       isSubmitting,
       handleChange,
@@ -152,7 +145,7 @@ class InquiryForm extends React.Component {
       setFieldValue,
     } = this.props;
 
-    const isLocked = (this.props.values.lead.leadId != null)
+    const isLocked = (values.lead.leadId != null)
 
     if (this.state.loading) {
       return (
@@ -173,13 +166,13 @@ class InquiryForm extends React.Component {
           <Contact
             key="influencer-contact"
             type="influencer"
-            contact={this.props.values.lead.influencer}
-            handleChange={this.props.handleChange}
-            handleBlur={this.props.handleBlur}
-            isReadOnly={this.props.status.readOnly}
+            contact={values.lead.influencer}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            isReadOnly={status.readOnly}
             duplicateCheck={true}
             hasAddress={true}
-            setFieldValue={this.props.setFieldValue}
+            setFieldValue={setFieldValue}
             {...this.props}
           >
           </Contact>
@@ -190,42 +183,42 @@ class InquiryForm extends React.Component {
             labelId="situationLabel"
             label="Situation"
             id="situation"
-            handleChange={this.props.handleChange}
-            handleBlur={this.props.handleBlur}
-            isReadOnly={this.props.status.readOnly}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            isReadOnly={status.readOnly}
             rows={6}
           />
           <Row>
             <Col>
               <ADLNeeds
-                adlNeeds={this.props.values.lead.adlNeeds}
-                setFieldValue={this.props.setFieldValue}
-                isReadOnly={this.props.status.readOnly}
+                adlNeeds={values.lead.adlNeeds}
+                setFieldValue={setFieldValue}
+                isReadOnly={status.readOnly}
               />
             </Col>
           </Row>
           <br />
           <AdditionalCareElements
-            lead={this.props.values.lead}
-            setFieldValue={this.props.setFieldValue}
-            isReadOnly={this.props.status.readOnly}
+            lead={values.lead}
+            setFieldValue={setFieldValue}
+            isReadOnly={status.readOnly}
           />
           <br />
           <Prospect
-            contact={this.props.values.lead.prospect}
-            handleChange={this.props.handleChange}
-            handleBlur={this.props.handleBlur}
-            isReadOnly={this.props.status.readOnly}
+            contact={values.lead.prospect}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            isReadOnly={status.readOnly}
             duplicateCheck={false}
-            showProspect={this.props.values.lead.callingFor === 'Myself'}
+            showProspect={values.lead.callingFor === 'Myself'}
             {...this.props}
           />
           <br />
           <CareType
-            handleChange={this.props.handleChange}
-            handleBlur={this.props.handleBlur}
-            isReadOnly={this.props.status.readOnly}
-            defaultValue={this.props.values.lead.careType}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            isReadOnly={status.readOnly}
+            defaultValue={values.lead.careType}
           />
           <br />
           <Row>
@@ -234,9 +227,9 @@ class InquiryForm extends React.Component {
                 labelId="passionPersonalityLabel"
                 label="Passions &amp; Personality"
                 id="passionsPersonality"
-                handleChange={this.props.handleChange}
-                handleBlur={this.props.handleBlur}
-                isReadOnly={this.props.status.readOnly}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                isReadOnly={status.readOnly}
               />
             </Col>
           </Row>
@@ -247,9 +240,9 @@ class InquiryForm extends React.Component {
               labelId="financialSituationLabel"
               label="Financial Situation"
               id="financialSituation"
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              isReadOnly={this.props.status.readOnly}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              isReadOnly={status.readOnly}
             />
           </Col>
         </Row>
@@ -257,9 +250,10 @@ class InquiryForm extends React.Component {
         <Row>
           <Col>
             <Communities
+              username={values.user.username}
               allowAddCommunities={this.state.allowAddCommunities}
-              onAddCommunity={() => this.handleAddCommunity(this.props.values)}
-              onRemoveCommunity={community => this.handleRemoveCommunity(community.uuid, this.props.values)}
+              onAddCommunity={() => this.handleAddCommunity(values)}
+              onRemoveCommunity={community => this.handleRemoveCommunity(community.uuid, values)}
             />
           </Col>
         </Row>
@@ -267,8 +261,8 @@ class InquiryForm extends React.Component {
         <hr />
         <FinancialOptions
           key="financialOptions"
-          setFieldValue={this.props.setFieldValue}
-          isReadOnly={this.props.status.readOnly}
+          setFieldValue={setFieldValue}
+          isReadOnly={status.readOnly}
         />
         <br />
         <Row>
@@ -277,25 +271,25 @@ class InquiryForm extends React.Component {
               labelId="additionalNotesLabel"
               label="Additional Notes"
               id="additionalNotes"
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              isReadOnly={this.props.status.readOnly}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              isReadOnly={status.readOnly}
             />
           </Col>
         </Row>
         <br />
         <Drivers
           key="drivers"
-          setFieldValue={this.props.setFieldValue}
-          isReadOnly={this.props.status.readOnly}
+          setFieldValue={setFieldValue}
+          isReadOnly={status.readOnly}
         />
         <br />
         <SecondPerson
           key="secondPerson-contact"
-          contact={this.props.values.lead.secondPerson}
-          handleChange={this.props.handleChange}
-          handleBlur={this.props.handleBlur}
-          isReadOnly={this.props.status.readOnly}
+          contact={values.lead.secondPerson}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          isReadOnly={status.readOnly}
           duplicateCheck={false}
           {...this.props}
         />
@@ -305,9 +299,9 @@ class InquiryForm extends React.Component {
             <ResultOfCall
               key="nextsteps"
               id="nextStepsLabel"
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              isReadOnly={this.props.status.readOnly}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              isReadOnly={status.readOnly}
               {...this.props}
             />
           </Col>
@@ -320,10 +314,10 @@ class InquiryForm extends React.Component {
                 type="select" 
                 id="callingFor" 
                 name="lead.callingFor" 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
-                disabled={this.props.status.readOnly || isLocked}
-                value={this.props.values.lead.callingFor}
+                onChange={handleChange} 
+                onBlur={handleBlur} 
+                disabled={status.readOnly || isLocked}
+                value={values.lead.callingFor}
               >
                 <option value="">Select One</option>
                 <option>Myself</option>
@@ -339,20 +333,20 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <ReasonForCall
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              defaultValue={this.props.values.lead.reasonForCall}
-              isReadOnly={this.props.status.readOnly}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              defaultValue={values.lead.reasonForCall}
+              isReadOnly={status.readOnly}
             />
           </Col>
         </Row>
         <Row>
           <Col md="5">
             <InquiryType
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              defaultValue={this.props.values.lead.inquiryType}
-              isReadOnly={this.props.status.readOnly || isLocked}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              defaultValue={values.lead.inquiryType}
+              isReadOnly={status.readOnly || isLocked}
               {...this.props}
             />
           </Col>
@@ -360,10 +354,10 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <VeteranStatus
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              defaultValue={this.props.values.lead.prospect.veteranStatus}
-              isReadOnly={this.props.status.readOnly}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              defaultValue={values.lead.prospect.veteranStatus}
+              isReadOnly={status.readOnly}
               {...this.props}
             />
           </Col>
@@ -371,12 +365,12 @@ class InquiryForm extends React.Component {
         <Row>
           <Col md="5">
             <LeadSource key="leadsource"
-              defaultLeadSource={this.props.values.lead.leadSource}
-              defaultLeadSourceDetail={this.props.values.lead.leadSourceDetail}
-              handleChange={this.props.handleChange}
-              handleBlur={this.props.handleBlur}
-              setFieldValue={this.props.setFieldValue}
-              isReadOnly={this.props.status.readOnly || isLocked}
+              defaultLeadSource={values.lead.leadSource}
+              defaultLeadSourceDetail={values.lead.leadSourceDetail}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setFieldValue={setFieldValue}
+              isReadOnly={status.readOnly || isLocked}
               {...this.props}
             />
           </Col>
@@ -388,10 +382,10 @@ class InquiryForm extends React.Component {
               <Input name='lead.umid'
                 type="text"
                 id="umid"
-                value={this.props.values.lead.umid || ''}
-                onChange={this.props.handleChange}
-                onBlur={this.props.handleBlur}
-                readOnly={this.props.status.readOnly}
+                value={values.lead.umid || ''}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                readOnly={status.readOnly}
                 placeholder="UMID" />
               <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
@@ -404,10 +398,10 @@ class InquiryForm extends React.Component {
               className="form-control"
               id="callerType"
               name="lead.callerType"
-              onChange={this.props.handleChange}
-              onBlur={this.props.handleBlur}
-              disabled={this.props.status.readOnly}
-              value={this.props.values.lead.callerType}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              disabled={status.readOnly}
+              value={values.lead.callerType}
             >
               <option value="">Select One</option>
               <option value="M">Male</option>
@@ -418,24 +412,20 @@ class InquiryForm extends React.Component {
           </Col>
         </Row>
         <br />
-
         <div className="float-right">
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'
             handleSubmit={this.handleFormSubmit}
             handleValidate={this.props.validateForm}
             handleReset={this.props.handleReset}
-            isSubmitting={this.props.isSubmitting}
+            isSubmitting={isSubmitting}
             setFieldTouched={this.props.setFieldTouched}
-            errors={this.props.errors}
-            isValid={this.props.isValid}
-            isReadOnly={this.props.status.readOnly}
+            errors={errors}
+            isValid={isValid}
+            isReadOnly={status.readOnly}
           />
         </div>
-
-        {process.env.REACT_APP_NODE_ENV !== "production" &&
-          <Debug />}
-
+        {process.env.REACT_APP_NODE_ENV !== "production" && <Debug />}
       </Form>
     );
   }
@@ -450,6 +440,7 @@ const EnhancedInquiryForm = withFormik({
     return {
       communities: [],
       lead: ObjectMappingService.createEmptyLead(),
+      user: {},
     }
   },
 

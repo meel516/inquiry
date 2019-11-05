@@ -11,25 +11,20 @@ const freeMealFollowUpActions = new Set([
 ])
 
 const Visit = (props) => {
-  const onFollowupDateChange = useCallback((date) => {
-    props.onFollowupDateChange(date, props.index);
-  }, [props.index, props.onFollowupDateChange]);
+  const { index, handleVisitChanges, onFollowupDateChange, community } = props;
 
-  const handleVisitChanges = useCallback(e => {
+  const handleFollowupDateChange = useCallback((date) => {
+    onFollowupDateChange(date, index);
+  }, [index, onFollowupDateChange]);
+
+  const onVisitChange = useCallback(e => {
     const { name, value } = e.target;
-    const { index, handleVisitChanges } = props;
     handleVisitChanges(value, index, name);
-  }, [props.index, props.handleVisitChanges]);
+  }, [index, handleVisitChanges]);
 
   const showFreeMeal = useMemo(() => {
-    const { community } = props;
     return community && freeMealFollowUpActions.has(community.followUpAction); 
-  }, [props.community]);
-
-  const mergedFollowUpProps = {
-    ...props,
-    onFollowupDateChange,
-  };
+  }, [community]);
 
   return (
     <>
@@ -39,7 +34,7 @@ const Visit = (props) => {
             setFieldValue={props.onFollowU}
             handleBlur={props.handleBlur}
             isReadOnly={props.isReadOnly}
-            { ...mergedFollowUpProps }
+            onFollowupDateChange={handleFollowupDateChange}
           />
         </Col>
         <Col md="4" style={{ verticalAlign: 'bottom' }}>
@@ -47,7 +42,7 @@ const Visit = (props) => {
             {
               showFreeMeal ? (
                 <FreeMeal
-                  handleChange={handleVisitChanges}
+                  handleChange={onVisitChange}
                   isReadOnly={props.isReadOnly}
                 />
               ) : null
