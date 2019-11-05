@@ -779,7 +779,7 @@ class ObjectMappingService {
         return returnval;
     }
 
-    static createEloquaExternalRequest(lead, communities, oktaFullName) {
+    static createEloquaRequest(lead, communities, oktaUser) {
         const salesFormDetails = new SalesFormDetails();
         const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
         const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
@@ -826,7 +826,8 @@ class ObjectMappingService {
         salesFormDetails.callerType = lead.callerType;
         salesFormDetails.situation2 = lead.notes.secondPerson;
         salesFormDetails.umid = lead.umid;
-        salesFormDetails.advisorName = oktaFullName;
+        salesFormDetails.advisorName = oktaUser.name;
+        salesFormDetails.advisorEmail = oktaUser.email;
         salesInquiryForm.formDetails = salesFormDetails;
         
         return salesInquiryForm;

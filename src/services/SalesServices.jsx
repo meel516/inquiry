@@ -200,15 +200,15 @@ class SalesAPIService {
     }
   }
 
-  async submitEloquaRequest(eloquaExternalRequest) {
-    const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua/external')
+  async submitEloquaRequest(eloquaRequest) {
+    const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
 
     fetch(eloquaExternalUrl, {
       method: 'POST', mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(eloquaExternalRequest),
+      body: JSON.stringify(eloquaRequest),
     })
       .then(res => res.json())
       .catch(err => console.log(err))
@@ -371,7 +371,7 @@ class SalesAPIService {
     }
 
     const formattedCommunityList = [];
-    const eloquaCommunityList = [];
+    //const eloquaCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
@@ -385,11 +385,10 @@ class SalesAPIService {
         // 5	Visit/Appt - Scheduled
         // 6	Home Visit
         // 8	Assessment
-        const actionArray = ["5", "6", "8"];
-        if (actionArray.indexOf(community.followUpAction) > -1) {
-          eloquaCommunityList.push(community);
-        }
-
+        // const actionArray = ["5", "6", "8"];
+        // if (actionArray.indexOf(community.followUpAction) > -1) {
+        //   eloquaCommunityList.push(community);
+        // }
       })
     }
 
@@ -404,11 +403,10 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email and communities in eloquaCommunityList, submit the request.
-      if (lead && lead.influencer && lead.influencer.email &&
-        eloquaCommunityList && eloquaCommunityList.length > 0) {
-        const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-        this.submitEloquaRequest(eloquaExternalRequest);
+      // If we have an email, submit the request.
+      if (lead && lead.influencer && lead.influencer.email) {
+        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
+        this.submitEloquaRequest(eloquaRequest);
       }
     }
     catch (err) {
@@ -472,7 +470,7 @@ class SalesAPIService {
     }
 
     const formattedCommunityList = [];
-    const eloquaCommunityList = [];
+    //const eloquaCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
@@ -486,11 +484,10 @@ class SalesAPIService {
         // 5	Visit/Appt - Scheduled
         // 6	Home Visit
         // 8	Assessment
-        const actionArray = ["5", "6", "8"];
-        if (actionArray.indexOf(community.followUpAction) > -1) {
-          eloquaCommunityList.push(community);
-        }
-
+        // const actionArray = ["5", "6", "8"];
+        // if (actionArray.indexOf(community.followUpAction) > -1) {
+        //   eloquaCommunityList.push(community);
+        // }
       })
     }
 
@@ -505,11 +502,10 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email and communities in eloquaCommunityList, submit the request.
-      if (lead && lead.influencer && lead.influencer.email &&
-        eloquaCommunityList && eloquaCommunityList.length > 0) {
-        const eloquaExternalRequest = ObjectMappingService.createEloquaExternalRequest(lead, eloquaCommunityList, user.name);
-        this.submitEloquaRequest(eloquaExternalRequest);
+      // If we have an email, submit the request.
+      if (lead && lead.influencer && lead.influencer.email) {
+        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
+        this.submitEloquaRequest(eloquaRequest);
       }
     }
     catch (err) {
