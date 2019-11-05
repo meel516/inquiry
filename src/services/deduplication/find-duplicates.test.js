@@ -1,7 +1,7 @@
 import service, { createContactDuplicationRequest } from './find-duplicates'
 import { createDuplicateSearchUrl } from '../../constants/url-generator'
 import * as request from '../request'
-import stripPhoneFormatting from './strip-phone-formatting'
+import stripPhoneFormatting from '../../utils/strip-phone-formatting'
 
 jest.mock('../../constants/url-generator', () => ({ createDuplicateSearchUrl: jest.fn() }))
 jest.mock('./strip-phone-formatting')
