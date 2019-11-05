@@ -1,7 +1,7 @@
 import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
-
+import getPrimaryPhone from '../utils/find-primary-phone'
 
 class ServerError extends Error {
     constructor(status, message, entity, ...params) {
@@ -440,11 +440,13 @@ class ObjectMappingService {
             }
             contact.address = address;
             if (salesContact.phoneNumbers) {
-                const phone = salesContact.phoneNumbers[0];
-                contact.phone.number = phone.phoneNumber
-                contact.phone.type = phone.phoneType
-                contact.phone.phoneId = phone.phoneId
-                contact.phone.primary = phone.primary
+                const phone = getPrimaryPhone(salesContact.phoneNumbers);
+                if (phone) {
+                    contact.phone.number = phone.phoneNumber
+                    contact.phone.type = phone.phoneType
+                    contact.phone.phoneId = phone.phoneId
+                    contact.phone.primary = phone.primary
+                }
             }
 
             return contact;
