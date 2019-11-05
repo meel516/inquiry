@@ -1,10 +1,8 @@
 import React from 'react';
 import { Col, Input, FormGroup, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-
 import Contact from './Contact';
 import Note from './Note';
-
 import { ObjectMappingService } from '../services/Types'
 
 export default class SecondPerson extends React.Component {
@@ -14,7 +12,6 @@ export default class SecondPerson extends React.Component {
   }
 
   componentDidMount() {
-    debugger
     if (this.props.contact) {
       const { selected, contactId } = this.props.contact;
       let containsSecondPerson = (selected) ? selected : false;
