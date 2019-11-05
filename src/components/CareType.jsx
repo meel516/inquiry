@@ -25,18 +25,22 @@ export default class CareType extends React.Component {
     return (
       <FormGroup>
         <Label for="careType" className="label-format required-field">Care Level Recommended</Label>
-        <Input 
-          type="select" 
-          id="careType" 
-          name="lead.careType" 
-          onChange={this.props.handleChange} 
-          onBlur={this.props.handleBlur} 
+        <Input
+          type="select"
+          id="careType"
+          name="lead.careType"
+          onChange={this.props.handleChange}
+          onBlur={this.props.handleBlur}
           disabled={this.props.isReadOnly}
+          value={this.props.defaultValue}
         >
           <option value="">Select One</option>
           {careTypeOptions}
         </Input>
-        <ErrorMessage name="lead.careType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
+        <ErrorMessage
+          name="lead.careType"
+          render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>}
+        />
       </FormGroup>
     )
   }
@@ -47,6 +51,7 @@ CareType.propTypes = {
   handleBlur: PropTypes.func.isRequired,
 
   isReadOnly: PropTypes.bool,
+  defaultValue: PropTypes.number,
 }
 
 CareType.defaultProps = {

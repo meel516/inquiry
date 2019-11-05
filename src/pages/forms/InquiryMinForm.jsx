@@ -14,7 +14,7 @@ import FinancialOptions from '../../components/FinancialOptions';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
-import NextSteps from '../../components/NextSteps'
+import ResultOfCall from '../../components/ResultOfCall'
 import Note from '../../components/Note';
 import Prospect from '../../components/Prospect';
 import ReasonForCall from '../../components/ReasonForCall';
@@ -43,12 +43,10 @@ class InquiryForm extends React.Component {
     const { guid, umid, leadId } = queryString.parse(this.props.location.search);
     this.checkAuthentication(this.getAuthCredentials);
 
-    let locked = false
     let lead = null
     let communities = []
     if (guid||leadId) {
       lead = await this.salesapi.getLeadById({guid:guid, leadId:leadId})
-      locked = true
     } 
     else {
       lead = ObjectMappingService.createEmptyLead()
@@ -153,6 +151,7 @@ class InquiryForm extends React.Component {
       handleBlur,
       setFieldValue,
     } = this.props;
+
     const isLocked = (this.props.values.lead.leadId != null)
 
     if (this.state.loading) {
@@ -226,6 +225,7 @@ class InquiryForm extends React.Component {
             handleChange={this.props.handleChange}
             handleBlur={this.props.handleBlur}
             isReadOnly={this.props.status.readOnly}
+            defaultValue={this.props.values.lead.careType}
           />
           <br />
           <Row>
@@ -302,7 +302,7 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col md="5">
-            <NextSteps
+            <ResultOfCall
               key="nextsteps"
               id="nextStepsLabel"
               handleChange={this.props.handleChange}
@@ -407,6 +407,7 @@ class InquiryForm extends React.Component {
               onChange={this.props.handleChange}
               onBlur={this.props.handleBlur}
               disabled={this.props.status.readOnly}
+              value={this.props.values.lead.callerType}
             >
               <option value="">Select One</option>
               <option value="M">Male</option>
