@@ -23,6 +23,19 @@ export default class SecondPerson extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.contact) {
+      const { selected, contactId } = this.props.contact;
+      const { containsSecondPerson } = this.state;
+      if (selected !== containsSecondPerson) {
+        this.setState({
+          containsSecondPerson: selected,
+          locked: (contactId ? true : false)
+        })
+      }
+    }
+  }
+
   handleSecondPerson = (e) => {
     const { target: { name, checked } } = e;
     this.setState({
