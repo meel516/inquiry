@@ -357,7 +357,7 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
-            lead.careType = undefined
+            lead.careType = 0
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -391,7 +391,7 @@ class ObjectMappingService {
         lead.resultOfCall = '';
         lead.callingFor = '';
         lead.inquiryType = -1;
-        lead.careType = '';
+        lead.careType = 0;
         lead.leadSource = -1;
         lead.leadSourceDetail = -1;
         lead.callerType = '';
