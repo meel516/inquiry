@@ -140,12 +140,17 @@ export default class Contact extends React.Component {
 
   onRows2Selected = async rows => {
     if (rows[0].row) {
-      console.log("rows[0].row: ", rows[0].row);
-
       const leadRow = rows[0].row;
-      if (get(leadRow, ('leadid'))) {
-        const { leadid } = leadRow
-        await this.sales.getLeadByLeadId(leadid)
+
+      let loadedLeadId = null;
+      if (get(leadRow, ('ccleadid'))) {
+        loadedLeadId = get(leadRow, ('ccleadid'));
+      } else {
+        loadedLeadId = get(leadRow, ('leadid'));
+      }
+      
+      if (loadedLeadId) {
+        await this.sales.getLeadByLeadId(loadedLeadId)
           .then((data) => {
             const { setFieldValue } = this.props
             setFieldValue('lead', data)
