@@ -26,16 +26,20 @@ const Visit = (props) => {
     return community && freeMealFollowUpActions.has(community.followUpAction); 
   }, [props.community]);
 
+  const mergedFollowUpProps = {
+    ...props,
+    onFollowupDateChange,
+  };
+
   return (
     <>
       <Row>
         <Col md="4">
           <FollowUp
             setFieldValue={props.onFollowU}
-            onFollowupDateChange={onFollowupDateChange}
             handleBlur={props.handleBlur}
             isReadOnly={props.isReadOnly}
-            {...props}
+            { ...mergedFollowUpProps }
           />
         </Col>
         <Col md="4" style={{ verticalAlign: 'bottom' }}>
