@@ -1,1 +1,3 @@
-export default (contact) => contact && contact.address
+import { get } from 'lodash'
+
+export default (contact) => get(contact, 'phone.number', '')

@@ -823,6 +823,5 @@ export {
     SalesNote,
     SalesAddress,
     SalesLead,
-    Lead,
-    Util,
+    Lead
 }
