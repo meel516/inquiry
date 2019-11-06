@@ -140,15 +140,31 @@ export default class Contact extends React.Component {
 
   onRows2Selected = async rows => {
     if (rows[0].row) {
-      console.log("rows[0].row: ", rows[0].row);
-
       const leadRow = rows[0].row;
-      if (get(leadRow, ('leadid'))) {
-        const { leadid } = leadRow
-        await this.sales.getLeadByLeadId(leadid)
+
+      let loadedLeadId = null;
+      if (get(leadRow, ('ccleadid'))) {
+        loadedLeadId = get(leadRow, ('ccleadid'));
+      } else {
+        loadedLeadId = get(leadRow, ('leadid'));
+      }
+      
+      if (loadedLeadId) {
+        await this.sales.getLeadByLeadId(loadedLeadId)
           .then((data) => {
             const { setFieldValue } = this.props
             setFieldValue('lead', data)
+
+            if (!this.props.isContactCenter) {
+              // When we load a non-CC Lead, there are specific
+              // fields we want to reset.
+              setFieldValue('lead.inquiryType', -1)
+              setFieldValue('lead.callingFor', -1)
+              setFieldValue('lead.leadSource', -1)
+              setFieldValue('lead.leadSourceDetail', -1)
+              setFieldValue('lead.additionalDetail', '')
+            }
+
             this.setState({ showSecondModal: false, showModal: false })
           }
           ).catch(error => (console.log(error)))
@@ -363,6 +379,7 @@ Contact.propTypes = {
   contact: PropTypes.object.isRequired,
   setFieldValue: PropTypes.func,
   hasAddress: PropTypes.bool,
+  isContactCenter: PropTypes.bool,
 
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
@@ -375,4 +392,5 @@ Contact.defaultProps = {
   isReadOnly: false,
   duplicateCheck: false,
   hasAddress: false,
+  isContactCenter: false,
 }

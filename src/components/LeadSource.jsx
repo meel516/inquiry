@@ -26,6 +26,16 @@ export default class LeadSource extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    const {defaultLeadSource} = this.state;
+    if (this.props.defaultLeadSource !== defaultLeadSource && this.props.defaultLeadSource !== -1) {
+      this.fetchAndSetLeadSourceDetail(this.props.defaultLeadSource);
+      this.setState({
+        defaultLeadSource: this.props.defaultLeadSource
+      })
+    }
+  }
+
   handleOnChange = (event) => {
     const { setFieldValue } = this.props;
     var leadSourceId = event.target.value;
@@ -72,7 +82,7 @@ export default class LeadSource extends React.Component {
                 value={this.props.defaultLeadSource} 
                 onChange={this.handleOnChange} 
                 onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly}
+                disabled={this.props.isReadOnly && this.props.isContactCenter}
               >
                 <option value="">Select One</option>
                 {leadSourceOptions}
@@ -92,7 +102,7 @@ export default class LeadSource extends React.Component {
                 value={this.props.defaultLeadSourceDetail} 
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly}
+                disabled={this.props.isReadOnly && this.props.isContactCenter}
               >
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
@@ -111,7 +121,7 @@ export default class LeadSource extends React.Component {
                 name="lead.additionalDetail" 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur}
-                readOnly={this.props.isReadOnly}
+                readOnly={this.props.isReadOnly && this.props.isContactCenter}
                 placeholder="Additional Detail" 
               />
               <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
@@ -126,6 +136,7 @@ export default class LeadSource extends React.Component {
 LeadSource.propTypes = {
   defaultLeadSource: PropTypes.number,
   defaultLeadSourceDetail: PropTypes.number,
+  isContactCenter: PropTypes.bool,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -138,4 +149,5 @@ LeadSource.defaultProps = {
   defaultLeadSource: 0,
   defaultLeadSourceDetail: 0,
   isReadOnly: false,
+  isContactCenter: false,
 }

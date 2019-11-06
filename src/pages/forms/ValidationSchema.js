@@ -4,12 +4,12 @@ const phonePhoneTypeDependencySchema = Yup.object().shape({
   phone: Yup.object().shape({
     type: Yup.string()
       .when('number', {
-        is: number => number !== '',
+        is: number => (number !== '' && number !== undefined && number !== null),
         then: Yup.string().required("Phone Type is required when Phone is entered"),
         otherwise: Yup.string()
       }),
     number: Yup.string().when('type', {
-      is: type => type !== '',
+      is: type => (type !== '' && type !== undefined && type !== null),
       then: Yup.string().required("Phone is required when Phone Type is entered"),
       otherwise: Yup.string()
     }),
@@ -134,7 +134,7 @@ const mainFormValidationSchema = Yup.object().shape({
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters')
     ,
-    careType: Yup.string().required("Care Level Recommended is required"),
+    careType: Yup.number().required("Care Level Recommended is required"),
     resultOfCall: Yup.string().required("Result of Call is required"),
     callingFor: Yup.string().required('Calling For is required'),
     inquiryType: Yup.string().required('Inquiry Method is required'),

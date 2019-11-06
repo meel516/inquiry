@@ -1,37 +1,8 @@
 import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
-
-
-class ServerError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class AppError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class Lead {
-    constructor(leadId) {
-        if (leadId) {
-            this.leadId = leadId
-            this.umid = undefined
-            this.resultOfCall = undefined
-        }
-    }
-}
+import getPrimaryPhone from '../utils/find-primary-phone'
+import Lead from '../types/lead'
 
 function SalesContact() {
 }
@@ -119,6 +90,11 @@ function DuplicateContact(dupecontact) {
 function LeadDataRecord(record) {
     if (record) {
         this.leadid = record.leadId
+        
+        if (record.ccLeadId) {
+            this.ccleadid = record.ccLeadId
+        }
+        
         this.community = record.buildingName
         this.hasaddtl = record.hasAddlInfluencers
 
@@ -337,7 +313,7 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
-            veteranStatus: -1,
+            veteranStatus: undefined,
         }
     }
 
@@ -357,7 +333,6 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
-            lead.careType = 0
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -365,6 +340,7 @@ class ObjectMappingService {
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
             }
+            lead.buildingId = salesLead.buildingId
         }
         else {
             return this.createEmptyLead();
@@ -387,13 +363,11 @@ class ObjectMappingService {
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
-        lead.umid = '';
         lead.resultOfCall = '';
         lead.callingFor = '';
-        lead.inquiryType = -1;
-        lead.careType = 0;
-        lead.leadSource = -1;
-        lead.leadSourceDetail = -1;
+        lead.inquiryType = undefined;
+        lead.leadSource = undefined;
+        lead.leadSourceDetail = undefined;
         lead.callerType = '';
 
         return lead;
@@ -440,11 +414,13 @@ class ObjectMappingService {
             }
             contact.address = address;
             if (salesContact.phoneNumbers) {
-                const phone = salesContact.phoneNumbers[0];
-                contact.phone.number = phone.phoneNumber
-                contact.phone.type = phone.phoneType
-                contact.phone.phoneId = phone.phoneId
-                contact.phone.primary = phone.primary
+                const phone = getPrimaryPhone(salesContact.phoneNumbers);
+                if (phone) {
+                    contact.phone.number = phone.phoneNumber
+                    contact.phone.type = phone.phoneType
+                    contact.phone.phoneId = phone.phoneId
+                    contact.phone.primary = phone.primary
+                }
             }
 
             return contact;
@@ -852,8 +828,6 @@ class ObjectMappingService {
 
 export {
     ObjectMappingService,
-    ServerError,
-    AppError,
     SalesContact,
     SalesFollowup,
     SalesProspectNeed,
@@ -863,6 +837,5 @@ export {
     SalesNote,
     SalesAddress,
     SalesLead,
-    Lead,
     Util,
 }
