@@ -134,7 +134,7 @@ const mainFormValidationSchema = Yup.object().shape({
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters')
     ,
-    careType: Yup.string().required("Care Level Recommended is required"),
+    careType: Yup.number().required("Care Level Recommended is required"),
     resultOfCall: Yup.string().required("Result of Call is required"),
     callingFor: Yup.string().required('Calling For is required'),
     inquiryType: Yup.string().required('Inquiry Method is required'),
