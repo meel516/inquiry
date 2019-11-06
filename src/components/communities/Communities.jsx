@@ -24,14 +24,9 @@ export const Communities = (props) => {
   }, [followupActions]);
 
   const onFollowupActionChange = useCallback((action, index) => {
-    const { note, followUpAction} = communities[index];
-
-    if (!note || (note === defaultVisitNotes[followUpAction])) {
-      setFieldValue(`communities[${index}].note`, defaultVisitNotes[action] || '');
-    }
-
+    setFieldValue(`communities[${index}].note`, defaultVisitNotes[action] || '');
     setFieldValue(`communities[${index}].followUpAction`, action);
-  }, [communities, setFieldValue]);
+  }, [setFieldValue]);
 
   const onCommunityChange = useCallback((community, index) => {
     setFieldValue(`communities[${index}].communityId`, community);
