@@ -1,85 +1,59 @@
-import React, { useCallback, useMemo } from 'react';
-import { Col, FormGroup, Row } from 'reactstrap';
+import React, { Fragment } from 'react';
+import { Col, FormGroup, Row, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Note from '../../Note';
-import FollowUp from './FollowUp';
-import FreeMeal from './FreeMeal';
+import { DateTimePicker, Select } from '../../formik-inputs';
+import freeMealListings from '../../../constants/free-meal-listings';
+
+const freeMealOptions = freeMealListings.map((optn) => {
+  return <option key={optn.value} value={optn.label}>{optn.label}</option>
+});
 
 const freeMealFollowUpActions = new Set([
   "20", // Guest Stay
   "5", // Visit/Appt Scheduled
 ])
 
-const Visit = (props) => {
-  const { index, handleVisitChanges, onFollowupDateChange, community } = props;
-
-  const handleFollowupDateChange = useCallback((date) => {
-    onFollowupDateChange(date, index);
-  }, [index, onFollowupDateChange]);
-
-  const onVisitChange = useCallback(e => {
-    const { name, value } = e.target;
-    handleVisitChanges(value, index, name);
-  }, [index, handleVisitChanges]);
-
-  const showFreeMeal = useMemo(() => {
-    return community && freeMealFollowUpActions.has(community.followUpAction); 
-  }, [community]);
-
-  return (
-    <>
-      <Row>
-        <Col md="4">
-          <FollowUp
-            setFieldValue={props.onFollowU}
-            handleBlur={props.handleBlur}
-            isReadOnly={props.isReadOnly}
-            onFollowupDateChange={handleFollowupDateChange}
+const Visit = ({ inputNames, followUpAction }) => (
+  <Fragment>
+    <Row>
+      <Col md="4">
+        <FormGroup>
+          <Label for={inputNames.followupDate} className="label-format">Next Steps Date</Label>
+          <DateTimePicker
+            name={inputNames.followupDate}
+            className="no-border form-control"
+            disableClock={true}
+            showWeekNumbers={true}
           />
-        </Col>
-        <Col md="4" style={{ verticalAlign: 'bottom' }}>
-          <FormGroup>
-            {
-              showFreeMeal ? (
-                <FreeMeal
-                  handleChange={onVisitChange}
-                  isReadOnly={props.isReadOnly}
-                />
-              ) : null
-            }
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Note
-            labelId="followupNoteLabel"
-            label="Description"
-            id="followupNote"
-            name={`communities[${props.index}].note`}
-            value={props.community.note}
-            handleChange={props.handleChange}
-            handleBlur={props.handleBlur}
-            isReadOnly={props.isReadOnly}
-          />
-        </Col>
-      </Row>
-    </>
-  )
-}
+        </FormGroup>
+      </Col>
+      <Col md="4" style={{ verticalAlign: 'bottom' }}>
+          {
+            freeMealFollowUpActions.has(followUpAction) ? (
+              <FormGroup>
+                <Label for={inputNames.freeMeal} className="label-format">Does this Visit include a Free Meal?</Label>
+                <Select name={inputNames.freeMeal}>{freeMealOptions}</Select>
+              </FormGroup>) : null
+          }
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+        <Note
+          labelId="followupNoteLabel"
+          label="Description"
+          id={inputNames.note}
+          name={inputNames.note}
+        />
+      </Col>
+    </Row>
+  </Fragment>
+);
 
 Visit.propTypes = {
-  community: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleBlur: PropTypes.func.isRequired,
-  handleVisitChanges: PropTypes.func.isRequired,
-  onFollowupDateChange: PropTypes.func.isRequired,
-  isReadOnly: PropTypes.bool
-}
-
-Visit.defaultProps = {
-  isReadOnly: false
+  inputNames: PropTypes.object,
+  followUpAction: PropTypes.string,
 }
 
 export default Visit;

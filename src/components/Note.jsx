@@ -1,22 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Input, FormGroup, Label } from 'reactstrap'
+import { Alert, FormGroup, Label } from 'reactstrap'
 import { ErrorMessage } from 'formik';
+import { TextArea } from './formik-inputs';
 
 export default function Note(props) {
   return (
     <FormGroup>
       <Label for={props.id} id={props.labelId} className="label-format">{props.label}</Label>
-      <Input 
-        type="textarea"
+      <TextArea 
         name={props.name || `lead.notes.${props.id}`} 
-        value={props.value}
-        id={props.id} 
-        onChange={props.handleChange} 
-        onBlur={props.handleBlur} 
         cols={props.cols}
         rows={props.rows}
-        readOnly={props.isReadOnly}
       />
       <ErrorMessage name={props.name || `lead.notes.${props.id}`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
     </FormGroup>
