@@ -313,7 +313,7 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
-            veteranStatus: -1,
+            veteranStatus: undefined,
         }
     }
 
@@ -333,7 +333,6 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
-            lead.careType = 0
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -364,13 +363,11 @@ class ObjectMappingService {
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
-        lead.umid = '';
         lead.resultOfCall = '';
         lead.callingFor = '';
-        lead.inquiryType = -1;
-        lead.careType = 0;
-        lead.leadSource = -1;
-        lead.leadSourceDetail = -1;
+        lead.inquiryType = undefined;
+        lead.leadSource = undefined;
+        lead.leadSourceDetail = undefined;
         lead.callerType = '';
 
         return lead;
