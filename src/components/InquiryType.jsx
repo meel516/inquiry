@@ -35,7 +35,7 @@ export default class InquiryType extends React.Component {
           value={this.props.defaultValue} 
           onChange={this.props.handleChange} 
           onBlur={this.props.handleBlur} 
-          disabled={this.props.isReadOnly}
+          disabled={this.props.isReadOnly && this.props.isContactCenter}
         >
           <option value="">Select One</option>
           {inquiryTypeOptions}
@@ -48,6 +48,7 @@ export default class InquiryType extends React.Component {
 
 InquiryType.propTypes = {
   defaultValue: PropTypes.number,
+  isContactCenter: PropTypes.bool,
 
   handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -58,4 +59,5 @@ InquiryType.propTypes = {
 InquiryType.defaultProps = {
   defaultValue: -1,
   isReadOnly: false,
+  isContactCenter: false,
 }
