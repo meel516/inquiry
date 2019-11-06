@@ -341,6 +341,7 @@ class ObjectMappingService {
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
             }
+            lead.buildingId = salesLead.buildingId
         }
         else {
             return this.createEmptyLead();
