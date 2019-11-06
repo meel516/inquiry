@@ -146,6 +146,7 @@ class InquiryForm extends React.Component {
     } = this.props;
 
     const isLocked = (values.lead.leadId != null)
+    const isContactCenterBuildingId = (values.lead.buildingId === 225707 ? true : false)
 
     if (this.state.loading) {
       return (
@@ -173,7 +174,7 @@ class InquiryForm extends React.Component {
             duplicateCheck={true}
             hasAddress={true}
             setFieldValue={setFieldValue}
-            isContactCenter={(values.lead.buildingId === 225707 ? true : false)}
+            isContactCenter={isContactCenterBuildingId}
             {...this.props}
           >
           </Contact>
@@ -348,7 +349,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               defaultValue={values.lead.inquiryType}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={(values.lead.buildingId === 225707 ? true : false)}
+              isContactCenter={isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -373,7 +374,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={(values.lead.buildingId === 225707 ? true : false)}
+              isContactCenter={isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
