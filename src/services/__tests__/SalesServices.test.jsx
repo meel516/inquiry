@@ -22,7 +22,6 @@ describe('test lead creation', () => {
             const salesLead = TestUtils.createSampleLead('INFLU')
             const lead = ObjectMappingService.createLead(salesLead)
 
-            expect(lead.currentSituation).toEqual(1)
             expect(lead.veteranStatus).toEqual(3)
             expect(lead.leadId).toEqual(6861902)
             expect(lead.leadSource).toEqual(16)
@@ -156,15 +155,16 @@ describe('service send request testing', () => {
 
             let error = null
             try {
-                const ret = salesService.checkServerStatus();
+                const ret = await salesService.checkServerStatus();
             }
             catch(err) {
                 error = err
+                expect(global.fetch).toHaveBeenCalledTimes(1)
+                expect(error).not.toBeNull()
+                expect(error.message).toEqual('Server is not responding.')
             }
 
-            expect(global.fetch).toHaveBeenCalledTimes(1)
-            expect(error).not.toBeNull()
-            expect(error.message).toEqual('Server is not responding.')
+            
 
         })
     

@@ -93,7 +93,6 @@ describe('test influencer mapping', () => {
         expect(influencer.lastName).toEqual('')
         expect(influencer.gender).toEqual('')
         expect(influencer.email).toEqual('')
-        expect(influencer.veteranStatus).toEqual('')
         expect(influencer.phone).not.toBeNull()
         expect(influencer.phone.number).toEqual('')
         expect(influencer.phone.type).toEqual('')
@@ -174,7 +173,7 @@ describe('test followup mapping', () => {
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
-        expect(request.followUpDate).toEqual('2019-10-16T12:44:46.987-0500')
+        expect(request.followUpDate).toEqual('2019-10-16T11:44:46.987-0600')
         expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
     })
 

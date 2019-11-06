@@ -318,6 +318,7 @@ class ObjectMappingService {
     }
 
     static createLead(salesLead) {
+        salesLead = salesLead || {}
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
@@ -551,9 +552,8 @@ class ObjectMappingService {
             salesFollowup.followUpDate = convertToISODate(community.followupDate);
 
             let description = community.note;
-            if (community.freeMeal && community.freeMeal > 0) {
-                let index = community.freeMeal;
-                const freeMealItem = getFreeMealItem(index);
+            if (community.freeMeal) {
+                const freeMealItem = getFreeMealItem(community.freeMeal);
                 if (freeMealItem) {
                     description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
                 }
