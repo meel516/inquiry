@@ -12,32 +12,35 @@ const Checkbox = ({ name, label, className, disabled = false }) => (
 )
 
 
-export const ADLNeeds = ({ basePath, isReadOnly }) => (
-  <section className="adlNeeds">
-    <Label for="adlNeeds" className="label-format">ADL Needs</Label>
-    <Row>
-      <Col>
-        <Checkbox name={`${basePath}.bathing`} label='Bathing' className='col-4' disabled={isReadOnly} />
-        <Checkbox name={`${basePath}.dressing`} label='Dressing' className='col-4' disabled={isReadOnly} />
-        <Checkbox name={`${basePath}.feeding`} label='Feeding' className='col-3' disabled={isReadOnly} />
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        <Checkbox name={`${basePath}.incontinence`} label='Incontinence' className='col-4' disabled={isReadOnly} />
-        <Checkbox name={`${basePath}.medications`} label='Medications' className='col-4' disabled={isReadOnly} />
-        <Checkbox name={`${basePath}.toileting`} label='Toileting' className='col-3' disabled={isReadOnly} />
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        <Checkbox name={`${basePath}.transferring`} label='Transferring' className='col-4' disabled={isReadOnly} />
-      </Col>
-    </Row>
-  </section>
-)
+export const ADLNeeds = ({ basePath, isReadOnly }) => {
+  const rootPath = basePath ? `${basePath}.` : '';
 
+  return (
+    <section className="adlNeeds">
+      <Label for="adlNeeds" className="label-format">ADL Needs</Label>
+      <Row>
+        <Col>
+          <Checkbox name={`${rootPath}bathing`} label='Bathing' className='col-4' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}dressing`} label='Dressing' className='col-4' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}feeding`} label='Feeding' className='col-3' disabled={isReadOnly} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Checkbox name={`${rootPath}incontinence`} label='Incontinence' className='col-4' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}medications`} label='Medications' className='col-4' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}toileting`} label='Toileting' className='col-3' disabled={isReadOnly} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Checkbox name={`${rootPath}transferring`} label='Transferring' className='col-4' disabled={isReadOnly} />
+        </Col>
+      </Row>
+    </section>
+  )
+}
 ADLNeeds.propTypes = {
-  basePath: PropTypes.string.isRequired,
+  basePath: PropTypes.string,
   isRequired: PropTypes.bool,
 }
