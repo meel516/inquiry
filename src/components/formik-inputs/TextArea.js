@@ -10,15 +10,14 @@ export const TextArea = ({
     disabled = false,
     ...props
 }) => {
-    const { setFieldValue, status: { readOnly }} = useFormikContext();
+    const { status: { readOnly }} = useFormikContext();
     const [ field ] = useField(name);
     const handleChange = useCallback((e) => {
-        setFieldValue(name, e.target.value);
         field.onChange(e);
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [setFieldValue, onChange, field, name]);
+    }, [onChange, field, name]);
 
     return (
         <Input

@@ -9,14 +9,16 @@ export const DateTimePicker = ({
     disabled = false,
     ...props
 }) => {
-    const { setFieldValue, status: { readOnly } } = useFormikContext();
+    const { status: { readOnly } } = useFormikContext();
     const [ field ] = useField(name);
     const handleChange = useCallback((date) => {
-        setFieldValue(name, date);
+        // Create a fake event so Formik's change handler also calls 'setFieldValue' at the end of this function:
+        // https://github.com/jaredpalmer/formik/blob/master/src/Formik.tsx#L548-L598
+        field.onChange({ target: { name, value: date }});
         if (typeof(onChange) === 'function') {
             onChange(date);
         }
-    }, [setFieldValue, onChange, name]);
+    }, [onChange, name]);
 
     return (
         <DatePicker

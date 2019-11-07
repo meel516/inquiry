@@ -9,14 +9,16 @@ export const ReactSelect = ({
     onChange,
     disabled = false,
 }) => {
-    const { setFieldValue, status: { readOnly } } = useFormikContext();
+    const { status: { readOnly }} = useFormikContext();
     const [ field ] = useField(name);
     const handleChange = useCallback((option) => {
-        setFieldValue(name, option.value);
+        // Create a fake event so Formik's change handler also calls 'setFieldValue' at the end of this function:
+        // https://github.com/jaredpalmer/formik/blob/master/src/Formik.tsx#L548-L598
+        field.onChange({ target: { name, value: option.value }});
         if (typeof(onChange) === 'function') {
             onChange(option);
         }
-    }, [name, onChange, setFieldValue]);
+    }, [name, onChange]);
 
     return (
         <Select
