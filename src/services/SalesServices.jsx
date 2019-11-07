@@ -1,7 +1,9 @@
 //import React from 'react'
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
-import { AppError, ServerError, ObjectMappingService } from './Types'
+import { ObjectMappingService } from './Types'
+import ServerError from '../types/server-error'
+import AppError from '../types/app-error'
 import { get } from 'lodash'
 
 // business logic ------
@@ -228,7 +230,7 @@ class SalesAPIService {
       },
       body: JSON.stringify(request)
     })
-    const salesResponse = await response.json();
+    const salesResponse = response.json();
     if (response.status === 201) {
       const { objectId } = salesResponse;
       return objectId;

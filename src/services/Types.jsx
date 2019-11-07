@@ -2,39 +2,7 @@ import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
-import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
-import contactHasAddress from '../utils/contact-has-address'
-import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
-
-class ServerError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class AppError extends Error {
-    constructor(status, message, entity, ...params) {
-        super(...params)
-
-        this.status = status;
-        this.message = message;
-        this.entity = entity;
-    }
-}
-
-class Lead {
-    constructor(leadId) {
-        if (leadId) {
-            this.leadId = leadId
-            this.umid = undefined
-            this.resultOfCall = undefined
-        }
-    }
-}
+import Lead from '../types/lead'
 
 function SalesContact() {
 }
@@ -296,11 +264,12 @@ class ObjectMappingService {
             gender: "",
             email: "",
             phone: this.createEmptyPhone(),
-            veteranStatus: -1,
+            veteranStatus: undefined,
         }
     }
 
     static createLead(salesLead) {
+        salesLead = salesLead || {}
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
@@ -316,7 +285,6 @@ class ObjectMappingService {
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
             lead.reasonForCall = salesLead.interestReasonId
-            lead.careType = 0
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -324,6 +292,7 @@ class ObjectMappingService {
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
             }
+            lead.buildingId = salesLead.buildingId
         }
         else {
             return this.createEmptyLead();
@@ -346,13 +315,11 @@ class ObjectMappingService {
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
-        lead.umid = '';
         lead.resultOfCall = '';
         lead.callingFor = '';
-        lead.inquiryType = -1;
-        lead.careType = 0;
-        lead.leadSource = -1;
-        lead.leadSourceDetail = -1;
+        lead.inquiryType = undefined;
+        lead.leadSource = undefined;
+        lead.leadSourceDetail = undefined;
         lead.callerType = '';
 
         return lead;
@@ -536,9 +503,8 @@ class ObjectMappingService {
             salesFollowup.followUpDate = convertToISODate(community.followupDate);
 
             let description = community.note;
-            if (community.freeMeal && community.freeMeal > 0) {
-                let index = community.freeMeal;
-                const freeMealItem = getFreeMealItem(index);
+            if (community.freeMeal) {
+                const freeMealItem = getFreeMealItem(community.freeMeal);
                 if (freeMealItem) {
                     description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
                 }
@@ -812,8 +778,6 @@ class ObjectMappingService {
 
 export {
     ObjectMappingService,
-    ServerError,
-    AppError,
     SalesContact,
     SalesFollowup,
     SalesProspectNeed,
@@ -823,5 +787,5 @@ export {
     SalesNote,
     SalesAddress,
     SalesLead,
-    Lead
+    Util,
 }

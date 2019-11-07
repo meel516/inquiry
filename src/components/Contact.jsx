@@ -154,6 +154,17 @@ export default class Contact extends React.Component {
           .then((data) => {
             const { setFieldValue } = this.props
             setFieldValue('lead', data)
+
+            if (!this.props.isContactCenter) {
+              // When we load a non-CC Lead, there are specific
+              // fields we want to reset.
+              setFieldValue('lead.inquiryType', -1)
+              setFieldValue('lead.callingFor', -1)
+              setFieldValue('lead.leadSource', -1)
+              setFieldValue('lead.leadSourceDetail', -1)
+              setFieldValue('lead.additionalDetail', '')
+            }
+
             this.setState({ showSecondModal: false, showModal: false })
           }
           ).catch(error => (console.log(error)))
@@ -368,6 +379,7 @@ Contact.propTypes = {
   contact: PropTypes.object.isRequired,
   setFieldValue: PropTypes.func,
   hasAddress: PropTypes.bool,
+  isContactCenter: PropTypes.bool,
 
   handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
@@ -380,4 +392,5 @@ Contact.defaultProps = {
   isReadOnly: false,
   duplicateCheck: false,
   hasAddress: false,
+  isContactCenter: false,
 }

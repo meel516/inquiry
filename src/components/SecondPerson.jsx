@@ -67,7 +67,7 @@ export default class SecondPerson extends React.Component {
                 type="checkbox" 
                 name={'lead.secondPerson.selected'} 
                 onChange={(e) => this.handleSecondPerson(e)}
-                checked={this.state.containsSecondPerson}
+                checked={(this.state.containsSecondPerson ? this.state.containsSecondPerson : (this.props.contact.contactId ? true : false))}
                 disabled={this.props.isReadOnly || this.state.locked}
               />
               Is there a 2nd Prospect?
