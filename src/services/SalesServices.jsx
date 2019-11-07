@@ -230,7 +230,7 @@ class SalesAPIService {
       },
       body: JSON.stringify(request)
     })
-    const salesResponse = await response.json();
+    const salesResponse = response.json();
     if (response.status === 201) {
       const { objectId } = salesResponse;
       return objectId;
