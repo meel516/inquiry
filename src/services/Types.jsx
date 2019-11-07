@@ -2,6 +2,10 @@ import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
+import stripPhoneFormatting from '../utils/strip-phone-formatting'
+import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
+import contactHasAddress from '../utils/contact-has-address'
+import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../types/lead'
 
 function SalesContact() {
@@ -470,7 +474,7 @@ class ObjectMappingService {
 
     static createPhone(phone) {
         let { number, type } = phone;
-        number = Util.stripPhoneFormatting(number);
+        number = stripPhoneFormatting(number);
         return new SalesPhone(number, type);
     }
 
@@ -787,5 +791,4 @@ export {
     SalesNote,
     SalesAddress,
     SalesLead,
-    Util,
 }
