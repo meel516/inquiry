@@ -248,55 +248,6 @@ function SalesFormDetailsCareType(lead) {
     this.currentSituationId = lead.currentSituation;
 }
 
-class Util {
-
-    static stripPhoneFormatting(phone) {
-        if (phone == null) return null;
-        return phone.replace(/\D/g, '');
-    }
-
-    static mapInquiryTypeValue(callingFor) {
-        if (callingFor && callingFor === 'Myself') {
-            return 'PROSP'
-        }
-        else {
-            return 'INFLU'
-        }
-    }
-
-    static hasAddress(contact) {
-        if (!contact) return false;
-        if (contact && contact.address) return true;
-    }
-
-    static isAddressEmpty(address) {
-        if (!address) return false;
-
-    }
-
-    static hasPhoneContacts(contact) {
-        if (!contact) return false;
-        if (contact && contact.phone && contact.phone.number.length > 0) return true;
-    }
-
-    /**
-     * checks to see if the contact has a first/last name if so then it's not empty,
-     * otherwise if either/both are missing it is considered empty.
-     * @param {Contact} contact 
-     */
-    static isContactEmpty(contact) {
-        if (contact) {
-            if (!contact.firstName || !contact.lastName) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 class ObjectMappingService {
 
     static createEmptyPhone() {
@@ -524,7 +475,7 @@ class ObjectMappingService {
     }
 
     static addPhoneToContact(contact, salesContact) {
-        if (Util.hasPhoneContacts(contact)) {
+        if (contactHasPhoneContacts(contact)) {
             const phone = this.createPhone(contact.phone);
             salesContact.phoneNumbers = [];
             salesContact.phoneNumbers.push(phone);
@@ -532,7 +483,7 @@ class ObjectMappingService {
     }
 
     static addAddressToContact(contact, salesContact) {
-        if (Util.hasAddress(contact)) {
+        if (contactHasAddress(contact)) {
             const { address } = contact;
             const salesAddress = new SalesAddress(address);
             salesAddress.addressLine1 = address.line1
@@ -665,7 +616,7 @@ class ObjectMappingService {
         const salesContact = new SalesContact();
         const salesLead = new SalesLead(salesContact, 4);
 
-        let callingFor = Util.mapInquiryTypeValue(lead.callingFor)
+        let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP') {
             salesContact.firstName = influencer.firstName
             salesContact.lastName = influencer.lastName
