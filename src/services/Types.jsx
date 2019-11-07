@@ -119,10 +119,6 @@ function LeadDataRecord(record) {
     }
 }
 
-
-function SalesFormDetails() {
-}
-
 function SalesFormDetailsCustomSalesContact(salesContact) {
     if (salesContact) {
         this.firstName = salesContact.firstName;
@@ -679,7 +675,7 @@ class ObjectMappingService {
     }
 
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
-        const salesFormDetails = new SalesFormDetails();
+        const salesFormDetails = {}
         const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
         const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
         const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
