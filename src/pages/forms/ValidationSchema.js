@@ -137,9 +137,9 @@ const mainFormValidationSchema = Yup.object().shape({
     careType: Yup.number().required("Care Level Recommended is required"),
     resultOfCall: Yup.string().required("Result of Call is required"),
     callingFor: Yup.string().required('Calling For is required'),
-    inquiryType: Yup.string().required('Inquiry Method is required'),
-    leadSource: Yup.string().required('Lead Source is required'),
-    leadSourceDetail: Yup.string().required('Lead Source Detail is required'),
+    inquiryType: Yup.string().nullable().required('Inquiry Method is required'),
+    leadSource: Yup.string().nullable().required('Lead Source is required'),
+    leadSourceDetail: Yup.string().nullable().required('Lead Source Detail is required'),
     callerType: Yup.string().required('Gender of Caller is required'),
     notes: Yup.object().shape({
       situation: fieldLengthCheck(4000, 'Situation can be at most 4000 characters'),

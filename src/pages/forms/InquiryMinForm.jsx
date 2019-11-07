@@ -110,7 +110,7 @@ class InquiryForm extends React.Component {
 
     if (this.state.loading) {
       return (
-        <Spinner type="border" size="md" color="secondary">Loading Lead</Spinner>
+        <Spinner type="border" size="md" color="secondary" children={"Loading Lead..."}></Spinner>
       )
     }
 
