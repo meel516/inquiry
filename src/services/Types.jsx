@@ -9,41 +9,7 @@ import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value
 import Lead from '../types/lead'
 import { get } from 'lodash'
 import createSalesLead from '../types/sales-lead'
-
-
-function DuplicateContact(dupecontact) {
-    if (dupecontact) {
-        this.contactid = dupecontact.contactId
-        this.name = dupecontact.firstName + " " + dupecontact.lastName
-
-        if (dupecontact.phoneNumbers) {
-            for (let i = 0; i < dupecontact.phoneNumbers.length; i++) {
-                let tmpPhone = dupecontact.phoneNumbers[i];
-                if (tmpPhone) {
-                    if (tmpPhone.primary) {
-                        if (tmpPhone.phoneNumber) {
-                            const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                            this.phone = pn.formatNational();
-                        }
-
-                        this.phonetype = tmpPhone.phoneType
-                        break;
-                    }
-                }
-            }
-        }
-
-        this.email = dupecontact.emailAddress
-        
-        if (dupecontact.address) {
-            this.address1 = dupecontact.address.addressLine1
-            this.address2 = dupecontact.address.addressLine2
-            this.city = dupecontact.address.city
-            this.state = dupecontact.address.stateProv
-            this.zip = dupecontact.address.zipPostalCode
-        }
-    }
-}
+import duplicateContact from '../utils/duplicate-contact'
 
 function LeadDataRecord(record) {
     if (record) {
@@ -731,7 +697,7 @@ class ObjectMappingService {
             for (let i = 0; i < duplicatecontacts.length; i++) {
                 let dupecontact = duplicatecontacts[i];
                 if (dupecontact) {
-                    const dc = new DuplicateContact(dupecontact);
+                    const dc = duplicateContact(dupecontact);
                     returnval.push(dc);
                 }
             }
