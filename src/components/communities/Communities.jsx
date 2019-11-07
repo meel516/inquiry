@@ -28,14 +28,14 @@ export const Communities = (props) => {
 
   const addCommunity = useCallback(() => {
     setFieldValue(`communities[${communities.length}]`, createCommunity());
-  }, [communities]);
+  }, [communities, setFieldValue]);
 
   const removeCommunity = useCallback((uuid) => () => {
     if (uuid) {
       const filteredCommunities = communities.filter(community => community.uuid !== uuid);
       setFieldValue('communities', filteredCommunities);
     }
-  }, [communities]);
+  }, [communities, setFieldValue]);
 
   useEffect(() => {
     fetchCommunities(props.username).then(comms => {

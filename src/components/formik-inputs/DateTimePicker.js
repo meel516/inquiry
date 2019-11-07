@@ -18,7 +18,7 @@ export const DateTimePicker = ({
         if (typeof(onChange) === 'function') {
             onChange(date);
         }
-    }, [onChange, name]);
+    }, [onChange, name, field]);
 
     return (
         <DatePicker

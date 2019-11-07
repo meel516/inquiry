@@ -18,7 +18,7 @@ export const ReactSelect = ({
         if (typeof(onChange) === 'function') {
             onChange(option);
         }
-    }, [name, onChange]);
+    }, [name, field, onChange]);
 
     return (
         <Select
