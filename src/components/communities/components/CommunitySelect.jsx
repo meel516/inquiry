@@ -3,7 +3,7 @@ import { Button, Card, CardBody, CardFooter, Col, FormGroup, InputGroup, InputGr
 import PropTypes from 'prop-types';
 import { Input, Select, ReactSelect } from '../../formik-inputs';
 import Visit from './Visit';
-import { defaultVisitNotes } from '../defaultVisitNotes';
+import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
 import { useFormikContext } from 'formik';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
