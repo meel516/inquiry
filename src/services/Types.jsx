@@ -119,8 +119,6 @@ function LeadDataRecord(record) {
     }
 }
 
-function SalesInquiryForm() {
-}
 
 function SalesFormDetails() {
 }
@@ -686,7 +684,7 @@ class ObjectMappingService {
         const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
         const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
         const salesFormDetailsCareType = new SalesFormDetailsCareType(lead);
-        const salesInquiryForm = new SalesInquiryForm();
+        const salesInquiryForm = {}
         
         // Communities
         salesInquiryForm.communities = communities;
