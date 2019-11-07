@@ -158,10 +158,10 @@ export default class Contact extends React.Component {
             if (!this.props.isContactCenter) {
               // When we load a non-CC Lead, there are specific
               // fields we want to reset.
-              setFieldValue('lead.inquiryType', -1)
-              setFieldValue('lead.callingFor', -1)
-              setFieldValue('lead.leadSource', -1)
-              setFieldValue('lead.leadSourceDetail', -1)
+              setFieldValue('lead.inquiryType', null)
+              setFieldValue('lead.callingFor', '')
+              setFieldValue('lead.leadSource', null)
+              setFieldValue('lead.leadSourceDetail', null)
               setFieldValue('lead.additionalDetail', '')
             }
 

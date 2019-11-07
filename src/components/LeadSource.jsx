@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'
 import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
-import { ErrorMessage } from 'formik';
+import { ErrorMessage } from 'formik'
 import PropTypes from 'prop-types'
+import { isEmpty } from 'lodash'
 
 import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns'
 
@@ -27,7 +28,7 @@ export default class LeadSource extends React.Component {
   }
 
   componentDidUpdate() {
-    const {defaultLeadSource} = this.state;
+    const { defaultLeadSource } = this.state;
     if (this.props.defaultLeadSource !== defaultLeadSource && this.props.defaultLeadSource !== -1) {
       this.fetchAndSetLeadSourceDetail(this.props.defaultLeadSource);
       this.setState({
@@ -38,19 +39,20 @@ export default class LeadSource extends React.Component {
 
   handleOnChange = (event) => {
     const { setFieldValue } = this.props;
-    var leadSourceId = event.target.value;
+    const leadSourceId = event.target.value;
     if (!leadSourceId) {
       this.setState({
         leadSourceDetail: [],
       })
-      setFieldValue('lead.leadSourceDetail', -1);
+      setFieldValue('lead.leadSourceDetail', '');
     } else {
       this.fetchAndSetLeadSourceDetail(leadSourceId);
     }
-    this.props.handleChange(event);
+    setFieldValue('lead.leadSource', leadSourceId);
   }
 
   fetchAndSetLeadSourceDetail = (leadSourceId) => {
+    if (isEmpty(leadSourceId)) return;
     getLeadSourceDetails(leadSourceId)
       .then((data) => {
         this.setState({ leadSourceDetail: data })
@@ -65,9 +67,11 @@ export default class LeadSource extends React.Component {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
-    const leadSourceDetailOptions = (leadSourceDetail || []).map((type) => {
+    const leadSourceDetailOptions = leadSourceDetail.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
+
+    const isDisabled = this.props.isReadOnly && this.props.isContactCenter;
 
     return (
       <>
@@ -75,19 +79,19 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSource" className="label-format required-field">Lead Source</Label>
-              <Input 
-                type="select" 
-                id="leadSource" 
-                name="lead.leadSource" 
-                value={this.props.defaultLeadSource} 
-                onChange={this.handleOnChange} 
+              <Input
+                type="select"
+                id="leadSource"
+                name="lead.leadSource"
+                value={this.props.defaultLeadSource}
+                onChange={this.handleOnChange}
                 onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly && this.props.isContactCenter}
+                disabled={isDisabled}
               >
                 <option value="">Select One</option>
                 {leadSourceOptions}
               </Input>
-              <ErrorMessage name="lead.leadSource" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
+              <ErrorMessage name="lead.leadSource" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
@@ -95,19 +99,19 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="leadSourceDetail" className="label-format required-field">Lead Source Detail</Label>
-              <Input 
-                type="select" 
-                id="leadSourceDetail" 
-                name="lead.leadSourceDetail" 
-                value={this.props.defaultLeadSourceDetail} 
+              <Input
+                type="select"
+                id="leadSourceDetail"
+                name="lead.leadSourceDetail"
+                value={this.props.defaultLeadSourceDetail}
                 onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly && this.props.isContactCenter}
+                disabled={isDisabled}
               >
                 <option value="">Select One</option>
                 {leadSourceDetailOptions}
               </Input>
-              <ErrorMessage name="lead.leadSourceDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
+              <ErrorMessage name="lead.leadSourceDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
@@ -115,14 +119,14 @@ export default class LeadSource extends React.Component {
           <Col>
             <FormGroup>
               <Label for="additionalDetail" className="label-format">Additional Detail</Label>
-              <Input 
-                type="text" 
-                id="additionalDetail" 
-                name="lead.additionalDetail" 
-                onChange={this.props.handleChange} 
+              <Input
+                type="text"
+                id="additionalDetail"
+                name="lead.additionalDetail"
+                onChange={this.props.handleChange}
                 onBlur={this.props.handleBlur}
-                readOnly={this.props.isReadOnly && this.props.isContactCenter}
-                placeholder="Additional Detail" 
+                readOnly={isDisabled}
+                placeholder="Additional Detail"
               />
               <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
@@ -146,8 +150,8 @@ LeadSource.propTypes = {
 }
 
 LeadSource.defaultProps = {
-  defaultLeadSource: 0,
-  defaultLeadSourceDetail: 0,
+  defaultLeadSource: undefined,
+  defaultLeadSourceDetail: undefined,
   isReadOnly: false,
   isContactCenter: false,
 }

@@ -57,7 +57,7 @@ InquiryType.propTypes = {
 }
 
 InquiryType.defaultProps = {
-  defaultValue: -1,
+  defaultValue: undefined,
   isReadOnly: false,
   isContactCenter: false,
 }

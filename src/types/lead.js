@@ -6,5 +6,10 @@ export default class Lead {
         this.umid = ''
         this.resultOfCall = ''
         this.careType = undefined
+        this.callingFor = ''
+        this.inquiryType = undefined
+        this.leadSource = undefined
+        this.leadSourceDetail = undefined
+        this.callerType = ''
     }
 }
