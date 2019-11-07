@@ -5,7 +5,7 @@ import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import ADLNeeds from '../../components/ADLNeeds';
+import { ADLNeeds } from '../../components/ADLNeeds';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import Contact from '../../components/Contact';
@@ -152,11 +152,7 @@ class InquiryForm extends React.Component {
           />
           <Row>
             <Col>
-              <ADLNeeds
-                adlNeeds={values.lead.adlNeeds}
-                setFieldValue={setFieldValue}
-                isReadOnly={status.readOnly}
-              />
+              <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
             </Col>
           </Row>
           <br />

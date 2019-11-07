@@ -15,7 +15,7 @@ export const Input = ({
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [name, field, onChange]);
+    }, [field, onChange]);
 
     return (
         <ReactstrapText
