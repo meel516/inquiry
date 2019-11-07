@@ -8,7 +8,7 @@ import contactHasAddress from '../utils/contact-has-address'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../types/lead'
 import { get } from 'lodash'
-
+import createSalesLead from '../types/sales-lead'
 
 
 function DuplicateContact(dupecontact) {
@@ -553,7 +553,7 @@ class ObjectMappingService {
     static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
             const salesContact = {}
-            const salesLead = new SalesLead(salesContact, 5);
+            const salesLead = createSalesLead(salesContact, 5)
             const salesSecondPerson = { salesLead }
     
             salesContact.firstName = ((secondPerson && secondPerson.firstName) ? secondPerson.firstName : '')
@@ -561,7 +561,7 @@ class ObjectMappingService {
             salesContact.emailAddress = secondPerson.email
             this.addPhoneToContact(secondPerson, salesContact);
     
-            const primarySalesLead = new SalesLead(null, null);
+            const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
             console.log(`Second Person Primary Lead Id: ${leadId}`)
             salesSecondPerson.primarySalesLead = primarySalesLead;
@@ -579,10 +579,7 @@ class ObjectMappingService {
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
         const salesContact = {}
-        const salesLead = {
-            salesContact,
-            leadTypeId: 4
-        }
+        const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP') {
