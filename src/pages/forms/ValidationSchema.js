@@ -89,10 +89,10 @@ const mainFormValidationSchema = object().shape({
     umid: string()
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters'),
-    careType: number().required("Care Level Recommended is required"),
-    resultOfCall: string().required("Result of Call is required"),
+    careType: number().test('required-number-value', 'Care Level Recommended is required', nonZeroNumber),
+    resultOfCall: string().required('Result of Call is required'),
     callingFor: string().required('Calling For is required'),
-    inquiryType: string().required('Inquiry Method is required'),
+    inquiryType: number().test('required-number-value', 'Inquiry Method is required', nonZeroNumber),
     leadSource: number().test('required-number-value', 'Lead Source is required', nonZeroNumber),
     leadSourceDetail: number().test('required-number-value', 'Lead Source Detail is required', nonZeroNumber),
     callerType: string().required('Gender of Caller is required'),

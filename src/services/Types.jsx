@@ -320,12 +320,6 @@ class ObjectMappingService {
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
-        lead.resultOfCall = '';
-        lead.callingFor = '';
-        lead.inquiryType = undefined;
-        lead.leadSource = undefined;
-        lead.leadSourceDetail = undefined;
-        lead.callerType = '';
 
         return lead;
     }
