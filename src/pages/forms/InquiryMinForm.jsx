@@ -5,12 +5,10 @@ import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import { ADLNeeds } from '../../components/ADLNeeds';
+import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import Contact from '../../components/Contact';
-import Drivers from '../../components/Drivers';
-import FinancialOptions from '../../components/FinancialOptions';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
@@ -212,11 +210,7 @@ class InquiryForm extends React.Component {
         </Row>
         <br />
         <hr />
-        <FinancialOptions
-          key="financialOptions"
-          setFieldValue={setFieldValue}
-          isReadOnly={status.readOnly}
-        />
+          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
         <br />
         <Row>
           <Col>
@@ -231,11 +225,7 @@ class InquiryForm extends React.Component {
           </Col>
         </Row>
         <br />
-        <Drivers
-          key="drivers"
-          setFieldValue={setFieldValue}
-          isReadOnly={status.readOnly}
-        />
+          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
         <br />
         <SecondPerson
           key="secondPerson-contact"
