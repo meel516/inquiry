@@ -26,11 +26,12 @@ function SalesInfluencer(leadId, salesContact) {
     this.salesContact = salesContact
 }
 
-function SalesPhone(number, type) {
+function SalesPhone(number, type, phoneId) {
     return {
         primary: true,
         phoneNumber: number,
         phoneType: type,
+        phoneId: phoneId,
     }
 }
 
@@ -473,9 +474,9 @@ class ObjectMappingService {
     }
 
     static createPhone(phone) {
-        let { number, type } = phone;
+        let { number, type, phoneId } = phone;
         number = stripPhoneFormatting(number);
-        return new SalesPhone(number, type);
+        return new SalesPhone(number, type, phoneId);
     }
 
     static addPhoneToContact(contact, salesContact) {
