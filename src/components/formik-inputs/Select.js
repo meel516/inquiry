@@ -10,15 +10,14 @@ export const Select = ({
     disabled = false,
     placeholder = 'Select...'
 }) => {
-    const { setFieldValue, status: { readOnly } } = useFormikContext();
+    const { status: { readOnly } } = useFormikContext();
     const [ field ] = useField(name);
     const handleChange = useCallback((e) => {
-        setFieldValue(name, e.target.value);
         field.onChange(e);
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [name, setFieldValue, onChange, field]);
+    }, [name, onChange, field]);
     const props = {
         id: name,
         name,

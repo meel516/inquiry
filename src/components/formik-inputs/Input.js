@@ -8,15 +8,14 @@ export const Input = ({
     onChange,
     ...props
 }) => {
-    const { setFieldValue, status: { readOnly } } = useFormikContext();
+    const { status: { readOnly }} = useFormikContext();
     const [ field ] = useField(name);
     const handleChange = useCallback((e) => {
-        setFieldValue(name, e.target.value);
         field.onChange(e);
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [setFieldValue, name, field, onChange]);
+    }, [name, field, onChange]);
 
     return (
         <ReactstrapText
