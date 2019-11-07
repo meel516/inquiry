@@ -800,7 +800,7 @@ class ObjectMappingService {
         salesFormDetails.callingFor = lead.callingFor;
         salesFormDetails.additionalDetail = lead.additionalDetail;
         salesFormDetails.callerType = lead.callerType;
-        salesFormDetails.situation2 = lead.notes.secondPerson;
+        salesFormDetails.situation2 = lead.notes.secondPersonNote;
         salesFormDetails.umid = lead.umid;
         salesFormDetails.advisorName = oktaUser.name;
         salesFormDetails.advisorEmail = oktaUser.email;

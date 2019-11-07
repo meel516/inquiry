@@ -205,6 +205,8 @@ class SalesAPIService {
   async submitEloquaRequest(eloquaRequest) {
     const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
 
+    console.log("eloquarequest is: " + JSON.stringify(eloquaRequest));
+
     fetch(eloquaExternalUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -373,24 +375,11 @@ class SalesAPIService {
     }
 
     const formattedCommunityList = [];
-    //const eloquaCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-
         community.followupDate = convertToISODate(community.followupDate);
         formattedCommunityList.push(community);
-
-        // Check to see if this community has an applicable Follow Up Action that
-        // would deem submission of an External Eloqua Email.  If so, add it to the
-        // eloquaCommunityList.
-        // 5	Visit/Appt - Scheduled
-        // 6	Home Visit
-        // 8	Assessment
-        // const actionArray = ["5", "6", "8"];
-        // if (actionArray.indexOf(community.followUpAction) > -1) {
-        //   eloquaCommunityList.push(community);
-        // }
       })
     }
 
@@ -417,7 +406,6 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
-
     // IF zero/many community is selected always assume Contact Center community
     let leadId = lead.leadId;
     if (leadId == null) {
@@ -464,6 +452,10 @@ class SalesAPIService {
       if (!containContactCenter(communities)) {
         let community = createCommunity();
         community.communityId = 225707
+        // Since we're including the CC COI (potentially) in the processCommunities routine,
+        // we need to add it to the list.
+        // NOTE: The Eloqua request will need to filter out sending the CC COI to Eloqua however.
+        //       This will be done via the API in SMS.
         communityList.push(community);
       }
     }
@@ -472,24 +464,11 @@ class SalesAPIService {
     }
 
     const formattedCommunityList = [];
-    //const eloquaCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-
         community.followupDate = convertToISODate(community.followupDate);
         formattedCommunityList.push(community);
-
-        // Check to see if this community has an applicable Follow Up Action that
-        // would deem submission of an External Eloqua Email.  If so, add it to the
-        // eloquaCommunityList.
-        // 5	Visit/Appt - Scheduled
-        // 6	Home Visit
-        // 8	Assessment
-        // const actionArray = ["5", "6", "8"];
-        // if (actionArray.indexOf(community.followUpAction) > -1) {
-        //   eloquaCommunityList.push(community);
-        // }
       })
     }
 
