@@ -4,7 +4,7 @@ import * as request from '../request'
 import stripPhoneFormatting from '../../utils/strip-phone-formatting'
 
 jest.mock('../../constants/url-generator', () => ({ createDuplicateSearchUrl: jest.fn() }))
-jest.mock('./strip-phone-formatting')
+jest.mock('../../utils/strip-phone-formatting')
 jest.mock('../request', () => ({ post: jest.fn(), jsonResponse: jest.fn() }))
 
 describe('findDuplicates', () => {
