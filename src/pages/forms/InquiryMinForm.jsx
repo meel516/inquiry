@@ -23,16 +23,12 @@ import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
-import createCommunity from '../../services/community-services/create-community'
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
-
-  MAX_COMMUNITIES = 5;
   state = {
-    allowAddCommunities: true,
     loading: true,
   };
 
@@ -67,42 +63,6 @@ class InquiryForm extends React.Component {
         locale: userInfo.locale,
       }
       this.props.setFieldValue('user', user)
-    }
-  }
-
-  handleAddCommunity = (values) => {
-    this.setState((state) => {
-      let communities = values.communities
-      let community = createCommunity()
-      communities.push(community)
-
-      let allowAddCommunities = true;
-      if (communities.length > (this.MAX_COMMUNITIES - 1)) {
-        allowAddCommunities = false;
-      }
-      return {
-        communities: communities,
-        allowAddCommunities: allowAddCommunities,
-      }
-    })
-  }
-
-  handleRemoveCommunity = (uuid, values) => {
-    if (uuid !== undefined || uuid !== null) {
-      let communities = (values.communities || []).filter((community) => (community.uuid !== uuid));
-      let allowAddCommunities = true;
-
-      if (communities.length < this.MAX_COMMUNITIES) {
-        allowAddCommunities = true
-      } else {
-        allowAddCommunities = false
-      }
-
-      this.setState({
-        communities: communities,
-        allowAddCommunities: allowAddCommunities,
-      })
-      values.communities = communities || [];
     }
   }
 
@@ -251,12 +211,7 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Communities
-              username={values.user.username}
-              allowAddCommunities={this.state.allowAddCommunities}
-              onAddCommunity={() => this.handleAddCommunity(values)}
-              onRemoveCommunity={community => this.handleRemoveCommunity(community.uuid, values)}
-            />
+            <Communities username={values.user.username} />
           </Col>
         </Row>
         <br />
