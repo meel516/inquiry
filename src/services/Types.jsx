@@ -11,6 +11,11 @@ import { get } from 'lodash'
 import createSalesLead from '../types/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
+import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
+import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
+import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
+import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
+
 function LeadDataRecord(record) {
     if (record) {
         this.leadid = record.leadId
@@ -83,87 +88,6 @@ function LeadDataRecord(record) {
             this.spemail = record.secondPerson.emailAddress
         }
     }
-}
-
-function SalesFormDetailsCustomSalesContact(salesContact) {
-    if (salesContact) {
-        this.firstName = salesContact.firstName;
-        this.lastName = salesContact.lastName;
-        this.gender = salesContact.gender;
-        this.emailAddress = salesContact.email;
-        this.age = salesContact.age;
-        this.veteranStatus = salesContact.veteranStatus;
-    }
-}
-
-function SalesFormDetailsSecondPersonSalesLead(secondPerson) {
-    if (secondPerson && secondPerson.selected) {
-        const salesFormDetailsSecondPerson = new SalesFormDetailsCustomSalesContact(secondPerson);
-        this.salesContact = salesFormDetailsSecondPerson;
-    }
-}
-
-function SalesFormDetailsProspect(lead) {
-    if (lead) {
-        const salesFormDetailsProspect = new SalesFormDetailsCustomSalesContact(lead.prospect);
-
-        this.salesContact = salesFormDetailsProspect;
-        this.interestReasonId = lead.reasonForCall
-        this.inquiryTypeId = lead.inquiryType
-        this.inquiryLeadSourceId = lead.leadSource
-        this.inquiryLeadSourceDetailId = lead.leadSourceDetail
-    }
-}
-
-function SalesFormDetailsInfluencer(influencer) {
-    if (influencer) {
-        const salesFormDetailsInfluencer = new SalesFormDetailsCustomSalesContact(influencer);
-        this.salesContact = salesFormDetailsInfluencer;
-    }
-}
-
-function SalesFormDetailsSecondPerson(secondPerson) {
-    if (secondPerson && secondPerson.selected) {
-        this.salesLead = new SalesFormDetailsSecondPersonSalesLead(secondPerson);
-    }
-}
-
-function SalesFormDetailsCareType(lead) {
-    if (lead.adlNeeds) {
-        this.bathing = lead.adlNeeds.bathing; 
-        this.incontinence = lead.adlNeeds.incontinence; 
-        this.transferring = lead.adlNeeds.transferring; 
-        this.dressing = lead.adlNeeds.dressing; 
-        this.medications = lead.adlNeeds.medications; 
-        this.feeding = lead.adlNeeds.feeding; 
-        this.toileting = lead.adlNeeds.toileting; 
-    }
-    
-    if (lead.memoryConcerns) {
-        this.alzDiagnosis = lead.memoryConcerns.dementia; 
-        this.argumentative = lead.memoryConcerns.memoryLoss; 
-        this.forgetsRepeats = lead.memoryConcerns.repeatsStories; 
-        this.wandering = lead.memoryConcerns.wandering; 
-    }
-    
-    if (lead.mobilityConcerns) {
-        this.fallRisk = lead.mobilityConcerns.fallRisk; 
-        this.walkerRegularly = lead.mobilityConcerns.regularlyWalks; 
-        this.caneRegularly = lead.mobilityConcerns.usesCane; 
-        this.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair; 
-        this.onePersTransfer = lead.mobilityConcerns.personTransfer; 
-        this.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer; 
-    }
-    
-    if (lead.nutritionConcerns) {
-        this.diabetesDiagnosis = lead.nutritionConcerns.diabetes; 
-        this.lowSaltLowDiet = lead.nutritionConcerns.lowSalt; 
-        this.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet; 
-        this.notEatingWell = lead.nutritionConcerns.notEatingWell;
-    }
-    
-    this.careTypeId = lead.careType;
-    this.currentSituationId = lead.currentSituation;
 }
 
 class ObjectMappingService {
@@ -633,10 +557,10 @@ class ObjectMappingService {
 
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
         const salesFormDetails = {}
-        const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
-        const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
-        const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
-        const salesFormDetailsCareType = new SalesFormDetailsCareType(lead);
+        const salesFormDetailsProspect = prospectToEloquaContact(lead);
+        const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
+        const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
+        const salesFormDetailsCareType = leadToEloquaCareType(lead);
         const salesInquiryForm = {}
         
         // Communities
