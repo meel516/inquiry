@@ -2,8 +2,8 @@
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
 import { ObjectMappingService } from './Types'
-import ServerError from '../types/server-error'
-import AppError from '../types/app-error'
+import ServerError from '../models/server-error'
+import AppError from '../models/app-error'
 import { get } from 'lodash'
 
 // business logic ------
