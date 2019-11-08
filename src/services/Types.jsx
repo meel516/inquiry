@@ -236,7 +236,7 @@ class ObjectMappingService {
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
-            lead.reasonForCall = salesLead.interestReasonId
+            //lead.reasonForCall = salesLead.interestReasonId
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -586,6 +586,7 @@ class ObjectMappingService {
             this.addAddressToContact(influencer, salesContact)
             this.addPhoneToContact(influencer, salesContact)
             salesContact.gender = lead.callerType
+            salesLead.interestReasonId = lead.reasonForCall
         }
         else {
             salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
@@ -606,7 +607,6 @@ class ObjectMappingService {
         
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
-        salesLead.interestReasonId = lead.reasonForCall
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
