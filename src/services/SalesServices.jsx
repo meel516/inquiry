@@ -459,6 +459,18 @@ class SalesAPIService {
 
     }
 
+    try {
+      // Process any Second Person changes.
+      const secondPerson = lead.secondPerson;
+      if (secondPerson && secondPerson.selected) {
+        const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
+        await this.submitSecondPerson(secondPersonRequest);
+      }
+    }
+    catch (err) {
+      
+    }
+
     const communityList = [...communities];
 
     try {
