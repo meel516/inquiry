@@ -1,6 +1,6 @@
-import stripPhoneFormatting from './strip-phone-formatting'
+import stripPhoneFormatting from '../../utils/strip-phone-formatting'
 
-export default (phone) => ({
+export default (phone = {}) => ({
     primary: true,
     phoneNumber: stripPhoneFormatting(phone.number),
     phoneType: phone.type,
