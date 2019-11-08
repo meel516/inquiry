@@ -8,7 +8,7 @@ import contactHasAddress from '../utils/contact-has-address'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
 import { get } from 'lodash'
-import createSalesLead from '../types/sales-lead'
+import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
 function LeadDataRecord(record) {
