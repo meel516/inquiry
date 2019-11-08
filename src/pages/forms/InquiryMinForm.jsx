@@ -259,7 +259,7 @@ class InquiryForm extends React.Component {
                 name="lead.callingFor" 
                 onChange={handleChange} 
                 onBlur={handleBlur} 
-                disabled={(status.readOnly || isLocked) && isContactCenterBuildingId}
+                disabled={(status.readOnly || isLocked)}
                 value={values.lead.callingFor}
               >
                 <option value="">Select One</option>
