@@ -1,15 +1,7 @@
 import React from 'react';
-import { Input } from './formik-inputs';
-import { Col, FormGroup, Label, Row } from 'reactstrap';
+import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-
-const Checkbox = ({ name, label, className, disabled = false }) => (
-  <FormGroup check inline className={className} disabled={disabled}>
-    <Label check>
-      <Input type='checkbox' name={name} />{` ${label}`}
-    </Label>
-  </FormGroup>
-)
+import { Checkbox } from './Checkbox';
 
 
 export const ADLNeeds = ({ basePath, isReadOnly }) => {

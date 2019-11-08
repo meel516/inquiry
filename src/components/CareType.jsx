@@ -56,4 +56,5 @@ CareType.propTypes = {
 
 CareType.defaultProps = {
   isReadOnly: false,
+  defaultValue: 0,
 }

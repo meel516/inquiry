@@ -17,7 +17,7 @@ export const Select = ({
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [name, onChange, field]);
+    }, [onChange, field]);
     const props = {
         id: name,
         name,

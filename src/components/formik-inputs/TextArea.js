@@ -17,7 +17,7 @@ export const TextArea = ({
         if (typeof(onChange) === 'function') {
             onChange(e);
         }
-    }, [onChange, field, name]);
+    }, [onChange, field]);
 
     return (
         <Input
