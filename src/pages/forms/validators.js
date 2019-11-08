@@ -2,7 +2,7 @@ import { string } from 'yup';
 
 export const digitLengthLessThan = (max) => {
     return function (value) {
-        return value && value.toString().length <= max;
+        return value === undefined ? true : value.toString().length <= max;
     }
 }
 
