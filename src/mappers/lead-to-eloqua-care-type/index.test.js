@@ -11,6 +11,8 @@ describe('leadToEloquaCareType mapper', () => {
         expect(mapper()).toEqual({})
     })
     test('should handle valid data', () => {
-        expect(mapper({ careType: 'careType', currentSituation: 'currentSituation' })).toEqual({ careType: 'careType', currentSituation: 'currentSituation' })
+        const response = mapper({ careType: 'careType', currentSituation: 'currentSituation' })
+        expect(response.careTypeId).toEqual('careType')
+        expect(response.currentSituationId).toEqual('currentSituation')
     })
 })
