@@ -1,1 +1,1 @@
-export default (callingFor) => callingFor && callingFor === 'Myself' ? 'PROSP' : 'INFLU'
+export default (callingFor) => callingFor === 'Myself' ? 'PROSP' : 'INFLU'

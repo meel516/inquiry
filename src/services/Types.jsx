@@ -7,56 +7,9 @@ import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
 import contactHasAddress from '../utils/contact-has-address'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../types/lead'
+import { get } from 'lodash'
+import createSalesLead from '../types/sales-lead'
 
-function SalesContact() {
-}
-
-function SalesFollowup(leadId) {
-    this.leadId = leadId
-}
-
-function SalesProspectNeed(leadId) {
-    this.leadId = leadId
-}
-
-function SalesInfluencer(leadId, salesContact) {
-    this.leadId = leadId
-    this.primary = true
-    this.active = true
-    this.salesContact = salesContact
-}
-
-function SalesPhone(number, type, phoneId) {
-    return {
-        primary: true,
-        phoneNumber: number,
-        phoneType: type,
-        phoneId: phoneId,
-    }
-}
-
-function SalesSecondPerson(salesLead) {
-    this.salesLead = salesLead
-}
-
-function SalesNote(leadId, note, user) {
-    this.deleteInd = false
-    this.bhsInd = false
-    this.leadId = leadId
-    this.noteText = note
-    this.username = user.username
-}
-
-function SalesAddress({ type = 'Home', active = true, primary = true }) {
-    this.addressType = type
-    this.active = active
-    this.primary = primary
-}
-
-function SalesLead(salesContact, leadTypeId = 4) {
-    this.leadTypeId = leadTypeId;
-    this.salesContact = salesContact;
-}
 
 function DuplicateContact(dupecontact) {
     if (dupecontact) {
@@ -164,12 +117,6 @@ function LeadDataRecord(record) {
             this.spemail = record.secondPerson.emailAddress
         }
     }
-}
-
-function SalesInquiryForm() {
-}
-
-function SalesFormDetails() {
 }
 
 function SalesFormDetailsCustomSalesContact(salesContact) {
@@ -467,11 +414,12 @@ class ObjectMappingService {
         }
     }
 
-    static createPhone(phone) {
-        let { number, type, phoneId } = phone;
-        number = stripPhoneFormatting(number);
-        return new SalesPhone(number, type, phoneId);
-    }
+    static createPhone = (phone) => ({
+        primary: true,
+        phoneNumber: stripPhoneFormatting(phone.number),
+        phoneType: phone.type,
+        phoneId: phone.phoneId
+    })
 
     static addPhoneToContact(contact, salesContact) {
         if (contactHasPhoneContacts(contact)) {
@@ -481,22 +429,25 @@ class ObjectMappingService {
         }
     }
 
-    static addAddressToContact(contact, salesContact) {
-        if (contactHasAddress(contact)) {
-            const { address } = contact;
-            const salesAddress = new SalesAddress(address);
-            salesAddress.addressLine1 = address.line1
-            salesAddress.addressLine2 = address.line2
-            salesAddress.city = address.city
-            salesAddress.stateProv = address.state
-            salesAddress.zipPostalCode = address.zip
-            salesContact.address = salesAddress
+    static addAddressToContact = (contact, salesContact) => {
+        if (!contactHasAddress(contact) || !salesContact) {
+            return
+        }
+        salesContact.address = {
+            addressType: get(contact, 'address.type', 'Home'),
+            active: get(contact, 'address.active', true),
+            primary: get(contact, 'address.primary', true),
+            addressLine1: get(contact, 'address.line1'),
+            addressLine2: get(contact, 'address.line2'),
+            city: get(contact, 'address.city'),
+            stateProv: get(contact, 'address.state'),
+            zipPostalCode: get(contact, 'address.zip'),
         }
     }
 
     static createFollowupRequest(leadId, community, user) {
         if (leadId && community && community.followUpAction) {
-            const salesFollowup = new SalesFollowup(leadId);
+            const salesFollowup = { leadId }
             salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
             salesFollowup.followUpDate = convertToISODate(community.followupDate);
@@ -518,7 +469,7 @@ class ObjectMappingService {
 
     static createProspectNeedsRequest(coid, lead, user) {
         if (coid && lead.careType) {
-            const salesProspectNeed = new SalesProspectNeed(coid);
+            const salesProspectNeed = { leadId: coid }
             salesProspectNeed.careTypeId = Number(lead.careType);
             const {adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns} = lead
 
@@ -562,13 +513,22 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest(leadId, note, user) {
-        return new SalesNote(leadId, note, user);
-    }
+    static createNoteRequest = (leadId, noteText, user) => ({
+        deleteInd: false,
+        bhsInd: false,
+        leadId,
+        noteText,
+        username: user.username
+    })
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
-        const salesContact = new SalesContact();
-        const salesInfluencer = new SalesInfluencer(leadId, salesContact);
+        const salesContact = {}
+        const salesInfluencer = {
+            leadId,
+            primary: true,
+            active: true,
+            salesContact
+        }
         salesInfluencer.username = (user) ? user.username : null
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
@@ -586,16 +546,16 @@ class ObjectMappingService {
 
     static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
-            const salesContact = new SalesContact();
-            const salesLead = new SalesLead(salesContact, 5);
-            const salesSecondPerson = new SalesSecondPerson(salesLead);
+            const salesContact = {}
+            const salesLead = createSalesLead(salesContact, 5)
+            const salesSecondPerson = { salesLead }
     
             salesContact.firstName = ((secondPerson && secondPerson.firstName) ? secondPerson.firstName : '')
             salesContact.lastName = ((secondPerson && secondPerson.lastName) ? secondPerson.lastName : '')
             salesContact.emailAddress = secondPerson.email
             this.addPhoneToContact(secondPerson, salesContact);
     
-            const primarySalesLead = new SalesLead(null, null);
+            const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
             console.log(`Second Person Primary Lead Id: ${leadId}`)
             salesSecondPerson.primarySalesLead = primarySalesLead;
@@ -612,8 +572,8 @@ class ObjectMappingService {
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
-        const salesContact = new SalesContact();
-        const salesLead = new SalesLead(salesContact, 4);
+        const salesContact = {}
+        const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP') {
@@ -706,12 +666,12 @@ class ObjectMappingService {
     }
 
     static createEloquaExternalRequest(lead, communities, oktaFullName) {
-        const salesFormDetails = new SalesFormDetails();
+        const salesFormDetails = {}
         const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
         const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
         const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
         const salesFormDetailsCareType = new SalesFormDetailsCareType(lead);
-        const salesInquiryForm = new SalesInquiryForm();
+        const salesInquiryForm = {}
         
         // Communities
         salesInquiryForm.communities = communities;
@@ -776,14 +736,5 @@ class ObjectMappingService {
 }
 
 export {
-    ObjectMappingService,
-    SalesContact,
-    SalesFollowup,
-    SalesProspectNeed,
-    SalesInfluencer,
-    SalesPhone,
-    SalesSecondPerson,
-    SalesNote,
-    SalesAddress,
-    SalesLead,
+    ObjectMappingService
 }

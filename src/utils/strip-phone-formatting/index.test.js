@@ -1,4 +1,4 @@
-import service from './strip-phone-formatting'
+import service from './index'
 
 describe('stripPhoneFormatting', () => {
     test('should remove non-digits', () => {
