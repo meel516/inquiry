@@ -21,3 +21,19 @@ export function phoneNumberValidator (value) {
     }
     return true;
 }
+
+export const getCommunitiesErrors = (communities) => {
+    if (!Array.isArray(communities) || communities < 2) {
+        return [];
+    }
+
+    const validValues = communities.filter(q => q.communityId !== 0);
+    const selections = new Set();
+    return validValues.reduce((acc, item) => {
+      const error = selections.has(item.communityId)
+        ? ({ communityId: 'This community has been added' })
+        : null;
+      selections.add(item.communityId);
+      return (acc.push(error), acc);
+    }, []);
+}

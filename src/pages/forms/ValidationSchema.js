@@ -1,6 +1,43 @@
 import { string, number, object, boolean, array } from 'yup';
 import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber } from './validators';
 
+const messages = {
+  required: {
+    firstName: 'First Name is required',
+    lastName: 'Last Name is required',
+  },
+};
+
+const prospectSchema = {
+  firstName: string().max(50, 'First Name can be at most 50 characters'),
+  lastName: string().max(50, 'Last Name can be at most 50 characters'),
+  veteranStatus: string().required('Veteran Status is required'),
+  phone: object().shape({
+    number: string()
+      .notRequired()
+      .test('influencerPhoneValid', 'Phone is not Valid', phoneNumberValidator)
+  }),
+  email: string()
+    .email("Email must be valid")
+    .max(100, 'Email can be at most 100 characters'),
+  address: object().shape({
+    line1: string().max(40, 'Address 1 can be at most 40 characters'),
+  }),
+  age: number()
+    .notRequired()
+    .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
+};
+
+const requiredProspectSchema = {
+  ...prospectSchema,
+  firstName: string()
+    .required(messages.required.firstName)
+    .max(50, 'First Name can be at most 50 characters'),
+  lastName: string()
+    .required(messages.required.lastName)
+    .max(50, 'Last Name can be at most 50 characters'),
+};
+
 const phonePhoneTypeDependencySchema = object().shape({
   phone: object().shape({
     type: string()
@@ -29,10 +66,10 @@ const mainFormValidationSchema = object().shape({
   lead: object().shape({
     influencer: object().shape({
       firstName: string()
-        .required('First Name is required')
+        .required(messages.required.firstName)
         .max(50, 'First Name can be at most 50 characters'),
       lastName: string()
-        .required('Last Name is required')
+        .required(messages.required.lastName)
         .max(50, 'Last Name can be at most 50 characters'),
       phone: object().shape({
         number: string()
@@ -48,33 +85,23 @@ const mainFormValidationSchema = object().shape({
         city: string().max(30, 'City can be at most 30 characters'),
       }),
     }),
-    prospect: object().shape({
-      firstName: string()
-        .required('First Name is required')
-        .max(50, 'First Name can be at most 50 characters'),
-      lastName: string()
-        .required('Last Name is required')
-        .max(50, 'Last Name can be at most 50 characters'),
-      veteranStatus: string().required('Veteran Status is required'),
-      phone: object().shape({
-        number: string()
-          .notRequired()
-          .test('influencerPhoneValid', 'Phone is not Valid', phoneNumberValidator)
-      }),
-      email: string()
-        .email("Email must be valid")
-        .max(100, 'Email can be at most 100 characters'),
-      address: object().shape({
-        line1: string().max(40, 'Address 1 can be at most 40 characters'),
-      }),
-      age: number()
-        .notRequired()
-        .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
+    prospect: object().when('callingFor', {
+      is: 'Myself',
+      then: object().shape(prospectSchema),
+      otherwise: object().shape(requiredProspectSchema),
     }),
     secondPerson: object().shape({
       selected: boolean(),
-      firstName: string().max(50, 'First Name can be at most 50 characters'),
-      lastName: string().max(50, 'Last Name can be at most 50 characters'),
+      firstName: string().when('selected', {
+        is: true,
+        then: string().required(messages.required.firstName).max(50, 'First Name can be at most 50 characters'),
+        otherwise: string().max(50, 'First Name can be at most 50 characters'),
+      }),
+      lastName: string().when('selected', {
+        is: true,
+        then: string().required(messages.required.lastName).max(50, 'Last Name can be at most 50 characters'),
+        otherwise: string().max(50, 'Last Name can be at most 50 characters'),
+      }),
       phone: object().shape({
         number: string()
           .notRequired()
@@ -84,8 +111,7 @@ const mainFormValidationSchema = object().shape({
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters'),
     }),
-    additionalDetail: string().max(100, 'Additional Detail can be at most 100 characters')
-    ,
+    additionalDetail: string().max(100, 'Additional Detail can be at most 100 characters'),
     umid: string()
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters'),
@@ -105,21 +131,10 @@ const mainFormValidationSchema = object().shape({
     }),
   }),
   communities: array().of(object()
-    .shape({
-      note: string().max(4000, 'Description can be at most 4000 characters'),
-      communityId: number().test('required-number-value', 'Community is required', nonZeroNumber),
-    })
-    // .test(
-    //   'no-duplicate-communities',
-    //   'This community has already been added.',
-    //   (function test (_value) {
-    //     const selectedCommunityIds = this.parent
-    //       .filter(c => c.communityId !== 0)
-    //       .map(c => c.communityId);
-    //     const uniqueCommunityIds = new Set(selectedCommunityIds);
-    //     return selectedCommunityIds.length === uniqueCommunityIds.size;
-    //   })
-    // )
+      .shape({
+        note: string().max(4000, 'Description can be at most 4000 characters'),
+        communityId: number().test('required-number-value', 'Community is required', nonZeroNumber),
+      })
   )
 })
 
