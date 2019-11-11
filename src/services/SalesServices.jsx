@@ -70,12 +70,22 @@ class SalesAPIService {
             });
             lead.influencer = ObjectMappingService.createInfluencer(influencer);
             if (lead.influencer) {
-              lead.callerType = (get(lead, 'influencer.gender') || 0)
+              let tmpGender = get(lead, 'influencer.gender');
+              if (tmpGender) {
+                lead.callerType = get(lead, 'influencer.gender');
+              } else {
+                lead.callerType = 0;
+              }
             }
           }
           else {
             lead.influencer = prospect
-            lead.callerType = (get(lead, 'prospect.gender') || 0)
+            let tmpGender = get(lead, 'prospect.gender');
+            if (tmpGender) {
+              lead.callerType = get(lead, 'prospect.gender');
+            } else {
+              lead.callerType = 0;
+            }
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
