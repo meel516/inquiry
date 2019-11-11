@@ -111,8 +111,7 @@ const mainFormValidationSchema = object().shape({
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters'),
     }),
-    additionalDetail: string().max(100, 'Additional Detail can be at most 100 characters')
-    ,
+    additionalDetail: string().max(100, 'Additional Detail can be at most 100 characters'),
     umid: string()
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters'),
@@ -132,21 +131,10 @@ const mainFormValidationSchema = object().shape({
     }),
   }),
   communities: array().of(object()
-    .shape({
-      note: string().max(4000, 'Description can be at most 4000 characters'),
-      communityId: number().test('required-number-value', 'Community is required', nonZeroNumber),
-    })
-    // .test(
-    //   'no-duplicate-communities',
-    //   'This community has already been added.',
-    //   (function test (_value) {
-    //     const selectedCommunityIds = this.parent
-    //       .filter(c => c.communityId !== 0)
-    //       .map(c => c.communityId);
-    //     const uniqueCommunityIds = new Set(selectedCommunityIds);
-    //     return selectedCommunityIds.length === uniqueCommunityIds.size;
-    //   })
-    // )
+      .shape({
+        note: string().max(4000, 'Description can be at most 4000 characters'),
+        communityId: number().test('required-number-value', 'Community is required', nonZeroNumber),
+      })
   )
 })
 
