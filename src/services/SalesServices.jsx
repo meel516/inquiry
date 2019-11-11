@@ -95,6 +95,10 @@ class SalesAPIService {
             lead.secondPerson = ObjectMappingService.createContact(salesContact);
             lead.secondPerson.selected = true
           }
+
+          if (get(secondPerson, 'salesLead.leadId')) {
+            lead.secondPerson.leadId = get(secondPerson, 'salesLead.leadId');
+          }
         }
       }
       return lead;
