@@ -72,7 +72,7 @@ class SalesAPIService {
             if (lead.influencer) {
               let tmpGender = get(lead, 'influencer.gender');
               if (tmpGender) {
-                lead.callerType = get(lead, 'influencer.gender');
+                lead.callerType = tmpGender;
               } else {
                 lead.callerType = 0;
               }
@@ -82,7 +82,7 @@ class SalesAPIService {
             lead.influencer = prospect
             let tmpGender = get(lead, 'prospect.gender');
             if (tmpGender) {
-              lead.callerType = get(lead, 'prospect.gender');
+              lead.callerType = tmpGender;
             } else {
               lead.callerType = 0;
             }
