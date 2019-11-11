@@ -438,16 +438,18 @@ class ObjectMappingService {
         if (secondPerson && secondPerson.selected) {
             const salesContact = {}
             const salesLead = createSalesLead(salesContact, 5)
+            salesLead.leadId = ((secondPerson && secondPerson.leadId) ? secondPerson.leadId : '')
+
             const salesSecondPerson = { salesLead }
-    
             salesContact.firstName = ((secondPerson && secondPerson.firstName) ? secondPerson.firstName : '')
             salesContact.lastName = ((secondPerson && secondPerson.lastName) ? secondPerson.lastName : '')
+            salesContact.contactId = ((secondPerson && secondPerson.contactId) ? secondPerson.contactId : '')
+            salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
             this.addPhoneToContact(secondPerson, salesContact);
     
             const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
-            console.log(`Second Person Primary Lead Id: ${leadId}`)
             salesSecondPerson.primarySalesLead = primarySalesLead;
             salesSecondPerson.username = user.username;
     
