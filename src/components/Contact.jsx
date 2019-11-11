@@ -125,6 +125,14 @@ export default class Contact extends React.Component {
               const { setFieldValue } = this.props;
               const formContact = ObjectMappingService.createContact(dupeContact);
               setFieldValue(`lead.${this.props.type}`, formContact);
+
+              // Since this contact "may" have a gender...AND the gender field is
+              // actually 'lead.callerType' (and not part of 'lead.influencer'), we
+              // need to handle the gender differently.
+              if (formContact.gender) {
+                setFieldValue(`lead.callerType`, formContact.gender);
+              }
+
               this.setState({ locked: true });
               break;
             }
