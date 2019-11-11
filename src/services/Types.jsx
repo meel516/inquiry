@@ -475,6 +475,8 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = influencer.contactId
+            salesContact.masterId = influencer.masterId
             this.addAddressToContact(influencer, salesContact)
             this.addPhoneToContact(influencer, salesContact)
             salesContact.gender = lead.callerType
@@ -487,6 +489,8 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = prospect.contactId
+            salesContact.masterId = prospect.masterId
             this.addPhoneToContact(prospect, salesContact)
         }
 

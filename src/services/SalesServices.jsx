@@ -433,12 +433,25 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
-
     // IF zero/many community is selected always assume Contact Center community
     let leadId = lead.leadId;
     if (leadId == null) {
       // We should have a leadId here, if not throw new error.
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
+    }
+
+    if (lead.buildingId !== 225707) {
+      console.log("Doesn't have CC...add one");
+      let ccLeadId = null;
+      try {
+        let community = createCommunity();
+        community.communityId = 225707;
+        lead.leadId = null; // Need to null it out here!
+        ccLeadId = await this.processContactCenter(lead, community, user);
+      }
+      catch (err) {
+
+      }
     }
 
     try {
@@ -474,9 +487,9 @@ class SalesAPIService {
     }
 
     try {
-      // Process any Second Person changes.
+      // Process any Second Person changes...only if we are creating a new one!
       const secondPerson = lead.secondPerson;
-      if (secondPerson && secondPerson.selected) {
+      if (secondPerson && secondPerson.selected && !secondPerson.salesLead.leadId) {
         const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
         await this.submitSecondPerson(secondPersonRequest);
       }
@@ -487,17 +500,17 @@ class SalesAPIService {
 
     const communityList = [...communities];
 
-    try {
-      // Process COI list.
-      if (!containContactCenter(communities)) {
-        let community = createCommunity();
-        community.communityId = 225707
-        communityList.push(community);
-      }
-    }
-    catch (err) {
+    // try {
+    //   // Process COI list.
+    //   if (!containContactCenter(communities)) {
+    //     let community = createCommunity();
+    //     community.communityId = 225707
+    //     communityList.push(community);
+    //   }
+    // }
+    // catch (err) {
 
-    }
+    // }
 
     const formattedCommunityList = [];
     const eloquaCommunityList = [];
