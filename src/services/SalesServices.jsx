@@ -442,12 +442,11 @@ class SalesAPIService {
 
     if (lead.buildingId !== 225707) {
       console.log("Doesn't have CC...add one");
-      let ccLeadId = null;
       try {
         let community = createCommunity();
         community.communityId = 225707;
         lead.leadId = null; // Need to null it out here!
-        ccLeadId = await this.processContactCenter(lead, community, user);
+        await this.processContactCenter(lead, community, user);
       }
       catch (err) {
 
