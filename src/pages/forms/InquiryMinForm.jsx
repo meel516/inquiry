@@ -383,7 +383,10 @@ const EnhancedInquiryForm = withFormik({
   validationSchema: formValidationSchema,
 
   validate: (values) => {
-    return { communities: getCommunitiesErrors(values.communities) };
+    const errors = getCommunitiesErrors(values.communities);
+    return errors.some(x => !!x)
+      ? { communities: errors }
+      : {};
   },
 
   mapPropsToValues: (props) => {
