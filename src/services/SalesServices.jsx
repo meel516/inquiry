@@ -70,12 +70,12 @@ class SalesAPIService {
             });
             lead.influencer = ObjectMappingService.createInfluencer(influencer);
             if (lead.influencer) {
-              lead.callerType = get(lead, 'influencer.gender')
+              lead.callerType = (get(lead, 'influencer.gender') || 0)
             }
           }
           else {
             lead.influencer = prospect
-            lead.callerType = get(lead, 'prospect.gender')
+            lead.callerType = (get(lead, 'prospect.gender') || 0)
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
