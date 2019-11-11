@@ -23,6 +23,7 @@ import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
+import { getCommunitiesErrors } from './validators';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
@@ -380,6 +381,10 @@ const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
   validationSchema: formValidationSchema,
+
+  validate: (values) => {
+    return { communities: getCommunitiesErrors(values.communities) };
+  },
 
   mapPropsToValues: (props) => {
     return {

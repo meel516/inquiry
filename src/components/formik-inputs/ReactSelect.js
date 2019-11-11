@@ -1,34 +1,36 @@
-import React, { useCallback } from 'react';
+import React, { Fragment } from 'react';
+import { Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { useField, useFormikContext } from 'formik';
+import { useOnChangeWrapper, useOnBlurWrapper } from './hooks';
 
 export const ReactSelect = ({
     name,
     options,
     onChange,
+    onBlur,
     disabled = false,
 }) => {
     const { status: { readOnly }} = useFormikContext();
-    const [ field ] = useField(name);
-    const handleChange = useCallback((option) => {
-        // Create a fake event so Formik's change handler also calls 'setFieldValue' at the end of this function:
-        // https://github.com/jaredpalmer/formik/blob/master/src/Formik.tsx#L548-L598
-        field.onChange({ target: { name, value: option.value }});
-        if (typeof(onChange) === 'function') {
-            onChange(option);
-        }
-    }, [name, field, onChange]);
+    const [ field, meta ] = useField(name);
+    const handleChange = useOnChangeWrapper(name, field, onChange, x => x.value);
+    const handleBlur = useOnBlurWrapper(name, field, onBlur);
 
     return (
-        <Select
-            options={options}
-            onChange={handleChange}
-            name={name}
-            id={name}
-            disabled={disabled || readOnly}
-            onBlur={field.onBlur}
-        />
+        <Fragment>
+            <Select
+                options={options}
+                onChange={handleChange}
+                name={name}
+                id={name}
+                disabled={disabled || readOnly}
+                onBlur={handleBlur}
+            />
+            { meta.touched && meta.error ? (
+                <Alert color="danger" className="alert-smaller-size">{meta.error}</Alert>
+            ) : null}
+        </Fragment>
     );
 }
 
@@ -36,5 +38,6 @@ Select.propTypes = {
     name: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     disabled: PropTypes.bool,
 }
