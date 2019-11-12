@@ -291,7 +291,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               defaultValue={values.lead.inquiryType}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -316,7 +316,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
