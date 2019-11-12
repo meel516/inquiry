@@ -463,6 +463,24 @@ class SalesAPIService {
 
     }
 
+    // Determine if we need to fire Influencer changes.
+    if (lead.influencer && lead.callingFor !== 'Myself') {
+      try {
+        // Set Gender ("What is the gender of the caller?") to influencer gender.
+        lead.influencer.gender = lead.callerType;
+
+        // Set "Reason for Call" to influencer interest reason.
+        lead.influencer.interestReasonId = lead.reasonForCall;
+
+        // Process any Influencer changes.
+        const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+        await this.submitInfluencer(influencer);
+      }
+      catch (err) {
+
+      }
+    }
+
     try {
       // Process any Notes changes.
       const notes = lead.notes
