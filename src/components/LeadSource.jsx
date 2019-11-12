@@ -58,9 +58,9 @@ export default class LeadSource extends React.Component {
       this.setState({
         leadSourceSubDetail: [],
       })
-      setFieldValue('lead.leadSourceDetail', -1);
+      setFieldValue('lead.leadSourceSubDetail', -1);
     } else {
-      this.fetchAndSetLeadSourceDetail(leadSourceId);
+      this.fetchAndSetLeadSourceSubDetail(leadSourceDetailId);
     }
     this.props.handleChange(event);
   }
@@ -92,7 +92,7 @@ export default class LeadSource extends React.Component {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
-    const leadSourceSubDetailOptions = (leadSourceDetail || []).map((type) => {
+    const leadSourceSubDetailOptions = (leadSourceSubDetail || []).map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
@@ -127,7 +127,7 @@ export default class LeadSource extends React.Component {
                 id="leadSourceDetail" 
                 name="lead.leadSourceDetail" 
                 value={this.props.defaultLeadSourceDetail} 
-                onChange={this.props.handleChange}
+                onChange={this.handleDetailOnChange}
                 onBlur={this.props.handleBlur}
                 disabled={this.props.isReadOnly && this.props.isContactCenter}
               >
@@ -150,7 +150,10 @@ export default class LeadSource extends React.Component {
                 onBlur={this.props.handleBlur}
                 readOnly={this.props.isReadOnly && this.props.isContactCenter}
                 placeholder="Additional Detail" 
-              />
+              >
+                <option value="">Select One</option>
+                {leadSourceSubDetailOptions}
+              </Input>
               <ErrorMessage name="lead.leadSourceSubDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>

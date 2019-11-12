@@ -312,6 +312,7 @@ class InquiryForm extends React.Component {
             <LeadSource key="leadsource"
               defaultLeadSource={values.lead.leadSource}
               defaultLeadSourceDetail={values.lead.leadSourceDetail}
+              defaultLeadSourceSubDetail={values.lead.leadSourceSubDetail}
               handleChange={handleChange}
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
