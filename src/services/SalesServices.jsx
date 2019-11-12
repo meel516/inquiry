@@ -299,6 +299,11 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
+      if (lead.reasonForCall) {
+        // Set "Reason for Call" to influencer interest reason.
+        lead.influencer.interestReasonId = lead.reasonForCall;
+      }
+
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
