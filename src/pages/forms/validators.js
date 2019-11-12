@@ -31,7 +31,7 @@ export const getCommunitiesErrors = (communities) => {
     const selections = new Set();
     return validValues.reduce((acc, item) => {
       const error = selections.has(item.communityId)
-        ? ({ communityId: 'This community has been added' })
+        ? ({ communityId: 'You have added a duplicate community.' })
         : null;
       selections.add(item.communityId);
       return (acc.push(error), acc);
