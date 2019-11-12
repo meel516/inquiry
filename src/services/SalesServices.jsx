@@ -511,7 +511,7 @@ class SalesAPIService {
     try {
       // Process any Second Person changes...only if we are creating a new one!
       const secondPerson = lead.secondPerson;
-      if (secondPerson && secondPerson.selected && !secondPerson.salesLead.leadId) {
+      if (secondPerson && secondPerson.selected && !secondPerson.leadId) {
         const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
         await this.submitSecondPerson(secondPersonRequest);
       }
