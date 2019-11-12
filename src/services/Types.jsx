@@ -123,6 +123,7 @@ class ObjectMappingService {
             lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
+            lead.leadSourceSubDetail = salesLead.inquiryLeadSourceSubDetailId
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
@@ -139,6 +140,7 @@ class ObjectMappingService {
         else {
             return this.createEmptyLead();
         }
+
         return lead;
     }
 
@@ -508,6 +510,7 @@ class ObjectMappingService {
         
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
+        salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;

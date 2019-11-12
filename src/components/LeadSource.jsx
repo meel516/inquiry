@@ -21,18 +21,29 @@ export default class LeadSource extends React.Component {
       .then((data) => this.setState({ leadSource: data }))
       .catch(error => console.log(error));
 
-    const { defaultLeadSource } = this.props;
+    const { defaultLeadSource, defaultLeadSourceDetail } = this.props;
     if (defaultLeadSource) {
       this.fetchAndSetLeadSourceDetail(defaultLeadSource);
+    }
+
+    if (defaultLeadSourceDetail) {
+      this.fetchAndSetLeadSourceSubDetail(defaultLeadSourceDetail);
     }
   }
 
   componentDidUpdate() {
-    const {defaultLeadSource} = this.state;
+    const {defaultLeadSource, defaultLeadSourceDetail} = this.state;
     if (this.props.defaultLeadSource !== defaultLeadSource && this.props.defaultLeadSource !== -1) {
       this.fetchAndSetLeadSourceDetail(this.props.defaultLeadSource);
       this.setState({
         defaultLeadSource: this.props.defaultLeadSource
+      })
+    }
+
+    if (this.props.defaultLeadSourceDetail !== defaultLeadSourceDetail && this.props.defaultLeadSourceDetail !== -1) {
+      this.fetchAndSetLeadSourceSubDetail(this.props.defaultLeadSourceDetail);
+      this.setState({
+        defaultLeadSourceDetail: this.props.defaultLeadSourceDetail
       })
     }
   }
@@ -145,11 +156,11 @@ export default class LeadSource extends React.Component {
               <Input 
                 type="select" 
                 id="leadSourceSubDetail" 
-                name="lead.leadSourceSubDetail" 
+                name="lead.leadSourceSubDetail"
+                value={this.props.defaultLeadSourceSubDetail} 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur}
-                readOnly={this.props.isReadOnly && this.props.isContactCenter}
-                placeholder="Additional Detail" 
+                disabled={this.props.isReadOnly && this.props.isContactCenter}
               >
                 <option value="">Select One</option>
                 {leadSourceSubDetailOptions}
@@ -179,6 +190,7 @@ LeadSource.propTypes = {
 LeadSource.defaultProps = {
   defaultLeadSource: 0,
   defaultLeadSourceDetail: 0,
+  defaultLeadSourceSubDetail: 0,
   isReadOnly: false,
   isContactCenter: false,
 }
