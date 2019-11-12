@@ -1,21 +1,43 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Card, CardBody, CardFooter, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Col,
+  FormGroup,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Label,
+  Row,
+} from 'reactstrap';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import { Input, Select, ReactSelect } from '../../formik-inputs';
 import Visit from './Visit';
+import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
+import { useFormikContext } from 'formik';
 
-export const CommunitySelect = (props) => {
+export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
-  const { index, onCommunityChange, onFollowupActionChange, community, isReadOnly, communityList, handleChange, handleBlur, onRemove, followupOptions } = props;
+  const { setFieldValue, status: { readOnly } } = useFormikContext();
+  const inputNames = useMemo(() => {
+    return {
+      communityId: `communities[${index}].communityId`,
+      freeMeal: `communities[${index}].freeMeal`,
+      followupDate: `communities[${index}].followupDate`,
+      note: `communities[${index}].note`,
+      followUpAction: `communities[${index}].followUpAction`,
+      startingPrice: `communities[${index}].startingPrice`,
+      secondPersonFee: `communities[${index}].secondPersonFee`,
+      communityFee: `communities[${index}].communityFee`,
+    }
+  }, [index]);
 
   const handleFollowupAction = useCallback((optn) => {
-    onFollowupActionChange(optn.target.value, index);
+    setFieldValue(inputNames.note, defaultVisitNotes[optn.target.value] || '');
     setSelectedAction(optn.target.value);
-  }, [index, onFollowupActionChange, setSelectedAction]);
-
-  const handleCommunityChange = useCallback((optn) => {
-    onCommunityChange(optn.value, index);
-  }, [index, onCommunityChange]);
+  }, [inputNames, setSelectedAction, setFieldValue]);
 
   return (
     <div className="communities-container">
@@ -24,69 +46,42 @@ export const CommunitySelect = (props) => {
           <Row>
             <Col>
             <FormGroup>
-              <Label for="communityList" className="label-format">Community</Label>
-              <Select
-                  name="communityId"
-                  onChange={handleCommunityChange}
-                  options={communityList}
-                  isDisabled={isReadOnly}
-              />
+              <Label for={inputNames.communityId} className='label-format'>Community</Label>
+              <ReactSelect name={inputNames.communityId} options={communityList} />
             </FormGroup>
             </Col>
           </Row>
           <Row>
             <Col>
               <FormGroup>
-                <Label for="startingPrice" className="label-format">Starting at Price</Label>
+                <Label for={inputNames.startingPrice} className="label-format">Starting at Price</Label>
                 <InputGroup>
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>$</InputGroupText>
                   </InputGroupAddon>
-                  <Input type="number"
-                    id="startingPrice"
-                    name={`communities[${index}].startingPrice`}
-                    value={community.startingPrice || ''}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    readOnly={isReadOnly}
-                    placeholder="Starting at Price"
-                  />
+                  <Input name={inputNames.startingPrice} type='number' placeholder='Starting at Price' />
                 </InputGroup>
               </FormGroup>
             </Col>
             <Col>
               <FormGroup>
-                <Label for="secondPersonFee" className="label-format">2nd Person Fee</Label>
+                <Label for={inputNames.secondPersonFee} className="label-format">2nd Person Fee</Label>
                 <InputGroup>
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>$</InputGroupText>
                   </InputGroupAddon>
-                  <Input type="number"
-                    id="secondPersonFee"
-                    name={`communities[${index}].secondPersonFee`}
-                    value={community.secondPersonFee || ''}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    readOnly={isReadOnly}
-                    placeholder="2nd Person Fee" />
+                  <Input name={inputNames.secondPersonFee} type='number' placeholder='2nd Person Fee' />
                 </InputGroup>
               </FormGroup>
             </Col>
             <Col>
               <FormGroup>
-                <Label for="communityFee" className="label-format">Common Starting Rate</Label>
+                <Label for={inputNames.communityFee} className="label-format">Common Starting Rate</Label>
                 <InputGroup>
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>$</InputGroupText>
                   </InputGroupAddon>
-                  <Input type="number"
-                    id="communityFee"
-                    name={`communities[${index}].communityFee`}
-                    value={community.communityFee || ''}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    readOnly={isReadOnly}
-                    placeholder="Common Starting Rate" />
+                  <Input name={inputNames.communityFee} type='number' placeholder='Common Starting Rate' />
                 </InputGroup>
               </FormGroup>
             </Col>
@@ -94,27 +89,19 @@ export const CommunitySelect = (props) => {
           <Row>
             <Col md="4">
               <FormGroup>
-                <Label for="action" className="label-format">Next Steps Action</Label>
-                <Input type="select" id="action" onChange={handleFollowupAction} disabled={isReadOnly}>
-                  <option value="">Select One</option>
+                <Label for={inputNames.followUpAction} className='label-format'>Next Steps Action</Label>
+                <Select name={inputNames.followUpAction} options={followupOptions} onChange={handleFollowupAction} placeholder='Select One'>
                   {followupOptions}
-                </Input>
+                </Select>
               </FormGroup>
             </Col>
           </Row>
           {
-            (selectedAction) ? 
-              <Visit 
-                handleChange={handleChange} 
-                handleBlur={handleBlur} 
-                isReadOnly={isReadOnly} 
-                {...props} 
-              /> 
-            : null
+            selectedAction ? <Visit inputNames={inputNames} followUpAction={selectedAction} /> : null
           }
         </CardBody>
         <CardFooter className="text-right">
-          { (isReadOnly === false) 
+          { (readOnly === false) 
             ? <Button color="primary" size="sm" onClick={() => onRemove()}>Remove</Button>
             : null
           }
@@ -125,20 +112,8 @@ export const CommunitySelect = (props) => {
 }
 
 CommunitySelect.propTypes = {
-  community: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number,
   onRemove: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleBlur: PropTypes.func.isRequired,
-  onCommunityChange: PropTypes.func.isRequired,
-  onFollowupActionChange: PropTypes.func.isRequired,
-  onFollowupDateChange: PropTypes.func.isRequired,
-  handleVisitChanges: PropTypes.func.isRequired,
-  isReadOnly: PropTypes.bool,
   communityList: PropTypes.array,
   followupActions: PropTypes.array,
-}
-
-CommunitySelect.defaultProps = {
-  isReadOnly: false,
 }

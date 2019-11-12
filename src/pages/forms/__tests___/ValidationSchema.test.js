@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 import { ObjectMappingService } from '../../../services/Types'
-import { formValidationSchema, influencerSchema, prospectSchema, secondPersonSchema, emailSchema, noteSchema } from '../ValidationSchema'
+import { formValidationSchema } from '../ValidationSchema'
 
 describe('Yup full integration testing/validation', () => {
     let lead = null;
@@ -44,16 +44,6 @@ describe('Yup full integration testing/validation', () => {
 
 })
 
-describe('test email validation portion', () => {
-
-    test('verify empty email address not required', async () => {
-        const email = 'bob@bob.com'
-        const result = await emailSchema.validate(email)
-        expect(result).toBeTruthy()
-    })
-
-})
-
 describe('test verify when condition for second person contact', () => {
 
     test('test case when second person is not selected', async () => {
@@ -64,36 +54,15 @@ describe('test verify when condition for second person contact', () => {
 
         expect(secondPerson.selected).toBeFalsy();
 
-        let result = await secondPersonSchema.validate(secondPerson);
-        expect(result).toBeTruthy();
-
         // change selected to be true - should expect name to be required
         secondPerson.selected = true;
         expect(secondPerson.selected).toBeTruthy();
-
-        // default errors
-        const defaultRequired = [
-            'First Name is required',
-            'Last Name is required',
-        ]
-
-        result = await secondPersonSchema.validate(secondPerson)
-            .catch((err) => {
-                const required = err.errors;
-                expect(required).not.toBeNull()
-
-                for (let i = 0; i < required.length; i++) {
-                    let error = required[i];
-                    let isRequired = defaultRequired.includes(error)
-                    expect(isRequired).toBeTruthy()
-                }
-            })
     })
 
 })
 
 describe('test 2 level validation', () => {
-
+/* 
     test('test validation from 2nd level', () => {
 
         const schema = Yup.object().shape({
@@ -127,7 +96,7 @@ describe('test 2 level validation', () => {
             .catch((err) => {
                 console.log(`Error: ${err}`);
             })
-    })
+    }) */
 
     test('test lead source conditional validation', () => {
 

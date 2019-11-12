@@ -2,75 +2,8 @@ import { TestUtils } from '../../utils/test-utils'
 import { ObjectMappingService, Util as Utils } from "../Types"
 
 describe('phone manipulation', () => {
-
-    test('test phone number digits only', () => {
-        expect(Utils.stripPhoneFormatting('(414) 404-3453')).toEqual('4144043453')
-    })
-
     test('verify creation of phone structure', () => {
         expect(ObjectMappingService.createEmptyPhone()).toEqual({ number: "", type: "" })
-    })
-
-})
-
-describe('address manipulation', () => {
-
-    test('verify contact does not have address', () => {
-        const contact = ObjectMappingService.createEmptyContact();
-        expect(Utils.hasAddress(contact)).toBeFalsy()
-    })
-
-    test('verify contact does have address', () => {
-        const contact = ObjectMappingService.createEmptyContact();
-        contact.address = ObjectMappingService.createEmptyAddress();
-        expect(Utils.hasAddress(contact)).toBeTruthy();
-    })
-
-    test('test address is not valid', () => {
-        expect(Utils.isAddressEmpty(null)).toBeFalsy();
-    })
-
-})
-
-describe('Calling For field tests', () => {
-
-    test('test Caller is calling for "MySelf" which is mapped to Prospect', () => {
-        const callingFor = "Myself";
-        expect(Utils.mapInquiryTypeValue(callingFor)).toBe('PROSP');
-    })
-
-    test('test Caller is not mapped to "MySelf" which is mapped to Influencer', () => {
-        const callingFor = '';
-        expect(Utils.mapInquiryTypeValue(callingFor)).toBe('INFLU')
-    })
-
-    test('test option not selected for Caller which defaults to Influencer', () => {
-        expect(Utils.mapInquiryTypeValue(null)).toBe('INFLU')
-        expect(Utils.mapInquiryTypeValue(undefined)).toBe('INFLU')
-        expect(Utils.mapInquiryTypeValue('')).toBe('INFLU')
-    })
-
-})
-
-describe('test contact manipulation', () => {
-
-    test('test contact is empty', () => {
-        expect(Utils.isContactEmpty(null)).toBeTruthy();
-    })
-
-    test('test undefined contact is empty', () => {
-        expect(Utils.isContactEmpty(undefined)).toBeTruthy()
-    })
-
-    test('test empty contact still empty', () => {
-        const contact = ObjectMappingService.createEmptyContact();
-        expect(Utils.isContactEmpty(contact)).toBeTruthy()
-    })
-
-    test('test first name only still empty', () => {
-        const contact = ObjectMappingService.createEmptyContact();
-        TestUtils.addFirstName(contact)
-        expect(Utils.isContactEmpty(contact)).toBeTruthy()
     })
 
 })
@@ -93,7 +26,6 @@ describe('test influencer mapping', () => {
         expect(influencer.lastName).toEqual('')
         expect(influencer.gender).toEqual('')
         expect(influencer.email).toEqual('')
-        expect(influencer.veteranStatus).toEqual('')
         expect(influencer.phone).not.toBeNull()
         expect(influencer.phone.number).toEqual('')
         expect(influencer.phone.type).toEqual('')
@@ -174,7 +106,7 @@ describe('test followup mapping', () => {
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
-        expect(request.followUpDate).toEqual('2019-10-16T12:44:46.987-0500')
+        expect(request.followUpDate).toEqual('2019-10-16T11:44:46.987-0600')
         expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
     })
 

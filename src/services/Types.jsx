@@ -2,90 +2,19 @@ import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
-import Lead from '../types/lead'
+import stripPhoneFormatting from '../utils/strip-phone-formatting'
+import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
+import contactHasAddress from '../utils/contact-has-address'
+import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
+import Lead from '../models/lead'
+import { get } from 'lodash'
+import createSalesLead from '../models/sales-lead'
+import duplicateContact from '../utils/duplicate-contact'
 
-function SalesContact() {
-}
-
-function SalesFollowup(leadId) {
-    this.leadId = leadId
-}
-
-function SalesProspectNeed(leadId) {
-    this.leadId = leadId
-}
-
-function SalesInfluencer(leadId, salesContact) {
-    this.leadId = leadId
-    this.primary = true
-    this.active = true
-    this.salesContact = salesContact
-}
-
-function SalesPhone(number, type) {
-    return {
-        primary: true,
-        phoneNumber: number,
-        phoneType: type,
-    }
-}
-
-function SalesSecondPerson(salesLead) {
-    this.salesLead = salesLead
-}
-
-function SalesNote(leadId, note, user) {
-    this.deleteInd = false
-    this.bhsInd = false
-    this.leadId = leadId
-    this.noteText = note
-    this.username = user.username
-}
-
-function SalesAddress({ type = 'Home', active = true, primary = true }) {
-    this.addressType = type
-    this.active = active
-    this.primary = primary
-}
-
-function SalesLead(salesContact, leadTypeId = 4) {
-    this.leadTypeId = leadTypeId;
-    this.salesContact = salesContact;
-}
-
-function DuplicateContact(dupecontact) {
-    if (dupecontact) {
-        this.contactid = dupecontact.contactId
-        this.name = dupecontact.firstName + " " + dupecontact.lastName
-
-        if (dupecontact.phoneNumbers) {
-            for (let i = 0; i < dupecontact.phoneNumbers.length; i++) {
-                let tmpPhone = dupecontact.phoneNumbers[i];
-                if (tmpPhone) {
-                    if (tmpPhone.primary) {
-                        if (tmpPhone.phoneNumber) {
-                            const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                            this.phone = pn.formatNational();
-                        }
-
-                        this.phonetype = tmpPhone.phoneType
-                        break;
-                    }
-                }
-            }
-        }
-
-        this.email = dupecontact.emailAddress
-        
-        if (dupecontact.address) {
-            this.address1 = dupecontact.address.addressLine1
-            this.address2 = dupecontact.address.addressLine2
-            this.city = dupecontact.address.city
-            this.state = dupecontact.address.stateProv
-            this.zip = dupecontact.address.zipPostalCode
-        }
-    }
-}
+import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
+import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
+import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
+import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
 
 function LeadDataRecord(record) {
     if (record) {
@@ -161,142 +90,6 @@ function LeadDataRecord(record) {
     }
 }
 
-function SalesInquiryForm() {
-}
-
-function SalesFormDetails() {
-}
-
-function SalesFormDetailsCustomSalesContact(salesContact) {
-    if (salesContact) {
-        this.firstName = salesContact.firstName;
-        this.lastName = salesContact.lastName;
-        this.gender = salesContact.gender;
-        this.emailAddress = salesContact.email;
-        this.age = salesContact.age;
-        this.veteranStatus = salesContact.veteranStatus;
-    }
-}
-
-function SalesFormDetailsSecondPersonSalesLead(secondPerson) {
-    if (secondPerson && secondPerson.selected) {
-        const salesFormDetailsSecondPerson = new SalesFormDetailsCustomSalesContact(secondPerson);
-        this.salesContact = salesFormDetailsSecondPerson;
-    }
-}
-
-function SalesFormDetailsProspect(lead) {
-    if (lead) {
-        const salesFormDetailsProspect = new SalesFormDetailsCustomSalesContact(lead.prospect);
-
-        this.salesContact = salesFormDetailsProspect;
-        this.interestReasonId = lead.reasonForCall
-        this.inquiryTypeId = lead.inquiryType
-        this.inquiryLeadSourceId = lead.leadSource
-        this.inquiryLeadSourceDetailId = lead.leadSourceDetail
-    }
-}
-
-function SalesFormDetailsInfluencer(influencer) {
-    if (influencer) {
-        const salesFormDetailsInfluencer = new SalesFormDetailsCustomSalesContact(influencer);
-        this.salesContact = salesFormDetailsInfluencer;
-    }
-}
-
-function SalesFormDetailsSecondPerson(secondPerson) {
-    if (secondPerson && secondPerson.selected) {
-        this.salesLead = new SalesFormDetailsSecondPersonSalesLead(secondPerson);
-    }
-}
-
-function SalesFormDetailsCareType(lead) {
-    if (lead.adlNeeds) {
-        this.bathing = lead.adlNeeds.bathing; 
-        this.incontinence = lead.adlNeeds.incontinence; 
-        this.transferring = lead.adlNeeds.transferring; 
-        this.dressing = lead.adlNeeds.dressing; 
-        this.medications = lead.adlNeeds.medications; 
-        this.feeding = lead.adlNeeds.feeding; 
-        this.toileting = lead.adlNeeds.toileting; 
-    }
-    
-    if (lead.memoryConcerns) {
-        this.alzDiagnosis = lead.memoryConcerns.dementia; 
-        this.argumentative = lead.memoryConcerns.memoryLoss; 
-        this.forgetsRepeats = lead.memoryConcerns.repeatsStories; 
-        this.wandering = lead.memoryConcerns.wandering; 
-    }
-    
-    if (lead.mobilityConcerns) {
-        this.fallRisk = lead.mobilityConcerns.fallRisk; 
-        this.walkerRegularly = lead.mobilityConcerns.regularlyWalks; 
-        this.caneRegularly = lead.mobilityConcerns.usesCane; 
-        this.wheelchairRegularly = lead.mobilityConcerns.usesWheelChair; 
-        this.onePersTransfer = lead.mobilityConcerns.personTransfer; 
-        this.twoPersTransfer = lead.mobilityConcerns.secondPersonTransfer; 
-    }
-    
-    if (lead.nutritionConcerns) {
-        this.diabetesDiagnosis = lead.nutritionConcerns.diabetes; 
-        this.lowSaltLowDiet = lead.nutritionConcerns.lowSalt; 
-        this.otherDietRestrictions = lead.nutritionConcerns.prescribedDiet; 
-        this.notEatingWell = lead.nutritionConcerns.notEatingWell;
-    }
-    
-    this.careTypeId = lead.careType;
-    this.currentSituationId = lead.currentSituation;
-}
-
-class Util {
-
-    static stripPhoneFormatting(phone) {
-        if (phone == null) return null;
-        return phone.replace(/\D/g, '');
-    }
-
-    static mapInquiryTypeValue(callingFor) {
-        if (callingFor && callingFor === 'Myself') {
-            return 'PROSP'
-        }
-        else {
-            return 'INFLU'
-        }
-    }
-
-    static hasAddress(contact) {
-        if (!contact) return false;
-        if (contact && contact.address) return true;
-    }
-
-    static isAddressEmpty(address) {
-        if (!address) return false;
-
-    }
-
-    static hasPhoneContacts(contact) {
-        if (!contact) return false;
-        if (contact && contact.phone && contact.phone.number.length > 0) return true;
-    }
-
-    /**
-     * checks to see if the contact has a first/last name if so then it's not empty,
-     * otherwise if either/both are missing it is considered empty.
-     * @param {Contact} contact 
-     */
-    static isContactEmpty(contact) {
-        if (contact) {
-            if (!contact.firstName || !contact.lastName) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 class ObjectMappingService {
 
     static createEmptyPhone() {
@@ -318,6 +111,7 @@ class ObjectMappingService {
     }
 
     static createLead(salesLead) {
+        salesLead = salesLead || {}
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
@@ -332,7 +126,7 @@ class ObjectMappingService {
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = this.createEmptyNotes();
             lead.inquiryType = salesLead.inquiryTypeId
-            lead.reasonForCall = salesLead.interestReasonId
+            //lead.reasonForCall = salesLead.interestReasonId
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const {salesContact} = salesLead;
@@ -363,12 +157,6 @@ class ObjectMappingService {
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
         lead.notes = this.createEmptyNotes();
-        lead.resultOfCall = '';
-        lead.callingFor = '';
-        lead.inquiryType = undefined;
-        lead.leadSource = undefined;
-        lead.leadSourceDetail = undefined;
-        lead.callerType = '';
 
         return lead;
     }
@@ -516,44 +304,47 @@ class ObjectMappingService {
         }
     }
 
-    static createPhone(phone) {
-        let { number, type } = phone;
-        number = Util.stripPhoneFormatting(number);
-        return new SalesPhone(number, type);
-    }
+    static createPhone = (phone) => ({
+        primary: true,
+        phoneNumber: stripPhoneFormatting(phone.number),
+        phoneType: phone.type,
+        phoneId: phone.phoneId
+    })
 
     static addPhoneToContact(contact, salesContact) {
-        if (Util.hasPhoneContacts(contact)) {
+        if (contactHasPhoneContacts(contact)) {
             const phone = this.createPhone(contact.phone);
             salesContact.phoneNumbers = [];
             salesContact.phoneNumbers.push(phone);
         }
     }
 
-    static addAddressToContact(contact, salesContact) {
-        if (Util.hasAddress(contact)) {
-            const { address } = contact;
-            const salesAddress = new SalesAddress(address);
-            salesAddress.addressLine1 = address.line1
-            salesAddress.addressLine2 = address.line2
-            salesAddress.city = address.city
-            salesAddress.stateProv = address.state
-            salesAddress.zipPostalCode = address.zip
-            salesContact.address = salesAddress
+    static addAddressToContact = (contact, salesContact) => {
+        if (!contactHasAddress(contact) || !salesContact) {
+            return
+        }
+        salesContact.address = {
+            addressType: get(contact, 'address.type', 'Home'),
+            active: get(contact, 'address.active', true),
+            primary: get(contact, 'address.primary', true),
+            addressLine1: get(contact, 'address.line1'),
+            addressLine2: get(contact, 'address.line2'),
+            city: get(contact, 'address.city'),
+            stateProv: get(contact, 'address.state'),
+            zipPostalCode: get(contact, 'address.zip'),
         }
     }
 
     static createFollowupRequest(leadId, community, user) {
         if (leadId && community && community.followUpAction) {
-            const salesFollowup = new SalesFollowup(leadId);
+            const salesFollowup = { leadId }
             salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
             salesFollowup.followUpDate = convertToISODate(community.followupDate);
 
             let description = community.note;
-            if (community.freeMeal && community.freeMeal > 0) {
-                let index = community.freeMeal;
-                const freeMealItem = getFreeMealItem(index);
+            if (community.freeMeal) {
+                const freeMealItem = getFreeMealItem(community.freeMeal);
                 if (freeMealItem) {
                     description = `${community.note} \n\n Does this visit include a free meal? ${freeMealItem.label}`
                 }
@@ -568,7 +359,7 @@ class ObjectMappingService {
 
     static createProspectNeedsRequest(coid, lead, user) {
         if (coid && lead.careType) {
-            const salesProspectNeed = new SalesProspectNeed(coid);
+            const salesProspectNeed = { leadId: coid }
             salesProspectNeed.careTypeId = Number(lead.careType);
             const {adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns} = lead
 
@@ -612,13 +403,22 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest(leadId, note, user) {
-        return new SalesNote(leadId, note, user);
-    }
+    static createNoteRequest = (leadId, noteText, user) => ({
+        deleteInd: false,
+        bhsInd: false,
+        leadId,
+        noteText,
+        username: user.username
+    })
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
-        const salesContact = new SalesContact();
-        const salesInfluencer = new SalesInfluencer(leadId, salesContact);
+        const salesContact = {}
+        const salesInfluencer = {
+            leadId,
+            primary: true,
+            active: true,
+            salesContact
+        }
         salesInfluencer.username = (user) ? user.username : null
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
@@ -628,26 +428,33 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
+        salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
         this.addPhoneToContact(influencer, salesContact);
         this.addAddressToContact(influencer, salesContact);
+
+        if (influencer.influencerId) {
+            salesInfluencer.influencerId = influencer.influencerId;
+        }
 
         return salesInfluencer;
     }
 
     static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
-            const salesContact = new SalesContact();
-            const salesLead = new SalesLead(salesContact, 5);
-            const salesSecondPerson = new SalesSecondPerson(salesLead);
-    
+            const salesContact = {}
+            const salesLead = createSalesLead(salesContact, 5)
+            salesLead.leadId = ((secondPerson && secondPerson.leadId) ? secondPerson.leadId : '')
+
+            const salesSecondPerson = { salesLead }
             salesContact.firstName = ((secondPerson && secondPerson.firstName) ? secondPerson.firstName : '')
             salesContact.lastName = ((secondPerson && secondPerson.lastName) ? secondPerson.lastName : '')
+            salesContact.contactId = ((secondPerson && secondPerson.contactId) ? secondPerson.contactId : '')
+            salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
             this.addPhoneToContact(secondPerson, salesContact);
     
-            const primarySalesLead = new SalesLead(null, null);
+            const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
-            console.log(`Second Person Primary Lead Id: ${leadId}`)
             salesSecondPerson.primarySalesLead = primarySalesLead;
             salesSecondPerson.username = user.username;
     
@@ -662,10 +469,10 @@ class ObjectMappingService {
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
-        const salesContact = new SalesContact();
-        const salesLead = new SalesLead(salesContact, 4);
+        const salesContact = {}
+        const salesLead = createSalesLead(salesContact)
 
-        let callingFor = Util.mapInquiryTypeValue(lead.callingFor)
+        let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP') {
             salesContact.firstName = influencer.firstName
             salesContact.lastName = influencer.lastName
@@ -673,9 +480,12 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = influencer.contactId
+            salesContact.masterId = influencer.masterId
             this.addAddressToContact(influencer, salesContact)
             this.addPhoneToContact(influencer, salesContact)
             salesContact.gender = lead.callerType
+            salesLead.interestReasonId = lead.reasonForCall
         }
         else {
             salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')
@@ -684,6 +494,8 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = prospect.contactId
+            salesContact.masterId = prospect.masterId
             this.addPhoneToContact(prospect, salesContact)
         }
 
@@ -696,7 +508,6 @@ class ObjectMappingService {
         
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
-        salesLead.interestReasonId = lead.reasonForCall
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
@@ -816,7 +627,7 @@ class ObjectMappingService {
             for (let i = 0; i < duplicatecontacts.length; i++) {
                 let dupecontact = duplicatecontacts[i];
                 if (dupecontact) {
-                    const dc = new DuplicateContact(dupecontact);
+                    const dc = duplicateContact(dupecontact);
                     returnval.push(dc);
                 }
             }
@@ -827,15 +638,5 @@ class ObjectMappingService {
 }
 
 export {
-    ObjectMappingService,
-    SalesContact,
-    SalesFollowup,
-    SalesProspectNeed,
-    SalesInfluencer,
-    SalesPhone,
-    SalesSecondPerson,
-    SalesNote,
-    SalesAddress,
-    SalesLead,
-    Util,
+    ObjectMappingService
 }

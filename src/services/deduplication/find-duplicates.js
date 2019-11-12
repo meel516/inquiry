@@ -1,6 +1,6 @@
 import { createDuplicateSearchUrl } from '../../constants/url-generator'
 import * as request from '../request'
-import stripPhoneFormatting from './strip-phone-formatting'
+import stripPhoneFormatting from '../../utils/strip-phone-formatting'
 import { get } from 'lodash'
 
 export const createContactDuplicationRequest = (contact = {}) => ({

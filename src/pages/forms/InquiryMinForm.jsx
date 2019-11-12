@@ -5,12 +5,10 @@ import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import ADLNeeds from '../../components/ADLNeeds';
+import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import Contact from '../../components/Contact';
-import Drivers from '../../components/Drivers';
-import FinancialOptions from '../../components/FinancialOptions';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
@@ -23,16 +21,13 @@ import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
-import createCommunity from '../../services/community-services/create-community'
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
+import { getCommunitiesErrors } from './validators';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
-
-  MAX_COMMUNITIES = 5;
   state = {
-    allowAddCommunities: true,
     loading: true,
   };
 
@@ -67,42 +62,6 @@ class InquiryForm extends React.Component {
         locale: userInfo.locale,
       }
       this.props.setFieldValue('user', user)
-    }
-  }
-
-  handleAddCommunity = (values) => {
-    this.setState((state) => {
-      let communities = values.communities
-      let community = createCommunity()
-      communities.push(community)
-
-      let allowAddCommunities = true;
-      if (communities.length > (this.MAX_COMMUNITIES - 1)) {
-        allowAddCommunities = false;
-      }
-      return {
-        communities: communities,
-        allowAddCommunities: allowAddCommunities,
-      }
-    })
-  }
-
-  handleRemoveCommunity = (uuid, values) => {
-    if (uuid !== undefined || uuid !== null) {
-      let communities = (values.communities || []).filter((community) => (community.uuid !== uuid));
-      let allowAddCommunities = true;
-
-      if (communities.length < this.MAX_COMMUNITIES) {
-        allowAddCommunities = true
-      } else {
-        allowAddCommunities = false
-      }
-
-      this.setState({
-        communities: communities,
-        allowAddCommunities: allowAddCommunities,
-      })
-      values.communities = communities || [];
     }
   }
 
@@ -192,11 +151,7 @@ class InquiryForm extends React.Component {
           />
           <Row>
             <Col>
-              <ADLNeeds
-                adlNeeds={values.lead.adlNeeds}
-                setFieldValue={setFieldValue}
-                isReadOnly={status.readOnly}
-              />
+              <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
             </Col>
           </Row>
           <br />
@@ -251,21 +206,12 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Communities
-              username={values.user.username}
-              allowAddCommunities={this.state.allowAddCommunities}
-              onAddCommunity={() => this.handleAddCommunity(values)}
-              onRemoveCommunity={community => this.handleRemoveCommunity(community.uuid, values)}
-            />
+            <Communities username={values.user.username} />
           </Col>
         </Row>
         <br />
         <hr />
-        <FinancialOptions
-          key="financialOptions"
-          setFieldValue={setFieldValue}
-          isReadOnly={status.readOnly}
-        />
+          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
         <br />
         <Row>
           <Col>
@@ -280,11 +226,7 @@ class InquiryForm extends React.Component {
           </Col>
         </Row>
         <br />
-        <Drivers
-          key="drivers"
-          setFieldValue={setFieldValue}
-          isReadOnly={status.readOnly}
-        />
+          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
         <br />
         <SecondPerson
           key="secondPerson-contact"
@@ -318,7 +260,7 @@ class InquiryForm extends React.Component {
                 name="lead.callingFor" 
                 onChange={handleChange} 
                 onBlur={handleBlur} 
-                disabled={(status.readOnly || isLocked) && isContactCenterBuildingId}
+                disabled={(status.readOnly || isLocked)}
                 value={values.lead.callingFor}
               >
                 <option value="">Select One</option>
@@ -349,7 +291,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               defaultValue={values.lead.inquiryType}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -374,7 +316,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -439,6 +381,13 @@ const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
   validationSchema: formValidationSchema,
+
+  validate: (values) => {
+    const errors = getCommunitiesErrors(values.communities);
+    return errors.some(x => !!x)
+      ? { communities: errors }
+      : {};
+  },
 
   mapPropsToValues: (props) => {
     return {

@@ -11,16 +11,18 @@ describe('communityServices.fetchCommunities Service', () => {
         request.post.mockResolvedValue({ json: () => 'test' })
         request.jsonResponse.mockClear()
     })
-    test('should properly call post', async () => {
+    test('should properly call post', () => {
         createCommunitiesFetchUrl.mockReturnValue('URL')
         const payload = {
             communitySearchText: '',
             appShortName: 'SIMS',
             userName: 'foo'
         }
-        await fetchCommunities(payload.userName)
-        expect(request.post).toHaveBeenCalledWith(`URL`, payload)
-        expect(request.jsonResponse).toHaveBeenCalled()
+        fetchCommunities(payload.userName).then(() => {
+            expect(request.post).toHaveBeenCalledWith(`URL`, payload)
+            expect(request.jsonResponse).toHaveBeenCalled()
+        })
+        
     })
     test('should output properly', () => {
         request.jsonResponse.mockReturnValue('RESPONSE')

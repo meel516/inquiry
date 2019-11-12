@@ -2,8 +2,8 @@
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
 import convertToISODate from '../utils/convert-to-iso-date'
 import { ObjectMappingService } from './Types'
-import ServerError from '../types/server-error'
-import AppError from '../types/app-error'
+import ServerError from '../models/server-error'
+import AppError from '../models/app-error'
 import { get } from 'lodash'
 
 // business logic ------
@@ -70,12 +70,22 @@ class SalesAPIService {
             });
             lead.influencer = ObjectMappingService.createInfluencer(influencer);
             if (lead.influencer) {
-              lead.callerType = get(lead, 'influencer.gender')
+              let tmpGender = get(lead, 'influencer.gender');
+              if (tmpGender) {
+                lead.callerType = tmpGender;
+              } else {
+                lead.callerType = 0;
+              }
             }
           }
           else {
             lead.influencer = prospect
-            lead.callerType = get(lead, 'prospect.gender')
+            let tmpGender = get(lead, 'prospect.gender');
+            if (tmpGender) {
+              lead.callerType = tmpGender;
+            } else {
+              lead.callerType = 0;
+            }
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
@@ -84,6 +94,10 @@ class SalesAPIService {
             const { salesLead: { salesContact } } = secondPerson
             lead.secondPerson = ObjectMappingService.createContact(salesContact);
             lead.secondPerson.selected = true
+          }
+
+          if (get(secondPerson, 'salesLead.leadId')) {
+            lead.secondPerson.leadId = get(secondPerson, 'salesLead.leadId');
           }
         }
       }
@@ -232,7 +246,7 @@ class SalesAPIService {
       },
       body: JSON.stringify(request)
     })
-    const salesResponse = await response.json();
+    const salesResponse = response.json();
     if (response.status === 201) {
       const { objectId } = salesResponse;
       return objectId;
@@ -287,6 +301,11 @@ class SalesAPIService {
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP') {
+      if (lead.reasonForCall) {
+        // Set "Reason for Call" to influencer interest reason.
+        lead.influencer.interestReasonId = lead.reasonForCall;
+      }
+
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
@@ -413,6 +432,19 @@ class SalesAPIService {
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
+    if (lead.buildingId !== 225707) {
+      console.log("Doesn't have CC...add one");
+      try {
+        let community = createCommunity();
+        community.communityId = 225707;
+        lead.leadId = null; // Need to null it out here!
+        await this.processContactCenter(lead, community, user);
+      }
+      catch (err) {
+
+      }
+    }
+
     try {
       // Process any Prospect changes.
       // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
@@ -421,6 +453,24 @@ class SalesAPIService {
     }
     catch (err) {
 
+    }
+
+    // Determine if we need to fire Influencer changes.
+    if (lead.influencer && lead.callingFor !== 'Myself') {
+      try {
+        // Set Gender ("What is the gender of the caller?") to influencer gender.
+        lead.influencer.gender = lead.callerType;
+
+        // Set "Reason for Call" to influencer interest reason.
+        lead.influencer.interestReasonId = lead.reasonForCall;
+
+        // Process any Influencer changes.
+        const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+        await this.submitInfluencer(influencer);
+      }
+      catch (err) {
+
+      }
     }
 
     try {
@@ -445,23 +495,31 @@ class SalesAPIService {
 
     }
 
-    const communityList = [...communities];
-
     try {
-      // Process COI list.
-      if (!containContactCenter(communities)) {
-        let community = createCommunity();
-        community.communityId = 225707
-        // Since we're including the CC COI (potentially) in the processCommunities routine,
-        // we need to add it to the list.
-        // NOTE: The Eloqua request will need to filter out sending the CC COI to Eloqua however.
-        //       This will be done via the API in SMS.
-        communityList.push(community);
+      // Process any Second Person changes...only if we are creating a new one!
+      const secondPerson = lead.secondPerson;
+      if (secondPerson && secondPerson.selected && !secondPerson.leadId) {
+        const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
+        await this.submitSecondPerson(secondPersonRequest);
       }
     }
     catch (err) {
-
+      
     }
+
+    const communityList = [...communities];
+
+    // try {
+    //   // Process COI list.
+    //   if (!containContactCenter(communities)) {
+    //     let community = createCommunity();
+    //     community.communityId = 225707
+    //     communityList.push(community);
+    //   }
+    // }
+    // catch (err) {
+
+    // }
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {

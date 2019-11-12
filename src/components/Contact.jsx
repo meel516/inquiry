@@ -125,6 +125,14 @@ export default class Contact extends React.Component {
               const { setFieldValue } = this.props;
               const formContact = ObjectMappingService.createContact(dupeContact);
               setFieldValue(`lead.${this.props.type}`, formContact);
+
+              // Since this contact "may" have a gender...AND the gender field is
+              // actually 'lead.callerType' (and not part of 'lead.influencer'), we
+              // need to handle the gender differently.
+              if (formContact.gender) {
+                setFieldValue(`lead.callerType`, formContact.gender);
+              }
+
               this.setState({ locked: true });
               break;
             }
@@ -158,10 +166,10 @@ export default class Contact extends React.Component {
             if (!this.props.isContactCenter) {
               // When we load a non-CC Lead, there are specific
               // fields we want to reset.
-              setFieldValue('lead.inquiryType', -1)
-              setFieldValue('lead.callingFor', -1)
-              setFieldValue('lead.leadSource', -1)
-              setFieldValue('lead.leadSourceDetail', -1)
+              setFieldValue('lead.inquiryType', 0)
+              //setFieldValue('lead.callingFor', '')
+              setFieldValue('lead.leadSource', 0)
+              setFieldValue('lead.leadSourceDetail', 0)
               setFieldValue('lead.additionalDetail', '')
             }
 
