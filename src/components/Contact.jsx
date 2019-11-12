@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 import { Alert, Button, Col, FormGroup, Input, Modal, ModalBody, ModalHeader, ModalFooter, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { ErrorMessage } from 'formik';
-import Address from './Address';
+import { Address } from './Address';
 import { get } from 'lodash'
 
 import { SalesAPIService } from '../services/SalesServices'

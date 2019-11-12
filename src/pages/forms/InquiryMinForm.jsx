@@ -8,7 +8,7 @@ import AdditionalCareElements from '../../components/AdditionalCareElements';
 import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
-import Contact from '../../components/Contact';
+import { Contact } from '../../components/contact/';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
@@ -124,19 +124,14 @@ class InquiryForm extends React.Component {
         </section>
         <section className="influencer-section">
           <Contact
-            key="influencer-contact"
-            type="influencer"
+            basePath='lead'
+            type='influencer'
             contact={values.lead.influencer}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
             isReadOnly={status.readOnly}
             duplicateCheck={true}
             hasAddress={true}
-            setFieldValue={setFieldValue}
             isContactCenter={isContactCenterBuildingId}
-            {...this.props}
-          >
-          </Contact>
+          />
         </section>
         <br />
         <section className="prospect-section">
@@ -381,6 +376,7 @@ const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
   validationSchema: formValidationSchema,
+  validateOnChange: false,
 
   validate: (values) => {
     const errors = getCommunitiesErrors(values.communities);
