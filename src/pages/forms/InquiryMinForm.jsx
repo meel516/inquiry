@@ -291,7 +291,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               defaultValue={values.lead.inquiryType}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -316,7 +316,7 @@ class InquiryForm extends React.Component {
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               isReadOnly={status.readOnly || isLocked}
-              isContactCenter={isContactCenterBuildingId}
+              isContactCenter={status.readOnly || isContactCenterBuildingId}
               {...this.props}
             />
           </Col>
@@ -383,7 +383,10 @@ const EnhancedInquiryForm = withFormik({
   validationSchema: formValidationSchema,
 
   validate: (values) => {
-    return { communities: getCommunitiesErrors(values.communities) };
+    const errors = getCommunitiesErrors(values.communities);
+    return errors.some(x => !!x)
+      ? { communities: errors }
+      : {};
   },
 
   mapPropsToValues: (props) => {

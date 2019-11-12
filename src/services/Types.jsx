@@ -428,8 +428,13 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
+        salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
         this.addPhoneToContact(influencer, salesContact);
         this.addAddressToContact(influencer, salesContact);
+
+        if (influencer.influencerId) {
+            salesInfluencer.influencerId = influencer.influencerId;
+        }
 
         return salesInfluencer;
     }
@@ -475,6 +480,8 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = influencer.contactId
+            salesContact.masterId = influencer.masterId
             this.addAddressToContact(influencer, salesContact)
             this.addPhoneToContact(influencer, salesContact)
             salesContact.gender = lead.callerType
@@ -487,6 +494,8 @@ class ObjectMappingService {
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
             salesContact.currentSituation = lead.currentSituation
+            salesContact.contactId = prospect.contactId
+            salesContact.masterId = prospect.masterId
             this.addPhoneToContact(prospect, salesContact)
         }
 
