@@ -3,7 +3,7 @@ import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
 import { ErrorMessage } from 'formik';
 import PropTypes from 'prop-types'
 
-import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns'
+import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '../services/dropdowns'
 
 export default class LeadSource extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ export default class LeadSource extends React.Component {
     this.state = {
       leadSource: [],
       leadSourceDetail: [],
+      leadSourceSubDetail: [],
     }
   }
 
@@ -50,6 +51,20 @@ export default class LeadSource extends React.Component {
     this.props.handleChange(event);
   }
 
+  handleDetailOnChange = (event) => {
+    const { setFieldValue } = this.props;
+    var leadSourceDetailId = event.target.value;
+    if (!leadSourceDetailId) {
+      this.setState({
+        leadSourceSubDetail: [],
+      })
+      setFieldValue('lead.leadSourceDetail', -1);
+    } else {
+      this.fetchAndSetLeadSourceDetail(leadSourceId);
+    }
+    this.props.handleChange(event);
+  }
+
   fetchAndSetLeadSourceDetail = (leadSourceId) => {
     getLeadSourceDetails(leadSourceId)
       .then((data) => {
@@ -58,14 +73,26 @@ export default class LeadSource extends React.Component {
       .catch(error => console.log(error));
   }
 
+  fetchAndSetLeadSourceSubDetail = (leadSourceDetailId) => {
+    getLeadSourceSubDetails(leadSourceDetailId)
+      .then((data) => {
+        this.setState({ leadSourceSubDetail: data })
+      })
+      .catch(error => console.log(error));
+  }
+
   render() {
-    const { leadSource, leadSourceDetail } = this.state || [];
+    const { leadSource, leadSourceDetail, leadSourceSubDetail } = this.state || [];
 
     const leadSourceOptions = leadSource.map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
     const leadSourceDetailOptions = (leadSourceDetail || []).map((type) => {
+      return <option key={type.value} value={type.value}>{type.text}</option>
+    });
+
+    const leadSourceSubDetailOptions = (leadSourceDetail || []).map((type) => {
       return <option key={type.value} value={type.value}>{type.text}</option>
     });
 
@@ -116,15 +143,15 @@ export default class LeadSource extends React.Component {
             <FormGroup>
               <Label for="additionalDetail" className="label-format">Additional Detail</Label>
               <Input 
-                type="text" 
-                id="additionalDetail" 
-                name="lead.additionalDetail" 
+                type="select" 
+                id="leadSourceSubDetail" 
+                name="lead.leadSourceSubDetail" 
                 onChange={this.props.handleChange} 
                 onBlur={this.props.handleBlur}
                 readOnly={this.props.isReadOnly && this.props.isContactCenter}
                 placeholder="Additional Detail" 
               />
-              <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
+              <ErrorMessage name="lead.leadSourceSubDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
             </FormGroup>
           </Col>
         </Row>
@@ -136,6 +163,7 @@ export default class LeadSource extends React.Component {
 LeadSource.propTypes = {
   defaultLeadSource: PropTypes.number,
   defaultLeadSourceDetail: PropTypes.number,
+  defaultLeadSourceSubDetail: PropTypes.number,
   isContactCenter: PropTypes.bool,
 
   handleChange: PropTypes.func.isRequired,
