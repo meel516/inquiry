@@ -66,12 +66,13 @@ export const Person = ({ basePath, type, locked, onDuplicateFieldChange, onDupli
                             placeholder='Phone'
                             onChange={onDuplicateFieldChange}
                             onBlur={onDuplicateFieldBlur}
+                            disabled={locked}
                         />
                     </FormGroup>
                 </Col>
                 <Col>
                     <Label for={inputNames.phone.type} className='label-format'>Phone Type</Label>
-                    <Select name={inputNames.phone.type} placeholder='Select One'>
+                    <Select name={inputNames.phone.type} placeholder='Select One' disabled={locked}>
                         {phoneTypeOptions}
                     </Select>
                 </Col>
@@ -86,6 +87,7 @@ export const Person = ({ basePath, type, locked, onDuplicateFieldChange, onDupli
                             onChange={onDuplicateFieldChange}
                             onBlur={onDuplicateFieldBlur}
                             placeholder='Email'
+                            disabled={locked}
                         />
                     </FormGroup>
                 </Col>
