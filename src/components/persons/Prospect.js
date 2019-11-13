@@ -6,7 +6,7 @@ import { Person } from './components/Person';
 
 const TYPE = 'prospect';
 
-export const Prospect = ({ basePath, showProspect }) => {
+export const Prospect = ({ basePath, showProspect, locked }) => {
     const agePath = `${basePath}.${TYPE}.age`;
 
     return (
@@ -16,7 +16,7 @@ export const Prospect = ({ basePath, showProspect }) => {
                 <Label className="section-header">Prospect</Label>
             </Col>
         </Row>
-        { !showProspect && (<Person basePath={basePath} type={TYPE} />) }
+        { !showProspect && (<Person basePath={basePath} type={TYPE} locked={locked} />) }
         <Row>
             <Col xs="1" md="6">
                 <FormGroup>
@@ -36,8 +36,10 @@ export const Prospect = ({ basePath, showProspect }) => {
 Prospect.propTypes = {
     basePath: PropTypes.string.isRequired,
     showProspect: PropTypes.bool,
+    locked: PropTypes.bool,
 }
 
 Prospect.defaultProps = {
     showProspect: true,
+    locked: false,
 }

@@ -1,153 +1,86 @@
-import React from 'react';
-import { Alert, Col, FormGroup, Input, Label, Row } from 'reactstrap'
-import { ErrorMessage } from 'formik';
-import PropTypes from 'prop-types'
+import React, { useEffect, useMemo, useState } from 'react';
+import { Col, FormGroup, Label, Row } from 'reactstrap'
+import { useFormikContext } from 'formik';
+import PropTypes from 'prop-types';
+import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns';
+import { Input, Select } from './formik-inputs';
 
-import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns'
+export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) => {
+  const [ leadSources, setLeadSources ] = useState([]);
+  const [ leadSourceDetails, setLeadSourceDetails ] = useState([]);
+  const { setFieldValue } = useFormikContext();
 
-export default class LeadSource extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      leadSource: [],
-      leadSourceDetail: [],
+  const inputNames = useMemo(() => {
+    return {
+      leadSource: `${basePath}.leadSource`,
+      leadSourceDetail: `${basePath}.leadSourceDetail`,
+      additionalDetail: `${basePath}.additionalDetail`,
     }
-  }
+  }, [basePath]);
 
-  componentDidMount() {
+  const leadSourceOptions = useMemo(() => {
+    return leadSources.map(source => {
+      return <option key={source.value} value={source.value}>{source.text}</option>;
+    })
+  }, [leadSources]);
+
+  const leadSourceDetailOptions = useMemo(() => {
+    return leadSourceDetails.map(detail => {
+      return <option key={detail.value} value={detail.value}>{detail.text}</option>
+    })
+  }, [leadSourceDetails]);
+
+  useEffect(() => {
     getLeadSources()
-      .then((data) => this.setState({ leadSource: data }))
-      .catch(error => console.log(error));
+      .then(sources => setLeadSources(sources));
+  }, [setLeadSources]);
 
-    const { defaultLeadSource } = this.props;
-    if (defaultLeadSource) {
-      this.fetchAndSetLeadSourceDetail(defaultLeadSource);
-    }
-  }
-
-  componentDidUpdate() {
-    const {defaultLeadSource} = this.state;
-    if (this.props.defaultLeadSource !== defaultLeadSource && this.props.defaultLeadSource !== -1) {
-      this.fetchAndSetLeadSourceDetail(this.props.defaultLeadSource);
-      this.setState({
-        defaultLeadSource: this.props.defaultLeadSource
-      })
-    }
-  }
-
-  handleOnChange = (event) => {
-    const { setFieldValue } = this.props;
-    var leadSourceId = event.target.value;
-    if (!leadSourceId) {
-      this.setState({
-        leadSourceDetail: [],
-      })
-      setFieldValue('lead.leadSourceDetail', -1);
+  useEffect(() => {
+    if (leadSource) {
+      getLeadSourceDetails(leadSource)
+        .then(details => setLeadSourceDetails(details));
     } else {
-      this.fetchAndSetLeadSourceDetail(leadSourceId);
+      setFieldValue(inputNames.leadSourceDetail, -1);
+      setLeadSourceDetails([]);
     }
-    this.props.handleChange(event);
-  }
+  }, [leadSource, inputNames, setLeadSourceDetails, setFieldValue])
 
-  fetchAndSetLeadSourceDetail = (leadSourceId) => {
-    getLeadSourceDetails(leadSourceId)
-      .then((data) => {
-        this.setState({ leadSourceDetail: data })
-      })
-      .catch(error => console.log(error));
-  }
-
-  render() {
-    const { leadSource, leadSourceDetail } = this.state || [];
-
-    const leadSourceOptions = leadSource.map((type) => {
-      return <option key={type.value} value={type.value}>{type.text}</option>
-    });
-
-    const leadSourceDetailOptions = (leadSourceDetail || []).map((type) => {
-      return <option key={type.value} value={type.value}>{type.text}</option>
-    });
-
-    return (
-      <>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for="leadSource" className="label-format required-field">Lead Source</Label>
-              <Input 
-                type="select" 
-                id="leadSource" 
-                name="lead.leadSource" 
-                value={this.props.defaultLeadSource} 
-                onChange={this.handleOnChange} 
-                onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly && this.props.isContactCenter}
-              >
-                <option value="">Select One</option>
-                {leadSourceOptions}
-              </Input>
-              <ErrorMessage name="lead.leadSource" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for="leadSourceDetail" className="label-format required-field">Lead Source Detail</Label>
-              <Input 
-                type="select" 
-                id="leadSourceDetail" 
-                name="lead.leadSourceDetail" 
-                value={this.props.defaultLeadSourceDetail} 
-                onChange={this.props.handleChange}
-                onBlur={this.props.handleBlur}
-                disabled={this.props.isReadOnly && this.props.isContactCenter}
-              >
-                <option value="">Select One</option>
-                {leadSourceDetailOptions}
-              </Input>
-              <ErrorMessage name="lead.leadSourceDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg||'Field is required!'}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for="additionalDetail" className="label-format">Additional Detail</Label>
-              <Input 
-                type="text" 
-                id="additionalDetail" 
-                name="lead.additionalDetail" 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur}
-                readOnly={this.props.isReadOnly && this.props.isContactCenter}
-                placeholder="Additional Detail" 
-              />
-              <ErrorMessage name="lead.additionalDetail" render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-      </>
-    )
-  }
+  return (
+    <>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.leadSource} className='label-format required-field'>Lead Source</Label>
+            <Select name={inputNames.leadSource} disabled={locked} placeholder='Select One'>
+              {leadSourceOptions}
+            </Select>
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.leadSourceDetail} className='label-format required-field'>Lead Source Detail</Label>
+            <Select name={inputNames.leadSourceDetail} disabled={locked} placeholder='Select One'> 
+              {leadSourceDetailOptions}
+            </Select>
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.additionalDetail} className='label-format'>Additional Detail</Label>
+            <Input type='text' name={inputNames.additionalDetail} disabled={locked} placeholder='Additional Detail' />
+          </FormGroup>
+        </Col>
+      </Row>
+    </>
+  )
 }
 
 LeadSource.propTypes = {
-  defaultLeadSource: PropTypes.number,
-  defaultLeadSourceDetail: PropTypes.number,
-  isContactCenter: PropTypes.bool,
-
-  handleChange: PropTypes.func.isRequired,
-  handleBlur: PropTypes.func.isRequired,
-  setFieldValue: PropTypes.func.isRequired,
-
-  isReadOnly: PropTypes.bool,
-}
-
-LeadSource.defaultProps = {
-  defaultLeadSource: 0,
-  defaultLeadSourceDetail: 0,
-  isReadOnly: false,
-  isContactCenter: false,
+  leadSource: PropTypes.number.isRequired,
+  basePath: PropTypes.string,
+  locked: PropTypes.bool,
 }

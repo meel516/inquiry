@@ -4,6 +4,7 @@ import { SalesAPIService } from '../../../services/SalesServices';
 const salesService = new SalesAPIService();
 
 export const useDragHandlers = () => {
+    // eslint-disable-next-line
     const [ _, setActiveDrags ] = useState(0);
 
     const onStart = useCallback(() => {

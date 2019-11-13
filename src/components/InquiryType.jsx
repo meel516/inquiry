@@ -1,63 +1,34 @@
-import React from 'react';
-import { Alert, Input, FormGroup, Label } from 'reactstrap';
-import { ErrorMessage } from 'formik';
-import PropTypes from 'prop-types'
+import React, { useEffect, useMemo, useState } from 'react';
+import { FormGroup, Label } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { getInquiryTypes } from '../services/dropdowns';
+import { Select } from './formik-inputs';
 
-import { getInquiryTypes } from '../services/dropdowns'
+export const InquiryType = ({ name, locked = false }) => {
+  const [ inquiryTypes, setInquiryTypes ] = useState([]);
 
-export default class InquiryType extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inquiryTypes: [],
-    }
-  }
+  const inquiryTypeOptions = useMemo(() => {
+    return inquiryTypes.map(type => {
+      return <option key={type.value} value={type.value}>{type.text}</option>;
+    })
+  }, [inquiryTypes]);
 
-  componentDidMount() {
+  useEffect(() => {
     getInquiryTypes()
-      .then((data) => this.setState({ inquiryTypes: data }))
-      .catch(error => console.log(error));
-  }
+      .then((data) => setInquiryTypes(data));
+  }, [setInquiryTypes]);
 
-  render() {
-    const { inquiryTypes } = this.state || [];
-    const inquiryTypeOptions = inquiryTypes.map((type) => {
-      return <option key={type.value} value={type.value}>{type.text}</option>
-    });
-
-    return (
-      <FormGroup>
-        <Label for="inquiryType" className="label-format required-field">Inquiry Method</Label>
-        <Input 
-          type="select" 
-          id="inquiryType" 
-          name="lead.inquiryType" 
-          value={this.props.defaultValue} 
-          onChange={this.props.handleChange} 
-          onBlur={this.props.handleBlur} 
-          disabled={this.props.isReadOnly && this.props.isContactCenter}
-        >
-          <option value="">Select One</option>
-          {inquiryTypeOptions}
-        </Input>
-        <ErrorMessage name="lead.inquiryType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-      </FormGroup>
-    )
-  }
+  return (
+    <FormGroup>
+      <Label for={name} className="label-format required-field">Inquiry Method</Label>
+      <Select name={name} disabled={locked} placeholder='Select One'>
+        {inquiryTypeOptions}
+      </Select>
+    </FormGroup>
+  )
 }
 
 InquiryType.propTypes = {
-  defaultValue: PropTypes.number,
-  isContactCenter: PropTypes.bool,
-
-  handleChange: PropTypes.func.isRequired,
-  handleBlur: PropTypes.func.isRequired,
-
-  isReadOnly: PropTypes.bool,
-}
-
-InquiryType.defaultProps = {
-  defaultValue: -1,
-  isReadOnly: false,
-  isContactCenter: false,
+  name: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

@@ -10,8 +10,8 @@ import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
 import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
-import InquiryType from '../../components/InquiryType';
-import LeadSource from '../../components/LeadSource';
+import { InquiryType } from '../../components/InquiryType';
+import { LeadSource } from '../../components/LeadSource';
 import ResultOfCall from '../../components/ResultOfCall'
 import { Note } from '../../components/Note';
 import ReasonForCall from '../../components/ReasonForCall';
@@ -102,8 +102,8 @@ class InquiryForm extends React.Component {
       setFieldValue,
     } = this.props;
 
-    const isLocked = (values.lead.leadId != null)
-    const isContactCenterBuildingId = (values.lead.buildingId === 225707 ? true : false)
+    const isLocked = !!values.lead.leadId;
+    const isContactCenterBuildingId = values.lead.buildingId === 225707;
 
     if (this.state.loading) {
       return (
@@ -128,6 +128,7 @@ class InquiryForm extends React.Component {
             duplicateCheck={true}
             hasAddress={true}
             isContactCenter={isContactCenterBuildingId}
+            locked={isLocked}
           />
         </section>
         <br />
@@ -145,7 +146,7 @@ class InquiryForm extends React.Component {
             isReadOnly={status.readOnly}
           />
           <br />
-          <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} />
+          <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
           <br />
           <CareType
             handleChange={handleChange}
@@ -183,7 +184,7 @@ class InquiryForm extends React.Component {
         <br />
           <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
         <br />
-        <SecondPerson basePath='lead' contactId={values.lead.secondPerson.contactId} hasSecondPerson={values.lead.secondPerson.selected} />
+        <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
         <Row>
           <Col md="5">
             <ResultOfCall
@@ -232,14 +233,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <InquiryType
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.inquiryType}
-              isReadOnly={status.readOnly || isLocked}
-              isContactCenter={status.readOnly || isContactCenterBuildingId}
-              {...this.props}
-            />
+            <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
           </Col>
         </Row>
         <Row>
@@ -255,16 +249,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource key="leadsource"
-              defaultLeadSource={values.lead.leadSource}
-              defaultLeadSourceDetail={values.lead.leadSourceDetail}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              setFieldValue={setFieldValue}
-              isReadOnly={status.readOnly || isLocked}
-              isContactCenter={status.readOnly || isContactCenterBuildingId}
-              {...this.props}
-            />
+            <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
           </Col>
         </Row>
         <Row>

@@ -9,10 +9,9 @@ import { ObjectMappingService } from '../../services/Types';
 
 const TYPE = 'secondPerson';
 
-export const SecondPerson = ({ basePath, hasSecondPerson, contactId }) => {
+export const SecondPerson = ({ basePath, hasSecondPerson, locked = false }) => {
     const { setFieldValue } = useFormikContext();
     const fullPath = `${basePath}.${TYPE}`;
-    const locked = !!contactId;
 
     const handleSecondPersonChange = useCallback((e) => {
         if (!e.target.checked) {
@@ -46,5 +45,5 @@ export const SecondPerson = ({ basePath, hasSecondPerson, contactId }) => {
 SecondPerson.propTypes = {
   basePath: PropTypes.string.isRequired,
   hasSecondPerson: PropTypes.bool.isRequired,
-  contactId: PropTypes.string,
+  locked: PropTypes.bool,
 }

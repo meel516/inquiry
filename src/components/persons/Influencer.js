@@ -9,9 +9,8 @@ import { useFormikContext } from 'formik';
 
 const TYPE = 'influencer';
 
-export const Influencer = ({ basePath, duplicateCheck, hasAddress, contact, isContactCenter }) => {
+export const Influencer = ({ basePath, duplicateCheck, hasAddress, contact, isContactCenter, locked }) => {
   const [ duplicateContacts, setDuplicateContacts ] = useState([]);
-  const [ locked, setLocked ] = useState(false);
   const [ runDuplicateCheck, setRunDuplicateCheck ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
   const { setFieldValue } = useFormikContext();
@@ -55,9 +54,8 @@ export const Influencer = ({ basePath, duplicateCheck, hasAddress, contact, isCo
     }
 
     setFieldValue(basePath, { ...selectedLead, ...leadFieldOverrides });
-    setLocked(true);
     setShowModal(false);
-  }, [leadFieldOverrides, setShowModal, basePath, duplicateContacts, setFieldValue, setLocked]);
+  }, [leadFieldOverrides, setShowModal, basePath, duplicateContacts, setFieldValue]);
 
   return (
     <>
