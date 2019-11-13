@@ -90,6 +90,27 @@ class InquiryForm extends React.Component {
     }
   }
 
+  isLeadFromContactCenterBuilding = (lead) => {
+    return lead.buildingId === 225707;
+  }
+
+  updateLead = (lead) => {
+    const { values, setFieldValue } = this.props;
+    setFieldValue('lead', {
+      ...values.lead,
+      ...lead,
+      adlNeeds: { ...values.lead.adlNeeds, ...lead.adlNeeds },
+      drivers: { ...values.lead.drivers, ...lead.driveers },
+      financialOptions: { ...values.lead.financialOptions, ...lead.financialOptions },
+      memoryConcerns: { ...values.lead.memoryConcerns, ...lead.memoryConcerns },
+      mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
+      notes: { ...values.lead.notes, ...lead.notes },
+      nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
+      prospect: { ...values.lead.prospect, ...lead.prospect },
+      secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
+    });
+  }
+
   render() {
     const {
       values,
@@ -103,7 +124,7 @@ class InquiryForm extends React.Component {
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
-    const isContactCenterBuildingId = values.lead.buildingId === 225707;
+    const isContactCenterBuildingId = this.isLeadFromContactCenterBuilding(values.lead);
 
     if (this.state.loading) {
       return (
@@ -125,9 +146,8 @@ class InquiryForm extends React.Component {
             basePath='lead'
             contact={values.lead.influencer}
             isReadOnly={status.readOnly}
-            duplicateCheck={true}
-            hasAddress={true}
-            isContactCenter={isContactCenterBuildingId}
+            updateLead={this.updateLead}
+            isLeadFromContactCenterBuilding={this.isLeadFromContactCenterBuilding}
             locked={isLocked}
           />
         </section>

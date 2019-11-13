@@ -34,7 +34,7 @@ export const SecondPerson = ({ basePath, hasSecondPerson, locked = false }) => {
                 hasSecondPerson && (
                     <>
                         <Person basePath={basePath} type={TYPE} locked={locked} />
-                        <Note name={`${basePath}.notes.secondPersonNote`} />
+                        <Note name={`${basePath}.notes.secondPersonNote`} label='2nd Person Situation' />
                     </>
                 )
             }
