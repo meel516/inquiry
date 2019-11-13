@@ -23,16 +23,16 @@ export const ContactMatchesModal = ({ isOpen, onClose, onSubmit, rows }) => {
     const rowGetter = useRowGetter(rows);
     const onRowSelection = useCallback(async (row) => {
         if (row) {
-        const leadData = await salesService.retrieveLeadDataForContactId(row.contactid);
-        setLeadData(leadData);
-        setSelectedContact(row);
-        setShowLeadDataModal(true);
+            const leadData = await salesService.retrieveLeadDataForContactId(row.contactid);
+            setLeadData(leadData);
+            setSelectedContact(row);
+            setShowLeadDataModal(true);
         }
     }, [setLeadData, setSelectedContact, setShowLeadDataModal, salesService]);
     const handleClose = useCallback((closeAll = false) => {
         setShowLeadDataModal(false);
         if (closeAll) {
-        onClose();
+            onClose();
         }
     }, [onClose, setShowLeadDataModal]);
     const submitModal = useCallback((selectedLead) => {
@@ -42,30 +42,30 @@ export const ContactMatchesModal = ({ isOpen, onClose, onSubmit, rows }) => {
 
     return (
         <Draggable handle=".modalone" { ...{ onStart, onStop }}>
-        <Modal className="modalone" isOpen={isOpen} size="xl">
-            <ModalHeader>Potential Contact Matches</ModalHeader>
-            <ModalBody>
-            <p>Is this who you are talking to? If so, click the name below, otherwise click "None of These".</p>
-            <ReactDataGrid
-                columns={columns}
-                rowGetter={rowGetter}
-                rowsCount={rows.length}
-                minHeight={250}
-                minWidth={1100}
-                emptyRowsView={EmptyRowsView}
-                onRowClick={(_rowId, row) => onRowSelection(row)}
-            />
-            <LeadDataModal
-                isOpen={showLeadDataModal}
-                onSubmit={submitModal}
-                onClose={handleClose}
-                rows={leadData}
-            />
-            </ModalBody>
-            <ModalFooter>
-            <Button type="button" color="info" size="sm" onClick={onClose}>None of These</Button>
-            </ModalFooter>
-        </Modal>
+            <Modal className="modalone" isOpen={isOpen} size="xl">
+                <ModalHeader>Potential Contact Matches</ModalHeader>
+                <ModalBody>
+                    <p>Is this who you are talking to? If so, click the name below, otherwise click "None of These".</p>
+                    <ReactDataGrid
+                        columns={columns}
+                        rowGetter={rowGetter}
+                        rowsCount={rows.length}
+                        minHeight={250}
+                        minWidth={1100}
+                        emptyRowsView={EmptyRowsView}
+                        onRowClick={(_rowId, row) => onRowSelection(row)}
+                    />
+                    <LeadDataModal
+                        isOpen={showLeadDataModal}
+                        onSubmit={submitModal}
+                        onClose={handleClose}
+                        rows={leadData}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <Button type="button" color="info" size="sm" onClick={onClose}>None of These</Button>
+                </ModalFooter>
+            </Modal>
         </Draggable>
     )
 }
