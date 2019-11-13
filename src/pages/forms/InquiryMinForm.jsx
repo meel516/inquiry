@@ -8,15 +8,13 @@ import AdditionalCareElements from '../../components/AdditionalCareElements';
 import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
-import { Contact } from '../../components/contact/';
+import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
 import InquiryType from '../../components/InquiryType';
 import LeadSource from '../../components/LeadSource';
 import ResultOfCall from '../../components/ResultOfCall'
-import Note from '../../components/Note';
-import Prospect from '../../components/Prospect';
+import { Note } from '../../components/Note';
 import ReasonForCall from '../../components/ReasonForCall';
-import SecondPerson from '../../components/SecondPerson';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
@@ -123,9 +121,8 @@ class InquiryForm extends React.Component {
           <div ref={this.TOP}></div>
         </section>
         <section className="influencer-section">
-          <Contact
+          <Influencer
             basePath='lead'
-            type='influencer'
             contact={values.lead.influencer}
             isReadOnly={status.readOnly}
             duplicateCheck={true}
@@ -135,15 +132,7 @@ class InquiryForm extends React.Component {
         </section>
         <br />
         <section className="prospect-section">
-          <Note
-            labelId="situationLabel"
-            label="Situation"
-            id="situation"
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            rows={6}
-          />
+          <Note name='lead.notes.situation' label="Situation" rows={6} />
           <Row>
             <Col>
               <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
@@ -156,15 +145,7 @@ class InquiryForm extends React.Component {
             isReadOnly={status.readOnly}
           />
           <br />
-          <Prospect
-            contact={values.lead.prospect}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            duplicateCheck={false}
-            showProspect={values.lead.callingFor === 'Myself'}
-            {...this.props}
-          />
+          <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} />
           <br />
           <CareType
             handleChange={handleChange}
@@ -175,27 +156,13 @@ class InquiryForm extends React.Component {
           <br />
           <Row>
             <Col>
-              <Note
-                labelId="passionPersonalityLabel"
-                label="Passions &amp; Personality"
-                id="passionsPersonality"
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                isReadOnly={status.readOnly}
-              />
+              <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
             </Col>
           </Row>
         </section>
         <Row>
           <Col>
-            <Note
-              labelId="financialSituationLabel"
-              label="Financial Situation"
-              id="financialSituation"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-            />
+            <Note name='lead.notes.financialSituation' label="Financial Situation" />
           </Col>
         </Row>
         <br />
@@ -210,29 +177,13 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Note
-              labelId="additionalNotesLabel"
-              label="Additional Notes"
-              id="additionalNotes"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-            />
+            <Note name='lead.notes.additionalNotes' label="Additional Notes" />
           </Col>
         </Row>
         <br />
           <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
         <br />
-        <SecondPerson
-          key="secondPerson-contact"
-          contact={values.lead.secondPerson}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
-          isReadOnly={status.readOnly}
-          duplicateCheck={false}
-          {...this.props}
-        />
-        <br />
+        <SecondPerson basePath='lead' contactId={values.lead.secondPerson.contactId} hasSecondPerson={values.lead.secondPerson.selected} />
         <Row>
           <Col md="5">
             <ResultOfCall

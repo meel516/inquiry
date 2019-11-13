@@ -28,8 +28,7 @@ export const TextArea = ({
                 { ...props }
                 { ...field }
                 onChange={handleChange}
-                o
-                nBlur={handleBlur}
+                onBlur={handleBlur}
             />
             { meta.touched && meta.error ? (
                 <Alert color='danger' className='alert-smaller-size'>{meta.error}</Alert>

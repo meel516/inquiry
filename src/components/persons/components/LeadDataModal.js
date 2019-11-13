@@ -6,18 +6,18 @@ import { useDragHandlers, useRowGetter, useSalesService } from './hooks';
 import { EmptyRowsView } from './EmptyRowsView';
 
 const columns = [
-    { key: 'prospectid', name: 'Prospect ID', width: 100, resizable: true },
-    { key: 'community', name: 'Community', width: 200, resizable: true },
-    { key: 'iname', name: 'Influencer Name', width: 200, resizable: true },
-    { key: 'iphone', name: 'Influencer Phone', width: 200, resizable: true },
-    { key: 'iemail', name: 'Influencer Email', width: 200, resizable: true },
-    { key: 'pname', name: 'Prospect Name', width: 200, resizable: true },
-    { key: 'pphone', name: 'Prospect Phone', width: 200, resizable: true },
-    { key: 'pemail', name: 'Prospect Email', width: 200, resizable: true },
-    { key: 'spname', name: '2nd Person Name', width: 200, resizable: true },
-    { key: 'spphone', name: '2nd Person Phone', width: 200, resizable: true },
-    { key: 'spemail', name: '2nd Person Email', width: 200, resizable: true },
-    { key: 'hasaddtl', name: 'Has Addtl Influencers', width: 200, resizable: true },
+  { key: 'prospectid', name: 'Prospect ID', width: 100, resizable: true },
+  { key: 'community', name: 'Community', width: 200, resizable: true },
+  { key: 'iname', name: 'Influencer Name', width: 200, resizable: true },
+  { key: 'iphone', name: 'Influencer Phone', width: 200, resizable: true },
+  { key: 'iemail', name: 'Influencer Email', width: 200, resizable: true },
+  { key: 'pname', name: 'Prospect Name', width: 200, resizable: true },
+  { key: 'pphone', name: 'Prospect Phone', width: 200, resizable: true },
+  { key: 'pemail', name: 'Prospect Email', width: 200, resizable: true },
+  { key: 'spname', name: '2nd Person Name', width: 200, resizable: true },
+  { key: 'spphone', name: '2nd Person Phone', width: 200, resizable: true },
+  { key: 'spemail', name: '2nd Person Email', width: 200, resizable: true },
+  { key: 'hasaddtl', name: 'Has Addtl Influencers', width: 200, resizable: true },
 ];
 
 export const LeadDataModal = ({ isOpen, onClose, onSubmit, rows }) => {

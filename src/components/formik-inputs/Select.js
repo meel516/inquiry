@@ -27,7 +27,7 @@ export const Select = ({
     return (
         <>
             <Input type='select' { ...field } { ...props }>
-                {placeholder && (<option value='INPUT_SELECT_PLACEHOLDER'>{placeholder}</option>)}
+                <option value=''>{placeholder}</option>
                 {children}
             </Input>
             { meta.touched && meta.error ? (

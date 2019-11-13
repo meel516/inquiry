@@ -5,7 +5,7 @@ import { getAddressStates } from '../services/dropdowns'
 import { Input, Select } from './formik-inputs';
 
 
-export const Address = ({ basePath }) => {
+export const Address = ({ basePath, locked = false }) => {
   const [ states, setStates ] = useState([]);
 
   useEffect(() => {
@@ -38,7 +38,8 @@ export const Address = ({ basePath }) => {
             <Input 
               type="text" 
               name={inputNames.lineone}
-              placeholder="Street Address" 
+              placeholder="Street Address"
+              disabled={locked}
             />
           </FormGroup>
         </Col>
@@ -48,7 +49,8 @@ export const Address = ({ basePath }) => {
             <Input 
               type="text" 
               name={inputNames.linetwo}
-              placeholder="Apartment, Studio, or Floor" 
+              placeholder="Apartment, Studio, or Floor"
+              disabled={locked}
             />
           </FormGroup>
         </Col>
@@ -61,13 +63,14 @@ export const Address = ({ basePath }) => {
               type="text" 
               name={inputNames.city}
               placeholder="City"
+              disabled={locked}
             />
           </FormGroup>
         </Col>
         <Col>
           <FormGroup>
             <Label for={inputNames.state} className="label-format">State</Label>
-            <Select name={inputNames.state} >
+            <Select name={inputNames.state} disabled={locked} >
               <option value="">Select One</option>
               {stateOptions}
             </Select>
@@ -79,7 +82,8 @@ export const Address = ({ basePath }) => {
             <Input 
               type="number" 
               name={inputNames.zip} 
-              placeholder="Zip" 
+              placeholder="Zip"
+              disabled={locked}
             />
           </FormGroup>
         </Col>
@@ -90,4 +94,5 @@ export const Address = ({ basePath }) => {
 
 Address.propTypes = {
   basePath: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

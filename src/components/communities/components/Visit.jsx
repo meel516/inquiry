@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Col, FormGroup, Row, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
-import Note from '../../Note';
+import { Note } from '../../Note';
 import { DateTimePicker, Select } from '../../formik-inputs';
 import freeMealListings from '../../../constants/free-meal-listings';
 
@@ -40,12 +40,7 @@ const Visit = ({ inputNames, followUpAction }) => (
     </Row>
     <Row>
       <Col>
-        <Note
-          labelId="followupNoteLabel"
-          label="Description"
-          id={inputNames.note}
-          name={inputNames.note}
-        />
+        <Note name={inputNames.note}  label="Description" />
       </Col>
     </Row>
   </Fragment>
