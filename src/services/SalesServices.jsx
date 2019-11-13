@@ -438,6 +438,11 @@ class SalesAPIService {
         let community = createCommunity();
         community.communityId = 225707;
         lead.leadId = null; // Need to null it out here!
+
+        if (lead.influencer) {
+          lead.influencer.influencerId = null; // Need to null it out here!
+        }
+
         await this.processContactCenter(lead, community, user);
       }
       catch (err) {
