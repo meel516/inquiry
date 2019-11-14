@@ -3,7 +3,6 @@ import { Col, FormGroup, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types'
 import { CurrentSituation } from './components/CurrentSituation';
-
 import { MobilityConcerns, MemoryConcerns, NutritionConcerns } from '../checkboxes';
 
 const MEMORY_CONCERNS = 1;
