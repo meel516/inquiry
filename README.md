@@ -1,6 +1,6 @@
-# Inquiry Form Application
+# Connection Center Application
 
-This project consists of a re-write of the Inquiry Form, which is currently hosted on a Wordpress VM, used by the Brookdale Contact Center.  The technology chosen was to write the new application using React along with several installed modules, which are listed below. (As more modules are used they will be listed here and documented as to why they were choosen, for future reference.)
+This project consists of a re-write of the Connection Center Application, which is currently hosted on a Wordpress VM, used by the Brookdale Contact Center.  The technology chosen was to write the new application using React along with several installed modules, which are listed below. (As more modules are used they will be listed here and documented as to why they were choosen, for future reference.)
 
 * Formik - do I need to use this - the main reason is for validation and form framework
 * React Bootstrap - is used to apply bootstrap formatting to the output of the React UI

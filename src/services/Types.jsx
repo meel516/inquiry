@@ -567,12 +567,12 @@ class ObjectMappingService {
     }
 
     static createEloquaRequest(lead, communities, oktaUser) {
-        const salesFormDetails = new SalesFormDetails();
-        const salesFormDetailsProspect = new SalesFormDetailsProspect(lead);
-        const salesFormDetailsInfluencer = new SalesFormDetailsInfluencer(lead.influencer);
-        const salesFormDetailsSecondPerson = new SalesFormDetailsSecondPerson(lead.secondPerson);
-        const salesFormDetailsCareType = new SalesFormDetailsCareType(lead);
-        const salesInquiryForm = new SalesInquiryForm();
+        const salesFormDetails = {}
+        const salesFormDetailsProspect = prospectToEloquaContact(lead);
+        const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
+        const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
+        const salesFormDetailsCareType = leadToEloquaCareType(lead);
+        const salesInquiryForm = {}
         
         // Communities
         salesInquiryForm.communities = communities;

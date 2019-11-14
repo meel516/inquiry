@@ -291,7 +291,7 @@ class SalesAPIService {
 
   /**
   * Processes the submission of the contact center to the sales system based upon
-  * input from the inquiry form.
+  * input from the Connection Center Application.
   * 
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
