@@ -53,7 +53,7 @@ export const LeadDataModal = ({ isOpen, onClose, onSubmit, rows }) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button type="button" color="info" size="sm" onClick={() => onClose()}>Go Back</Button>
-                    <Button type="button" color="info" size="sm" onClick={() => onClose(true)}>None of These</Button>
+                    <Button type="button" color="info" size="sm" onClick={() => onSubmit()}>None of These</Button>
                 </ModalFooter>
             </Modal>
         </Draggable>

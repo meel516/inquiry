@@ -6,7 +6,7 @@ import { Input } from '../formik-inputs';
 export const Checkbox = ({ name, label, className, onChange, disabled = false }) => (
   <FormGroup check inline className={className} disabled={disabled}>
     <Label check>
-      <Input type='checkbox' name={name} onChange={onChange} />{` ${label}`}
+      <Input type='checkbox' name={name} onChange={onChange} disabled={disabled}/>{` ${label}`}
     </Label>
   </FormGroup>
 )

@@ -96,8 +96,8 @@ class InquiryForm extends React.Component {
   }
 
   updateLead = (lead) => {
-    const { values, setFieldValue } = this.props;
-    setFieldValue('lead', {
+    const { values, setFieldValue, validateForm } = this.props;
+    const newLead = {
       ...values.lead,
       ...lead,
       adlNeeds: { ...values.lead.adlNeeds, ...lead.adlNeeds },
@@ -109,7 +109,9 @@ class InquiryForm extends React.Component {
       nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
       prospect: { ...values.lead.prospect, ...lead.prospect },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
-    });
+    };
+    setFieldValue('lead', newLead);
+    validateForm( { ...values, lead: newLead });
   }
 
   render() {
@@ -125,6 +127,7 @@ class InquiryForm extends React.Component {
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
+    const isExistingContact = !!values.lead.influencer.contactId;
     const isContactCenterBuildingId = this.isLeadFromContactCenterBuilding(values.lead);
 
     if (this.state.loading) {
@@ -149,7 +152,7 @@ class InquiryForm extends React.Component {
             isReadOnly={status.readOnly}
             updateLead={this.updateLead}
             isLeadFromContactCenterBuilding={this.isLeadFromContactCenterBuilding}
-            locked={isLocked}
+            locked={isLocked || isExistingContact}
           />
         </section>
         <br />

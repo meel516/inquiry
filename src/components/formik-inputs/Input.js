@@ -15,6 +15,10 @@ export const Input = ({
     const handleChange = useHandleChange(field, onChange);
     const handleBlur = useHandleBlur(field, onBlur);
 
+    const checkboxProps = props.type === 'checkbox'
+        ? { checked: field.value }
+        : {};
+
     return (
         <>
             <ReactstrapText
@@ -23,6 +27,7 @@ export const Input = ({
                 disabled={props.disabled || readOnly}
                 { ...field }
                 { ...props }
+                { ...checkboxProps }
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

@@ -27,7 +27,7 @@ export const SecondPerson = ({ basePath, hasSecondPerson, locked = false }) => {
         <>
             <Row>
                 <Col>
-                    <Checkbox name={`${fullPath}.selected`} label='Is there a 2nd Prospect?' onChange={handleSecondPersonChange} />
+                    <Checkbox name={`${fullPath}.selected`} label='Is there a 2nd Prospect?' onChange={handleSecondPersonChange} disabled={locked} />
                 </Col>
             </Row>
             {
