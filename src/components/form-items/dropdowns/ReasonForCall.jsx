@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { getReasonForInterest } from '../services/dropdowns';
-import { Select } from './formik-inputs';
+import { getReasonForInterest } from '../../../services/dropdowns';
+import { Select } from '../../formik-inputs';
 
 export const ReasonForCall = ({ basePath }) => {
   const [ reasons, setReasons ] = useState([]);
@@ -25,7 +25,7 @@ export const ReasonForCall = ({ basePath }) => {
         <Select name={name} placeholder='Select One'>
           {reasonsOptions}
         </Select>
-      </FormGroup>
+    </FormGroup>
   )
 }
 

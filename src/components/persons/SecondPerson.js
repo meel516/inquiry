@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'reactstrap';
 import { useFormikContext } from 'formik';
-import { Checkbox } from '../checkboxes';
+import { Checkbox } from '../form-items';
 import { Person } from './components/Person';
 import { Note } from '../Note';
 import { ObjectMappingService } from '../../services/Types';

@@ -5,16 +5,13 @@ import { Form, ErrorMessage, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
 import AdditionalCareElements from '../../components/AdditionalCareElements';
-import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
+import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkbox-groups';
 import AlertConfirm from '../../components/AlertConfirm';
-import { CareType}  from '../../components/CareType';
 import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
 import { InquiryType } from '../../components/InquiryType';
 import { LeadSource } from '../../components/LeadSource';
-import { ResultOfCall } from '../../components/ResultOfCall'
 import { Note } from '../../components/Note';
-import { ReasonForCall } from '../../components/ReasonForCall';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
@@ -22,6 +19,11 @@ import { ObjectMappingService } from "../../services/Types";
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
 import { getCommunitiesErrors } from './validators';
+import {
+  CareType,
+  ResultOfCall,
+  ReasonForCall,
+} from '../../components/form-items';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();

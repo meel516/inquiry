@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { Select } from './formik-inputs';
+import { Select } from '../../formik-inputs';
 
 const resultOfCallArray = [
   { value: 1, label: 'Visit/Assessment/Home Visit Scheduled' },
