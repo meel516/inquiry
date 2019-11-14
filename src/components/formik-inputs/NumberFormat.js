@@ -17,7 +17,7 @@ export const NumberFormat = ({ name, className, disabled, onChange, onBlur, ...p
             <Number
                 id={name}
                 className={classes}
-                format='(###)-###-####'
+                format='(###) ###-####'
                 mask='_'
                 name={name}
                 disabled={disabled || readOnly}
