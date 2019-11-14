@@ -8,7 +8,7 @@ export const ADLNeeds = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="adlNeeds">
+    <section>
       <Label for="adlNeeds" className="label-format">ADL Needs</Label>
       <Row>
         <Col>

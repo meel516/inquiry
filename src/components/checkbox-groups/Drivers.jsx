@@ -7,7 +7,7 @@ export const Drivers = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="drivers">
+    <section>
       <Label for="drivers" className="label-format">Drivers</Label>
       <Row>
         <Col>
