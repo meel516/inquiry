@@ -25,25 +25,31 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
         .then((data) => {
           setDuplicateContacts(data);
           setRunDuplicateCheck(false);
-          setShowModal(true)
+          setShowModal(true);
         })
     }
   }, [contact, runDuplicateCheck, setRunDuplicateCheck, setDuplicateContacts, setShowModal]);
   const closeModal = useCallback(() => setShowModal(false), [setShowModal]);
-  const submitModal = useCallback((selectedContact, selectedLead) => {
+  const submitModal = useCallback((selectedContact, selectedLead = null) => {
     const duplicateContactData = duplicateContacts.find(q => q.contactId === selectedContact.contactid);
     const contactUpdates = duplicateContactData ? ObjectMappingService.createContact(duplicateContactData) : {}
-    const leadFieldOverrides = isLeadFromContactCenterBuilding(selectedLead) ? {}
-      : { inquiryType: 0,
-          leadSource: 0,
-          leadSourceDetail: 0,
-          additionalDetail: '' };
-    const leadUpdates = {
-      ...selectedLead,
-      ...leadFieldOverrides,
+    let leadUpdates = {
       [TYPE]: contactUpdates,
       callerType: !contactUpdates.gender ? undefined : contactUpdates.gender,
     };
+
+    if (selectedLead) {
+      const leadFieldOverrides = isLeadFromContactCenterBuilding(selectedLead) ? {}
+        : { inquiryType: 0,
+            leadSource: 0,
+            leadSourceDetail: 0,
+            additionalDetail: '' };
+      leadUpdates = {
+        ...leadUpdates,
+        ...selectedLead,
+        ...leadFieldOverrides,
+      };
+    }
 
     updateLead(leadUpdates);
     setShowModal(false);

@@ -29,12 +29,7 @@ export const ContactMatchesModal = ({ isOpen, onClose, onSubmit, rows }) => {
             setShowLeadDataModal(true);
         }
     }, [setLeadData, setSelectedContact, setShowLeadDataModal, salesService]);
-    const handleClose = useCallback((closeAll = false) => {
-        setShowLeadDataModal(false);
-        if (closeAll) {
-            onClose();
-        }
-    }, [onClose, setShowLeadDataModal]);
+    const handleClose = useCallback(() => setShowLeadDataModal(false), [setShowLeadDataModal]);
     const submitModal = useCallback((selectedLead) => {
         setShowLeadDataModal(false);
         onSubmit(selectedContact, selectedLead);
