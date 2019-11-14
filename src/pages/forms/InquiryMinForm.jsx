@@ -107,7 +107,7 @@ class InquiryForm extends React.Component {
       mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
       notes: { ...values.lead.notes, ...lead.notes },
       nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
-      prospect: { ...values.lead.prospect, ...lead.prospect },
+      prospect: { ...values.lead.prospect, ...lead.prospect, age: lead.prospect.age || '' },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
     setFieldValue('lead', newLead);
