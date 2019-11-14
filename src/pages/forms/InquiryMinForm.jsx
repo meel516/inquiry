@@ -15,7 +15,7 @@ import { LeadSource } from '../../components/LeadSource';
 import ResultOfCall from '../../components/ResultOfCall'
 import { Note } from '../../components/Note';
 import ReasonForCall from '../../components/ReasonForCall';
-import VeteranStatus from '../../components/VeteranStatus';
+import { VeteranStatus } from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
@@ -252,13 +252,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <VeteranStatus
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.prospect.veteranStatus}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
+            <VeteranStatus basePath='lead.prospect' />
           </Col>
         </Row>
         <Row>
