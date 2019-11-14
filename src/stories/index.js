@@ -6,7 +6,7 @@ import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
 
-// Inquiry Form Imports
+// Connection Center Application Imports
 import AdditionalCareElements from '../Components/AdditionalCareElements';
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
@@ -21,4 +21,4 @@ storiesOf('Button', module)
     </Button>
   ));
 
-// TODO: add simple react inquiry form stories here (https://www.learnstorybook.com/react/en/simple-component/)
+// TODO: add simple react Connection Center Application stories here (https://www.learnstorybook.com/react/en/simple-component/)
