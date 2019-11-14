@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { Form, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
-import AdditionalCareElements from '../../components/AdditionalCareElements';
+import { AdditionalCareElements } from '../../components/additional-care-elements';
 import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
@@ -123,7 +123,6 @@ class InquiryForm extends React.Component {
       isSubmitting,
       handleChange,
       handleBlur,
-      setFieldValue,
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
@@ -164,11 +163,7 @@ class InquiryForm extends React.Component {
             </Col>
           </Row>
           <br />
-          <AdditionalCareElements
-            lead={values.lead}
-            setFieldValue={setFieldValue}
-            isReadOnly={status.readOnly}
-          />
+          <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
           <br />
           <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
           <br />
