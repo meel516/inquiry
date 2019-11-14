@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -18,7 +18,7 @@ export const ReactSelect = ({
     const handleBlur = useOnBlurWrapper(name, field, onBlur);
 
     return (
-        <Fragment>
+        <>
             <Select
                 options={options}
                 onChange={handleChange}
@@ -30,7 +30,7 @@ export const ReactSelect = ({
             { meta.touched && meta.error ? (
                 <Alert color="danger" className="alert-smaller-size">{meta.error}</Alert>
             ) : null}
-        </Fragment>
+        </>
     );
 }
 

@@ -74,7 +74,7 @@ class SalesAPIService {
               if (tmpGender) {
                 lead.callerType = tmpGender;
               } else {
-                lead.callerType = 0;
+                lead.callerType = '';
               }
             }
           }
@@ -84,7 +84,7 @@ class SalesAPIService {
             if (tmpGender) {
               lead.callerType = tmpGender;
             } else {
-              lead.callerType = 0;
+              lead.callerType = '';
             }
           }
 

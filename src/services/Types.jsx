@@ -182,23 +182,23 @@ class ObjectMappingService {
             contact.masterId = salesContact.masterId;
             contact.firstName = salesContact.firstName;
             contact.lastName = salesContact.lastName;
-            contact.email = salesContact.emailAddress;
+            contact.email = salesContact.emailAddress || '';
             contact.age = salesContact.age;
             contact.gender = salesContact.gender;
             contact.veteranStatus = salesContact.veteranStatus;
             //contact.currentSituation = salesContact.currentSituation;
             const address = this.createEmptyAddress();
             if (salesContact.address) {
-                const salesAddress = salesContact.address
-                address.addressId = salesAddress.addressId
-                address.addressType = salesAddress.addressType
-                address.primary = salesAddress.primary
-                address.active = salesAddress.active
-                address.line1 = salesAddress.addressLine1
-                address.line2 = salesAddress.addressLine2
-                address.city = salesAddress.city
-                address.state = salesAddress.stateProv
-                address.zip = salesAddress.zipPostalCode
+                const salesAddress = salesContact.address;
+                address.addressId = salesAddress.addressId;
+                address.addressType = salesAddress.addressType;
+                address.primary = salesAddress.primary;
+                address.active = salesAddress.active;
+                address.line1 = salesAddress.addressLine1 || '';
+                address.line2 = salesAddress.addressLine2 || '';
+                address.city = salesAddress.city || '';
+                address.state = salesAddress.stateProv || '';
+                address.zip = salesAddress.zipPostalCode || '';
             }
             contact.address = address;
             if (salesContact.phoneNumbers) {
