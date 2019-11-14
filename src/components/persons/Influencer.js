@@ -43,7 +43,7 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
         : { inquiryType: 0,
             leadSource: 0,
             leadSourceDetail: 0,
-            additionalDetail: '' };
+            leadSourceSubDetail: 0 };
       leadUpdates = {
         ...leadUpdates,
         ...selectedLead,

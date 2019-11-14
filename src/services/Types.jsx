@@ -573,6 +573,7 @@ class ObjectMappingService {
         const salesFormDetails = {}
         const salesFormDetailsProspect = prospectToEloquaContact(lead);
         const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
+        debugger;
         const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
         const salesFormDetailsCareType = leadToEloquaCareType(lead);
         const salesInquiryForm = {}
@@ -612,7 +613,7 @@ class ObjectMappingService {
         // Misc.
         salesFormDetails.resultOfCall = lead.resultOfCall;
         salesFormDetails.callingFor = lead.callingFor;
-        salesFormDetails.additionalDetail = lead.additionalDetail;
+        //salesFormDetails.additionalDetail = lead.additionalDetail;
         salesFormDetails.callerType = lead.callerType;
         salesFormDetails.situation2 = lead.notes.secondPersonNote;
         salesFormDetails.umid = lead.umid;

@@ -272,7 +272,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
+            <LeadSource leadSource={values.lead.leadSource} leadSourceDetail={values.lead.leadSourceDetail} locked={isLocked && isContactCenterBuildingId} />
           </Col>
         </Row>
         <Row>
