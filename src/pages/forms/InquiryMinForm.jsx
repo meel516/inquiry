@@ -22,6 +22,7 @@ import { ObjectMappingService } from "../../services/Types";
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
 import { getCommunitiesErrors } from './validators';
+import { StyledFormSection } from './styled';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
@@ -144,7 +145,7 @@ class InquiryForm extends React.Component {
         <section>
           <div ref={this.TOP}></div>
         </section>
-        <section className="influencer-section">
+        <StyledFormSection>
           <Influencer
             basePath='lead'
             contact={values.lead.influencer}
@@ -153,8 +154,7 @@ class InquiryForm extends React.Component {
             isLeadFromContactCenterBuilding={this.isLeadFromContactCenterBuilding}
             locked={isLocked || isExistingContact}
           />
-        </section>
-        <br />
+        </StyledFormSection>
         <section className="prospect-section">
           <Note name='lead.notes.situation' label="Situation" rows={6} />
           <Row>
