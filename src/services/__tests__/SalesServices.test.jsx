@@ -183,7 +183,7 @@ describe('service send request testing', () => {
 })
 
 
-describe('submission of inquiry form', () => {
+describe('submission of Connection Center Application', () => {
 
     test('test successful processing of the entire submission process', () => {
 
