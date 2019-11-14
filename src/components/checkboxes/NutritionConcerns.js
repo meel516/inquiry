@@ -1,0 +1,28 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Col, Label, Row } from 'reactstrap';
+import { Checkbox } from './Checkbox';
+
+const path = 'nutritionConcerns';
+
+export const NutritionConcerns = ({ basePath }) => (
+    <section>
+        <Label className="label-format">Nutrition Concerns</Label>
+        <Row>
+            <Col>
+                <Checkbox className='col-4' name={`${basePath}.${path}.diabetes`} label='Diabetes Diagnosis' />
+                <Checkbox className='col-4' name={`${basePath}.${path}.lowSalt`} label='Low Salt-Low Fat Diet Restrictions' />
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                <Checkbox className='col-4' name={`${basePath}.${path}.prescribedDiet`} label='Other Prescribed Diet Restrictions' />
+                <Checkbox className='col-4' name={`${basePath}.${path}.notEatingWell`} label='Not Eating Consistently or Well' />
+            </Col>
+        </Row>
+    </section>
+)
+
+NutritionConcerns.propTypes = {
+    basePath: PropTypes.string.isRequired,
+}
