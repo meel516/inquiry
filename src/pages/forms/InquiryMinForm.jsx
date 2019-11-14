@@ -225,8 +225,7 @@ class InquiryForm extends React.Component {
           <Col md="5">
             <FormGroup>
               <Label for="lead.callingFor" className="label-format required-field">I am calling for</Label>
-              <Select name="lead.callingFor" disabled={isLocked}>
-                <option value="">Select One</option>
+              <Select name="lead.callingFor" disabled={isLocked} placeholder='Select One'>
                 <option>Myself</option>
                 <option>Parent</option>
                 <option>Spouse</option>
