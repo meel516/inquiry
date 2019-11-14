@@ -1,8 +1,29 @@
 import { useCallback } from 'react';
 
+export const useHandleChange = (field, onChange) => {
+    const handleChange = useCallback((e) => {
+        field.onChange(e);
+        if (typeof(onChange) === 'function') {
+            onChange(e);
+        }
+    }, [field, onChange]);
+
+    return handleChange;
+}
+
+export const useHandleBlur = (field, onBlur) => {
+    const handleBlur = useCallback((e) => {
+        field.onBlur(e);
+        if (typeof(onBlur) === 'function') {
+            onBlur(e);
+        }
+    }, [field, onBlur]);
+
+    return handleBlur;
+}
+
 // These hooks are used on third-party react components that do not expose the raw event object from event handlers.
 // The 'name' field is attached to the event target so Formik's field handlers work as expected.
-
 export const useOnChangeWrapper = (name, field, onChange, valueXform = x => x) => {
     const handleChange = useCallback((value) => {
         // Create a fake event so Formik's change handler also calls 'setFieldValue' at the end of this function:

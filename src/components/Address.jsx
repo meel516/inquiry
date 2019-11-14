@@ -1,131 +1,98 @@
-import React from 'react'
-import { Alert, Col, Input, FormGroup, Label, Row } from 'reactstrap'
+import React, { useEffect, useState, useMemo } from 'react'
+import { Col, FormGroup, Label, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
-import { ErrorMessage } from 'formik';
-
 import { getAddressStates } from '../services/dropdowns'
+import { Input, Select } from './formik-inputs';
 
-export default class Address extends React.Component {
-  state = {
-    states: [],
-    type: this.props.type,
-  }
 
-  componentDidMount() {
+export const Address = ({ basePath, locked = false }) => {
+  const [ states, setStates ] = useState([]);
+
+  useEffect(() => {
     getAddressStates()
-      .then((data) => {
-        this.setState({ states: data })
-      })
-      .catch(error => console.log(error));
-  }
+      .then((data) => setStates(data));
+  }, [setStates]);
 
-  handleFieldChange = (e) => {
-    const { target: { value, name } } = e;
-    const { type } = this.props;
-    this.props.onChange(type, name, value);
-  }
+  const inputNames = useMemo(() => {
+    return {
+      lineone: `${basePath}.address.line1`,
+      linetwo: `${basePath}.address.line2`,
+      city: `${basePath}.address.city`,
+      state: `${basePath}.address.state`,
+      zip: `${basePath}.address.zip`,
+    }
+  }, [basePath]);
 
-  render() {
-    const { states } = this.state || [];
-    const options = (states || []).map((state) => {
+  const stateOptions = useMemo(() => {
+    return states.map((state) => {
       return <option key={state.value} value={state.value}>{state.text}</option>
     });
-    const { address } = this.props || {};
+  }, [states]);
 
-    return (
-      <section className="Address">
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label htmlFor="line1" className="label-format">Address 1</Label>
-              <Input 
-                type="text" 
-                name={`lead.${this.props.type}.address.line1`} 
-                value={(address ? (address.line1 || '') : '')} 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
-                readOnly={this.props.isReadOnly}
-                placeholder="Street Address" 
-              />
-              <ErrorMessage name={`lead.${this.props.type}.address.line1`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="line2" className="label-format">Address 2</Label>
-              <Input 
-                type="text" 
-                name={`lead.${this.props.type}.address.line2`} 
-                value={(address ? (address.line2 || '') : '')} 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
-                readOnly={this.props.isReadOnly}
-                placeholder="Apartment, Studio, or Floor" 
-              />
-              <ErrorMessage name={`lead.${this.props.type}.address.line2`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for="city" className="label-format">City</Label>
-              <Input 
-                type="text" 
-                name={`lead.${this.props.type}.address.city`} 
-                value={(address ? (address.city || '') : '')} 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
-                readOnly={this.props.isReadOnly}
-                placeholder="City"
-              />
-              <ErrorMessage name={`lead.${this.props.type}.address.city`} render={msg => <Alert color="danger" className="alert-smaller-size">{msg}</Alert>} />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="state" className="label-format">State</Label>
-              <Input 
-                type="select" 
-                name={`lead.${this.props.type}.address.state`} 
-                value={(address ? (address.state || '') : '')} 
-                onChange={this.props.handleChange}
-                disabled={this.props.isReadOnly}
-              >
-                <option value="">Select One</option>
-                {options}
-              </Input>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="zip" className="label-format">Zip</Label>
-              <Input 
-                type="number" 
-                name={`lead.${this.props.type}.address.zip`} 
-                value={(address ? (address.zip || '') : '')} 
-                onChange={this.props.handleChange} 
-                onBlur={this.props.handleBlur} 
-                readOnly={this.props.isReadOnly}
-                placeholder="Zip" 
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-      </section>
-    )
-  }
+  return (
+    <section className="Address">
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label htmlFor={inputNames.lineone} className="label-format">Address 1</Label>
+            <Input 
+              type="text" 
+              name={inputNames.lineone}
+              placeholder="Street Address"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.linetwo} className="label-format">Address 2</Label>
+            <Input 
+              type="text" 
+              name={inputNames.linetwo}
+              placeholder="Apartment, Studio, or Floor"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.city} className="label-format">City</Label>
+            <Input 
+              type="text" 
+              name={inputNames.city}
+              placeholder="City"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.state} className="label-format">State</Label>
+            <Select name={inputNames.state} disabled={locked} >
+              <option value="">Select One</option>
+              {stateOptions}
+            </Select>
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.zip} className="label-format">Zip</Label>
+            <Input 
+              type="number" 
+              name={inputNames.zip} 
+              placeholder="Zip"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+    </section>
+  );
 }
 
 Address.propTypes = {
-  type: PropTypes.string.isRequired,
-  address: PropTypes.object,
-  handleChange: PropTypes.func.isRequired,
-  handleBlur: PropTypes.func.isRequired,
-
-  isReadOnly: PropTypes.bool,
-}
-
-Address.defaultProps = {
-  isReadOnly: false
+  basePath: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

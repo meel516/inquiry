@@ -1,31 +1,40 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Input as ReactstrapText } from 'reactstrap';
+import { Alert, Input as ReactstrapText } from 'reactstrap';
 import { useField, useFormikContext } from 'formik';
+import { useHandleChange, useHandleBlur } from './hooks';
 
 export const Input = ({
     name,
     onChange,
+    onBlur,
     ...props
 }) => {
     const { status: { readOnly }} = useFormikContext();
-    const [ field ] = useField(name);
-    const handleChange = useCallback((e) => {
-        field.onChange(e);
-        if (typeof(onChange) === 'function') {
-            onChange(e);
-        }
-    }, [field, onChange]);
+    const [ field, meta ] = useField(name);
+    const handleChange = useHandleChange(field, onChange);
+    const handleBlur = useHandleBlur(field, onBlur);
+
+    const checkboxProps = props.type === 'checkbox'
+        ? { checked: field.value }
+        : {};
 
     return (
-        <ReactstrapText
-            id={name}
-            name={name}
-            disabled={props.disabled || readOnly}
-            { ...field }
-            { ...props }
-            onChange={handleChange}
-        />
+        <>
+            <ReactstrapText
+                id={name}
+                name={name}
+                disabled={props.disabled || readOnly}
+                { ...field }
+                { ...props }
+                { ...checkboxProps }
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            { meta.touched && meta.error ? (
+                <Alert color='danger' className='alert-smaller-size'>{meta.error}</Alert>
+            ) : null}
+        </>
     );
 }
 
@@ -34,4 +43,5 @@ Input.propTypes = {
     type: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
 }

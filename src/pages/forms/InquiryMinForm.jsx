@@ -8,15 +8,13 @@ import AdditionalCareElements from '../../components/AdditionalCareElements';
 import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
 import CareType from '../../components/CareType';
-import Contact from '../../components/Contact';
+import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
-import InquiryType from '../../components/InquiryType';
-import LeadSource from '../../components/LeadSource';
+import { InquiryType } from '../../components/InquiryType';
+import { LeadSource } from '../../components/LeadSource';
 import ResultOfCall from '../../components/ResultOfCall'
-import Note from '../../components/Note';
-import Prospect from '../../components/Prospect';
+import { Note } from '../../components/Note';
 import ReasonForCall from '../../components/ReasonForCall';
-import SecondPerson from '../../components/SecondPerson';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
@@ -92,6 +90,29 @@ class InquiryForm extends React.Component {
     }
   }
 
+  isLeadFromContactCenterBuilding = (lead) => {
+    return lead.buildingId === 225707;
+  }
+
+  updateLead = (lead) => {
+    const { values, setFieldValue, validateForm } = this.props;
+    const newLead = {
+      ...values.lead,
+      ...lead,
+      adlNeeds: { ...values.lead.adlNeeds, ...lead.adlNeeds },
+      drivers: { ...values.lead.drivers, ...lead.driveers },
+      financialOptions: { ...values.lead.financialOptions, ...lead.financialOptions },
+      memoryConcerns: { ...values.lead.memoryConcerns, ...lead.memoryConcerns },
+      mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
+      notes: { ...values.lead.notes, ...lead.notes },
+      nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
+      prospect: { ...values.lead.prospect, ...lead.prospect, age: lead.prospect.age || '' },
+      secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
+    };
+    setFieldValue('lead', newLead);
+    validateForm( { ...values, lead: newLead });
+  }
+
   render() {
     const {
       values,
@@ -104,8 +125,9 @@ class InquiryForm extends React.Component {
       setFieldValue,
     } = this.props;
 
-    const isLocked = (values.lead.leadId != null)
-    const isContactCenterBuildingId = (values.lead.buildingId === 225707 ? true : false)
+    const isLocked = !!values.lead.leadId;
+    const isExistingContact = !!values.lead.influencer.contactId;
+    const isContactCenterBuildingId = this.isLeadFromContactCenterBuilding(values.lead);
 
     if (this.state.loading) {
       return (
@@ -123,32 +145,18 @@ class InquiryForm extends React.Component {
           <div ref={this.TOP}></div>
         </section>
         <section className="influencer-section">
-          <Contact
-            key="influencer-contact"
-            type="influencer"
+          <Influencer
+            basePath='lead'
             contact={values.lead.influencer}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
             isReadOnly={status.readOnly}
-            duplicateCheck={true}
-            hasAddress={true}
-            setFieldValue={setFieldValue}
-            isContactCenter={isContactCenterBuildingId}
-            {...this.props}
-          >
-          </Contact>
+            updateLead={this.updateLead}
+            isLeadFromContactCenterBuilding={this.isLeadFromContactCenterBuilding}
+            locked={isLocked || isExistingContact}
+          />
         </section>
         <br />
         <section className="prospect-section">
-          <Note
-            labelId="situationLabel"
-            label="Situation"
-            id="situation"
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            rows={6}
-          />
+          <Note name='lead.notes.situation' label="Situation" rows={6} />
           <Row>
             <Col>
               <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
@@ -161,15 +169,7 @@ class InquiryForm extends React.Component {
             isReadOnly={status.readOnly}
           />
           <br />
-          <Prospect
-            contact={values.lead.prospect}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            duplicateCheck={false}
-            showProspect={values.lead.callingFor === 'Myself'}
-            {...this.props}
-          />
+          <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
           <br />
           <CareType
             handleChange={handleChange}
@@ -180,27 +180,13 @@ class InquiryForm extends React.Component {
           <br />
           <Row>
             <Col>
-              <Note
-                labelId="passionPersonalityLabel"
-                label="Passions &amp; Personality"
-                id="passionsPersonality"
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                isReadOnly={status.readOnly}
-              />
+              <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
             </Col>
           </Row>
         </section>
         <Row>
           <Col>
-            <Note
-              labelId="financialSituationLabel"
-              label="Financial Situation"
-              id="financialSituation"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-            />
+            <Note name='lead.notes.financialSituation' label="Financial Situation" />
           </Col>
         </Row>
         <br />
@@ -215,29 +201,13 @@ class InquiryForm extends React.Component {
         <br />
         <Row>
           <Col>
-            <Note
-              labelId="additionalNotesLabel"
-              label="Additional Notes"
-              id="additionalNotes"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-            />
+            <Note name='lead.notes.additionalNotes' label="Additional Notes" />
           </Col>
         </Row>
         <br />
           <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
         <br />
-        <SecondPerson
-          key="secondPerson-contact"
-          contact={values.lead.secondPerson}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
-          isReadOnly={status.readOnly}
-          duplicateCheck={false}
-          {...this.props}
-        />
-        <br />
+        <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
         <Row>
           <Col md="5">
             <ResultOfCall
@@ -286,14 +256,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <InquiryType
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.inquiryType}
-              isReadOnly={status.readOnly || isLocked}
-              isContactCenter={status.readOnly || isContactCenterBuildingId}
-              {...this.props}
-            />
+            <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
           </Col>
         </Row>
         <Row>
@@ -309,17 +272,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <LeadSource key="leadsource"
-              defaultLeadSource={values.lead.leadSource}
-              defaultLeadSourceDetail={values.lead.leadSourceDetail}
-              defaultLeadSourceSubDetail={values.lead.leadSourceSubDetail}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              setFieldValue={setFieldValue}
-              isReadOnly={status.readOnly || isLocked}
-              isContactCenter={status.readOnly || isContactCenterBuildingId}
-              {...this.props}
-            />
+            <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
           </Col>
         </Row>
         <Row>
@@ -382,6 +335,7 @@ const EnhancedInquiryForm = withFormik({
   displayName: 'InquiryForm',
   enableReinitialize: true,
   validationSchema: formValidationSchema,
+  validateOnChange: false,
 
   validate: (values) => {
     const errors = getCommunitiesErrors(values.communities);
