@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import AdditionalCareElements from '../../components/AdditionalCareElements';
 import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
 import AlertConfirm from '../../components/AlertConfirm';
-import CareType from '../../components/CareType';
+import { CareType}  from '../../components/CareType';
 import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
 import { InquiryType } from '../../components/InquiryType';
 import { LeadSource } from '../../components/LeadSource';
-import ResultOfCall from '../../components/ResultOfCall'
+import { ResultOfCall } from '../../components/ResultOfCall'
 import { Note } from '../../components/Note';
-import ReasonForCall from '../../components/ReasonForCall';
+import { ReasonForCall } from '../../components/ReasonForCall';
 import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
@@ -171,12 +171,7 @@ class InquiryForm extends React.Component {
           <br />
           <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
           <br />
-          <CareType
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            defaultValue={values.lead.careType}
-          />
+          <CareType basePath='lead' />
           <br />
           <Row>
             <Col>
@@ -210,14 +205,7 @@ class InquiryForm extends React.Component {
         <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
         <Row>
           <Col md="5">
-            <ResultOfCall
-              key="nextsteps"
-              id="nextStepsLabel"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
+            <ResultOfCall basePath='lead' />
           </Col>
         </Row>
         <Row>
@@ -246,12 +234,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <ReasonForCall
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.reasonForCall}
-              isReadOnly={status.readOnly}
-            />
+            <ReasonForCall basePath='lead' />
           </Col>
         </Row>
         <Row>
