@@ -23,7 +23,7 @@ export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
   const handleAdditionalCareChange = useCallback((currentSelections) => {
     const elements = currentSelections ? currentSelections.map(q => q.value) : [];
     setSelections(new Set(elements));
-  }, []);
+  }, [setSelections]);
 
   return (
     <>
@@ -33,6 +33,7 @@ export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
             <Label className="label-format">Additional Care Elements Discovered</Label>
             <Select
               isMulti={true}
+              name='additionalCareElements'
               onChange={handleAdditionalCareChange}
               options={additionalCareElements}
               isDisabled={isReadOnly}

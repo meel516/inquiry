@@ -122,7 +122,6 @@ class InquiryForm extends React.Component {
       isSubmitting,
       handleChange,
       handleBlur,
-      setFieldValue,
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
