@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Label, Row } from 'reactstrap';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items';
 
 const path = 'nutritionConcerns';
 
