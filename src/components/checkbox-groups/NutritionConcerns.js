@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Label, Row } from 'reactstrap';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 const path = 'nutritionConcerns';
 
 export const NutritionConcerns = ({ basePath }) => (
-    <section>
+    <StyledCheckboxGroupWrapper>
         <Label className="label-format">Nutrition Concerns</Label>
         <Row>
             <Col>
@@ -20,7 +21,7 @@ export const NutritionConcerns = ({ basePath }) => (
                 <Checkbox className='col-4' name={`${basePath}.${path}.notEatingWell`} label='Not Eating Consistently or Well' />
             </Col>
         </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
 )
 
 NutritionConcerns.propTypes = {

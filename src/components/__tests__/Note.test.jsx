@@ -8,7 +8,7 @@ describe('note component testing', () => {
         expect(shallow(<Note 
             name='lead.notes.additionalNotes'
             label="Additional Notes"
-            isReadOnly={false}
+            locked={false}
         />)).toMatchSnapshot();
     })
 

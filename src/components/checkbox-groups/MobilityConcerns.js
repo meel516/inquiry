@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Label, Row } from 'reactstrap';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 const path = 'mobilityConcerns';
 
 export const MobilityConcerns = ({ basePath }) => (
-    <section>
+    <StyledCheckboxGroupWrapper>
         <Label className="label-format">Mobility Concerns</Label>
         <Row>
           <Col>
@@ -26,7 +27,7 @@ export const MobilityConcerns = ({ basePath }) => (
             <Checkbox className='col-4' name={`${basePath}.${path}.usesCane`} label='Regularly Uses Cane' />
           </Col>
         </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
 )
 
 MobilityConcerns.propTypes = {
