@@ -573,7 +573,6 @@ class ObjectMappingService {
         const salesFormDetails = {}
         const salesFormDetailsProspect = prospectToEloquaContact(lead);
         const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
-        debugger;
         const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
         const salesFormDetailsCareType = leadToEloquaCareType(lead);
         const salesInquiryForm = {}
