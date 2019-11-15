@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Col, FormGroup, Row, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { Note } from '../../Note';
+import { Note } from '../../form-items';
 import { DateTimePicker, Select } from '../../formik-inputs';
 import freeMealListings from '../../../constants/free-meal-listings';
 

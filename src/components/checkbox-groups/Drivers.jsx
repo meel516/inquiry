@@ -1,13 +1,13 @@
 import React from 'react'
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items/Checkbox';
 
 export const Drivers = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="drivers">
+    <section>
       <Label for="drivers" className="label-format">Drivers</Label>
       <Row>
         <Col>

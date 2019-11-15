@@ -1,14 +1,14 @@
 import React from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items/Checkbox';
 
 
 export const ADLNeeds = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="adlNeeds">
+    <section>
       <Label for="adlNeeds" className="label-format">ADL Needs</Label>
       <Row>
         <Col>

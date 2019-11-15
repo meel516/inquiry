@@ -1,21 +1,16 @@
 import React from 'react';
-import { Alert, Col, FormGroup, Input, Label, Row, Spinner } from 'reactstrap';
+import { Col, Row, Spinner } from 'reactstrap';
 import queryString from 'query-string';
-import { Form, ErrorMessage, withFormik } from 'formik';
+import { Form, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
-import AdditionalCareElements from '../../components/AdditionalCareElements';
-import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
+import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkbox-groups';
+import { AdditionalCareElements } from '../../components/additional-care-elements';
 import AlertConfirm from '../../components/AlertConfirm';
-import CareType from '../../components/CareType';
 import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
 import { InquiryType } from '../../components/InquiryType';
 import { LeadSource } from '../../components/LeadSource';
-import ResultOfCall from '../../components/ResultOfCall'
-import { Note } from '../../components/Note';
-import ReasonForCall from '../../components/ReasonForCall';
-import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
@@ -23,6 +18,16 @@ import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
 import { getCommunitiesErrors } from './validators';
 import { StyledFormSection } from './styled';
+import {
+  CallerType,
+  CallingFor,
+  CareType,
+  Note,
+  ResultOfCall,
+  ReasonForCall,
+  UMID,
+  VeteranStatus,
+} from '../../components/form-items';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
@@ -96,6 +101,9 @@ class InquiryForm extends React.Component {
   }
 
   updateLead = (lead) => {
+    const age = lead.prospect
+      ? lead.prospect.age || ''
+      : '';
     const { values, setFieldValue, validateForm } = this.props;
     const newLead = {
       ...values.lead,
@@ -107,7 +115,7 @@ class InquiryForm extends React.Component {
       mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
       notes: { ...values.lead.notes, ...lead.notes },
       nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
-      prospect: { ...values.lead.prospect, ...lead.prospect, age: lead.prospect.age || '' },
+      prospect: { ...values.lead.prospect, ...lead.prospect, age },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
     setFieldValue('lead', newLead);
@@ -120,10 +128,7 @@ class InquiryForm extends React.Component {
       status,
       errors,
       isValid,
-      isSubmitting,
-      handleChange,
-      handleBlur,
-      setFieldValue,
+      isSubmitting
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
@@ -163,20 +168,11 @@ class InquiryForm extends React.Component {
             </Col>
           </Row>
           <br />
-          <AdditionalCareElements
-            lead={values.lead}
-            setFieldValue={setFieldValue}
-            isReadOnly={status.readOnly}
-          />
+          <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
           <br />
           <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
           <br />
-          <CareType
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            defaultValue={values.lead.careType}
-          />
+          <CareType basePath='lead' />
           <br />
           <Row>
             <Col>
@@ -210,48 +206,17 @@ class InquiryForm extends React.Component {
         <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
         <Row>
           <Col md="5">
-            <ResultOfCall
-              key="nextsteps"
-              id="nextStepsLabel"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
+            <ResultOfCall basePath='lead' />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <FormGroup>
-              <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <Input 
-                type="select" 
-                id="callingFor" 
-                name="lead.callingFor" 
-                onChange={handleChange} 
-                onBlur={handleBlur} 
-                disabled={(status.readOnly || isLocked)}
-                value={values.lead.callingFor}
-              >
-                <option value="">Select One</option>
-                <option>Myself</option>
-                <option>Parent</option>
-                <option>Spouse</option>
-                <option>Friend</option>
-                <option>Other</option>
-              </Input>
-              <ErrorMessage name="lead.callingFor" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-            </FormGroup>
+              <CallingFor basePath='lead' locked={isLocked} />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <ReasonForCall
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.reasonForCall}
-              isReadOnly={status.readOnly}
-            />
+            <ReasonForCall basePath='lead' />
           </Col>
         </Row>
         <Row>
@@ -261,13 +226,7 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <VeteranStatus
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.prospect.veteranStatus}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
+            <VeteranStatus basePath='lead.prospect' />
           </Col>
         </Row>
         <Row>
@@ -277,38 +236,12 @@ class InquiryForm extends React.Component {
         </Row>
         <Row>
           <Col md="5">
-            <FormGroup>
-              <Label for="umid" className="label-format required-field">UMID</Label>
-              <Input name='lead.umid'
-                type="text"
-                id="umid"
-                value={values.lead.umid || ''}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                readOnly={status.readOnly}
-                placeholder="UMID" />
-              <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-            </FormGroup>
+            <UMID basePath='lead' />
           </Col>
         </Row>
         <Row>
           <Col md="5">
-            <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
-            <select
-              className="form-control"
-              id="callerType"
-              name="lead.callerType"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              disabled={status.readOnly}
-              value={values.lead.callerType}
-            >
-              <option value="">Select One</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-              <option value="U">Unknown</option>
-            </select>
-            <ErrorMessage name="lead.callerType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
+            <CallerType basePath='lead' />
           </Col>
         </Row>
         <br />

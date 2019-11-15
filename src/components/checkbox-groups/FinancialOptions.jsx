@@ -1,13 +1,13 @@
 import React from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items/Checkbox';
 
 export const FinancialOptions = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="financialOptions">
+    <section>
       <Label for="financialOptions" className="label-format">Financial Options</Label>
       <Row>
         <Col>
