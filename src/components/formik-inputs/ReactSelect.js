@@ -24,7 +24,7 @@ export const ReactSelect = ({
                 onChange={handleChange}
                 name={name}
                 id={name}
-                disabled={disabled || readOnly}
+                isDisabled={disabled || readOnly}
                 onBlur={handleBlur}
             />
             { meta.touched && meta.error ? (
