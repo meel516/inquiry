@@ -1,27 +1,33 @@
 import React from 'react';
-import { Alert, Col, FormGroup, Input, Label, Row, Spinner } from 'reactstrap';
+import { Col, Row, Spinner } from 'reactstrap';
 import queryString from 'query-string';
-import { Form, ErrorMessage, withFormik } from 'formik';
+import { Form, withFormik } from 'formik';
 import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
-import AdditionalCareElements from '../../components/AdditionalCareElements';
-import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkboxes';
+import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkbox-groups';
+import { AdditionalCareElements } from '../../components/additional-care-elements';
 import AlertConfirm from '../../components/AlertConfirm';
-import CareType from '../../components/CareType';
 import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
 import { InquiryType } from '../../components/InquiryType';
 import { LeadSource } from '../../components/LeadSource';
-import ResultOfCall from '../../components/ResultOfCall'
-import { Note } from '../../components/Note';
-import ReasonForCall from '../../components/ReasonForCall';
-import VeteranStatus from '../../components/VeteranStatus';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { ObjectMappingService } from "../../services/Types";
 import { checkAuthentication } from '../../auth/checkAuth';
 import Communities from '../../components/communities';
 import { getCommunitiesErrors } from './validators';
+import { StyledFormSection } from './styled';
+import {
+  CallerType,
+  CallingFor,
+  CareType,
+  Note,
+  ResultOfCall,
+  ReasonForCall,
+  UMID,
+  VeteranStatus,
+} from '../../components/form-items';
 
 class InquiryForm extends React.Component {
   TOP = React.createRef();
@@ -95,6 +101,9 @@ class InquiryForm extends React.Component {
   }
 
   updateLead = (lead) => {
+    const age = lead.prospect
+      ? lead.prospect.age || ''
+      : '';
     const { values, setFieldValue, validateForm } = this.props;
     const newLead = {
       ...values.lead,
@@ -106,7 +115,7 @@ class InquiryForm extends React.Component {
       mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
       notes: { ...values.lead.notes, ...lead.notes },
       nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
-      prospect: { ...values.lead.prospect, ...lead.prospect, age: lead.prospect.age || '' },
+      prospect: { ...values.lead.prospect, ...lead.prospect, age },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
     setFieldValue('lead', newLead);
@@ -119,10 +128,7 @@ class InquiryForm extends React.Component {
       status,
       errors,
       isValid,
-      isSubmitting,
-      handleChange,
-      handleBlur,
-      setFieldValue,
+      isSubmitting
     } = this.props;
 
     const isLocked = !!values.lead.leadId;
@@ -135,16 +141,12 @@ class InquiryForm extends React.Component {
       )
     }
 
-    if (this.props.value && this.props.value.lead) {
-      console.log(`Lead Submitted: ${this.props.value.lead.leadId}`)
-    }
-
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
         <section>
           <div ref={this.TOP}></div>
         </section>
-        <section className="influencer-section">
+        <StyledFormSection id='contactInfo'>
           <Influencer
             basePath='lead'
             contact={values.lead.influencer}
@@ -153,165 +155,71 @@ class InquiryForm extends React.Component {
             isLeadFromContactCenterBuilding={this.isLeadFromContactCenterBuilding}
             locked={isLocked || isExistingContact}
           />
-        </section>
-        <br />
-        <section className="prospect-section">
+        </StyledFormSection>
+        <StyledFormSection id='situation'>
           <Note name='lead.notes.situation' label="Situation" rows={6} />
           <Row>
             <Col>
               <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
             </Col>
           </Row>
-          <br />
-          <AdditionalCareElements
-            lead={values.lead}
-            setFieldValue={setFieldValue}
-            isReadOnly={status.readOnly}
-          />
-          <br />
+          <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
           <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
-          <br />
-          <CareType
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            isReadOnly={status.readOnly}
-            defaultValue={values.lead.careType}
-          />
-          <br />
+          <CareType basePath='lead' />
+        </StyledFormSection>
+        <StyledFormSection id='passionPersonality'>
+          <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
+          <Communities username={values.user.username} />
+        </StyledFormSection>
+        <StyledFormSection id='budget'>
+          <Note name='lead.notes.financialSituation' label="Financial Situation" />
+          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
+          <Note name='lead.notes.additionalNotes' label="Additional Notes" />
+          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
+          <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
+        </StyledFormSection>
+        <StyledFormSection id='resultOfCall'>
           <Row>
-            <Col>
-              <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
+            <Col md="5">
+              <ResultOfCall basePath='lead' />
             </Col>
           </Row>
-        </section>
-        <Row>
-          <Col>
-            <Note name='lead.notes.financialSituation' label="Financial Situation" />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <Communities username={values.user.username} />
-          </Col>
-        </Row>
-        <br />
-        <hr />
-          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
-        <br />
-        <Row>
-          <Col>
-            <Note name='lead.notes.additionalNotes' label="Additional Notes" />
-          </Col>
-        </Row>
-        <br />
-          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
-        <br />
-        <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
-        <Row>
-          <Col md="5">
-            <ResultOfCall
-              key="nextsteps"
-              id="nextStepsLabel"
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <FormGroup>
-              <Label for="callingFor" className="label-format required-field">I am calling for</Label>
-              <Input 
-                type="select" 
-                id="callingFor" 
-                name="lead.callingFor" 
-                onChange={handleChange} 
-                onBlur={handleBlur} 
-                disabled={(status.readOnly || isLocked)}
-                value={values.lead.callingFor}
-              >
-                <option value="">Select One</option>
-                <option>Myself</option>
-                <option>Parent</option>
-                <option>Spouse</option>
-                <option>Friend</option>
-                <option>Other</option>
-              </Input>
-              <ErrorMessage name="lead.callingFor" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <ReasonForCall
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.reasonForCall}
-              isReadOnly={status.readOnly}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <VeteranStatus
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              defaultValue={values.lead.prospect.veteranStatus}
-              isReadOnly={status.readOnly}
-              {...this.props}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} leadSourceDetail={values.lead.leadSourceDetail} locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <FormGroup>
-              <Label for="umid" className="label-format required-field">UMID</Label>
-              <Input name='lead.umid'
-                type="text"
-                id="umid"
-                value={values.lead.umid || ''}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                readOnly={status.readOnly}
-                placeholder="UMID" />
-              <ErrorMessage name="lead.umid" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <Label for="callerType" className="label-format required-field">What is the gender of the caller?</Label>
-            <select
-              className="form-control"
-              id="callerType"
-              name="lead.callerType"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              disabled={status.readOnly}
-              value={values.lead.callerType}
-            >
-              <option value="">Select One</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-              <option value="U">Unknown</option>
-            </select>
-            <ErrorMessage name="lead.callerType" render={msg => <Alert color="danger" className="alert-smaller-size">{msg || 'Field is required!'}</Alert>} />
-          </Col>
-        </Row>
-        <br />
+          <Row>
+            <Col md="5">
+                <CallingFor basePath='lead' locked={isLocked} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <ReasonForCall basePath='lead' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <VeteranStatus basePath='lead.prospect' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <UMID basePath='lead' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <CallerType basePath='lead' />
+            </Col>
+          </Row>
+        </StyledFormSection>
         <div className="float-right">
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'

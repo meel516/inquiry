@@ -617,7 +617,7 @@ class ObjectMappingService {
         salesFormDetails.callerType = lead.callerType;
         salesFormDetails.situation2 = lead.notes.secondPersonNote;
         salesFormDetails.umid = lead.umid;
-        salesFormDetails.advisorName = oktaUser.name;
+        salesFormDetails.advisorUsername = oktaUser.username;
         salesFormDetails.advisorEmail = oktaUser.email;
         salesInquiryForm.formDetails = salesFormDetails;
         

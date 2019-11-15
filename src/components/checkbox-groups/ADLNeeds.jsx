@@ -1,14 +1,15 @@
 import React from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../form-items/Checkbox';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 
 export const ADLNeeds = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section className="adlNeeds">
+    <StyledCheckboxGroupWrapper>
       <Label for="adlNeeds" className="label-format">ADL Needs</Label>
       <Row>
         <Col>
@@ -29,7 +30,7 @@ export const ADLNeeds = ({ basePath, isReadOnly }) => {
           <Checkbox name={`${rootPath}transferring`} label='Transferring' className='col-4' disabled={isReadOnly} />
         </Col>
       </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
   )
 }
 ADLNeeds.propTypes = {
