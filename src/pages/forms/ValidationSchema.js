@@ -111,7 +111,6 @@ const mainFormValidationSchema = object().shape({
         .email("Email must be valid")
         .max(100, 'Email can be at most 100 characters'),
     }),
-    //additionalDetail: string().max(100, 'Additional Detail can be at most 100 characters'),
     umid: string()
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters'),
