@@ -26,7 +26,7 @@ export default function ResultOfCall(props) {
         >
           <option value="">Select One</option>
           {resultOfCallOptionsArray.map((optn) => {
-            return <option key={optn.value} value={optn.value}>{optn.label}</option>
+            return <option key={optn.value} value={optn.label}>{optn.label}</option>
           })}
         </Input>
         <ErrorMessage 
