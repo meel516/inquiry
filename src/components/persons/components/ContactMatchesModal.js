@@ -1,65 +1,75 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
-import ReactDataGrid from 'react-data-grid';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { Modal } from 'reactstrap';
 import Draggable from 'react-draggable';
-import { useDragHandlers, useRowGetter, useSalesService } from './hooks';
-import { LeadDataModal } from './LeadDataModal';
-import { EmptyRowsView } from './EmptyRowsView';
+import { useDragHandlers,  useSalesService } from './hooks';
+import findDuplicates from '../../../services/deduplication/find-duplicates';
+import { ObjectMappingService } from '../../../services/Types'
+import { ContactModalContent } from './ContactModalContent';
+import { LeadModalContent } from './LeadModalContent';
 
-const columns = [
-    { key: 'name', name: 'Contact Name', width: 200, resizable: true },
-    { key: 'phone', name: 'Phone', width: 200, resizable: true },
-    { key: 'email', name: 'Email', width: 200, resizable: true },
-    { key: 'city', name: 'City', width: 200, resizable: true },
-    { key: 'state', name: 'State', width: 200, resizable: true },
-];
-
-export const ContactMatchesModal = ({ isOpen, onClose, onSubmit, rows }) => {
+export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
+    const [ duplicateContacts, setDuplicateContacts ] = useState([]);
     const [ leadData, setLeadData ] = useState([]);
-    const [ showLeadDataModal, setShowLeadDataModal ] = useState(false);
+    const [ showLeadData, setShowLeadData ] = useState(false);
     const [ onStart, onStop ] = useDragHandlers();
     const [ selectedContact, setSelectedContact ] = useState(null);
     const salesService = useSalesService();
-    const rowGetter = useRowGetter(rows);
-    const onRowSelection = useCallback(async (row) => {
+
+    const handleGoBack = useCallback(() => setShowLeadData(false), [setShowLeadData]);
+
+    const submitModal = useCallback((selectedLead) => {
+        const duplicateContactData = duplicateContacts.find(q => q.contactId === selectedContact.contactid);
+        onSubmit(duplicateContactData, selectedLead);
+    }, [selectedContact, duplicateContacts, onSubmit]);
+
+    const onContactSelection = useCallback(async (row) => {
         if (row) {
             const leadData = await salesService.retrieveLeadDataForContactId(row.contactid);
             setLeadData(leadData);
             setSelectedContact(row);
-            setShowLeadDataModal(true);
+            setShowLeadData(true);
         }
-    }, [setLeadData, setSelectedContact, setShowLeadDataModal, salesService]);
-    const handleClose = useCallback(() => setShowLeadDataModal(false), [setShowLeadDataModal]);
-    const submitModal = useCallback((selectedLead) => {
-        setShowLeadDataModal(false);
-        onSubmit(selectedContact, selectedLead);
-    }, [selectedContact, setShowLeadDataModal, onSubmit]);
+    }, [setLeadData, setSelectedContact, setShowLeadData, salesService]);
+
+    const onLeadSelection = useCallback(async (row) => {
+        if (row) {
+            const loadedLeadId = row.ccleadid || row.leadid;
+
+            if (loadedLeadId) {
+                const lead = await salesService.getLeadByLeadId(loadedLeadId);
+                submitModal(lead);
+            }
+        }
+    }, [submitModal, salesService]);
+
+    const contactRows = useMemo(() => {
+        return ObjectMappingService.createContactDuplicateGridContent(duplicateContacts);
+      }, [duplicateContacts]);
+
+    useEffect(() => {
+        findDuplicates(contact)
+            .then((data) => setDuplicateContacts(data))
+    }, [setDuplicateContacts])
 
     return (
-        <Draggable handle=".modalone" { ...{ onStart, onStop }}>
-            <Modal className="modalone" isOpen={isOpen} size="xl">
-                <ModalHeader>Potential Contact Matches</ModalHeader>
-                <ModalBody>
-                    <p>Is this who you are talking to? If so, click the name below, otherwise click "None of These".</p>
-                    <ReactDataGrid
-                        columns={columns}
-                        rowGetter={rowGetter}
-                        rowsCount={rows.length}
-                        minHeight={250}
-                        minWidth={1100}
-                        emptyRowsView={EmptyRowsView}
-                        onRowClick={(_rowId, row) => onRowSelection(row)}
-                    />
-                    <LeadDataModal
-                        isOpen={showLeadDataModal}
-                        onSubmit={submitModal}
-                        onClose={handleClose}
-                        rows={leadData}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button type="button" color="info" size="sm" onClick={onClose}>None of These</Button>
-                </ModalFooter>
+        <Draggable handle=".duplicate-contact-modal" { ...{ onStart, onStop }}>
+            <Modal className="duplicate-contact-modal" isOpen={isOpen} size="xl">
+                {
+                    showLeadData ? (
+                        <LeadModalContent
+                            onRowSelection={onLeadSelection}
+                            onGoBack={handleGoBack}
+                            onSubmit={submitModal}
+                            rows={leadData}
+                        />
+                    ) : (
+                        <ContactModalContent
+                            rows={contactRows}
+                            onRowSelection={onContactSelection}
+                            onClose={onClose}
+                        />
+                    )
+                }
             </Modal>
         </Draggable>
     )

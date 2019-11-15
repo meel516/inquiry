@@ -1,38 +1,26 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Person } from './components/Person';
 import { Address } from '../Address';
 import { ContactMatchesModal } from './components/ContactMatchesModal';
 import canHaveDuplicates from '../../services/deduplication/can-have-duplicates'
-import findDuplicates from '../../services/deduplication/find-duplicates';
 import { ObjectMappingService } from '../../services/Types'
 
 const TYPE = 'influencer';
 
 export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCenterBuilding, locked }) => {
-  const [ duplicateContacts, setDuplicateContacts ] = useState([]);
   const [ runDuplicateCheck, setRunDuplicateCheck ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
 
-  const rows = useMemo(() => {
-    return ObjectMappingService.createContactDuplicateGridContent(duplicateContacts);
-  }, [duplicateContacts]);
-
   const handleDuplicateDependentInputChange = useCallback(() => setRunDuplicateCheck(true), [setRunDuplicateCheck]);
-  const handleDupeCheck = useCallback(async () => {
+  const handleDupeCheck = useCallback(() => {
     if (runDuplicateCheck &&  canHaveDuplicates(contact)) {
-      await findDuplicates(contact)
-        .then((data) => {
-          setDuplicateContacts(data);
-          setRunDuplicateCheck(false);
-          setShowModal(true);
-        })
+      setShowModal(true);
     }
-  }, [contact, runDuplicateCheck, setRunDuplicateCheck, setDuplicateContacts, setShowModal]);
+  }, [contact, runDuplicateCheck, setRunDuplicateCheck, setShowModal]);
   const closeModal = useCallback(() => setShowModal(false), [setShowModal]);
-  const submitModal = useCallback((selectedContact, selectedLead = null) => {
-    const duplicateContactData = duplicateContacts.find(q => q.contactId === selectedContact.contactid);
-    const contactUpdates = duplicateContactData ? ObjectMappingService.createContact(duplicateContactData) : {}
+  const submitModal = useCallback((duplicateContact, selectedLead = null) => {
+    const contactUpdates = duplicateContact ? ObjectMappingService.createContact(duplicateContact) : {}
     let leadUpdates = {
       [TYPE]: contactUpdates,
       callerType: !contactUpdates.gender ? undefined : contactUpdates.gender,
@@ -52,8 +40,9 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
     }
 
     updateLead(leadUpdates);
+    setRunDuplicateCheck(false);
     setShowModal(false);
-  }, [setShowModal, duplicateContacts, updateLead, isLeadFromContactCenterBuilding]);
+  }, [setShowModal, updateLead, isLeadFromContactCenterBuilding]);
 
   return (
     <>
@@ -65,12 +54,16 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
         onDuplicateFieldBlur={handleDupeCheck}
       />
       <Address basePath={`${basePath}.${TYPE}`} locked={locked} />
-      <ContactMatchesModal
-        isOpen={showModal}
-        onClose={closeModal}
-        onSubmit={submitModal}
-        rows={rows}
-      />
+      {
+        showModal && (
+          <ContactMatchesModal
+            contact={contact}
+            isOpen={showModal}
+            onClose={closeModal}
+            onSubmit={submitModal}
+          />
+        )
+      }
     </>
   )
 }
