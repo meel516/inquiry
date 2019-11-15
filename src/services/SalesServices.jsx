@@ -433,7 +433,6 @@ class SalesAPIService {
     }
 
     if (lead.buildingId !== 225707) {
-      console.log("Doesn't have CC...add one");
       try {
         let community = createCommunity();
         community.communityId = 225707;

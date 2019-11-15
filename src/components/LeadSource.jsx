@@ -32,10 +32,10 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
   }, [leadSourceDetails]);
 
   const leadSourceSubDetailOptions = useMemo(() => {
-    return leadSourceSubDetails.map(detail => {
-      return <option key={detail.value} value={detail.value}>{detail.text}</option>
+    return leadSourceSubDetails.map(subdetail => {
+      return <option key={subdetail.value} value={subdetail.value}>{subdetail.text}</option>
     })
-  }, [leadSourceDetails]);
+  }, [leadSourceSubDetails]);
 
   useEffect(() => {
     getLeadSources()
@@ -53,7 +53,6 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
   }, [leadSource, inputNames, setLeadSourceDetails, setFieldValue])
 
   useEffect(() => {
-    debugger;
     if (leadSourceDetail) {
       getLeadSourceSubDetails(leadSourceDetail)
         .then(subdetails => setLeadSourceSubDetails(subdetails));
