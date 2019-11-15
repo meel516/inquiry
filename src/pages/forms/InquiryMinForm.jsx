@@ -141,16 +141,12 @@ class InquiryForm extends React.Component {
       )
     }
 
-    if (this.props.value && this.props.value.lead) {
-      console.log(`Lead Submitted: ${this.props.value.lead.leadId}`)
-    }
-
     return (
       <Form onSubmit={this.props.handleSubmit} className="inquiryForm">
         <section>
           <div ref={this.TOP}></div>
         </section>
-        <StyledFormSection>
+        <StyledFormSection id='contactInfo'>
           <Influencer
             basePath='lead'
             contact={values.lead.influencer}
@@ -160,91 +156,70 @@ class InquiryForm extends React.Component {
             locked={isLocked || isExistingContact}
           />
         </StyledFormSection>
-        <section className="prospect-section">
+        <StyledFormSection id='situation'>
           <Note name='lead.notes.situation' label="Situation" rows={6} />
           <Row>
             <Col>
               <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
             </Col>
           </Row>
-          <br />
           <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
-          <br />
           <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
-          <br />
           <CareType basePath='lead' />
-          <br />
+        </StyledFormSection>
+        <StyledFormSection id='passionPersonality'>
+          <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
+          <Communities username={values.user.username} />
+        </StyledFormSection>
+        <StyledFormSection id='budget'>
+          <Note name='lead.notes.financialSituation' label="Financial Situation" />
+          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
+          <Note name='lead.notes.additionalNotes' label="Additional Notes" />
+          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
+          <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
+        </StyledFormSection>
+        <StyledFormSection id='resultOfCall'>
           <Row>
-            <Col>
-              <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
+            <Col md="5">
+              <ResultOfCall basePath='lead' />
             </Col>
           </Row>
-        </section>
-        <Row>
-          <Col>
-            <Note name='lead.notes.financialSituation' label="Financial Situation" />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <Communities username={values.user.username} />
-          </Col>
-        </Row>
-        <br />
-        <hr />
-          <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
-        <br />
-        <Row>
-          <Col>
-            <Note name='lead.notes.additionalNotes' label="Additional Notes" />
-          </Col>
-        </Row>
-        <br />
-          <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
-        <br />
-        <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
-        <Row>
-          <Col md="5">
-            <ResultOfCall basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-              <CallingFor basePath='lead' locked={isLocked} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <ReasonForCall basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <VeteranStatus basePath='lead.prospect' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <UMID basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <CallerType basePath='lead' />
-          </Col>
-        </Row>
-        <br />
+          <Row>
+            <Col md="5">
+                <CallingFor basePath='lead' locked={isLocked} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <ReasonForCall basePath='lead' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <VeteranStatus basePath='lead.prospect' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <LeadSource leadSource={values.lead.leadSource} locked={isLocked && isContactCenterBuildingId} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <UMID basePath='lead' />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="5">
+              <CallerType basePath='lead' />
+            </Col>
+          </Row>
+        </StyledFormSection>
         <div className="float-right">
           <AlertConfirm key="alertConfirm"
             buttonLabel='Submit'

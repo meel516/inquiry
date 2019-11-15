@@ -2,12 +2,13 @@ import React from 'react'
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { Checkbox } from '../form-items/Checkbox';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 export const Drivers = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section>
+    <StyledCheckboxGroupWrapper>
       <Label for="drivers" className="label-format">Drivers</Label>
       <Row>
         <Col>
@@ -29,7 +30,7 @@ export const Drivers = ({ basePath, isReadOnly }) => {
           <Checkbox name={`${rootPath}safety`} label='Safety' className='col-4' disabled={isReadOnly} />
         </Col>
       </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
 )
 }
 
