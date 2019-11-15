@@ -16,14 +16,16 @@ describe('prospectToEloquaContact mapper', () => {
             reasonForCall: 'a',
             inquiryType: 'b',
             leadSource: 'c',
-            leadSourceDetail: 'd'
+            leadSourceDetail: 'd',
+            leadSourceSubDetail: 'e'
         }
         const expected = {
             salesContact: 'CONTACT',
             interestReasonId: 'a',
             inquiryTypeId: 'b',
             inquiryLeadSourceId: 'c',
-            inquiryLeadSourceDetailId: 'd'
+            inquiryLeadSourceDetailId: 'd',
+            inquiryLeadSourceSubDetailId: 'e'
         }
         expect(mapper(input)).toEqual(expected)
     })

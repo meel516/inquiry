@@ -1,6 +1,7 @@
 export default {
     stateProv: 'stateProv',
     inquiryLeadSource: 'inquiryLeadSource',
+    inquiryLeadSourceDetail: 'inquiryLeadSourceDetail',
     phoneTypes: 'phoneTypes',
     inquiryTypes: 'inquiryTypes',
     veteranStatus: 'veteranStatus',

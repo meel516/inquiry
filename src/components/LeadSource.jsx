@@ -2,19 +2,20 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
-import { getLeadSources, getLeadSourceDetails } from '../services/dropdowns';
-import { Input, Select } from './formik-inputs';
+import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '../services/dropdowns';
+import { Select } from './formik-inputs';
 
-export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) => {
+export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', locked = false }) => {
   const [ leadSources, setLeadSources ] = useState([]);
   const [ leadSourceDetails, setLeadSourceDetails ] = useState([]);
+  const [ leadSourceSubDetails, setLeadSourceSubDetails ] = useState([]);
   const { setFieldValue } = useFormikContext();
 
   const inputNames = useMemo(() => {
     return {
       leadSource: `${basePath}.leadSource`,
       leadSourceDetail: `${basePath}.leadSourceDetail`,
-      additionalDetail: `${basePath}.additionalDetail`,
+      leadSourceSubDetail: `${basePath}.leadSourceSubDetail`,
     }
   }, [basePath]);
 
@@ -30,6 +31,12 @@ export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) =>
     })
   }, [leadSourceDetails]);
 
+  const leadSourceSubDetailOptions = useMemo(() => {
+    return leadSourceSubDetails.map(subdetail => {
+      return <option key={subdetail.value} value={subdetail.value}>{subdetail.text}</option>
+    })
+  }, [leadSourceSubDetails]);
+
   useEffect(() => {
     getLeadSources()
       .then(sources => setLeadSources(sources));
@@ -44,6 +51,16 @@ export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) =>
       setLeadSourceDetails([]);
     }
   }, [leadSource, inputNames, setLeadSourceDetails, setFieldValue])
+
+  useEffect(() => {
+    if (leadSourceDetail) {
+      getLeadSourceSubDetails(leadSourceDetail)
+        .then(subdetails => setLeadSourceSubDetails(subdetails));
+    } else {
+      setFieldValue(inputNames.leadSourceSubDetail, -1);
+      setLeadSourceSubDetails([]);
+    }
+  }, [leadSourceDetail, inputNames, setLeadSourceSubDetails, setFieldValue])
 
   return (
     <>
@@ -70,8 +87,10 @@ export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) =>
       <Row>
         <Col>
           <FormGroup>
-            <Label for={inputNames.additionalDetail} className='label-format'>Additional Detail</Label>
-            <Input type='text' name={inputNames.additionalDetail} disabled={locked} placeholder='Additional Detail' />
+            <Label for={inputNames.leadSourceSubDetail} className='label-format'>Additional Detail</Label>
+            <Select name={inputNames.leadSourceSubDetail} disabled={locked} placeholder='Select One'>
+              {leadSourceSubDetailOptions}
+            </Select>
           </FormGroup>
         </Col>
       </Row>
@@ -81,6 +100,7 @@ export const LeadSource = ({ leadSource, basePath = 'lead', locked = false }) =>
 
 LeadSource.propTypes = {
   leadSource: PropTypes.number.isRequired,
+  leadSourceDetail: PropTypes.number.isRequired,
   basePath: PropTypes.string,
   locked: PropTypes.bool,
 }
