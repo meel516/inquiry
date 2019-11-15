@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { getCareTypes } from '../../../services/dropdowns'
 import { Select } from '../../formik-inputs';
 
-export const CareType = ({ basePath }) => {
+export const CareType = ({ basePath, locked = false }) => {
   const [ careTypes, setCareTypes ] = useState([]);
   const name = `${basePath}.careType`;
 
@@ -22,7 +22,7 @@ export const CareType = ({ basePath }) => {
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Care Level Recommended</Label>
-      <Select name={name} placeholder='Select One'>
+      <Select name={name} disabled={locked} placeholder='Select One'>
         {careTypeOptions}
       </Select>
     </FormGroup>
@@ -31,4 +31,5 @@ export const CareType = ({ basePath }) => {
 
 CareType.propTypes = {
   basePath: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

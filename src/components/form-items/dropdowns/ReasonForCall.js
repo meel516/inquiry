@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { getReasonForInterest } from '../../../services/dropdowns';
 import { Select } from '../../formik-inputs';
 
-export const ReasonForCall = ({ basePath }) => {
+export const ReasonForCall = ({ basePath, locked = false }) => {
   const [ reasons, setReasons ] = useState([]);
   const name = `${basePath}.reasonForCall`;
 
@@ -22,7 +22,7 @@ export const ReasonForCall = ({ basePath }) => {
   return (
     <FormGroup>
         <Label for="reasonForCall" className="label-format">Reason for Call</Label>
-        <Select name={name} placeholder='Select One'>
+        <Select name={name} disabled={locked} placeholder='Select One'>
           {reasonsOptions}
         </Select>
     </FormGroup>
@@ -31,4 +31,5 @@ export const ReasonForCall = ({ basePath }) => {
 
 ReasonForCall.propTypes = {
   basePath: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

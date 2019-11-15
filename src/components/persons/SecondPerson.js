@@ -4,7 +4,7 @@ import { Col, Row } from 'reactstrap';
 import { useFormikContext } from 'formik';
 import { Checkbox } from '../form-items';
 import { Person } from './components/Person';
-import { Note } from '../Note';
+import { Note } from '../form-items';
 import { ObjectMappingService } from '../../services/Types';
 
 const TYPE = 'secondPerson';
