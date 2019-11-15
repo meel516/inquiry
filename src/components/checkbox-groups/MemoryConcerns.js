@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Label, Row } from 'reactstrap';
 import { Checkbox } from '../form-items';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 const path = 'memoryConcerns';
 
 export const MemoryConcerns = ({ basePath }) => (
-    <section >
+    <StyledCheckboxGroupWrapper >
         <Label className="label-format">Memory Concerns</Label>
         <Row>
           <Col>
@@ -20,7 +21,7 @@ export const MemoryConcerns = ({ basePath }) => (
             <Checkbox className='col-4' name={`${basePath}.${path}.wandering`} label='Wandering' />
           </Col>
         </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
 )
 
 MemoryConcerns.propTypes = {

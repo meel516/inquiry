@@ -2,12 +2,13 @@ import React from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { Checkbox } from '../form-items/Checkbox';
+import { StyledCheckboxGroupWrapper } from './styled';
 
 export const FinancialOptions = ({ basePath, isReadOnly }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
-    <section>
+    <StyledCheckboxGroupWrapper>
       <Label for="financialOptions" className="label-format">Financial Options</Label>
       <Row>
         <Col>
@@ -21,7 +22,7 @@ export const FinancialOptions = ({ basePath, isReadOnly }) => {
           <Checkbox name={`${rootPath}ltcPolicy`} label='LTC Policy' className='col-4' disabled={isReadOnly} />
         </Col>
       </Row>
-    </section>
+    </StyledCheckboxGroupWrapper>
   )
 }
 
