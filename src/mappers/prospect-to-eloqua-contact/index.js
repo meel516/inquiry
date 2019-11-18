@@ -5,5 +5,6 @@ export default (lead) => !lead ? {} : {
     interestReasonId: lead.reasonForCall,
     inquiryTypeId: lead.inquiryType,
     inquiryLeadSourceId: lead.leadSource,
-    inquiryLeadSourceDetailId: lead.leadSourceDetail
+    inquiryLeadSourceDetailId: lead.leadSourceDetail,
+    inquiryLeadSourceSubDetailId: lead.leadSourceSubDetail
 }

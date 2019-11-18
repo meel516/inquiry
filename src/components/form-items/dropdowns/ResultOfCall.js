@@ -12,7 +12,7 @@ const resultOfCallArray = [
   { value: 6, label: 'Webform No Response' },
 ];
 const resultOfCallOptions = resultOfCallArray.map(result => {
-  return <option key={result.value} value={result.value}>{result.label}</option>;
+  return <option key={result.value} value={result.label}>{result.label}</option>;
 });
 
 export const ResultOfCall = ({ basePath, locked = false }) => {

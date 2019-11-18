@@ -85,6 +85,7 @@ class TestUtils {
             buildingId: 225707,
             inquiryLeadSourceId: 16,
             inquiryLeadSourceDetailId: 10001,
+            inquiryLeadSourceSubDetailId: 10002,
             leadId: 6861902,
             leadTypeId: 4,
             inquirerType: inquiryType,

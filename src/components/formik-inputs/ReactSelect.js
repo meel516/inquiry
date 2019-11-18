@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -16,16 +16,23 @@ export const ReactSelect = ({
     const [ field, meta ] = useField(name);
     const handleChange = useOnChangeWrapper(name, field, onChange, x => x.value);
     const handleBlur = useOnBlurWrapper(name, field, onBlur);
+    const { value } = field;
+
+    const selected = useMemo(() => {
+        return options.find(x => x.value === value) || '';
+    }, [value, options]);
 
     return (
         <>
             <Select
+                value={selected}
                 options={options}
                 onChange={handleChange}
                 name={name}
                 id={name}
-                disabled={disabled || readOnly}
+                isDisabled={disabled || readOnly}
                 onBlur={handleBlur}
+                placeholder="Select One"
             />
             { meta.touched && meta.error ? (
                 <Alert color="danger" className="alert-smaller-size">{meta.error}</Alert>
