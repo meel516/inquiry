@@ -108,7 +108,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail} className='label-format'>Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail} options={leadSourceSubDetails} />
+            <ReactSelect name={inputNames.leadSourceSubDetail} options={leadSourceSubDetails} disabled={locked}/>
           </FormGroup>
         </Col>
       </Row>
