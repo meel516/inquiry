@@ -3,7 +3,7 @@ import { Col, FormGroup, Label, Row } from 'reactstrap'
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '../services/dropdowns';
-import { Select } from './formik-inputs';
+import { Select, ReactSelect } from './formik-inputs';
 
 export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', locked = false }) => {
   const [ leadSources, setLeadSources ] = useState([]);
@@ -31,35 +31,30 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
     })
   }, [leadSourceDetails]);
 
-  const leadSourceSubDetailOptions = useMemo(() => {
-    return leadSourceSubDetails.map(subdetail => {
-      return <option key={subdetail.value} value={subdetail.value}>{subdetail.text}</option>
-    })
-  }, [leadSourceSubDetails]);
-
   useEffect(() => {
     getLeadSources()
       .then(sources => setLeadSources(sources));
   }, [setLeadSources]);
 
   useEffect(() => {
-    if (leadSource) {
-      getLeadSourceDetails(leadSource)
-        .then(details => setLeadSourceDetails(details));
-    } else {
-      setFieldValue(inputNames.leadSourceDetail, -1);
-      setLeadSourceDetails([]);
+    async function getAndSetDetails () {
+      const details = leadSource ? (await getLeadSourceDetails(leadSource)) : [];
+      setLeadSourceDetails(details);
     }
+
+    setFieldValue(inputNames.leadSourceDetail, -1);
+    getAndSetDetails();
   }, [leadSource, inputNames, setLeadSourceDetails, setFieldValue])
 
   useEffect(() => {
-    if (leadSourceDetail) {
-      getLeadSourceSubDetails(leadSourceDetail)
-        .then(subdetails => setLeadSourceSubDetails(subdetails));
-    } else {
-      setFieldValue(inputNames.leadSourceSubDetail, -1);
-      setLeadSourceSubDetails([]);
+    async function getAndSetSubDetails () {
+      const subdetails = leadSourceDetail ? (await getLeadSourceSubDetails(leadSourceDetail)) : [];
+      const mappedSubDetails = subdetails.map(subdetail => ({ value: subdetail.value, label: `${subdetail.text}` }));
+      setLeadSourceSubDetails(mappedSubDetails);
     }
+
+    setFieldValue(inputNames.leadSourceSubDetail, -1);
+    getAndSetSubDetails();
   }, [leadSourceDetail, inputNames, setLeadSourceSubDetails, setFieldValue])
 
   return (
@@ -88,9 +83,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail} className='label-format'>Additional Detail</Label>
-            <Select name={inputNames.leadSourceSubDetail} disabled={locked} placeholder='Select One'>
-              {leadSourceSubDetailOptions}
-            </Select>
+            <ReactSelect name={inputNames.leadSourceSubDetail} options={leadSourceSubDetails} />
           </FormGroup>
         </Col>
       </Row>
