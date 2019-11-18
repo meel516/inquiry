@@ -13,12 +13,18 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
   const [ showModal, setShowModal ] = useState(false);
 
   const handleDuplicateDependentInputChange = useCallback(() => setRunDuplicateCheck(true), [setRunDuplicateCheck]);
+
   const handleDupeCheck = useCallback(() => {
     if (runDuplicateCheck &&  canHaveDuplicates(contact)) {
       setShowModal(true);
     }
   }, [contact, runDuplicateCheck, setShowModal]);
-  const closeModal = useCallback(() => setShowModal(false), [setShowModal]);
+
+  const closeModal = useCallback(() => {
+    setRunDuplicateCheck(false);
+    setShowModal(false);
+  }, [setShowModal, setRunDuplicateCheck]);
+
   const submitModal = useCallback((duplicateContact, selectedLead = null) => {
     const contactUpdates = duplicateContact ? ObjectMappingService.createContact(duplicateContact) : {}
     let leadUpdates = {
@@ -39,10 +45,9 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
       };
     }
 
+    closeModal();
     updateLead(leadUpdates);
-    setRunDuplicateCheck(false);
-    setShowModal(false);
-  }, [setShowModal, updateLead, isLeadFromContactCenterBuilding]);
+  }, [closeModal, updateLead, isLeadFromContactCenterBuilding]);
 
   return (
     <>
