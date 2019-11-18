@@ -52,4 +52,5 @@ LeadModalContent.propTypes = {
     onGoBack: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onRowSelection: PropTypes.func.isRequired,
+    showLeadData: PropTypes.bool.isRequired,
 }

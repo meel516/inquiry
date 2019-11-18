@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
 import { useDragHandlers,  useSalesService } from './hooks';
 import findDuplicates from '../../../services/deduplication/find-duplicates';
@@ -49,7 +50,7 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     useEffect(() => {
         findDuplicates(contact)
             .then((data) => setDuplicateContacts(data))
-    }, [setDuplicateContacts])
+    }, [contact, setDuplicateContacts])
 
     return (
         <Draggable handle=".duplicate-contact-modal" { ...{ onStart, onStop }}>
@@ -72,4 +73,11 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
             </StyledModal>
         </Draggable>
     )
+}
+
+ContactMatchesModal.propTypes = {
+    contact: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 }

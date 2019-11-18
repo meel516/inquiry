@@ -17,7 +17,7 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
     if (runDuplicateCheck &&  canHaveDuplicates(contact)) {
       setShowModal(true);
     }
-  }, [contact, runDuplicateCheck, setRunDuplicateCheck, setShowModal]);
+  }, [contact, runDuplicateCheck, setShowModal]);
   const closeModal = useCallback(() => setShowModal(false), [setShowModal]);
   const submitModal = useCallback((duplicateContact, selectedLead = null) => {
     const contactUpdates = duplicateContact ? ObjectMappingService.createContact(duplicateContact) : {}

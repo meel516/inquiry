@@ -42,4 +42,6 @@ export const ContactModalContent = ({ rows, onRowSelection, onClose, showLeadDat
 ContactModalContent.propTypes = {
     rows: PropTypes.array.isRequired,
     onRowSelection: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    showLeadData: PropTypes.bool.isRequired,
 }
