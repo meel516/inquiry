@@ -32,6 +32,7 @@ export const ReactSelect = ({
                 id={name}
                 isDisabled={disabled || readOnly}
                 onBlur={handleBlur}
+                placeholder="Select One"
             />
             { meta.touched && meta.error ? (
                 <Alert color="danger" className="alert-smaller-size">{meta.error}</Alert>
