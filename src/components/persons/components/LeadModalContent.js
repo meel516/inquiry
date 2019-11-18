@@ -4,6 +4,7 @@ import { Button, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import ReactDataGrid from 'react-data-grid';
 import { useRowGetter } from './hooks';
 import { EmptyRowsView } from './EmptyRowsView';
+import { StyledModalContent } from './styled';
 
 const columns = [
   { key: 'prospectid', name: 'Prospect ID', width: 100, resizable: true },
@@ -20,11 +21,11 @@ const columns = [
   { key: 'hasaddtl', name: 'Has Addtl Influencers', width: 200, resizable: true },
 ];
 
-export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection }) => {
+export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, showLeadData }) => {
     const rowGetter = useRowGetter(rows);
 
     return (
-        <>
+        <StyledModalContent showLeadData={showLeadData}>
             <ModalHeader>Potential Lead Matches</ModalHeader>
             <ModalBody>
                 <p>Below are leads that this person is associated with. Click the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
@@ -42,7 +43,7 @@ export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection }) =
                 <Button type="button" color="info" size="sm" onClick={() => onGoBack()}>Go Back</Button>
                 <Button type="button" color="info" size="sm" onClick={() => onSubmit()}>None of These</Button>
             </ModalFooter>
-        </>
+        </StyledModalContent>
     );
 }
 

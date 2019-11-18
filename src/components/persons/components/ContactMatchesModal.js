@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { Modal } from 'reactstrap';
 import Draggable from 'react-draggable';
 import { useDragHandlers,  useSalesService } from './hooks';
 import findDuplicates from '../../../services/deduplication/find-duplicates';
 import { ObjectMappingService } from '../../../services/Types'
+import { StyledModal, StyledModalContentWrapper } from './styled';
 import { ContactModalContent } from './ContactModalContent';
 import { LeadModalContent } from './LeadModalContent';
 
@@ -53,24 +53,23 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
 
     return (
         <Draggable handle=".duplicate-contact-modal" { ...{ onStart, onStop }}>
-            <Modal className="duplicate-contact-modal" isOpen={isOpen} size="xl">
-                {
-                    showLeadData ? (
-                        <LeadModalContent
-                            onRowSelection={onLeadSelection}
-                            onGoBack={handleGoBack}
-                            onSubmit={submitModal}
-                            rows={leadData}
-                        />
-                    ) : (
-                        <ContactModalContent
-                            rows={contactRows}
-                            onRowSelection={onContactSelection}
-                            onClose={onClose}
-                        />
-                    )
-                }
-            </Modal>
+            <StyledModal className="duplicate-contact-modal" isOpen={isOpen} size="xl">
+                <StyledModalContentWrapper>
+                    <ContactModalContent
+                        rows={contactRows}
+                        onRowSelection={onContactSelection}
+                        onClose={onClose}
+                        showLeadData={showLeadData}
+                    />
+                    <LeadModalContent
+                        rows={leadData}
+                        onRowSelection={onLeadSelection}
+                        onGoBack={handleGoBack}
+                        onSubmit={submitModal}
+                        showLeadData={showLeadData}
+                    />
+                </StyledModalContentWrapper>
+            </StyledModal>
         </Draggable>
     )
 }

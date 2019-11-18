@@ -4,6 +4,7 @@ import { Button, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import ReactDataGrid from 'react-data-grid';
 import { EmptyRowsView } from './EmptyRowsView';
 import { useRowGetter } from './hooks';
+import { StyledModalContent } from './styled';
 
 const columns = [
     { key: 'name', name: 'Contact Name', width: 200, resizable: true },
@@ -13,11 +14,11 @@ const columns = [
     { key: 'state', name: 'State', width: 200, resizable: true },
 ];
 
-export const ContactModalContent = ({ rows, onRowSelection, onClose }) => {
+export const ContactModalContent = ({ rows, onRowSelection, onClose, showLeadData }) => {
     const rowGetter = useRowGetter(rows);
 
     return (
-        <>
+        <StyledModalContent showLeadData={showLeadData}>
             <ModalHeader>Potential Contact Matches</ModalHeader>
             <ModalBody>
                 <p>Is this who you are talking to? If so, click the name below, otherwise click "None of These".</p>
@@ -34,7 +35,7 @@ export const ContactModalContent = ({ rows, onRowSelection, onClose }) => {
             <ModalFooter>
                 <Button type="button" color="info" size="sm" onClick={onClose}>None of These</Button>
             </ModalFooter>
-        </>
+        </StyledModalContent>
     )
 }
 
