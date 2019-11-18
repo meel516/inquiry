@@ -20,7 +20,7 @@ export const ReactSelect = ({
 
     const selected = useMemo(() => {
         return options.find(x => x.value === value) || '';
-    }, [value]);
+    }, [value, options]);
 
     return (
         <>
