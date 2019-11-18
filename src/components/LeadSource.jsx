@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
@@ -33,29 +33,54 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
 
   useEffect(() => {
     getLeadSources()
-      .then(sources => setLeadSources(sources));
+      .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
   }, [setLeadSources]);
+
+  const onLeadSourceChange = useCallback(async (e) => {
+    const { value } = e.target;
+
+    if (!value) {
+      setFieldValue(inputNames.leadSource, -1);
+      setLeadSourceDetails([]);
+    }
+
+    setFieldValue(inputNames.leadSourceDetail, -1);
+    setFieldValue(inputNames.leadSourceSubDetail, -1);
+  }, [setLeadSourceDetails, setFieldValue, inputNames]);
+
+  const onLeadSourceDetailChange = useCallback(async (e) => {
+    const { value } = e.target;
+
+    if (!value) {
+      setFieldValue(inputNames.leadSourceDetail, -1);
+      setLeadSourceSubDetails([]);
+    }
+
+    setFieldValue(inputNames.leadSourceSubDetail, -1);
+  }, [setLeadSourceSubDetails, setFieldValue, inputNames]);
 
   useEffect(() => {
     async function getAndSetDetails () {
       const details = leadSource ? (await getLeadSourceDetails(leadSource)) : [];
-      setLeadSourceDetails(details);
+      setLeadSourceDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
     }
 
-    setFieldValue(inputNames.leadSourceDetail, -1);
-    getAndSetDetails();
-  }, [leadSource, inputNames, setLeadSourceDetails, setFieldValue])
+    if (leadSource > 0) {
+      getAndSetDetails();
+    }
+  }, [leadSource])
 
   useEffect(() => {
     async function getAndSetSubDetails () {
       const subdetails = leadSourceDetail ? (await getLeadSourceSubDetails(leadSourceDetail)) : [];
-      const mappedSubDetails = subdetails.map(subdetail => ({ value: subdetail.value, label: `${subdetail.text}` }));
+      const mappedSubDetails = subdetails.map(subdetail => ({ value: parseInt(subdetail.value, 10), label: `${subdetail.text}` }));
       setLeadSourceSubDetails(mappedSubDetails);
     }
 
-    setFieldValue(inputNames.leadSourceSubDetail, -1);
-    getAndSetSubDetails();
-  }, [leadSourceDetail, inputNames, setLeadSourceSubDetails, setFieldValue])
+    if (leadSourceDetail > 0) {
+      getAndSetSubDetails();
+    }
+  }, [leadSourceDetail])
 
   return (
     <>
@@ -63,7 +88,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSource} className='label-format required-field'>Lead Source</Label>
-            <Select name={inputNames.leadSource} disabled={locked} placeholder='Select One'>
+            <Select name={inputNames.leadSource} disabled={locked} placeholder='Select One' onChange={onLeadSourceChange}>
               {leadSourceOptions}
             </Select>
           </FormGroup>
@@ -73,7 +98,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceDetail} className='label-format required-field'>Lead Source Detail</Label>
-            <Select name={inputNames.leadSourceDetail} disabled={locked} placeholder='Select One'> 
+            <Select name={inputNames.leadSourceDetail} disabled={locked} placeholder='Select One' onChange={onLeadSourceDetailChange}>
               {leadSourceDetailOptions}
             </Select>
           </FormGroup>
