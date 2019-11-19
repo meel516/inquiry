@@ -15,7 +15,7 @@ import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-cont
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
 import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
-import createMemoryConcerns from '../mappers/create-memory-concerns'
+import defaultMemoryConcerns from '../mappers/default-memory-concerns'
 import mapMemoryConcernsToSales from '../mappers/map-memory-concerns-to-sales'
 
 function LeadDataRecord(record) {
@@ -117,7 +117,7 @@ class ObjectMappingService {
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
-            lead.memoryConcerns = createMemoryConcerns();
+            lead.memoryConcerns = defaultMemoryConcerns();
             lead.mobilityConcerns = this.createMobilityConcerns();
             lead.nutritionConcerns = this.createNutritionConcerns();
             lead.financialOptions = this.createFinancialOptions();
@@ -155,7 +155,7 @@ class ObjectMappingService {
         lead.prospect = this.createEmptyContact();
         lead.prospect.age = '';
         lead.adlNeeds = this.createAdlNeeds();
-        lead.memoryConcerns = createMemoryConcerns();
+        lead.memoryConcerns = defaultMemoryConcerns();
         lead.mobilityConcerns = this.createMobilityConcerns();
         lead.nutritionConcerns = this.createNutritionConcerns();
         lead.financialOptions = this.createFinancialOptions();
@@ -387,6 +387,7 @@ class ObjectMappingService {
                 leadId,
                 username: user.username,
                 careTypeId: Number(lead.careType),
+                ...salesProspectNeed,
                 ...mapMemoryConcernsToSales(memoryConcerns),
             }
         }
