@@ -88,7 +88,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSource} className='label-format required-field'>Lead Source</Label>
-            <Select name={inputNames.leadSource} disabled={locked} placeholder='Select One' onChange={onLeadSourceChange}>
+            <Select name={inputNames.leadSource} disabled={locked} onChange={onLeadSourceChange}>
               {leadSourceOptions}
             </Select>
           </FormGroup>
@@ -98,7 +98,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceDetail} className='label-format required-field'>Lead Source Detail</Label>
-            <Select name={inputNames.leadSourceDetail} disabled={locked} placeholder='Select One' onChange={onLeadSourceDetailChange}>
+            <Select name={inputNames.leadSourceDetail} disabled={locked} onChange={onLeadSourceDetailChange}>
               {leadSourceDetailOptions}
             </Select>
           </FormGroup>

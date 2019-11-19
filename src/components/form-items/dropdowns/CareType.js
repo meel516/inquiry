@@ -22,7 +22,7 @@ export const CareType = ({ basePath, locked = false }) => {
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Care Level Recommended</Label>
-      <Select name={name} disabled={locked} placeholder='Select One'>
+      <Select name={name} disabled={locked}>
         {careTypeOptions}
       </Select>
     </FormGroup>

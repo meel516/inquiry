@@ -90,7 +90,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
             <Col md="4">
               <FormGroup>
                 <Label for={inputNames.followUpAction} className='label-format'>Next Steps Action</Label>
-                <Select name={inputNames.followUpAction} options={followupOptions} onChange={handleFollowupAction} placeholder='Select One'>
+                <Select name={inputNames.followUpAction} options={followupOptions} onChange={handleFollowupAction}>
                   {followupOptions}
                 </Select>
               </FormGroup>
