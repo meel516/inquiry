@@ -11,6 +11,7 @@ import { LeadModalContent } from './LeadModalContent';
 export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     const [ duplicateContacts, setDuplicateContacts ] = useState([]);
     const [ leadData, setLeadData ] = useState([]);
+    const [ modalContentReady, setModalContentReady ] = useState(false);
     const [ showLeadData, setShowLeadData ] = useState(false);
     const [ onStart, onStop ] = useDragHandlers();
     const [ selectedContact, setSelectedContact ] = useState(null);
@@ -49,26 +50,33 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
 
     useEffect(() => {
         findDuplicates(contact)
-            .then((data) => setDuplicateContacts(data))
-    }, [contact, setDuplicateContacts])
+            .then((data) => {
+                setDuplicateContacts(data);
+                setModalContentReady(true);
+            })
+    }, [contact, setDuplicateContacts, setModalContentReady])
 
     return (
         <Draggable handle=".duplicate-contact-modal" { ...{ onStart, onStop }}>
             <StyledModal className="duplicate-contact-modal" isOpen={isOpen} size="xl">
                 <StyledModalContentWrapper>
-                    <ContactModalContent
-                        rows={contactRows}
-                        onRowSelection={onContactSelection}
-                        onClose={onClose}
-                        showLeadData={showLeadData}
-                    />
-                    <LeadModalContent
-                        rows={leadData}
-                        onRowSelection={onLeadSelection}
-                        onGoBack={handleGoBack}
-                        onSubmit={submitModal}
-                        showLeadData={showLeadData}
-                    />
+                    {modalContentReady && (
+                        <>
+                            <ContactModalContent
+                                rows={contactRows}
+                                onRowSelection={onContactSelection}
+                                onClose={onClose}
+                                showLeadData={showLeadData}
+                            />
+                            <LeadModalContent
+                                rows={leadData}
+                                onRowSelection={onLeadSelection}
+                                onGoBack={handleGoBack}
+                                onSubmit={submitModal}
+                                showLeadData={showLeadData}
+                            />
+                        </>)
+                    }
                 </StyledModalContentWrapper>
             </StyledModal>
         </Draggable>
