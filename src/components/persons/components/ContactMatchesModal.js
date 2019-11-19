@@ -8,6 +8,15 @@ import { StyledModal, StyledModalContentWrapper } from './styled';
 import { ContactModalContent } from './ContactModalContent';
 import { LeadModalContent } from './LeadModalContent';
 
+const leadDataSort = (a, b) => {
+    if (a.prospectid === b.prospectid) {
+        if (a.community < b.community) return -1;
+        return a.community > b.community ? 1 : 0;
+    }
+
+    return a.prospectid - b.prospectid;
+}
+
 export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     const [ duplicateContacts, setDuplicateContacts ] = useState([]);
     const [ leadData, setLeadData ] = useState([]);
@@ -27,7 +36,7 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     const onContactSelection = useCallback(async (row) => {
         if (row) {
             const leadData = await salesService.retrieveLeadDataForContactId(row.contactid);
-            setLeadData(leadData);
+            setLeadData(leadData.sort(leadDataSort));
             setSelectedContact(row);
             setShowLeadData(true);
         }
