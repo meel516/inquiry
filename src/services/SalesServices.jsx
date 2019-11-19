@@ -435,6 +435,9 @@ class SalesAPIService {
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
+    // Save off the existing leadCareType, if applicable.
+    const currentLeadCareTypeId = (lead.leadCareTypeId ? lead.leadCareTypeId : null);
+
     if (lead.buildingId !== 225707) {
       try {
         let community = createCommunity();
@@ -443,6 +446,10 @@ class SalesAPIService {
 
         if (lead.influencer) {
           lead.influencer.influencerId = null; // Need to null it out here!
+        }
+
+        if (currentLeadCareTypeId) {
+          lead.leadCareTypeId = null; // Need to null it out here!
         }
 
         await this.processContactCenter(lead, community, user);
@@ -495,6 +502,12 @@ class SalesAPIService {
       // Process any Prospect Needs changes.
       const careType = lead.careType
       if (careType) {
+        // If we have an existing leadCareTypeId (from when the lead was loaded)
+        // ...add it back to the lead in order to prevent adding a new record!
+        if (currentLeadCareTypeId) {
+          lead.leadCareTypeId = currentLeadCareTypeId;
+        }
+
         await this.submitProspectNeeds(leadId, lead, user);
       }
     }
