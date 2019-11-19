@@ -1,5 +1,13 @@
-import { string, number, object, boolean, array } from 'yup';
+import { string, number, object, boolean, array, mixed } from 'yup';
 import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber } from './validators';
+
+const numberOrEmptyString = () => {
+  const schema = mixed();
+  schema.isValid(undefined, function (value) {
+    return value === '' || !isNaN(parseInt(value));
+  });
+  return schema;
+}
 
 const messages = {
   required: {
@@ -23,7 +31,7 @@ const prospectSchema = {
   address: object().shape({
     line1: string().max(40, 'Address 1 can be at most 40 characters'),
   }),
-  age: number()
+  age: numberOrEmptyString()
     .notRequired()
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
 };
