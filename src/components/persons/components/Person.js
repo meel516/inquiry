@@ -72,7 +72,7 @@ export const Person = ({ basePath, type, locked, onDuplicateFieldChange, onDupli
                 </Col>
                 <Col>
                     <Label for={inputNames.phone.type} className='label-format'>Phone Type</Label>
-                    <Select name={inputNames.phone.type} placeholder='Select One' disabled={locked}>
+                    <Select name={inputNames.phone.type} disabled={locked}>
                         {phoneTypeOptions}
                     </Select>
                 </Col>
