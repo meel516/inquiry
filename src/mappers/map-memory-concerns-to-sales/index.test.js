@@ -15,11 +15,11 @@ describe('map memory concerns to sales', () => {
         const memoryConcerns = {
             dementia: true,
             memoryLoss: true,
-            epeatsStories: true,
+            repeatsStories: true,
             wandering: true,
         }
 
         const memoryConcernsMap = mapMemoryConcernsToSales(memoryConcerns)
         expect(memoryConcernsMap).toEqual({alzDiagnosis: true, argumentative: true, forgetsRepeats: true, wandering: true})
-    )
+    })
 })
