@@ -164,7 +164,7 @@ class InquiryForm extends React.Component {
             </Col>
           </Row>
           <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
-          <Prospect basePath='lead' showProspect={values.lead.callingFor === 'Myself'} locked={isLocked} />
+          <Prospect basePath='lead' showProspect={(values.lead.prospect && !values.lead.prospect.contactId)} locked={isLocked} />
           <CareType basePath='lead' />
         </StyledFormSection>
         <StyledFormSection id='passionPersonality'>
