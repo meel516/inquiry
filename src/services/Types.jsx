@@ -17,6 +17,8 @@ import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
 import defaultMemoryConcerns from '../mappers/default-memory-concerns'
 import mapMemoryConcernsToSales from '../mappers/map-memory-concerns-to-sales'
+import defaultMobilityConcerns from '../mappers/default-mobility-concerns'
+import mapMobilityConcernsToSales from '../mappers/map-mobility-concerns-to-sales'
 
 function LeadDataRecord(record) {
     if (record) {
@@ -118,7 +120,7 @@ class ObjectMappingService {
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
             lead.memoryConcerns = defaultMemoryConcerns();
-            lead.mobilityConcerns = this.createMobilityConcerns();
+            lead.mobilityConcerns = defaultMobilityConcerns();
             lead.nutritionConcerns = this.createNutritionConcerns();
             lead.financialOptions = this.createFinancialOptions();
             lead.drivers = this.createDrivers();
@@ -156,7 +158,7 @@ class ObjectMappingService {
         lead.prospect.age = '';
         lead.adlNeeds = this.createAdlNeeds();
         lead.memoryConcerns = defaultMemoryConcerns();
-        lead.mobilityConcerns = this.createMobilityConcerns();
+        lead.mobilityConcerns = defaultMobilityConcerns();
         lead.nutritionConcerns = this.createNutritionConcerns();
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
@@ -254,17 +256,6 @@ class ObjectMappingService {
             medications: false,
             toileting: false,
             transferring: false,
-        }
-    }
-
-    static createMobilityConcerns() {
-        return {
-            fallRisk: false,
-            regularlyWalks: false,
-            personTransfer: false,
-            usesWheelChair: false,
-            secondPersonTransfer: false,
-            usesCane: false,
         }
     }
 
@@ -367,15 +358,6 @@ class ObjectMappingService {
                 salesProspectNeed.toileting = adlNeeds.toileting;
             }
 
-            if (mobilityConcerns) {
-                salesProspectNeed.fallRisk = mobilityConcerns.fallRisk;
-                salesProspectNeed.walkerRegularly = mobilityConcerns.regularlyWalks;
-                salesProspectNeed.caneRegularly = mobilityConcerns.usesCane;
-                salesProspectNeed.wheelchairRegularly = mobilityConcerns.usesWheelChair;
-                salesProspectNeed.onePersTransfer = mobilityConcerns.personTransfer;
-                salesProspectNeed.twoPersTransfer = mobilityConcerns.secondPersonTransfer;
-            }
-
             if (nutritionConcerns) {
                 salesProspectNeed.diabetesDiagnosis = nutritionConcerns.diabetes;
                 salesProspectNeed.lowSaltLowDiet = nutritionConcerns.lowSalt;
@@ -389,6 +371,7 @@ class ObjectMappingService {
                 careTypeId: Number(lead.careType),
                 ...salesProspectNeed,
                 ...mapMemoryConcernsToSales(memoryConcerns),
+                ...mapMobilityConcernsToSales(mobilityConcerns),
             }
         }
         return null;
