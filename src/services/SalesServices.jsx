@@ -303,8 +303,8 @@ class SalesAPIService {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP') {
-      if (lead.reasonForCall) {
+    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+      if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
       }
