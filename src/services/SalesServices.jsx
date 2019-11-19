@@ -49,7 +49,6 @@ class SalesAPIService {
       const lead = ObjectMappingService.createLead(salesLead);
 
       if (lead && lead.leadId) {
-        // fetch influencer
         const { prospect } = lead;
         if (prospect) {
           const { contactId } = prospect;
@@ -57,6 +56,7 @@ class SalesAPIService {
 
           let influencers = [] 
           try {
+            // Fetch influencer(s)
             const inflUrl = this.createApiUri(`influencers/${contactId}`)
             influencers = await this.createFetch(inflUrl);
           } 
@@ -64,7 +64,8 @@ class SalesAPIService {
             influencers = null
           }
 
-          if (influencers != null) {
+          // Determine if we load the page with or without influencers.
+          if (influencers && influencers.length > 0) {
             let influencer = influencers.find(function (influencer) {
               return (influencer.primary === true && influencer.active === true);
             });
@@ -86,6 +87,8 @@ class SalesAPIService {
             } else {
               lead.callerType = '';
             }
+
+            lead.prospect = ObjectMappingService.createEmptyContact();
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
@@ -300,8 +303,8 @@ class SalesAPIService {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP') {
-      if (lead.reasonForCall) {
+    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+      if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
       }
