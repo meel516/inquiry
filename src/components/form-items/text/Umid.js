@@ -9,7 +9,7 @@ export const UMID = ({ basePath, locked = false }) => {
     return (
         <FormGroup>
             <Label for={path} className="label-format required-field">UMID</Label>
-            <Input name={path} disabled={locked} placeholder="UMID" />
+            <Input name={path} type='text' disabled={locked} placeholder="UMID" />
         </FormGroup>
     )
 }
