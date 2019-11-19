@@ -15,15 +15,17 @@ import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-cont
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
 import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
+import createMemoryConcerns from '../mappers/create-memory-concerns'
+import mapMemoryConcernsToSales from '../mappers/map-memory-concerns-to-sales'
 
 function LeadDataRecord(record) {
     if (record) {
         this.leadid = record.leadId
-        
+
         if (record.ccLeadId) {
             this.ccleadid = record.ccLeadId
         }
-        
+
         this.community = record.buildingName
         this.hasaddtl = record.hasAddlInfluencers
 
@@ -115,7 +117,7 @@ class ObjectMappingService {
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
             lead.adlNeeds = this.createAdlNeeds();
-            lead.memoryConcerns = this.createMemoryConcerns();
+            lead.memoryConcerns = createMemoryConcerns();
             lead.mobilityConcerns = this.createMobilityConcerns();
             lead.nutritionConcerns = this.createNutritionConcerns();
             lead.financialOptions = this.createFinancialOptions();
@@ -130,7 +132,7 @@ class ObjectMappingService {
             //lead.reasonForCall = salesLead.interestReasonId
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
-                const {salesContact} = salesLead;
+                const { salesContact } = salesLead;
                 lead.veteranStatus = salesContact.veteranStatus
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
@@ -153,7 +155,7 @@ class ObjectMappingService {
         lead.prospect = this.createEmptyContact();
         lead.prospect.age = '';
         lead.adlNeeds = this.createAdlNeeds();
-        lead.memoryConcerns = this.createMemoryConcerns();
+        lead.memoryConcerns = createMemoryConcerns();
         lead.mobilityConcerns = this.createMobilityConcerns();
         lead.nutritionConcerns = this.createNutritionConcerns();
         lead.financialOptions = this.createFinancialOptions();
@@ -165,7 +167,7 @@ class ObjectMappingService {
 
     static createInfluencer(influencer) {
         if (influencer) {
-            const {salesContact} = influencer
+            const { salesContact } = influencer
             const contact = this.createContact(salesContact)
             contact.influencerId = influencer.influencerId
             return contact;
@@ -252,15 +254,6 @@ class ObjectMappingService {
             medications: false,
             toileting: false,
             transferring: false,
-        }
-    }
-
-    static createMemoryConcerns() {
-        return {
-            dementia: false,
-            memoryLoss: false,
-            repeatsStories: false,
-            wandering: false,
         }
     }
 
@@ -359,11 +352,10 @@ class ObjectMappingService {
         return null;
     }
 
-    static createProspectNeedsRequest(coid, lead, user) {
-        if (coid && lead.careType) {
-            const salesProspectNeed = { leadId: coid }
-            salesProspectNeed.careTypeId = Number(lead.careType);
-            const {adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns} = lead
+    static createProspectNeedsRequest(leadId, lead, user) {
+        if (leadId && lead.careType) {
+            const salesProspectNeed = {}
+            const { adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns } = lead
 
             if (adlNeeds) {
                 salesProspectNeed.bathing = adlNeeds.bathing;
@@ -373,13 +365,6 @@ class ObjectMappingService {
                 salesProspectNeed.medications = adlNeeds.medications;
                 salesProspectNeed.feeding = adlNeeds.feeding;
                 salesProspectNeed.toileting = adlNeeds.toileting;
-            }
-
-            if (memoryConcerns) {
-                salesProspectNeed.alzDiagnosis = memoryConcerns.dementia;
-                salesProspectNeed.argumentative = memoryConcerns.memoryLoss;
-                salesProspectNeed.forgetsRepeats = memoryConcerns.repeatsStories;
-                salesProspectNeed.wandering = memoryConcerns.wandering;
             }
 
             if (mobilityConcerns) {
@@ -398,9 +383,12 @@ class ObjectMappingService {
                 salesProspectNeed.notEatingWell = nutritionConcerns.notEatingWell;
             }
 
-            salesProspectNeed.username = user.username
-
-            return salesProspectNeed;
+            return {
+                leadId,
+                username: user.username,
+                careTypeId: Number(lead.careType),
+                ...mapMemoryConcernsToSales(memoryConcerns),
+            }
         }
         return null;
     }
@@ -454,12 +442,12 @@ class ObjectMappingService {
             salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
             this.addPhoneToContact(secondPerson, salesContact);
-    
+
             const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
             salesSecondPerson.primarySalesLead = primarySalesLead;
             salesSecondPerson.username = user.username;
-    
+
             return salesSecondPerson;
         }
         return null;
@@ -507,7 +495,7 @@ class ObjectMappingService {
         if (community) {
             salesLead.buildingId = community.communityId
         }
-        
+
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
@@ -552,7 +540,7 @@ class ObjectMappingService {
             username: user.username,
         }
     }
-   
+
     static buildLeadDataResponseForContactId(payload) {
         const returnval = [];
 
@@ -576,10 +564,10 @@ class ObjectMappingService {
         const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
         const salesFormDetailsCareType = leadToEloquaCareType(lead);
         const salesInquiryForm = {}
-        
+
         // Communities
         salesInquiryForm.communities = communities;
-        
+
         // Prospect
         this.addPhoneToContact(lead.prospect, salesFormDetailsProspect.salesContact);
         this.addAddressToContact(lead.prospect, salesFormDetailsProspect.salesContact);
@@ -589,26 +577,26 @@ class ObjectMappingService {
         this.addPhoneToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
         this.addAddressToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
         salesFormDetails.influencer = salesFormDetailsInfluencer;
-        
+
         // Second Person
         if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
             this.addPhoneToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
             this.addAddressToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
             salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
         }
-        
+
         // Care Type
         salesFormDetails.careType = salesFormDetailsCareType;
-        
+
         // Financial Options
         salesFormDetails.financialOptions = lead.financialOptions;
-        
+
         // Drivers
         salesFormDetails.drivers = lead.drivers;
-        
+
         // Notes
         salesFormDetails.notes = lead.notes;
-        
+
         // Misc.
         salesFormDetails.resultOfCall = lead.resultOfCall;
         salesFormDetails.callingFor = lead.callingFor;
@@ -618,7 +606,7 @@ class ObjectMappingService {
         salesFormDetails.advisorUsername = oktaUser.username;
         salesFormDetails.advisorEmail = oktaUser.email;
         salesInquiryForm.formDetails = salesFormDetails;
-        
+
         return salesInquiryForm;
     }
 
