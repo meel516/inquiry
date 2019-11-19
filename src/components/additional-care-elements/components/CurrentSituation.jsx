@@ -22,7 +22,7 @@ export const CurrentSituation = ({ basePath }) => {
   return (
     <FormGroup md="9">
         <Label for={name} className="label-format">Current Living Situation</Label>
-        <Select name={name} placeholder='Select One'>
+        <Select name={name}>
           {situationOptions}
         </Select>
     </FormGroup>

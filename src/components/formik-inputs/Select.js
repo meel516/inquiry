@@ -10,7 +10,7 @@ export const Select = ({
     onBlur,
     children,
     disabled = false,
-    placeholder = 'Select...'
+    placeholder = 'Select One'
 }) => {
     const { status: { readOnly } } = useFormikContext();
     const [ field, meta ] = useField(name);

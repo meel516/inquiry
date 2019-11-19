@@ -21,7 +21,7 @@ export const InquiryType = ({ name, locked = false }) => {
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Inquiry Method</Label>
-      <Select name={name} disabled={locked} placeholder='Select One'>
+      <Select name={name} disabled={locked}>
         {inquiryTypeOptions}
       </Select>
     </FormGroup>

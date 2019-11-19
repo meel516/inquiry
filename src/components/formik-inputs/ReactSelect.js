@@ -5,11 +5,16 @@ import Select from 'react-select';
 import { useField, useFormikContext } from 'formik';
 import { useOnChangeWrapper, useOnBlurWrapper } from './hooks';
 
+export const filterOnLabel = (option, searchText) => {
+    return option.label.toLowerCase().includes(searchText.toLowerCase());
+}
+
 export const ReactSelect = ({
     name,
     options,
     onChange,
     onBlur,
+    filter = filterOnLabel,
     disabled = false,
 }) => {
     const { status: { readOnly }} = useFormikContext();
@@ -33,6 +38,7 @@ export const ReactSelect = ({
                 isDisabled={disabled || readOnly}
                 onBlur={handleBlur}
                 placeholder="Select One"
+                filterOption={filter}
             />
             { meta.touched && meta.error ? (
                 <Alert color="danger" className="alert-smaller-size">{meta.error}</Alert>
@@ -46,5 +52,6 @@ Select.propTypes = {
     options: PropTypes.array.isRequired,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    filter: PropTypes.func,
     disabled: PropTypes.bool,
 }

@@ -22,7 +22,7 @@ export const VeteranStatus = ({ basePath, locked = false }) => {
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Veteran Status</Label>
-      <Select name={name} disabled={locked} placeholder='Select One'>
+      <Select name={name} disabled={locked}>
         {veteranStatusOptions}
       </Select>
     </FormGroup>

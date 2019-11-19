@@ -21,7 +21,7 @@ export const ResultOfCall = ({ basePath, locked = false }) => {
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Result of Call</Label>
-      <Select name={name} disabled={locked} placeholder='Select One'>
+      <Select name={name} disabled={locked}>
         {resultOfCallOptions}
       </Select>
     </FormGroup>
