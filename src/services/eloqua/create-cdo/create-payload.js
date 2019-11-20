@@ -6,6 +6,7 @@ import addContactPhoneToSalesContact from '../../../mappers/add-contact-phone-to
 import addContactAddressToSalesContact from '../../../mappers/add-contact-address-to-sales-contact'
 
 export default (lead, communities, userName, userEmail) => {
+    const formDetails = {}
     const salesFormDetailsProspect = prospectToEloquaContact(lead);
     salesFormDetailsProspect.salesContact = addContactPhoneToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
     salesFormDetailsProspect.salesContact = addContactAddressToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
