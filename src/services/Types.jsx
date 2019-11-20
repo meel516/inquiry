@@ -536,60 +536,6 @@ class ObjectMappingService {
         return returnval;
     }
 
-    //  TODO: Migrate to eloqua/createCdo
-    static createEloquaRequest(lead, communities, oktaUser) {
-        const salesFormDetails = {}
-        const salesFormDetailsProspect = prospectToEloquaContact(lead);
-        const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
-        const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
-        const salesFormDetailsCareType = leadToEloquaCareType(lead);
-        const salesInquiryForm = {}
-        
-        // Communities
-        salesInquiryForm.communities = communities;
-        
-        // Prospect
-        salesFormDetailsProspect.salesContact = addContactPhoneToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
-        salesFormDetailsProspect.salesContact = addContactAddressToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
-        salesFormDetails.prospect = salesFormDetailsProspect;
-
-        // Influencer
-        salesFormDetailsInfluencer.salesContact = addContactPhoneToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
-        salesFormDetailsInfluencer.salesContact = addContactAddressToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
-        salesFormDetails.influencer = salesFormDetailsInfluencer;
-        
-        // Second Person
-        if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
-            salesFormDetailsSecondPerson.salesLead.salesContact = addContactPhoneToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
-            salesFormDetailsSecondPerson.salesLead.salesContact = addContactAddressToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
-            salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
-        }
-        
-        // Care Type
-        salesFormDetails.careType = salesFormDetailsCareType;
-        
-        // Financial Options
-        salesFormDetails.financialOptions = lead.financialOptions;
-        
-        // Drivers
-        salesFormDetails.drivers = lead.drivers;
-        
-        // Notes
-        salesFormDetails.notes = lead.notes;
-        
-        // Misc.
-        salesFormDetails.resultOfCall = lead.resultOfCall;
-        salesFormDetails.callingFor = lead.callingFor;
-        salesFormDetails.callerType = lead.callerType;
-        salesFormDetails.situation2 = lead.notes.secondPersonNote;
-        salesFormDetails.umid = lead.umid;
-        salesFormDetails.advisorUsername = oktaUser.username;
-        salesFormDetails.advisorEmail = oktaUser.email;
-        salesInquiryForm.formDetails = salesFormDetails;
-        
-        return salesInquiryForm;
-    }
-
     static createContactDuplicateGridContent(duplicatecontacts) {
         const returnval = [];
 
