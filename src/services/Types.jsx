@@ -16,6 +16,7 @@ import {defaultMobilityConcerns} from '../constants/default-mobility-concerns'
 import {defaultNutritionConcerns} from '../constants/default-nutrition-concerns'
 import {defaultAdlNeeds} from '../constants/default-adl-needs'
 import {defaultFinancialOptions} from '../constants/default-financial-options'
+import {defaultDrivers} from '../constants/default-drivers'
 
 import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
@@ -125,7 +126,7 @@ class ObjectMappingService {
             lead.mobilityConcerns = defaultMobilityConcerns;
             lead.nutritionConcerns = defaultNutritionConcerns;
             lead.financialOptions = defaultFinancialOptions;
-            lead.drivers = this.createDrivers();
+            lead.drivers = defaultDrivers;
             lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
@@ -162,7 +163,7 @@ class ObjectMappingService {
         lead.mobilityConcerns = defaultMobilityConcerns;
         lead.nutritionConcerns = defaultNutritionConcerns;
         lead.financialOptions = defaultFinancialOptions;
-        lead.drivers = this.createDrivers();
+        lead.drivers = defaultDrivers;
         lead.notes = {}
 
         return lead;
@@ -236,28 +237,6 @@ class ObjectMappingService {
             city: "",
             state: "",
             zip: "",
-        }
-    }
-
-    static createFinancialOptions() {
-        return {
-            aidAttendance: false,
-            familyContributions: false,
-            homeOwner: false,
-            ltcPolicy: false,
-        }
-    }
-
-    static createDrivers() {
-        return {
-            activities: false,
-            accessToResidents: false,
-            ageInPlace: false,
-            care: false,
-            location: false,
-            peaceOfMind: false,
-            petFriendly: false,
-            safety: false,
         }
     }
 
