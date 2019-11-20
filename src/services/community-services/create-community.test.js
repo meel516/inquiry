@@ -12,7 +12,7 @@ describe('communityServices.createCommunity Service', () => {
             uuid: '12345',
             communityId: 0,
             freeMeal: null,
-            followupDate: null
+            followUpDate: null
         }
         expect(createCommunity(expected.uuid)).toEqual(expected)
     })
@@ -22,7 +22,7 @@ describe('communityServices.createCommunity Service', () => {
             uuid: 'foo',
             communityId: 0,
             freeMeal: null,
-            followupDate: null
+            followUpDate: null
         }
         expect(createCommunity()).toEqual(expected)
     })

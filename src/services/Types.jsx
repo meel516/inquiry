@@ -342,7 +342,7 @@ class ObjectMappingService {
             const salesFollowup = { leadId }
             salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
-            salesFollowup.followUpDate = convertToISODate(community.followupDate);
+            salesFollowup.followUpDate = convertToISODate(community.followUpDate);
 
             let description = community.note;
             if (community.freeMeal) {

@@ -25,7 +25,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
     return {
       communityId: `communities[${index}].communityId`,
       freeMeal: `communities[${index}].freeMeal`,
-      followupDate: `communities[${index}].followupDate`,
+      followUpDate: `communities[${index}].followUpDate`,
       note: `communities[${index}].note`,
       followUpAction: `communities[${index}].followUpAction`,
       startingPrice: `communities[${index}].startingPrice`,
