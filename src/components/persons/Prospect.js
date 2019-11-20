@@ -16,7 +16,7 @@ export const Prospect = ({ basePath, showProspect, locked }) => {
                 <Label className="section-header">Prospect</Label>
             </Col>
         </Row>
-        { !showProspect && (<Person basePath={basePath} type={TYPE} locked={locked} />) }
+        { showProspect && (<Person basePath={basePath} type={TYPE} locked={locked} />) }
         <Row>
             <Col xs="1" md="6">
                 <FormGroup>
