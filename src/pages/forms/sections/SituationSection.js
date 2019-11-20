@@ -7,7 +7,7 @@ import { ADLNeeds } from '../../../components/checkbox-groups';
 import { AdditionalCareElements } from '../../../components/additional-care-elements';
 import { StyledFormSection } from './styled';
 
-export const SituationSection = React.memo(({ isReadOnly, isLocked, showProspect }) => (
+export const SituationSection = React.memo(({ isReadOnly, isLocked, hideProspect }) => (
     <StyledFormSection id='situation'>
         <Note name='lead.notes.situation' label="Situation" rows={6} />
         <Row>
@@ -16,7 +16,7 @@ export const SituationSection = React.memo(({ isReadOnly, isLocked, showProspect
             </Col>
         </Row>
         <AdditionalCareElements basePath='lead' isReadOnly={isReadOnly} />
-        <Prospect basePath='lead' showProspect={showProspect} locked={isLocked} />
+        <Prospect basePath='lead' hideProspect={hideProspect} locked={isLocked} />
         <CareType basePath='lead' />
     </StyledFormSection>
 ))
@@ -25,5 +25,5 @@ SituationSection.displayName = 'SituationSection';
 SituationSection.propTypes = {
     isReadOnly: PropTypes.bool.isRequired,
     isLocked: PropTypes.bool.isRequired,
-    showProspect: PropTypes.bool.isRequired,
+    hideProspect: PropTypes.bool.isRequired,
 }

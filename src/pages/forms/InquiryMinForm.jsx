@@ -66,6 +66,7 @@ const InquiryForm = ({
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
+  const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
 
   return (
     <Form>
@@ -73,7 +74,7 @@ const InquiryForm = ({
         <div ref={TOP}></div>
       </section>
       <InfluencerSection influencer={influencer} isReadOnly={readOnly} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
-      <SituationSection isReadOnly={readOnly} isLocked={isLocked} showProspect={callingFor === 'Myself'} />
+      <SituationSection isReadOnly={readOnly} isLocked={isLocked} hideProspect={hideProspect} />
       <PassionPersonalitySection username={user.username} />
       <BudgetSection isReadOnly={readOnly} isLocked={isLocked} hasSecondPerson={secondPerson.selected} />
       <ResultOfCallSection isLocked={isLocked} isContactCenterBuildingId={isContactCenterBuildingId} leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
