@@ -15,6 +15,7 @@ import {defaultMemoryConcerns} from '../constants/default-memory-concerns'
 import {defaultMobilityConcerns} from '../constants/default-mobility-concerns'
 import {defaultNutritionConcerns} from '../constants/default-nutrition-concerns'
 import {defaultAdlNeeds} from '../constants/default-adl-needs'
+import {defaultFinancialOptions} from '../constants/default-financial-options'
 
 import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
@@ -123,7 +124,7 @@ class ObjectMappingService {
             lead.memoryConcerns = defaultMemoryConcerns;
             lead.mobilityConcerns = defaultMobilityConcerns;
             lead.nutritionConcerns = defaultNutritionConcerns;
-            lead.financialOptions = this.createFinancialOptions();
+            lead.financialOptions = defaultFinancialOptions;
             lead.drivers = this.createDrivers();
             lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
@@ -160,7 +161,7 @@ class ObjectMappingService {
         lead.memoryConcerns = defaultMemoryConcerns;
         lead.mobilityConcerns = defaultMobilityConcerns;
         lead.nutritionConcerns = defaultNutritionConcerns;
-        lead.financialOptions = this.createFinancialOptions();
+        lead.financialOptions = defaultFinancialOptions;
         lead.drivers = this.createDrivers();
         lead.notes = {}
 
