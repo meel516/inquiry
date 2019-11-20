@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types'
 
-export const AlertConfirm = ({ handleSubmit }) => {
+export const AlertConfirm = React.memo(({ handleSubmit }) => {
     const [ modalOpen, setModalOpen ] = useState(false);
 
     const handleYes = useCallback((e) => {
@@ -22,8 +22,9 @@ export const AlertConfirm = ({ handleSubmit }) => {
             </Modal>
         </>
     )
-}
+})
 
+AlertConfirm.displayName = 'AlertConfirm';
 AlertConfirm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
 }

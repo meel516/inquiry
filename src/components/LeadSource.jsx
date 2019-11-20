@@ -36,7 +36,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
       .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
   }, [setLeadSources]);
 
-  const onLeadSourceChange = useCallback(async (e) => {
+  const onLeadSourceChange = useCallback((e) => {
     const { value } = e.target;
 
     if (!value) {
@@ -48,7 +48,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
     setFieldValue(inputNames.leadSourceSubDetail, -1);
   }, [setLeadSourceDetails, setFieldValue, inputNames]);
 
-  const onLeadSourceDetailChange = useCallback(async (e) => {
+  const onLeadSourceDetailChange = useCallback((e) => {
     const { value } = e.target;
 
     if (!value) {

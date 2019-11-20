@@ -1,30 +1,18 @@
 import React, { useCallback, useRef } from 'react';
-import { Col, Row } from 'reactstrap';
 import { Form, withFormik } from 'formik';
-import { withAuth } from '@okta/okta-react';
 import { toast } from 'react-toastify';
-import { ADLNeeds, Drivers, FinancialOptions } from '../../components/checkbox-groups';
-import { AdditionalCareElements } from '../../components/additional-care-elements';
 import { AlertConfirm } from '../../components/AlertConfirm';
-import { Influencer, Prospect, SecondPerson } from '../../components/persons';
 import { formValidationSchema } from './ValidationSchema';
-import { InquiryType } from '../../components/InquiryType';
-import { LeadSource } from '../../components/LeadSource';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
-import Communities from '../../components/communities';
 import { getCommunitiesErrors } from './validators';
-import { StyledFormSection } from './styled';
 import {
-  CallerType,
-  CallingFor,
-  CareType,
-  Note,
-  ResultOfCall,
-  ReasonForCall,
-  UMID,
-  VeteranStatus,
-} from '../../components/form-items';
+  BudgetSection,
+  InfluencerSection,
+  PassionPersonalitySection,
+  ResultOfCallSection,
+  SituationSection,
+} from './sections';
 
 const InquiryForm = ({
   values,
@@ -73,89 +61,22 @@ const InquiryForm = ({
     validateForm( { ...values, lead: newLead });
   }, [values, setFieldValue, validateForm])
 
-  const isLocked = !!values.lead.leadId;
-  const isExistingContact = !!values.lead.influencer.contactId;
+  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson }} = values;
+  const { readOnly } = status;
+  const isLocked = !!leadId;
+  const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <section>
         <div ref={TOP}></div>
       </section>
-      <StyledFormSection id='contactInfo'>
-        <Influencer
-          basePath='lead'
-          contact={values.lead.influencer}
-          isReadOnly={status.readOnly}
-          updateLead={updateLead}
-          isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
-          locked={isLocked || isExistingContact}
-        />
-      </StyledFormSection>
-      <StyledFormSection id='situation'>
-        <Note name='lead.notes.situation' label="Situation" rows={6} />
-        <Row>
-          <Col>
-            <ADLNeeds basePath='lead.adlNeeds' isReadOnly={status.readOnly} />
-          </Col>
-        </Row>
-        <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
-        <Prospect basePath='lead' showProspect={(values.lead.prospect && !values.lead.prospect.contactId)} locked={isLocked} />
-        <CareType basePath='lead' />
-      </StyledFormSection>
-      <StyledFormSection id='passionPersonality'>
-        <Note name='lead.notes.passionsPersonality' label="Passions &amp; Personality" />
-        <Communities username={values.user.username} />
-      </StyledFormSection>
-      <StyledFormSection id='budget'>
-        <Note name='lead.notes.financialSituation' label="Financial Situation" />
-        <FinancialOptions basePath='lead.financialOptions' isReadOnly={status.readOnly} />
-        <Note name='lead.notes.additionalNotes' label="Additional Notes" />
-        <Drivers basePath='lead.drivers' isReadOnly={status.readOnly} />
-        <SecondPerson basePath='lead' hasSecondPerson={values.lead.secondPerson.selected} locked={isLocked} />
-      </StyledFormSection>
-      <StyledFormSection id='resultOfCall'>
-        <Row>
-          <Col md="5">
-            <ResultOfCall basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-              <CallingFor basePath='lead' locked={isLocked} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <ReasonForCall basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <InquiryType name='lead.inquiryType' locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <VeteranStatus basePath='lead.prospect' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <LeadSource leadSource={values.lead.leadSource} leadSourceDetail={values.lead.leadSourceDetail} locked={isLocked && isContactCenterBuildingId} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <UMID basePath='lead' />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="5">
-            <CallerType basePath='lead' />
-          </Col>
-        </Row>
-      </StyledFormSection>
+      <InfluencerSection influencer={influencer} isReadOnly={readOnly} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
+      <SituationSection isReadOnly={readOnly} isLocked={isLocked} showProspect={callingFor === 'Myself'} />
+      <PassionPersonalitySection username={user.username} />
+      <BudgetSection isReadOnly={readOnly} isLocked={isLocked} hasSecondPerson={secondPerson.selected} />
+      <ResultOfCallSection isLocked={isLocked} isContactCenterBuildingId={isContactCenterBuildingId} leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
       {
         !status.readOnly && (
           <div className="float-right">
@@ -169,37 +90,37 @@ const InquiryForm = ({
 }
 
 const EnhancedInquiryForm = withFormik({
-  displayName: 'InquiryForm',
-  enableReinitialize: true,
-  validationSchema: formValidationSchema,
-  validateOnChange: false,
-  validateOnMount: true,
-  validate: (values) => {
-    const errors = getCommunitiesErrors(values.communities);
-    return errors.some(x => !!x)
-      ? { communities: errors }
-      : {};
-  },
-  mapPropsToValues: ({ lead, user }) => ({ lead, user, communities: [] }),
-  mapPropsToStatus: () => ({ readOnly: false, successful: false }),
-  handleSubmit: (values, { setSubmitting, setStatus }) => {
-    setSubmitting(true);
-    const salesService = new SalesAPIService();
-    salesService.submitToService({ ...values })
-      .then(() => {
-        setStatus({ successful: true, readOnly: true });
-        toast.success("Request was submitted successfully.", {
-          position: toast.POSITION.TOP_CENTER
-        });
-      })
-      .catch((err) => {
-        setStatus({ successful: false, readOnly: false, error: true });
-        toast.error(err.message, {
-          position: toast.POSITION.TOP_CENTER
-        });
-      })
-      .finally(() => setSubmitting(false))
-  },
+    displayName: 'InquiryForm',
+    enableReinitialize: true,
+    validationSchema: formValidationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
+    validate: (values) => {
+      const errors = getCommunitiesErrors(values.communities);
+      return errors.some(x => !!x)
+        ? { communities: errors }
+        : {};
+    },
+    mapPropsToValues: ({ lead, user }) => ({ lead, user, communities: [] }),
+    mapPropsToStatus: () => ({ readOnly: false, successful: false }),
+    handleSubmit: (values, { setSubmitting, setStatus }) => {
+      setSubmitting(true);
+      const salesService = new SalesAPIService();
+      salesService.submitToService({ ...values })
+        .then(() => {
+          setStatus({ successful: true, readOnly: true });
+          toast.success("Request was submitted successfully.", {
+            position: toast.POSITION.TOP_CENTER
+          });
+        })
+        .catch((err) => {
+          setStatus({ successful: false, readOnly: false, error: true });
+          toast.error(err.message, {
+            position: toast.POSITION.TOP_CENTER
+          });
+        })
+        .finally(() => setSubmitting(false))
+    },
 })(InquiryForm);
 
-export default withAuth(EnhancedInquiryForm);
+export default EnhancedInquiryForm;
