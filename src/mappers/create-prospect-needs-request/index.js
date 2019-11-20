@@ -9,10 +9,10 @@ export default (leadId, { careType, adlNeeds, memoryConcerns, mobilityConcerns, 
             leadId,
             username: user.username,
             careTypeId: Number(careType),
-            ...mapAdlNeedsToSales(adlNeeds),
-            ...mapMemoryConcernsToSales(memoryConcerns),
-            ...mapMobilityConcernsToSales(mobilityConcerns),
-            ...mapNutritionConcernsToSales(nutritionConcerns),
+            ...adlNeeds,
+            ...memoryConcerns,
+            ...mobilityConcerns,
+            ...nutritionConcerns,
         }
     }
     return null;
