@@ -1,4 +1,5 @@
 import { string } from 'yup';
+import { isEmpty } from 'lodash';
 
 export const digitLengthLessThan = (max) => {
     return function (value) {
@@ -22,18 +23,47 @@ export function phoneNumberValidator (value) {
     return true;
 }
 
-export const getCommunitiesErrors = (communities) => {
-    if (!Array.isArray(communities) || communities < 2) {
-        return [];
+const getDuplicateCommunitiesErrors = (communities) => {
+    if (!Array.isArray(communities) || communities.length < 2) {
+        return new Array(communities.length).fill(null);
     }
 
-    const validValues = communities.filter(q => q.communityId !== 0);
     const selections = new Set();
-    return validValues.reduce((acc, item) => {
-      const error = selections.has(item.communityId)
-        ? ({ communityId: 'You have added a duplicate community.' })
+    return communities.reduce((acc, item) => {
+      const { communityId } = item;
+      const error = communityId !== 0 && selections.has(communityId)
+        ? ({ communityId: 'You have added a duplicate community' })
         : null;
-      selections.add(item.communityId);
+      selections.add(communityId);
       return (acc.push(error), acc);
     }, []);
 }
+
+const getCommunityErrors = (community) => {
+    const errors = {};
+    const { communityId, note, followUpAction, followUpDate } = community;
+
+    if (!communityId)
+        errors.communityId = 'Community is required';
+
+    if (note && note.length > 4000)
+        errors.note = 'Description can be at most 4000 characters';
+
+    if (followUpAction) {
+        if (!followUpDate)
+            errors.followUpDate = 'Next Steps Date is required';
+        if (!note || !note.trim())
+            errors.note = 'Description is required';
+    }
+
+    return isEmpty(errors) ? null : errors;
+}
+
+export const getCommunitiesErrors = (communities) => {
+    const duplicateErrors = getDuplicateCommunitiesErrors(communities);
+    const fieldErrors = communities.map(getCommunityErrors)
+    return duplicateErrors.map((dupeError, i) => {
+        const errors = { ...dupeError, ...fieldErrors[i] };
+        return isEmpty(errors) ? null : errors;
+    });
+} 

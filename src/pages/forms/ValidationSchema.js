@@ -137,12 +137,7 @@ const mainFormValidationSchema = object().shape({
       secondPerson: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
   }),
-  communities: array().of(object()
-      .shape({
-        note: string().max(4000, 'Description can be at most 4000 characters'),
-        communityId: number().test('required-number-value', 'Community is required', nonZeroNumber),
-      })
-  )
+  communities: array().of(object()), // all community validation is done outside of yup in ./validators.js
 })
 
 const formValidationSchema = mainFormValidationSchema.concat(conditionalValidationSchema);

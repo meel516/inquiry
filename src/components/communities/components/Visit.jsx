@@ -19,9 +19,9 @@ const Visit = ({ inputNames, followUpAction }) => (
     <Row>
       <Col md="4">
         <FormGroup>
-          <Label for={inputNames.followupDate} className="label-format">Next Steps Date</Label>
+          <Label for={inputNames.followUpDate} className="label-format">Next Steps Date</Label>
           <DateTimePicker
-            name={inputNames.followupDate}
+            name={inputNames.followUpDate}
             className="no-border form-control"
             disableClock={true}
             showWeekNumbers={true}
