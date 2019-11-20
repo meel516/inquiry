@@ -90,37 +90,37 @@ const InquiryForm = ({
 }
 
 const EnhancedInquiryForm = withFormik({
-    displayName: 'InquiryForm',
-    enableReinitialize: true,
-    validationSchema: formValidationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
-    validate: (values) => {
-      const errors = getCommunitiesErrors(values.communities);
-      return errors.some(x => !!x)
-        ? { communities: errors }
-        : {};
-    },
-    mapPropsToValues: ({ lead, user }) => ({ lead, user, communities: [] }),
-    mapPropsToStatus: () => ({ readOnly: false, successful: false }),
-    handleSubmit: (values, { setSubmitting, setStatus }) => {
-      setSubmitting(true);
-      const salesService = new SalesAPIService();
-      salesService.submitToService({ ...values })
-        .then(() => {
-          setStatus({ successful: true, readOnly: true });
-          toast.success("Request was submitted successfully.", {
-            position: toast.POSITION.TOP_CENTER
-          });
-        })
-        .catch((err) => {
-          setStatus({ successful: false, readOnly: false, error: true });
-          toast.error(err.message, {
-            position: toast.POSITION.TOP_CENTER
-          });
-        })
-        .finally(() => setSubmitting(false))
-    },
+  displayName: 'InquiryForm',
+  enableReinitialize: true,
+  validationSchema: formValidationSchema,
+  validateOnChange: false,
+  validateOnMount: true,
+  validate: (values) => {
+    const errors = getCommunitiesErrors(values.communities);
+    return errors.some(x => !!x)
+      ? { communities: errors }
+      : {};
+  },
+  mapPropsToValues: ({ lead, user }) => ({ lead, user, communities: [] }),
+  mapPropsToStatus: () => ({ readOnly: false, successful: false }),
+  handleSubmit: (values, { setSubmitting, setStatus }) => {
+    setSubmitting(true);
+    const salesService = new SalesAPIService();
+    salesService.submitToService({ ...values })
+      .then(() => {
+        setStatus({ successful: true, readOnly: true });
+        toast.success("Request was submitted successfully.", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      })
+      .catch((err) => {
+        setStatus({ successful: false, readOnly: false, error: true });
+        toast.error(err.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      })
+      .finally(() => setSubmitting(false))
+  },
 })(InquiryForm);
 
 export default EnhancedInquiryForm;
