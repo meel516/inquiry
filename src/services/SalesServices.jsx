@@ -400,7 +400,7 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followUpDate to the ISOString.
       communityList.forEach((community) => {
-        community.followUpDate = convertToISODate(community.followUpDate);
+        community.followupDate = convertToISODate(community.followUpDate);
         formattedCommunityList.push(community);
       })
     }
