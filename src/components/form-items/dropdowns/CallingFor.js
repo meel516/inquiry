@@ -9,7 +9,7 @@ export const CallingFor = ({ basePath, locked = false }) => {
     return (
         <FormGroup>
             <Label for={path} className="label-format required-field">I am calling for</Label>
-            <Select name={path} disabled={locked} placeholder='Select One'>
+            <Select name={path} disabled={locked}>
                 <option>Myself</option>
                 <option>Parent</option>
                 <option>Spouse</option>

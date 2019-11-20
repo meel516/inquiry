@@ -9,7 +9,7 @@ export const CallerType = ({ basePath, locked = false }) => {
     return (
         <FormGroup>
             <Label for={path} className="label-format required-field">What is the gender of the caller?</Label>
-            <Select name={path} disabled={locked} placeholder="Select One">
+            <Select name={path} disabled={locked}>
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="U">Unknown</option>

@@ -8,6 +8,25 @@ import { StyledModal, StyledModalContentWrapper } from './styled';
 import { ContactModalContent } from './ContactModalContent';
 import { LeadModalContent } from './LeadModalContent';
 
+const contactDataSort = (a, b) => {
+    if (a.firstName === b.firstName) {
+        if (a.lastName < b.lastName) return -1;
+        return a.lastName > b.lastName ? 1 : 0;
+    }
+
+    if (a.firstName < b.firstName) return -1;
+    return a.firstName > b.firstName ? 1 : 0;
+}
+
+const leadDataSort = (a, b) => {
+    if (a.prospectid === b.prospectid) {
+        if (a.community < b.community) return -1;
+        return a.community > b.community ? 1 : 0;
+    }
+
+    return a.prospectid - b.prospectid;
+}
+
 export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     const [ duplicateContacts, setDuplicateContacts ] = useState([]);
     const [ leadData, setLeadData ] = useState([]);
@@ -27,7 +46,7 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     const onContactSelection = useCallback(async (row) => {
         if (row) {
             const leadData = await salesService.retrieveLeadDataForContactId(row.contactid);
-            setLeadData(leadData);
+            setLeadData(leadData.sort(leadDataSort));
             setSelectedContact(row);
             setShowLeadData(true);
         }
@@ -51,7 +70,7 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
     useEffect(() => {
         findDuplicates(contact)
             .then((data) => {
-                setDuplicateContacts(data);
+                setDuplicateContacts(data.sort(contactDataSort));
                 setModalContentReady(true);
             })
     }, [contact, setDuplicateContacts, setModalContentReady])

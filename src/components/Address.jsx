@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { getAddressStates } from '../services/dropdowns'
 import { Input, Select } from './formik-inputs';
 
-
 export const Address = ({ basePath, locked = false }) => {
   const [ states, setStates ] = useState([]);
 
@@ -71,7 +70,6 @@ export const Address = ({ basePath, locked = false }) => {
           <FormGroup>
             <Label for={inputNames.state} className="label-format">State</Label>
             <Select name={inputNames.state} disabled={locked} >
-              <option value="">Select One</option>
               {stateOptions}
             </Select>
           </FormGroup>
