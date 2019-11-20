@@ -11,14 +11,15 @@ import { get } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
+import {defaultMemoryConcerns} from '../constants/default-memory-concerns'
+import {defaultMobilityConcerns} from '../constants/default-mobility-concerns'
+import {defaultNutritionConcerns} from '../constants/default-nutrition-concerns'
+import {defaultAdlNeeds} from '../constants/default-adl-needs'
+
 import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
 import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
-import defaultMemoryConcerns from '../mappers/default-memory-concerns'
-import mapMemoryConcernsToSales from '../mappers/map-memory-concerns-to-sales'
-import defaultMobilityConcerns from '../mappers/default-mobility-concerns'
-import mapMobilityConcernsToSales from '../mappers/map-mobility-concerns-to-sales'
 
 function LeadDataRecord(record) {
     if (record) {
@@ -118,10 +119,10 @@ class ObjectMappingService {
         salesLead = salesLead || {}
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
-            lead.adlNeeds = this.createAdlNeeds();
-            lead.memoryConcerns = defaultMemoryConcerns();
-            lead.mobilityConcerns = defaultMobilityConcerns();
-            lead.nutritionConcerns = this.createNutritionConcerns();
+            lead.adlNeeds = defaultAdlNeeds;
+            lead.memoryConcerns = defaultMemoryConcerns;
+            lead.mobilityConcerns = defaultMobilityConcerns;
+            lead.nutritionConcerns = defaultNutritionConcerns;
             lead.financialOptions = this.createFinancialOptions();
             lead.drivers = this.createDrivers();
             lead.secondPerson = this.createEmptyContact();
@@ -129,9 +130,8 @@ class ObjectMappingService {
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadSourceSubDetail = salesLead.inquiryLeadSourceSubDetailId
             lead.leadTypeId = salesLead.leadTypeId
-            lead.notes = this.createEmptyNotes();
+            lead.notes = {}
             lead.inquiryType = salesLead.inquiryTypeId
-            //lead.reasonForCall = salesLead.interestReasonId
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const { salesContact } = salesLead;
@@ -156,13 +156,13 @@ class ObjectMappingService {
         lead.secondPerson.selected = false;
         lead.prospect = this.createEmptyContact();
         lead.prospect.age = '';
-        lead.adlNeeds = this.createAdlNeeds();
-        lead.memoryConcerns = defaultMemoryConcerns();
-        lead.mobilityConcerns = defaultMobilityConcerns();
-        lead.nutritionConcerns = this.createNutritionConcerns();
+        lead.adlNeeds = defaultAdlNeeds;
+        lead.memoryConcerns = defaultMemoryConcerns;
+        lead.mobilityConcerns = defaultMobilityConcerns;
+        lead.nutritionConcerns = defaultNutritionConcerns;
         lead.financialOptions = this.createFinancialOptions();
         lead.drivers = this.createDrivers();
-        lead.notes = this.createEmptyNotes();
+        lead.notes = {}
 
         return lead;
     }
@@ -238,36 +238,6 @@ class ObjectMappingService {
         }
     }
 
-    /**
-     * creates an empty note object
-     */
-    static createEmptyNotes() {
-        return {
-
-        }
-    }
-
-    static createAdlNeeds() {
-        return {
-            bathing: false,
-            dressing: false,
-            feeding: false,
-            incontinence: false,
-            medications: false,
-            toileting: false,
-            transferring: false,
-        }
-    }
-
-    static createNutritionConcerns() {
-        return {
-            diabetes: false,
-            lowSalt: false,
-            prescribedDiet: false,
-            notEatingWell: false,
-        }
-    }
-
     static createFinancialOptions() {
         return {
             aidAttendance: false,
@@ -339,40 +309,6 @@ class ObjectMappingService {
             salesFollowup.username = user.username
 
             return salesFollowup;
-        }
-        return null;
-    }
-
-    static createProspectNeedsRequest(leadId, lead, user) {
-        if (leadId && lead.careType) {
-            const salesProspectNeed = {}
-            const { adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns } = lead
-
-            if (adlNeeds) {
-                salesProspectNeed.bathing = adlNeeds.bathing;
-                salesProspectNeed.incontinence = adlNeeds.incontinence;
-                salesProspectNeed.transferring = adlNeeds.transferring;
-                salesProspectNeed.dressing = adlNeeds.dressing;
-                salesProspectNeed.medications = adlNeeds.medications;
-                salesProspectNeed.feeding = adlNeeds.feeding;
-                salesProspectNeed.toileting = adlNeeds.toileting;
-            }
-
-            if (nutritionConcerns) {
-                salesProspectNeed.diabetesDiagnosis = nutritionConcerns.diabetes;
-                salesProspectNeed.lowSaltLowDiet = nutritionConcerns.lowSalt;
-                salesProspectNeed.otherDietRestrictions = nutritionConcerns.prescribedDiet;
-                salesProspectNeed.notEatingWell = nutritionConcerns.notEatingWell;
-            }
-
-            return {
-                leadId,
-                username: user.username,
-                careTypeId: Number(lead.careType),
-                ...salesProspectNeed,
-                ...mapMemoryConcernsToSales(memoryConcerns),
-                ...mapMobilityConcernsToSales(mobilityConcerns),
-            }
         }
         return null;
     }
