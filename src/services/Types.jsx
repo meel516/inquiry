@@ -2,12 +2,8 @@ import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
-import stripPhoneFormatting from '../utils/strip-phone-formatting'
-import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
-import contactHasAddress from '../utils/contact-has-address'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
-import { get } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
@@ -15,6 +11,8 @@ import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-cont
 import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
 import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
+import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales-contact'
+import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
 function LeadDataRecord(record) {
     if (record) {
@@ -306,37 +304,6 @@ class ObjectMappingService {
         }
     }
 
-    static createPhone = (phone) => ({
-        primary: true,
-        phoneNumber: stripPhoneFormatting(phone.number),
-        phoneType: phone.type,
-        phoneId: phone.phoneId
-    })
-
-    static addPhoneToContact(contact, salesContact) {
-        if (contactHasPhoneContacts(contact)) {
-            const phone = this.createPhone(contact.phone);
-            salesContact.phoneNumbers = [];
-            salesContact.phoneNumbers.push(phone);
-        }
-    }
-
-    static addAddressToContact = (contact, salesContact) => {
-        if (!contactHasAddress(contact) || !salesContact) {
-            return
-        }
-        salesContact.address = {
-            addressType: get(contact, 'address.type', 'Home'),
-            active: get(contact, 'address.active', true),
-            primary: get(contact, 'address.primary', true),
-            addressLine1: get(contact, 'address.line1'),
-            addressLine2: get(contact, 'address.line2'),
-            city: get(contact, 'address.city'),
-            stateProv: get(contact, 'address.state'),
-            zipPostalCode: get(contact, 'address.zip'),
-        }
-    }
-
     static createFollowupRequest(leadId, community, user) {
         if (leadId && community && community.followUpAction) {
             const salesFollowup = { leadId }
@@ -431,8 +398,8 @@ class ObjectMappingService {
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
         salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
-        this.addPhoneToContact(influencer, salesContact);
-        this.addAddressToContact(influencer, salesContact);
+        salesContact = addContactPhoneToSalesContact(salesContact, influencer)
+        salesContact = addContactAddressToSalesContact(salesContact, influencer)
 
         if (influencer.influencerId) {
             salesInfluencer.influencerId = influencer.influencerId;
@@ -453,7 +420,7 @@ class ObjectMappingService {
             salesContact.contactId = ((secondPerson && secondPerson.contactId) ? secondPerson.contactId : '')
             salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
-            this.addPhoneToContact(secondPerson, salesContact);
+            salesContact = addContactPhoneToSalesContact(salesContact, secondPerson)
     
             const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
@@ -484,8 +451,8 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
-            this.addAddressToContact(influencer, salesContact)
-            this.addPhoneToContact(influencer, salesContact)
+            salesContact = addContactAddressToSalesContact(salesContact, influencer)
+            salesContact = addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
             salesLead.interestReasonId = lead.reasonForCall
         }
@@ -498,7 +465,7 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
-            this.addPhoneToContact(prospect, salesContact)
+            salesContact = addContactPhoneToSalesContact(salesContact, prospect)
         }
 
         salesLead.inquiryTypeId = lead.inquiryType
@@ -569,6 +536,7 @@ class ObjectMappingService {
         return returnval;
     }
 
+    //  TODO: Migrate to eloqua/createCdo
     static createEloquaRequest(lead, communities, oktaUser) {
         const salesFormDetails = {}
         const salesFormDetailsProspect = prospectToEloquaContact(lead);
@@ -581,19 +549,19 @@ class ObjectMappingService {
         salesInquiryForm.communities = communities;
         
         // Prospect
-        this.addPhoneToContact(lead.prospect, salesFormDetailsProspect.salesContact);
-        this.addAddressToContact(lead.prospect, salesFormDetailsProspect.salesContact);
+        salesFormDetailsProspect.salesContact = addContactPhoneToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
+        salesFormDetailsProspect.salesContact = addContactAddressToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
         salesFormDetails.prospect = salesFormDetailsProspect;
 
         // Influencer
-        this.addPhoneToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
-        this.addAddressToContact(lead.influencer, salesFormDetailsInfluencer.salesContact);
+        salesFormDetailsInfluencer.salesContact = addContactPhoneToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
+        salesFormDetailsInfluencer.salesContact = addContactAddressToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
         salesFormDetails.influencer = salesFormDetailsInfluencer;
         
         // Second Person
         if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
-            this.addPhoneToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
-            this.addAddressToContact(lead.secondPerson, salesFormDetailsSecondPerson.salesLead.salesContact);
+            salesFormDetailsSecondPerson.salesLead.salesContact = addContactPhoneToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
+            salesFormDetailsSecondPerson.salesLead.salesContact = addContactAddressToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
             salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
         }
         
