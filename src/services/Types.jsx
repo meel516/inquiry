@@ -7,10 +7,6 @@ import Lead from '../models/lead'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
-import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
-import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
-import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
-import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
 import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales-contact'
 import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
@@ -381,14 +377,7 @@ class ObjectMappingService {
     })
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
-        const salesContact = {}
-        const salesInfluencer = {
-            leadId,
-            primary: true,
-            active: true,
-            salesContact
-        }
-        salesInfluencer.username = (user) ? user.username : null
+        let salesContact = {}
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
         salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
@@ -397,20 +386,23 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
-        salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
         salesContact = addContactPhoneToSalesContact(salesContact, influencer)
         salesContact = addContactAddressToSalesContact(salesContact, influencer)
 
-        if (influencer.influencerId) {
-            salesInfluencer.influencerId = influencer.influencerId;
+        return {
+            leadId,
+            primary: true,
+            active: true,
+            username: (user) ? user.username : null,
+            influencerId: influencer.influencerId,
+            interestReasonId: ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : ''),
+            salesContact
         }
-
-        return salesInfluencer;
     }
 
     static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
-            const salesContact = {}
+            let salesContact = {}
             const salesLead = createSalesLead(salesContact, 5)
             salesLead.leadId = ((secondPerson && secondPerson.leadId) ? secondPerson.leadId : '')
 
@@ -438,7 +430,7 @@ class ObjectMappingService {
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
-        const salesContact = {}
+        let salesContact = {}
         const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
