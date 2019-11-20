@@ -400,9 +400,9 @@ class SalesAPIService {
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
+      // First, iterate through the communityList and format the followUpDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToISODate(community.followupDate);
+        community.followUpDate = convertToISODate(community.followUpDate);
         formattedCommunityList.push(community);
       })
     }
@@ -532,9 +532,9 @@ class SalesAPIService {
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
+      // First, iterate through the communityList and format the followUpDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToISODate(community.followupDate);
+        community.followUpDate = convertToISODate(community.followUpDate);
         formattedCommunityList.push(community);
       })
     }
