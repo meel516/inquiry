@@ -11,13 +11,13 @@ export const NutritionConcerns = ({ basePath }) => (
         <Label className="label-format">Nutrition Concerns</Label>
         <Row>
             <Col>
-                <Checkbox className='col-4' name={`${basePath}.${path}.diabetes`} label='Diabetes Diagnosis' />
-                <Checkbox className='col-4' name={`${basePath}.${path}.lowSalt`} label='Low Salt-Low Fat Diet Restrictions' />
+                <Checkbox className='col-4' name={`${basePath}.${path}.diabetesDiagnosis`} label='Diabetes Diagnosis' />
+                <Checkbox className='col-4' name={`${basePath}.${path}.lowSaltLowDiet`} label='Low Salt-Low Fat Diet Restrictions' />
             </Col>
         </Row>
         <Row>
             <Col>
-                <Checkbox className='col-4' name={`${basePath}.${path}.prescribedDiet`} label='Other Prescribed Diet Restrictions' />
+                <Checkbox className='col-4' name={`${basePath}.${path}.otherDietRestrictions`} label='Other Prescribed Diet Restrictions' />
                 <Checkbox className='col-4' name={`${basePath}.${path}.notEatingWell`} label='Not Eating Consistently or Well' />
             </Col>
         </Row>
