@@ -237,6 +237,7 @@ class SalesAPIService {
 
   async submitProspect(lead, community, user) {
     const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
+    console.log(JSON.stringify(prospect));
     return await this.sendProspect(prospect);
   }
 
@@ -303,7 +304,8 @@ class SalesAPIService {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+    debugger;
+    if (salesLead.inquirerType !== 'PROSP' || (lead.influencer.contactId !== null && lead.prospect.firstName !== '')) {
       if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
@@ -435,6 +437,8 @@ class SalesAPIService {
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
+    const tmpProspectContactId = lead.prospect.contactId;
+
     if (lead.buildingId !== 225707) {
       try {
         let community = createCommunity();
@@ -445,6 +449,14 @@ class SalesAPIService {
           lead.influencer.influencerId = null; // Need to null it out here!
         }
 
+        // MATT: This fixed:
+        //       Has CC COI already	(N) Initiated By Prospect (Y)	Has Influencer (Y)
+        // NEED TO RETEST ALL SCENARIOS!!!
+        if (lead.prospect) {
+          lead.prospect.contactId = null // Need to null it out here!
+        }
+
+        console.log(JSON.stringify(lead));
         await this.processContactCenter(lead, community, user);
       }
       catch (err) {
@@ -456,6 +468,10 @@ class SalesAPIService {
       // Process any Prospect changes.
       // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
       //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
+      
+      // Add the saved value back!
+      lead.prospect.contactId = tmpProspectContactId;
+
       await this.submitProspect(lead, null, user);
     }
     catch (err) {
