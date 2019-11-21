@@ -106,7 +106,7 @@ describe('test followup mapping', () => {
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
-        expect(request.followUpDate).toEqual('2019-10-16T11:44:46.987-0600')
+        expect(request.followupDate).toEqual('2019-10-16T11:44:46.987-0600')
         expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
     })
 

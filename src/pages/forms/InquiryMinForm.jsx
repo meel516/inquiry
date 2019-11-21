@@ -76,6 +76,7 @@ const InquiryForm = ({
   const isLocked = !!values.lead.leadId;
   const isExistingContact = !!values.lead.influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
+  const hideProspect = values.lead.callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -100,7 +101,7 @@ const InquiryForm = ({
           </Col>
         </Row>
         <AdditionalCareElements basePath='lead' isReadOnly={status.readOnly} />
-        <Prospect basePath='lead' showProspect={(values.lead.prospect && !values.lead.prospect.contactId)} locked={isLocked} />
+        <Prospect basePath='lead' hideProspect={hideProspect} locked={isLocked} />
         <CareType basePath='lead' />
       </StyledFormSection>
       <StyledFormSection id='passionPersonality'>
