@@ -93,7 +93,7 @@ describe('test followup mapping', () => {
             uuid: "f5115381-b32b-4c04-8b10-c5173c1cd128",
             communityId: 308282,
             freeMeal: "Lunch",
-            followUpDate: "2019-10-16T17:44:46.987Z",
+            followupDate: "2019-10-16T17:44:46.987Z",
             followUpAction: "5",
             note: "Description",
             startingPrice: 2540,
@@ -106,7 +106,7 @@ describe('test followup mapping', () => {
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
-        expect(request.followUpDate).toEqual('2019-10-16T11:44:46.987-0600')
+        expect(request.followupDate).toEqual('2019-10-16T11:44:46.987-0600')
         expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
     })
 
@@ -116,7 +116,7 @@ describe('test followup mapping', () => {
             uuid: "d976b695-8202-4b49-b0f1-0e597e6a2fd7",
             communityId: 308049,
             freeMeal: "",
-            followUpDate: "2019-10-10T08:15:26.594-0500",
+            followupDate: "2019-10-10T08:15:26.594-0500",
             followUpAction: "",
             startingPrice: 2500,
             secondPersonFee: 500,
