@@ -6,6 +6,8 @@ import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
 import { get } from 'lodash'
 
+import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
+
 // business logic ------
 class SalesAPIService {
 
@@ -161,7 +163,7 @@ class SalesAPIService {
   async submitProspectNeeds(coid, lead, user) {
     const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
-    let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead, user);
+    let prospectNeedsRequest = createProspectNeedsRequest(coid, lead, user);
     if (prospectNeedsRequest) {
       fetch(prospectNeedsUrl, {
         method: 'POST', mode: 'cors',
