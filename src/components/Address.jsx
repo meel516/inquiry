@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { Col, FormGroup, Label, Row } from 'reactstrap'
-import PropTypes from 'prop-types'
-import { getAddressStates } from '../services/dropdowns'
+import React, { useEffect, useState, useMemo } from 'react';
+import { Col, FormGroup, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { getAddressStates } from '../services/dropdowns';
 import { Input, Select } from './formik-inputs';
 
-export const Address = ({ basePath, locked = false }) => {
+export const Address = React.memo(({ basePath, locked = false }) => {
   const [ states, setStates ] = useState([]);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const Address = ({ basePath, locked = false }) => {
   }, [states]);
 
   return (
-    <section className="Address">
+    <>
       <Row>
         <Col>
           <FormGroup>
@@ -86,10 +86,11 @@ export const Address = ({ basePath, locked = false }) => {
           </FormGroup>
         </Col>
       </Row>
-    </section>
+    </>
   );
-}
+})
 
+Address.displayName = 'Address';
 Address.propTypes = {
   basePath: PropTypes.string.isRequired,
   locked: PropTypes.bool,

@@ -13,7 +13,7 @@ import { ObjectMappingService } from "../services/Types";
 
 const EMPTY_USER = {};
 
-export default withAuth(class LayoutManager extends React.Component {
+class LayoutManager extends React.Component {
   state = {
     authenticated: false,
     userinfo: null,
@@ -79,4 +79,6 @@ export default withAuth(class LayoutManager extends React.Component {
       </div>
     )
   }
-})
+}
+
+export default withAuth(LayoutManager);

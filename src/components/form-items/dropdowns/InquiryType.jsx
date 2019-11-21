@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { getInquiryTypes } from '../services/dropdowns';
-import { Select } from './formik-inputs';
+import { getInquiryTypes } from '../../../services/dropdowns';
+import { Select } from '../../formik-inputs';
 
 export const InquiryType = ({ name, locked = false }) => {
   const [ inquiryTypes, setInquiryTypes ] = useState([]);
