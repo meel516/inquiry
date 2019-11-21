@@ -4,5 +4,5 @@ export default id => ({
     uuid: id || uuid(),
     communityId: 0,
     freeMeal: null,
-    followUpDate: null
+    followupDate: null
 })

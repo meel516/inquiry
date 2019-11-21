@@ -41,7 +41,7 @@ const getDuplicateCommunitiesErrors = (communities) => {
 
 const getCommunityErrors = (community) => {
     const errors = {};
-    const { communityId, note, followUpAction, followUpDate } = community;
+    const { communityId, note, followUpAction, followupDate } = community;
 
     if (!communityId)
         errors.communityId = 'Community is required';
@@ -50,8 +50,8 @@ const getCommunityErrors = (community) => {
         errors.note = 'Description can be at most 4000 characters';
 
     if (followUpAction) {
-        if (!followUpDate)
-            errors.followUpDate = 'Next Steps Date is required';
+        if (!followupDate)
+            errors.followupDate = 'Next Steps Date is required';
         if (!note || !note.trim())
             errors.note = 'Description is required';
     }
