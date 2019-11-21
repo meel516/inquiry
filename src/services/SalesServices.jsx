@@ -17,7 +17,7 @@ class SalesAPIService {
     return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
-  async getLeadById({guid, leadId}) {
+  async getLeadById({ guid, leadId }) {
     if (guid) {
       return await this.getLeadByGuid(guid)
     }
@@ -54,13 +54,13 @@ class SalesAPIService {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
 
-          let influencers = [] 
+          let influencers = []
           try {
             // Fetch influencer(s)
             const inflUrl = this.createApiUri(`influencers/${contactId}`)
             influencers = await this.createFetch(inflUrl);
-          } 
-          catch(e) {
+          }
+          catch (e) {
             influencers = null
           }
 
@@ -362,19 +362,29 @@ class SalesAPIService {
     return prospect;
   }
 
-  async handleNewInquiryForm(lead, communities, user) {
-    const communityList = [...communities];
+  async handleExistingInquiryForm(lead, communities, user) {
 
     // IF zero/many community is selected always assume Contact Center community
+    if (lead.leadId == null) {
+      // We should have a leadId here, if not throw new error.
+      throw new AppError('412', 'Update attempted, but Lead record does not exist.')
+    }
+
     let leadId = null;
+    const communityList = [...communities];
+
+    // if not the contact center clear the leadId
+    if (!isContactCenter({ buildingId: lead.buildingId })) {
+      lead.leadId = null;
+    }
+
+    let contactCenter = null;
     try {
-      if (!containContactCenter(communities)) {
-        let community = createCommunity();
-        community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
+      if (!containContactCenter(communityList)) {
+        contactCenter = createCommunity();
+        contactCenter.communityId = 225707;
       }
       else {
-        let contactCenter;
         communityList.map((community) => {
           if (isContactCenter(community)) {
             contactCenter = community;
@@ -382,18 +392,15 @@ class SalesAPIService {
           }
           return community;
         });
-        if (contactCenter != null) {
-            leadId = await this.processContactCenter(lead, contactCenter, user);
-          }
-        }
+      }
+      leadId = await this.processContactCenter(lead, contactCenter, user);
     }
-    catch (err) {
-
+    catch (e) {
+      // todo: add logic here to handle errors
     }
 
-    if (leadId == null) {
-      // throw new error due to lead was not created due to errors
-      throw new AppError('412', 'Lead was not created in Sales System.')
+    if (lead.leadId == null) {
+      lead.leadId = leadId;
     }
 
     const formattedCommunityList = [];
@@ -427,119 +434,40 @@ class SalesAPIService {
     }
   }
 
-  async handleExistingInquiryForm(lead, communities, user) {
-    // IF zero/many community is selected always assume Contact Center community
-    let leadId = lead.leadId;
-    if (leadId == null) {
-      // We should have a leadId here, if not throw new error.
-      throw new AppError('412', 'Update attempted, but Lead record does not exist.')
-    }
 
-    // Save off the existing leadCareType, if applicable.
-    const currentLeadCareTypeId = (lead.leadCareTypeId ? lead.leadCareTypeId : null);
-
-    if (lead.buildingId !== 225707) {
-      try {
-        let community = createCommunity();
-        community.communityId = 225707;
-        lead.leadId = null; // Need to null it out here!
-
-        if (lead.influencer) {
-          lead.influencer.influencerId = null; // Need to null it out here!
-        }
-
-        if (currentLeadCareTypeId) {
-          lead.leadCareTypeId = null; // Need to null it out here!
-        }
-
-        await this.processContactCenter(lead, community, user);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Prospect changes.
-      // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
-      //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
-      await this.submitProspect(lead, null, user);
-    }
-    catch (err) {
-
-    }
-
-    // Determine if we need to fire Influencer changes.
-    if (lead.influencer && lead.callingFor !== 'Myself') {
-      try {
-        // Set Gender ("What is the gender of the caller?") to influencer gender.
-        lead.influencer.gender = lead.callerType;
-
-        // Set "Reason for Call" to influencer interest reason.
-        lead.influencer.interestReasonId = lead.reasonForCall;
-
-        // Process any Influencer changes.
-        const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-        await this.submitInfluencer(influencer);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Notes changes.
-      const notes = lead.notes
-      if (notes) {
-        await this.submitNotes(leadId, notes, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Prospect Needs changes.
-      const careType = lead.careType
-      if (careType) {
-        // If we have an existing leadCareTypeId (from when the lead was loaded)
-        // ...add it back to the lead in order to prevent adding a new record!
-        if (currentLeadCareTypeId) {
-          lead.leadCareTypeId = currentLeadCareTypeId;
-        }
-
-        await this.submitProspectNeeds(leadId, lead, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Second Person changes...only if we are creating a new one!
-      const secondPerson = lead.secondPerson;
-      if (secondPerson && secondPerson.selected && !secondPerson.leadId) {
-        const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-        await this.submitSecondPerson(secondPersonRequest);
-      }
-    }
-    catch (err) {
-      
-    }
-
+  async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
-    // try {
-    //   // Process COI list.
-    //   if (!containContactCenter(communities)) {
-    //     let community = createCommunity();
-    //     community.communityId = 225707
-    //     communityList.push(community);
-    //   }
-    // }
-    // catch (err) {
+    // IF zero/many community is selected always assume Contact Center community
+    let leadId = null;
+    try {
+      if (!containContactCenter(communities)) {
+        let community = createCommunity();
+        community.communityId = 225707
+        leadId = await this.processContactCenter(lead, community, user);
+      }
+      else {
+        let contactCenter;
+        communityList.map((community) => {
+          if (isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+        if (contactCenter != null) {
+          leadId = await this.processContactCenter(lead, contactCenter, user);
+        }
+      }
+    }
+    catch (err) {
 
-    // }
+    }
+
+    if (leadId == null) {
+      // throw new error due to lead was not created due to errors
+      throw new AppError('412', 'Lead was not created in Sales System.')
+    }
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {

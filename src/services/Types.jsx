@@ -7,7 +7,7 @@ import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
 import contactHasAddress from '../utils/contact-has-address'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
