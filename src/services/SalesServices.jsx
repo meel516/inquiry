@@ -374,6 +374,7 @@ class SalesAPIService {
     const communityList = [...communities];
 
     // if not the contact center clear the leadId
+    lead.leadCareTypeId = null;
     if (!isContactCenter({ buildingId: lead.buildingId })) {
       lead.leadId = null;
     }
