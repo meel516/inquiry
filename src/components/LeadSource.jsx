@@ -16,6 +16,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
       leadSource: `${basePath}.leadSource`,
       leadSourceDetail: `${basePath}.leadSourceDetail`,
       leadSourceSubDetail: `${basePath}.leadSourceSubDetail`,
+      leadSourceDetailOptions: `${basePath}.leadSourceDetailOptions`,
     }
   }, [basePath]);
 
@@ -40,35 +41,36 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
     const { value } = e.target;
 
     if (!value) {
-      setFieldValue(inputNames.leadSource, -1);
+      setFieldValue(inputNames.leadSource, 0);
       setLeadSourceDetails([]);
     }
 
-    setFieldValue(inputNames.leadSourceDetail, -1);
-    setFieldValue(inputNames.leadSourceSubDetail, -1);
+    setFieldValue(inputNames.leadSourceDetail, 0);
+    setFieldValue(inputNames.leadSourceSubDetail, 0);
   }, [setLeadSourceDetails, setFieldValue, inputNames]);
 
   const onLeadSourceDetailChange = useCallback((e) => {
     const { value } = e.target;
 
     if (!value) {
-      setFieldValue(inputNames.leadSourceDetail, -1);
+      setFieldValue(inputNames.leadSourceDetail, 0);
       setLeadSourceSubDetails([]);
     }
 
-    setFieldValue(inputNames.leadSourceSubDetail, -1);
+    setFieldValue(inputNames.leadSourceSubDetail, 0);
   }, [setLeadSourceSubDetails, setFieldValue, inputNames]);
 
   useEffect(() => {
     async function getAndSetDetails () {
       const details = leadSource ? (await getLeadSourceDetails(leadSource)) : [];
       setLeadSourceDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
+      setFieldValue(inputNames.leadSourceDetailOptions, details);
     }
 
     if (leadSource > 0) {
       getAndSetDetails();
     }
-  }, [leadSource])
+  }, [leadSource, inputNames])
 
   useEffect(() => {
     async function getAndSetSubDetails () {
