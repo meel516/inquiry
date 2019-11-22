@@ -221,9 +221,6 @@ class SalesAPIService {
 
   async submitEloquaRequest(eloquaRequest) {
     const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
-
-    console.log("eloquarequest is: " + JSON.stringify(eloquaRequest));
-
     fetch(eloquaExternalUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -237,7 +234,6 @@ class SalesAPIService {
 
   async submitProspect(lead, community, user) {
     const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
-    console.log(JSON.stringify(prospect));
     return await this.sendProspect(prospect);
   }
 
