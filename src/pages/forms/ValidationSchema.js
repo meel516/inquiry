@@ -127,7 +127,12 @@ const mainFormValidationSchema = object().shape({
     callingFor: string().required('Calling For is required'),
     inquiryType: number().test('required-number-value', 'Inquiry Method is required', nonZeroNumber),
     leadSource: number().test('required-number-value', 'Lead Source is required', nonZeroNumber),
-    leadSourceDetail: number().test('required-number-value', 'Lead Source Detail is required', nonZeroNumber),
+    leadSourceDetail: number().when([ 'leadSource', 'leadSourceDetailOptions'], {
+      is: (leadSource, options) => options && options.length && leadSource,
+      then: number().test('required-number-value', 'Lead Source Detail is required', nonZeroNumber),
+      otherwise: number(),
+    }),
+    leadSourceDetailOptions: array(),
     callerType: string().required('Gender of Caller is required'),
     notes: object().shape({
       situation: string().max(4000, 'Situation can be at most 4000 characters'),
