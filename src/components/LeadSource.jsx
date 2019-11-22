@@ -70,7 +70,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
     if (leadSource > 0) {
       getAndSetDetails();
     }
-  }, [leadSource, inputNames])
+  }, [leadSource, setFieldValue, inputNames])
 
   useEffect(() => {
     async function getAndSetSubDetails () {
