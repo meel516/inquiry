@@ -364,6 +364,71 @@ class SalesAPIService {
     return prospect;
   }
 
+  async handleNewInquiryForm(lead, communities, user) {
+    const communityList = [...communities];
+
+    // IF zero/many community is selected always assume Contact Center community
+    let leadId = null;
+    try {
+      if (!containContactCenter(communities)) {
+        let community = createCommunity();
+        community.communityId = 225707
+        leadId = await this.processContactCenter(lead, community, user);
+      }
+      else {
+        let contactCenter;
+        communityList.map((community) => {
+          if (isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+        if (contactCenter != null) {
+          leadId = await this.processContactCenter(lead, contactCenter, user);
+        }
+      }
+    }
+    catch (err) {
+
+    }
+
+    if (leadId == null) {
+      // throw new error due to lead was not created due to errors
+      throw new AppError('412', 'Lead was not created in Sales System.')
+    }
+
+    const formattedCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
+        community.followupDate = convertToISODate(community.followupDate);
+        formattedCommunityList.push(community);
+      })
+    }
+
+    try {
+      // Submit Add Communities/FUA request.
+      if (formattedCommunityList && formattedCommunityList.length > 0) {
+        await this.processCommunities(lead, formattedCommunityList, user);
+      }
+    }
+    catch (err) {
+
+    }
+
+    try {
+      // If we have an email, submit the request.
+      if (lead && lead.influencer && lead.influencer.email) {
+        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
+        this.submitEloquaRequest(eloquaRequest);
+      }
+    }
+    catch (err) {
+
+    }
+  }
+
   async handleExistingInquiryForm(lead, communities, user) {
 
     // IF zero/many community is selected always assume Contact Center community
@@ -404,72 +469,6 @@ class SalesAPIService {
 
     if (lead.leadId == null) {
       lead.leadId = leadId;
-    }
-
-    const formattedCommunityList = [];
-    if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
-      communityList.forEach((community) => {
-        community.followupDate = convertToISODate(community.followupDate);
-        formattedCommunityList.push(community);
-      })
-    }
-
-    try {
-      // Submit Add Communities/FUA request.
-      if (formattedCommunityList && formattedCommunityList.length > 0) {
-        await this.processCommunities(lead, formattedCommunityList, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // If we have an email, submit the request.
-      if (lead && lead.influencer && lead.influencer.email) {
-        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
-        this.submitEloquaRequest(eloquaRequest);
-      }
-    }
-    catch (err) {
-
-    }
-  }
-
-
-  async handleNewInquiryForm(lead, communities, user) {
-    const communityList = [...communities];
-
-    // IF zero/many community is selected always assume Contact Center community
-    let leadId = null;
-    try {
-      if (!containContactCenter(communities)) {
-        let community = createCommunity();
-        community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
-      }
-      else {
-        let contactCenter;
-        communityList.map((community) => {
-          if (isContactCenter(community)) {
-            contactCenter = community;
-            return null;
-          }
-          return community;
-        });
-        if (contactCenter != null) {
-          leadId = await this.processContactCenter(lead, contactCenter, user);
-        }
-      }
-    }
-    catch (err) {
-
-    }
-
-    if (leadId == null) {
-      // throw new error due to lead was not created due to errors
-      throw new AppError('412', 'Lead was not created in Sales System.')
     }
 
     const formattedCommunityList = [];
