@@ -4,6 +4,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
+import { get } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
@@ -108,6 +109,7 @@ class ObjectMappingService {
             email: "",
             phone: this.createEmptyPhone(),
             veteranStatus: undefined,
+            age: "",
         }
     }
 
