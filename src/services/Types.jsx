@@ -477,10 +477,12 @@ class ObjectMappingService {
         debugger;
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
 
-        if ((callingFor === 'PROSP' && (!lead.influencer || (lead.influencer && lead.influencer.influencerId !== null))) ||
-                (callingFor === 'PROSP' && (lead.prospect && lead.prospect.contactId !== null))) {
+        if ( (callingFor === 'PROSP' && (!lead.influencer || (lead.influencer && lead.influencer.influencerId !== null))) ||
+                (callingFor === 'PROSP' && (lead.prospect && lead.prospect.contactId !== null))
+                || (callingFor === 'PROSP' && (lead.influencer && lead.influencer.contactId !== null && lead.influencer.influencerId === null && lead.prospect.firstName === '')) 
+            ) {
             salesContact.firstName = influencer.firstName
-            salesContact.lastName = influencer.lastName
+            salesContact.lastName = inf-luencer.lastName
             salesContact.emailAddress = influencer.email
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
