@@ -4,6 +4,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
+import { get } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
@@ -14,10 +15,6 @@ import {defaultAdlNeeds} from '../constants/default-adl-needs'
 import {defaultFinancialOptions} from '../constants/default-financial-options'
 import {defaultDrivers} from '../constants/default-drivers'
 
-import secondPersonToEloquaContact from '../mappers/second-person-to-eloqua-contact'
-import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
-import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
-import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
 import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales-contact'
 import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
@@ -271,14 +268,7 @@ class ObjectMappingService {
     })
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
-        const salesContact = {}
-        const salesInfluencer = {
-            leadId,
-            primary: true,
-            active: true,
-            salesContact
-        }
-        salesInfluencer.username = (user) ? user.username : null
+        let salesContact = {}
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
         salesContact.lastName = ((influencer && influencer.lastName) ? influencer.lastName : '')
@@ -291,16 +281,20 @@ class ObjectMappingService {
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
-        if (influencer.influencerId) {
-            salesInfluencer.influencerId = influencer.influencerId;
+        return {
+            leadId,
+            primary: true,
+            active: true,
+            username: (user) ? user.username : null,
+            influencerId: influencer.influencerId,
+            interestReasonId: ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : ''),
+            salesContact
         }
-
-        return salesInfluencer;
     }
 
     static createSecondPersonRequest(leadId, secondPerson, user) {
         if (secondPerson && secondPerson.selected) {
-            const salesContact = {}
+            let salesContact = {}
             const salesLead = createSalesLead(salesContact, 5)
             salesLead.leadId = ((secondPerson && secondPerson.leadId) ? secondPerson.leadId : '')
 
@@ -328,7 +322,7 @@ class ObjectMappingService {
         const { prospect, influencer } = lead;
         const defaultLastName = (influencer && influencer.lastName) ? influencer.lastName : 'Unknown';
 
-        const salesContact = {}
+        let salesContact = {}
         const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
@@ -425,60 +419,6 @@ class ObjectMappingService {
         }
 
         return returnval;
-    }
-
-    //  TODO: Migrate to eloqua/createCdo
-    static createEloquaRequest(lead, communities, oktaUser) {
-        const salesFormDetails = {}
-        const salesFormDetailsProspect = prospectToEloquaContact(lead);
-        const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
-        const salesFormDetailsSecondPerson = secondPersonToEloquaContact(lead.secondPerson);
-        const salesFormDetailsCareType = leadToEloquaCareType(lead);
-        const salesInquiryForm = {}
-
-        // Communities
-        salesInquiryForm.communities = communities;
-
-        // Prospect
-        salesFormDetailsProspect.salesContact = addContactPhoneToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
-        salesFormDetailsProspect.salesContact = addContactAddressToSalesContact(salesFormDetailsProspect.salesContact, lead.prospect)
-        salesFormDetails.prospect = salesFormDetailsProspect;
-
-        // Influencer
-        salesFormDetailsInfluencer.salesContact = addContactPhoneToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
-        salesFormDetailsInfluencer.salesContact = addContactAddressToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
-        salesFormDetails.influencer = salesFormDetailsInfluencer;
-
-        // Second Person
-        if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
-            salesFormDetailsSecondPerson.salesLead.salesContact = addContactPhoneToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
-            salesFormDetailsSecondPerson.salesLead.salesContact = addContactAddressToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
-            salesFormDetails.secondPerson = salesFormDetailsSecondPerson;
-        }
-
-        // Care Type
-        salesFormDetails.careType = salesFormDetailsCareType;
-
-        // Financial Options
-        salesFormDetails.financialOptions = lead.financialOptions;
-
-        // Drivers
-        salesFormDetails.drivers = lead.drivers;
-
-        // Notes
-        salesFormDetails.notes = lead.notes;
-
-        // Misc.
-        salesFormDetails.resultOfCall = lead.resultOfCall;
-        salesFormDetails.callingFor = lead.callingFor;
-        salesFormDetails.callerType = lead.callerType;
-        salesFormDetails.situation2 = lead.notes.secondPersonNote;
-        salesFormDetails.umid = lead.umid;
-        salesFormDetails.advisorUsername = oktaUser.username;
-        salesFormDetails.advisorEmail = oktaUser.email;
-        salesInquiryForm.formDetails = salesFormDetails;
-
-        return salesInquiryForm;
     }
 
     static createContactDuplicateGridContent(duplicatecontacts) {

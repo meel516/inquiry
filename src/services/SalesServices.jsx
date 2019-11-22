@@ -5,6 +5,7 @@ import { ObjectMappingService } from './Types'
 import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
 import { get } from 'lodash'
+import createEloquaCdo from './eloqua/create-cdo'
 
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 
@@ -221,19 +222,6 @@ class SalesAPIService {
     }
   }
 
-  async submitEloquaRequest(eloquaRequest) {
-    const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
-    fetch(eloquaExternalUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eloquaRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
-  }
-
   async submitProspect(lead, community, user) {
     const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
     return await this.sendProspect(prospect);
@@ -417,8 +405,7 @@ class SalesAPIService {
     try {
       // If we have an email, submit the request.
       if (lead && lead.influencer && lead.influencer.email) {
-        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
-        this.submitEloquaRequest(eloquaRequest);
+        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
@@ -490,8 +477,7 @@ class SalesAPIService {
     try {
       // If we have an email, submit the request.
       if (lead && lead.influencer && lead.influencer.email) {
-        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
-        this.submitEloquaRequest(eloquaRequest);
+        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
