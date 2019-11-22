@@ -2,7 +2,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { get, first } from 'lodash'
 
 function parseName(record, key) {
-    return prospect ? `${get(record, `${key}.firstName`)} ${get(record, `${key}.lastName`)}` : undefined
+    return record[key] ? `${get(record, `${key}.firstName`)} ${get(record, `${key}.lastName`)}` : undefined
 }
 
 function parsePhone(record, key) {

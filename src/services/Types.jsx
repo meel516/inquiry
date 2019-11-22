@@ -1,6 +1,5 @@
 import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
-import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
 import stripPhoneFormatting from '../utils/strip-phone-formatting'
 import contactHasPhoneContacts from '../utils/contact-has-phone-contacts'
