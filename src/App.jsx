@@ -6,7 +6,6 @@ import Home from './Home';
 import Redirect from './Redirect';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import './App.css';
 
 class App extends Component {

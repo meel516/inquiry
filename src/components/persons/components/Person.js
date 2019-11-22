@@ -4,7 +4,7 @@ import { Col, FormGroup, Label, Row } from 'reactstrap';
 import { Input, NumberFormat, Select } from '../../formik-inputs';
 import { getPhoneTypes } from '../../../services/dropdowns';
 
-export const Person = ({ basePath, type, locked, onDuplicateFieldChange, onDuplicateFieldBlur }) => {
+export const Person = React.memo(({ basePath, type, locked, onDuplicateFieldChange, onDuplicateFieldBlur }) => {
     const [ phoneTypes, setPhoneTypes ] = useState([]);
 
     const inputNames = useMemo(() => ({
@@ -94,8 +94,9 @@ export const Person = ({ basePath, type, locked, onDuplicateFieldChange, onDupli
             </Row>
         </>
     )
-}
+})
 
+Person.displayName = 'Person';
 Person.propTypes = {
     basePath: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
