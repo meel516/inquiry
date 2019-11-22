@@ -23,79 +23,7 @@ import prospectToEloquaContact from '../mappers/prospect-to-eloqua-contact'
 import influencerToEloquaContact from '../mappers/influencer-to-eloqua-contact'
 import leadToEloquaCareType from '../mappers/lead-to-eloqua-care-type'
 
-function LeadDataRecord(record) {
-    if (record) {
-        this.leadid = record.leadId
-
-        if (record.ccLeadId) {
-            this.ccleadid = record.ccLeadId
-        }
-
-        this.community = record.buildingName
-        this.hasaddtl = record.hasAddlInfluencers
-
-        if (record.prospect) {
-            this.prospectid = record.prospect.contactId
-            this.pname = record.prospect.firstName + " " + record.prospect.lastName
-            if (record.prospect.phoneNumbers) {
-                for (let i = 0; i < record.prospect.phoneNumbers.length; i++) {
-                    let tmpPhone = record.prospect.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.pphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.pemail = record.prospect.emailAddress
-        }
-
-        if (record.primaryInfluencer) {
-            this.iname = record.primaryInfluencer.firstName + " " + record.primaryInfluencer.lastName
-            if (record.primaryInfluencer.phoneNumbers) {
-                for (let i = 0; i < record.primaryInfluencer.phoneNumbers.length; i++) {
-                    let tmpPhone = record.primaryInfluencer.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.iphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.iemail = record.primaryInfluencer.emailAddress
-        }
-
-        if (record.secondPerson) {
-            this.spname = record.secondPerson.firstName + " " + record.secondPerson.lastName
-            if (record.secondPerson.phoneNumbers) {
-                for (let i = 0; i < record.secondPerson.phoneNumbers.length; i++) {
-                    let tmpPhone = record.secondPerson.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.spphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.spemail = record.secondPerson.emailAddress
-        }
-    }
-}
+import leadDataRecord from '../models/lead-data-record'
 
 class ObjectMappingService {
 
@@ -451,7 +379,7 @@ class ObjectMappingService {
             for (let i = 0; i < payload.length; i++) {
                 let leadRow = payload[i];
                 if (leadRow) {
-                    const ldr = new LeadDataRecord(leadRow);
+                    const ldr = leadDataRecord(leadRow);
                     returnval.push(ldr);
                 }
             }
