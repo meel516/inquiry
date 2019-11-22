@@ -15,14 +15,14 @@ export const NumberFormat = ({ name, className, disabled, onChange, onBlur, ...p
     return (
         <>
             <Number
+                { ...props }
+                { ...field }
                 id={name}
                 className={classes}
                 format='(###) ###-####'
                 mask='_'
                 name={name}
                 disabled={disabled || readOnly}
-                { ...props }
-                { ...field }
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

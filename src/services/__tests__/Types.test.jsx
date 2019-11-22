@@ -93,7 +93,7 @@ describe('test followup mapping', () => {
             uuid: "f5115381-b32b-4c04-8b10-c5173c1cd128",
             communityId: 308282,
             freeMeal: "Lunch",
-            followUpDate: "2019-10-16T17:44:46.987Z",
+            followupDate: "2019-10-16T17:44:46.987Z",
             followUpAction: "5",
             note: "Description",
             startingPrice: 2540,
@@ -106,7 +106,7 @@ describe('test followup mapping', () => {
 
         expect(request.buildingId).toEqual(community.communityId)
         expect(request.followUpActionId).toEqual(community.followUpAction)
-        expect(request.followUpDate).toEqual('2019-10-16T11:44:46.987-0600')
+        expect(request.followupDate).toEqual('2019-10-16T11:44:46.987-0600')
         expect(request.followUpDescText).toEqual('Description \n\n Does this visit include a free meal? Lunch')
     })
 
@@ -116,7 +116,7 @@ describe('test followup mapping', () => {
             uuid: "d976b695-8202-4b49-b0f1-0e597e6a2fd7",
             communityId: 308049,
             freeMeal: "",
-            followUpDate: "2019-10-10T08:15:26.594-0500",
+            followupDate: "2019-10-10T08:15:26.594-0500",
             followUpAction: "",
             startingPrice: 2500,
             secondPersonFee: 500,
@@ -142,162 +142,6 @@ describe('test prospect creation', () => {
 
 describe('test lead creation', () => {
 
-})
-
-describe('test prospect needs', () => {
-    describe('test edge cases', () => {
-        test('test null inputs for prospect needs', () => {
-            const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(null, null);
-            expect(prospectNeeds).toBeNull();
-        })
-
-        test('test undefined inputs for prospect needs', () => {
-            const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(undefined, undefined);
-            expect(prospectNeeds).toBeNull();
-        })
-    })
-
-    describe('test field mappings', () => {
-        let lead = null;
-        beforeEach(() => {
-            lead = ObjectMappingService.createEmptyLead()
-            lead.careType = 13
-        })
-
-        describe('test memory concerns mapping', () => {
-
-            test('test set dementia to true', () => {
-                // dementia - true, others - false
-                lead.memoryConcerns.dementia = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.alzDiagnosis).toBeTruthy()
-                expect(prospectNeeds.argumentative).toBeFalsy()
-                expect(prospectNeeds.forgetsRepeats).toBeFalsy()
-                expect(prospectNeeds.wandering).toBeFalsy()
-            })
-
-            test('test memory loss to true', () => {
-                // memory loss - true, others - false
-                lead.memoryConcerns.memoryLoss = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.alzDiagnosis).toBeFalsy()
-                expect(prospectNeeds.argumentative).toBeTruthy()
-                expect(prospectNeeds.forgetsRepeats).toBeFalsy()
-                expect(prospectNeeds.wandering).toBeFalsy()
-            })
-
-            test('test forgets to true', () => {
-                // regularly forgets things = true, others - false
-                lead.memoryConcerns.repeatsStories = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.alzDiagnosis).toBeFalsy()
-                expect(prospectNeeds.argumentative).toBeFalsy()
-                expect(prospectNeeds.forgetsRepeats).toBeTruthy()
-                expect(prospectNeeds.wandering).toBeFalsy()
-            })
-
-            test('test wandering to true', () => {
-                // regularly forgets things = true, others - false
-                lead.memoryConcerns.wandering = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.alzDiagnosis).toBeFalsy()
-                expect(prospectNeeds.argumentative).toBeFalsy()
-                expect(prospectNeeds.forgetsRepeats).toBeFalsy()
-                expect(prospectNeeds.wandering).toBeTruthy()
-            })
-        })
-
-        describe('test mobility concerns mapping', () => {
-
-            test('test fall risk to true', () => {
-                lead.mobilityConcerns.fallRisk = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeTruthy()
-                expect(prospectNeeds.walkerRegularly).toBeFalsy()
-                expect(prospectNeeds.caneRegularly).toBeFalsy()
-                expect(prospectNeeds.wheelchairRegularly).toBeFalsy()
-                expect(prospectNeeds.onePersTransfer).toBeFalsy()
-                expect(prospectNeeds.twoPersTransfer).toBeFalsy()
-            })
-
-            test('test regular walks to true', () => {
-                lead.mobilityConcerns.regularlyWalks = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeFalsy()
-                expect(prospectNeeds.walkerRegularly).toBeTruthy()
-                expect(prospectNeeds.caneRegularly).toBeFalsy()
-                expect(prospectNeeds.wheelchairRegularly).toBeFalsy()
-                expect(prospectNeeds.onePersTransfer).toBeFalsy()
-                expect(prospectNeeds.twoPersTransfer).toBeFalsy()
-
-            })
-
-            test('test person transfer to true', () => {
-                lead.mobilityConcerns.personTransfer = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeFalsy()
-                expect(prospectNeeds.walkerRegularly).toBeFalsy()
-                expect(prospectNeeds.caneRegularly).toBeFalsy()
-                expect(prospectNeeds.wheelchairRegularly).toBeFalsy()
-                expect(prospectNeeds.onePersTransfer).toBeTruthy()
-                expect(prospectNeeds.twoPersTransfer).toBeFalsy()
-            })
-
-            test('test uses wheel chair to true', () => {
-                lead.mobilityConcerns.usesWheelChair = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeFalsy()
-                expect(prospectNeeds.walkerRegularly).toBeFalsy()
-                expect(prospectNeeds.caneRegularly).toBeFalsy()
-                expect(prospectNeeds.wheelchairRegularly).toBeTruthy()
-                expect(prospectNeeds.onePersTransfer).toBeFalsy()
-                expect(prospectNeeds.twoPersTransfer).toBeFalsy()
-            })
-
-            test('test 2nd person transfer to true', () => {
-                lead.mobilityConcerns.secondPersonTransfer = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeFalsy()
-                expect(prospectNeeds.walkerRegularly).toBeFalsy()
-                expect(prospectNeeds.caneRegularly).toBeFalsy()
-                expect(prospectNeeds.wheelchairRegularly).toBeFalsy()
-                expect(prospectNeeds.onePersTransfer).toBeFalsy()
-                expect(prospectNeeds.twoPersTransfer).toBeTruthy()
-            })
-
-            test('test uses cane to true', () => {
-                lead.mobilityConcerns.usesCane = true
-
-                const user = TestUtils.createEmptyUser();
-                const prospectNeeds = ObjectMappingService.createProspectNeedsRequest(1, lead, user);
-                expect(prospectNeeds.fallRisk).toBeFalsy()
-                expect(prospectNeeds.walkerRegularly).toBeFalsy()
-                expect(prospectNeeds.caneRegularly).toBeTruthy()
-                expect(prospectNeeds.wheelchairRegularly).toBeFalsy()
-                expect(prospectNeeds.onePersTransfer).toBeFalsy()
-                expect(prospectNeeds.twoPersTransfer).toBeFalsy()
-            })
-        })
-
-    })
 })
 
 function createMockUser() {

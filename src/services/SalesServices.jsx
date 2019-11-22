@@ -7,6 +7,8 @@ import AppError from '../models/app-error'
 import { get } from 'lodash'
 import createEloquaCdo from './eloqua/create-cdo'
 
+import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
+
 // business logic ------
 class SalesAPIService {
 
@@ -18,7 +20,7 @@ class SalesAPIService {
     return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
-  async getLeadById({guid, leadId}) {
+  async getLeadById({ guid, leadId }) {
     if (guid) {
       return await this.getLeadByGuid(guid)
     }
@@ -55,13 +57,13 @@ class SalesAPIService {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
 
-          let influencers = [] 
+          let influencers = []
           try {
             // Fetch influencer(s)
             const inflUrl = this.createApiUri(`influencers/${contactId}`)
             influencers = await this.createFetch(inflUrl);
-          } 
-          catch(e) {
+          }
+          catch (e) {
             influencers = null
           }
 
@@ -162,7 +164,7 @@ class SalesAPIService {
   async submitProspectNeeds(coid, lead, user) {
     const prospectNeedsUrl = this.createApiUri('leads/prospectneed')
 
-    let prospectNeedsRequest = ObjectMappingService.createProspectNeedsRequest(coid, lead, user);
+    let prospectNeedsRequest = createProspectNeedsRequest(coid, lead, user);
     if (prospectNeedsRequest) {
       fetch(prospectNeedsUrl, {
         method: 'POST', mode: 'cors',
@@ -288,7 +290,7 @@ class SalesAPIService {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+    if (salesLead.inquirerType !== 'PROSP' || (lead.influencer.contactId !== null && lead.prospect.firstName !== '')) {
       if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
@@ -368,9 +370,9 @@ class SalesAPIService {
           return community;
         });
         if (contactCenter != null) {
-            leadId = await this.processContactCenter(lead, contactCenter, user);
-          }
+          leadId = await this.processContactCenter(lead, contactCenter, user);
         }
+      }
     }
     catch (err) {
 
@@ -383,9 +385,9 @@ class SalesAPIService {
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followUpDate to the ISOString.
+      // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followUpDate = convertToISODate(community.followUpDate);
+        community.followupDate = convertToISODate(community.followupDate);
         formattedCommunityList.push(community);
       })
     }
@@ -412,111 +414,52 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
+
     // IF zero/many community is selected always assume Contact Center community
-    let leadId = lead.leadId;
-    if (leadId == null) {
+    if (lead.leadId == null) {
       // We should have a leadId here, if not throw new error.
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
-    if (lead.buildingId !== 225707) {
-      try {
-        let community = createCommunity();
-        community.communityId = 225707;
-        lead.leadId = null; // Need to null it out here!
-
-        if (lead.influencer) {
-          lead.influencer.influencerId = null; // Need to null it out here!
-        }
-
-        await this.processContactCenter(lead, community, user);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Prospect changes.
-      // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
-      //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
-      await this.submitProspect(lead, null, user);
-    }
-    catch (err) {
-
-    }
-
-    // Determine if we need to fire Influencer changes.
-    if (lead.influencer && lead.callingFor !== 'Myself') {
-      try {
-        // Set Gender ("What is the gender of the caller?") to influencer gender.
-        lead.influencer.gender = lead.callerType;
-
-        // Set "Reason for Call" to influencer interest reason.
-        lead.influencer.interestReasonId = lead.reasonForCall;
-
-        // Process any Influencer changes.
-        const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-        await this.submitInfluencer(influencer);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Notes changes.
-      const notes = lead.notes
-      if (notes) {
-        await this.submitNotes(leadId, notes, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Prospect Needs changes.
-      const careType = lead.careType
-      if (careType) {
-        await this.submitProspectNeeds(leadId, lead, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Second Person changes...only if we are creating a new one!
-      const secondPerson = lead.secondPerson;
-      if (secondPerson && secondPerson.selected && !secondPerson.leadId) {
-        const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-        await this.submitSecondPerson(secondPersonRequest);
-      }
-    }
-    catch (err) {
-      
-    }
-
+    let leadId = null;
     const communityList = [...communities];
 
-    // try {
-    //   // Process COI list.
-    //   if (!containContactCenter(communities)) {
-    //     let community = createCommunity();
-    //     community.communityId = 225707
-    //     communityList.push(community);
-    //   }
-    // }
-    // catch (err) {
+    // if not the contact center clear the leadId
+    lead.leadCareTypeId = null;
+    if (!isContactCenter({ buildingId: lead.buildingId })) {
+      lead.leadId = null;
+    }
 
-    // }
+    let contactCenter = null;
+    try {
+      if (!containContactCenter(communityList)) {
+        contactCenter = createCommunity();
+        contactCenter.communityId = 225707;
+      }
+      else {
+        communityList.map((community) => {
+          if (isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+      }
+      leadId = await this.processContactCenter(lead, contactCenter, user);
+    }
+    catch (e) {
+      // todo: add logic here to handle errors
+    }
+
+    if (lead.leadId == null) {
+      lead.leadId = leadId;
+    }
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followUpDate to the ISOString.
+      // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followUpDate = convertToISODate(community.followUpDate);
+        community.followupDate = convertToISODate(community.followupDate);
         formattedCommunityList.push(community);
       })
     }

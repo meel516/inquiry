@@ -11,13 +11,13 @@ export const MemoryConcerns = ({ basePath }) => (
         <Label className="label-format">Memory Concerns</Label>
         <Row>
           <Col>
-            <Checkbox className='col-4' name={`${basePath}.${path}.dementia`} label="Alzheimer's or Dementia Diagnosis" />
-            <Checkbox className='col-4' name={`${basePath}.${path}.memoryLoss`} label='Argumentative Caused by Memory Loss' />
+            <Checkbox className='col-4' name={`${basePath}.${path}.alzDiagnosis`} label="Alzheimer's or Dementia Diagnosis" />
+            <Checkbox className='col-4' name={`${basePath}.${path}.argumentative`} label='Argumentative Caused by Memory Loss' />
           </Col>
         </Row>
         <Row>
           <Col>
-            <Checkbox className='col-4' name={`${basePath}.${path}.repeatsStories`} label="Regularly Forgets Things or Repeats Stories" />
+            <Checkbox className='col-4' name={`${basePath}.${path}.forgetsRepeats`} label="Regularly Forgets Things or Repeats Stories" />
             <Checkbox className='col-4' name={`${basePath}.${path}.wandering`} label='Wandering' />
           </Col>
         </Row>

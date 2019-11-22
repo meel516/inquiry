@@ -20,7 +20,7 @@ describe('dropdowns service', () => {
         request.get.mockResolvedValue({ json: () => 'bar' })
     })
     test('should contain proper number of methods', () => {
-        expect(keys(service).length).toEqual(12)
+        expect(keys(service).length).toEqual(11)
     })
     describe('getDropdowns', () => {
         test('should call request.get properly', () => {

@@ -7,17 +7,24 @@ import Lead from '../models/lead'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
+import {defaultMemoryConcerns} from '../constants/default-memory-concerns'
+import {defaultMobilityConcerns} from '../constants/default-mobility-concerns'
+import {defaultNutritionConcerns} from '../constants/default-nutrition-concerns'
+import {defaultAdlNeeds} from '../constants/default-adl-needs'
+import {defaultFinancialOptions} from '../constants/default-financial-options'
+import {defaultDrivers} from '../constants/default-drivers'
+
 import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales-contact'
 import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
 function LeadDataRecord(record) {
     if (record) {
         this.leadid = record.leadId
-        
+
         if (record.ccLeadId) {
             this.ccleadid = record.ccLeadId
         }
-        
+
         this.community = record.buildingName
         this.hasaddtl = record.hasAddlInfluencers
 
@@ -108,23 +115,23 @@ class ObjectMappingService {
         salesLead = salesLead || {}
         const lead = new Lead(salesLead.leadId);
         if (salesLead) {
-            lead.adlNeeds = this.createAdlNeeds();
-            lead.memoryConcerns = this.createMemoryConcerns();
-            lead.mobilityConcerns = this.createMobilityConcerns();
-            lead.nutritionConcerns = this.createNutritionConcerns();
-            lead.financialOptions = this.createFinancialOptions();
-            lead.drivers = this.createDrivers();
+            lead.adlNeeds = defaultAdlNeeds;
+            lead.memoryConcerns = defaultMemoryConcerns;
+            lead.mobilityConcerns = defaultMobilityConcerns;
+            lead.nutritionConcerns = defaultNutritionConcerns;
+            lead.financialOptions = defaultFinancialOptions;
+            lead.drivers = defaultDrivers;
             lead.secondPerson = this.createEmptyContact();
             lead.leadSource = salesLead.inquiryLeadSourceId
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadSourceSubDetail = salesLead.inquiryLeadSourceSubDetailId
             lead.leadTypeId = salesLead.leadTypeId
-            lead.notes = this.createEmptyNotes();
+            lead.notes = {}
             lead.inquiryType = salesLead.inquiryTypeId
-            //lead.reasonForCall = salesLead.interestReasonId
+            lead.leadCareTypeId = salesLead.leadCareTypeId
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
-                const {salesContact} = salesLead;
+                const { salesContact } = salesLead;
                 lead.veteranStatus = salesContact.veteranStatus
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
@@ -146,20 +153,20 @@ class ObjectMappingService {
         lead.secondPerson.selected = false;
         lead.prospect = this.createEmptyContact();
         lead.prospect.age = '';
-        lead.adlNeeds = this.createAdlNeeds();
-        lead.memoryConcerns = this.createMemoryConcerns();
-        lead.mobilityConcerns = this.createMobilityConcerns();
-        lead.nutritionConcerns = this.createNutritionConcerns();
-        lead.financialOptions = this.createFinancialOptions();
-        lead.drivers = this.createDrivers();
-        lead.notes = this.createEmptyNotes();
+        lead.adlNeeds = defaultAdlNeeds;
+        lead.memoryConcerns = defaultMemoryConcerns;
+        lead.mobilityConcerns = defaultMobilityConcerns;
+        lead.nutritionConcerns = defaultNutritionConcerns;
+        lead.financialOptions = defaultFinancialOptions;
+        lead.drivers = defaultDrivers;
+        lead.notes = {}
 
         return lead;
     }
 
     static createInfluencer(influencer) {
         if (influencer) {
-            const {salesContact} = influencer
+            const { salesContact } = influencer
             const contact = this.createContact(salesContact)
             contact.influencerId = influencer.influencerId
             return contact;
@@ -228,84 +235,12 @@ class ObjectMappingService {
         }
     }
 
-    /**
-     * creates an empty note object
-     */
-    static createEmptyNotes() {
-        return {
-
-        }
-    }
-
-    static createAdlNeeds() {
-        return {
-            bathing: false,
-            dressing: false,
-            feeding: false,
-            incontinence: false,
-            medications: false,
-            toileting: false,
-            transferring: false,
-        }
-    }
-
-    static createMemoryConcerns() {
-        return {
-            dementia: false,
-            memoryLoss: false,
-            repeatsStories: false,
-            wandering: false,
-        }
-    }
-
-    static createMobilityConcerns() {
-        return {
-            fallRisk: false,
-            regularlyWalks: false,
-            personTransfer: false,
-            usesWheelChair: false,
-            secondPersonTransfer: false,
-            usesCane: false,
-        }
-    }
-
-    static createNutritionConcerns() {
-        return {
-            diabetes: false,
-            lowSalt: false,
-            prescribedDiet: false,
-            notEatingWell: false,
-        }
-    }
-
-    static createFinancialOptions() {
-        return {
-            aidAttendance: false,
-            familyContributions: false,
-            homeOwner: false,
-            ltcPolicy: false,
-        }
-    }
-
-    static createDrivers() {
-        return {
-            activities: false,
-            accessToResidents: false,
-            ageInPlace: false,
-            care: false,
-            location: false,
-            peaceOfMind: false,
-            petFriendly: false,
-            safety: false,
-        }
-    }
-
     static createFollowupRequest(leadId, community, user) {
         if (leadId && community && community.followUpAction) {
             const salesFollowup = { leadId }
             salesFollowup.buildingId = community.communityId
             salesFollowup.followUpActionId = community.followUpAction
-            salesFollowup.followUpDate = convertToISODate(community.followUpDate);
+            salesFollowup.followupDate = convertToISODate(community.followupDate);
 
             let description = community.note;
             if (community.freeMeal) {
@@ -318,52 +253,6 @@ class ObjectMappingService {
             salesFollowup.username = user.username
 
             return salesFollowup;
-        }
-        return null;
-    }
-
-    static createProspectNeedsRequest(coid, lead, user) {
-        if (coid && lead.careType) {
-            const salesProspectNeed = { leadId: coid }
-            salesProspectNeed.careTypeId = Number(lead.careType);
-            const {adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns} = lead
-
-            if (adlNeeds) {
-                salesProspectNeed.bathing = adlNeeds.bathing;
-                salesProspectNeed.incontinence = adlNeeds.incontinence;
-                salesProspectNeed.transferring = adlNeeds.transferring;
-                salesProspectNeed.dressing = adlNeeds.dressing;
-                salesProspectNeed.medications = adlNeeds.medications;
-                salesProspectNeed.feeding = adlNeeds.feeding;
-                salesProspectNeed.toileting = adlNeeds.toileting;
-            }
-
-            if (memoryConcerns) {
-                salesProspectNeed.alzDiagnosis = memoryConcerns.dementia;
-                salesProspectNeed.argumentative = memoryConcerns.memoryLoss;
-                salesProspectNeed.forgetsRepeats = memoryConcerns.repeatsStories;
-                salesProspectNeed.wandering = memoryConcerns.wandering;
-            }
-
-            if (mobilityConcerns) {
-                salesProspectNeed.fallRisk = mobilityConcerns.fallRisk;
-                salesProspectNeed.walkerRegularly = mobilityConcerns.regularlyWalks;
-                salesProspectNeed.caneRegularly = mobilityConcerns.usesCane;
-                salesProspectNeed.wheelchairRegularly = mobilityConcerns.usesWheelChair;
-                salesProspectNeed.onePersTransfer = mobilityConcerns.personTransfer;
-                salesProspectNeed.twoPersTransfer = mobilityConcerns.secondPersonTransfer;
-            }
-
-            if (nutritionConcerns) {
-                salesProspectNeed.diabetesDiagnosis = nutritionConcerns.diabetes;
-                salesProspectNeed.lowSaltLowDiet = nutritionConcerns.lowSalt;
-                salesProspectNeed.otherDietRestrictions = nutritionConcerns.prescribedDiet;
-                salesProspectNeed.notEatingWell = nutritionConcerns.notEatingWell;
-            }
-
-            salesProspectNeed.username = user.username
-
-            return salesProspectNeed;
         }
         return null;
     }
@@ -386,8 +275,9 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
-        salesContact = addContactPhoneToSalesContact(salesContact, influencer)
-        salesContact = addContactAddressToSalesContact(salesContact, influencer)
+        salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
+        addContactPhoneToSalesContact(salesContact, influencer)
+        addContactAddressToSalesContact(salesContact, influencer)
 
         return {
             leadId,
@@ -412,13 +302,13 @@ class ObjectMappingService {
             salesContact.contactId = ((secondPerson && secondPerson.contactId) ? secondPerson.contactId : '')
             salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
-            salesContact = addContactPhoneToSalesContact(salesContact, secondPerson)
+            addContactPhoneToSalesContact(salesContact, secondPerson)
     
             const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
             salesSecondPerson.primarySalesLead = primarySalesLead;
             salesSecondPerson.username = user.username;
-    
+
             return salesSecondPerson;
         }
         return null;
@@ -434,7 +324,8 @@ class ObjectMappingService {
         const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
-        if (callingFor === 'PROSP' && !lead.influencer) {
+        if ( (callingFor === 'PROSP' && !lead.influencer) ||
+             (callingFor === 'PROSP' && lead.influencer.contactId !== null && lead.prospect.firstName === '') ) {
             salesContact.firstName = influencer.firstName
             salesContact.lastName = influencer.lastName
             salesContact.emailAddress = influencer.email
@@ -443,8 +334,8 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
-            salesContact = addContactAddressToSalesContact(salesContact, influencer)
-            salesContact = addContactPhoneToSalesContact(salesContact, influencer)
+            addContactAddressToSalesContact(salesContact, influencer)
+            addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
             salesLead.interestReasonId = lead.reasonForCall
         }
@@ -457,7 +348,7 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
-            salesContact = addContactPhoneToSalesContact(salesContact, prospect)
+            addContactPhoneToSalesContact(salesContact, prospect)
         }
 
         salesLead.inquiryTypeId = lead.inquiryType
@@ -466,7 +357,7 @@ class ObjectMappingService {
         if (community) {
             salesLead.buildingId = community.communityId
         }
-        
+
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
@@ -511,7 +402,7 @@ class ObjectMappingService {
             username: user.username,
         }
     }
-   
+
     static buildLeadDataResponseForContactId(payload) {
         const returnval = [];
 
