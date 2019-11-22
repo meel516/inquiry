@@ -364,7 +364,8 @@ class ObjectMappingService {
         const salesLead = createSalesLead(salesContact)
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
-        if (callingFor === 'PROSP' && !lead.influencer) {
+        if ( (callingFor === 'PROSP' && !lead.influencer) ||
+             (callingFor === 'PROSP' && lead.influencer.contactId !== null && lead.prospect.firstName === '') ) {
             salesContact.firstName = influencer.firstName
             salesContact.lastName = influencer.lastName
             salesContact.emailAddress = influencer.email

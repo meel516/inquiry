@@ -223,9 +223,6 @@ class SalesAPIService {
 
   async submitEloquaRequest(eloquaRequest) {
     const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
-
-    console.log("eloquarequest is: " + JSON.stringify(eloquaRequest));
-
     fetch(eloquaExternalUrl, {
       method: 'POST', mode: 'cors',
       headers: {
@@ -305,7 +302,7 @@ class SalesAPIService {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+    if (salesLead.inquirerType !== 'PROSP' || (lead.influencer.contactId !== null && lead.prospect.firstName !== '')) {
       if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
