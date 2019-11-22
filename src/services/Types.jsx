@@ -287,8 +287,8 @@ class ObjectMappingService {
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
         salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
-        salesContact = addContactPhoneToSalesContact(salesContact, influencer)
-        salesContact = addContactAddressToSalesContact(salesContact, influencer)
+        addContactPhoneToSalesContact(salesContact, influencer)
+        addContactAddressToSalesContact(salesContact, influencer)
 
         if (influencer.influencerId) {
             salesInfluencer.influencerId = influencer.influencerId;
@@ -309,7 +309,7 @@ class ObjectMappingService {
             salesContact.contactId = ((secondPerson && secondPerson.contactId) ? secondPerson.contactId : '')
             salesContact.masterId = ((secondPerson && secondPerson.masterId) ? secondPerson.masterId : '')
             salesContact.emailAddress = secondPerson.email
-            salesContact = addContactPhoneToSalesContact(salesContact, secondPerson)
+            addContactPhoneToSalesContact(salesContact, secondPerson)
     
             const primarySalesLead = createSalesLead();
             primarySalesLead.leadId = leadId;
@@ -341,8 +341,8 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
-            salesContact = addContactAddressToSalesContact(salesContact, influencer)
-            salesContact = addContactPhoneToSalesContact(salesContact, influencer)
+            addContactAddressToSalesContact(salesContact, influencer)
+            addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
             salesLead.interestReasonId = lead.reasonForCall
         }
@@ -355,7 +355,7 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
-            salesContact = addContactPhoneToSalesContact(salesContact, prospect)
+            addContactPhoneToSalesContact(salesContact, prospect)
         }
 
         salesLead.inquiryTypeId = lead.inquiryType
