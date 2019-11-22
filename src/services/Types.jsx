@@ -4,7 +4,6 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
-import { get } from 'lodash'
 import createSalesLead from '../models/sales-lead'
 import duplicateContact from '../utils/duplicate-contact'
 
@@ -277,7 +276,6 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
-        salesInfluencer.interestReasonId = ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : '')
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
