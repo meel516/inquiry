@@ -474,15 +474,11 @@ class ObjectMappingService {
         const salesContact = {}
         const salesLead = createSalesLead(salesContact)
 
-        debugger;
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
-
-        if ( (callingFor === 'PROSP' && (!lead.influencer || (lead.influencer && lead.influencer.influencerId !== null))) ||
-                (callingFor === 'PROSP' && (lead.prospect && lead.prospect.contactId !== null))
-                || (callingFor === 'PROSP' && (lead.influencer && lead.influencer.contactId !== null && lead.influencer.influencerId === null && lead.prospect.firstName === '')) 
-            ) {
+        if ( (callingFor === 'PROSP' && !lead.influencer) ||
+             (callingFor === 'PROSP' && lead.influencer.contactId !== null && lead.prospect.firstName === '') ) {
             salesContact.firstName = influencer.firstName
-            salesContact.lastName = inf-luencer.lastName
+            salesContact.lastName = influencer.lastName
             salesContact.emailAddress = influencer.email
             salesContact.age = prospect.age
             salesContact.veteranStatus = prospect.veteranStatus
