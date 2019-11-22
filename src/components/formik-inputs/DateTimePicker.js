@@ -20,13 +20,13 @@ export const DateTimePicker = ({
     return (
         <>
             <DatePicker
+                { ...props }
                 id={name}
                 name={name}
                 disabled={disabled || readOnly}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={field.value}
-                { ...props }
             />
             { meta.touched && meta.error ? (
                 <Alert color='danger' className='alert-smaller-size'>{meta.error}</Alert>

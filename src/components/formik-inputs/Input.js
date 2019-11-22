@@ -22,12 +22,12 @@ export const Input = ({
     return (
         <>
             <ReactstrapText
+                { ...props }
+                { ...field }
+                { ...checkboxProps }
                 id={name}
                 name={name}
                 disabled={props.disabled || readOnly}
-                { ...field }
-                { ...props }
-                { ...checkboxProps }
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
