@@ -108,7 +108,6 @@ class ObjectMappingService {
             email: "",
             phone: this.createEmptyPhone(),
             veteranStatus: undefined,
-            age: "",
         }
     }
 
