@@ -90,6 +90,8 @@ class SalesAPIService {
           }
           else {
             lead.influencer = prospect
+
+            // Populate Gender
             let tmpGender = get(lead, 'prospect.gender');
             if (tmpGender) {
               lead.callerType = tmpGender;
@@ -97,7 +99,19 @@ class SalesAPIService {
               lead.callerType = '';
             }
 
+            // Since specific values to be used later.
+            let tmpAge = get(lead, 'prospect.age');
+            let tmpVetStat = get(lead, 'prospect.veteranStatus');
+
             lead.prospect = ObjectMappingService.createEmptyContact();
+
+            // Now populate...
+            if (tmpAge) {
+              lead.prospect.age = tmpAge;
+            }
+            if (tmpVetStat) {
+              lead.prospect.veteranStatus = tmpVetStat;
+            }
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
