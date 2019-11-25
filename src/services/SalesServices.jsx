@@ -67,8 +67,14 @@ class SalesAPIService {
             influencers = null
           }
 
+          // Initialize property.
+          lead.hasInfluencers = 0;
+
           // Determine if we load the page with or without influencers.
           if (influencers && influencers.length > 0) {
+            // Set a property (on load) to save the fact we have influencers.
+            lead.hasInfluencers = 1;
+
             let influencer = influencers.find(function (influencer) {
               return (influencer.primary === true && influencer.active === true);
             });
@@ -286,14 +292,21 @@ class SalesAPIService {
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
   */
-  async processContactCenter(lead, community, user) {
+  async processContactCenter(lead, community, user, isAdd) {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP' || (lead.influencer.contactId !== null && lead.prospect.firstName !== '')) {
+    if (salesLead.inquirerType !== 'PROSP' || (salesLead.inquirerType === 'PROSP' && lead.hasInfluencers === 1)) {
       if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
+      }
+
+      // Since this method is only fired when we need to create a new CC lead...we need to null out
+      // influencerId in order to create a new one.  Do this when we have an existing influencer and
+      // it's an add scenario!!!
+      if (isAdd && lead.hasInfluencers === 1) {
+        lead.influencer.influencerId = null;
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
@@ -358,7 +371,7 @@ class SalesAPIService {
       if (!containContactCenter(communities)) {
         let community = createCommunity();
         community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
+        leadId = await this.processContactCenter(lead, community, user, true);
       }
       else {
         let contactCenter;
@@ -370,7 +383,7 @@ class SalesAPIService {
           return community;
         });
         if (contactCenter != null) {
-          leadId = await this.processContactCenter(lead, contactCenter, user);
+          leadId = await this.processContactCenter(lead, contactCenter, user, false);
         }
       }
     }
@@ -431,12 +444,14 @@ class SalesAPIService {
     }
 
     let contactCenter = null;
+    let isAdd = true;
     try {
-      if (!containContactCenter(communityList)) {
+      if (!containContactCenter(communityList) && lead.buildingId !== 225707) { // Don't fire this if we already have a CC lead!
         contactCenter = createCommunity();
         contactCenter.communityId = 225707;
       }
       else {
+        isAdd = false;
         communityList.map((community) => {
           if (isContactCenter(community)) {
             contactCenter = community;
@@ -445,7 +460,7 @@ class SalesAPIService {
           return community;
         });
       }
-      leadId = await this.processContactCenter(lead, contactCenter, user);
+      leadId = await this.processContactCenter(lead, contactCenter, user, isAdd);
     }
     catch (e) {
       // todo: add logic here to handle errors
