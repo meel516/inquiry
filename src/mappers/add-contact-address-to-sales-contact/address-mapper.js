@@ -1,6 +1,7 @@
 import { get } from 'lodash'
 
 export default (contact = {}) => ({
+    addressId: get(contact, 'address.addressId'),
     addressType: get(contact, 'address.type', 'Home'),
     active: get(contact, 'address.active', true),
     primary: get(contact, 'address.primary', true),
