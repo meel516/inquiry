@@ -20,13 +20,13 @@ export const TextArea = ({
     return (
         <>
             <Input
+                { ...props }
+                { ...field }
                 type='textarea'
                 name={name}
                 id={name}
                 disabled={disabled || readOnly}
                 className={className}
-                { ...props }
-                { ...field }
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

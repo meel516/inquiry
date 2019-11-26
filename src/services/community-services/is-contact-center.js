@@ -1,1 +1,3 @@
-export default community => community && community.buildingId === 225707
+import isContactCenter from '../../utils/is-contact-center'
+
+export default community => community && isContactCenter(community.buildingId)

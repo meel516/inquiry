@@ -5,6 +5,7 @@ import { ObjectMappingService } from './Types'
 import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
 import { get } from 'lodash'
+import createEloquaCdo from './eloqua/create-cdo'
 
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 
@@ -19,7 +20,7 @@ class SalesAPIService {
     return window.encodeURI(`${process.env.REACT_APP_SALES_SERVICES_URL}/Sims/api/${api}`)
   }
 
-  async getLeadById({guid, leadId}) {
+  async getLeadById({ guid, leadId }) {
     if (guid) {
       return await this.getLeadByGuid(guid)
     }
@@ -56,18 +57,24 @@ class SalesAPIService {
           const { contactId } = prospect;
           lead.currentSituation = prospect.currentSituation
 
-          let influencers = [] 
+          let influencers = []
           try {
             // Fetch influencer(s)
             const inflUrl = this.createApiUri(`influencers/${contactId}`)
             influencers = await this.createFetch(inflUrl);
-          } 
-          catch(e) {
+          }
+          catch (e) {
             influencers = null
           }
 
+          // Initialize property.
+          lead.hasInfluencers = 0;
+
           // Determine if we load the page with or without influencers.
           if (influencers && influencers.length > 0) {
+            // Set a property (on load) to save the fact we have influencers.
+            lead.hasInfluencers = 1;
+
             let influencer = influencers.find(function (influencer) {
               return (influencer.primary === true && influencer.active === true);
             });
@@ -83,6 +90,8 @@ class SalesAPIService {
           }
           else {
             lead.influencer = prospect
+
+            // Populate Gender
             let tmpGender = get(lead, 'prospect.gender');
             if (tmpGender) {
               lead.callerType = tmpGender;
@@ -90,7 +99,19 @@ class SalesAPIService {
               lead.callerType = '';
             }
 
+            // Since specific values to be used later.
+            let tmpAge = get(lead, 'prospect.age');
+            let tmpVetStat = get(lead, 'prospect.veteranStatus');
+
             lead.prospect = ObjectMappingService.createEmptyContact();
+
+            // Now populate...
+            if (tmpAge) {
+              lead.prospect.age = tmpAge;
+            }
+            if (tmpVetStat) {
+              lead.prospect.veteranStatus = tmpVetStat;
+            }
           }
 
           const secondPersonUrl = this.createApiUri(`secondperson/${lead.leadId}/byprimary`)
@@ -221,22 +242,6 @@ class SalesAPIService {
     }
   }
 
-  async submitEloquaRequest(eloquaRequest) {
-    const eloquaExternalUrl = this.createApiUri('inquiryForm/eloqua')
-
-    console.log("eloquarequest is: " + JSON.stringify(eloquaRequest));
-
-    fetch(eloquaExternalUrl, {
-      method: 'POST', mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eloquaRequest),
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err))
-  }
-
   async submitProspect(lead, community, user) {
     const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
     return await this.sendProspect(prospect);
@@ -301,14 +306,21 @@ class SalesAPIService {
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
   */
-  async processContactCenter(lead, community, user) {
+  async processContactCenter(lead, community, user, isAdd) {
     const salesLead = await this.submitProspect(lead, community, user)
     let leadId = lead.leadId = salesLead.leadId
 
-    if (salesLead.inquirerType !== 'PROSP' || lead.influencer.contactId !== null) {
+    if (salesLead.inquirerType !== 'PROSP' || (salesLead.inquirerType === 'PROSP' && lead.hasInfluencers === 1)) {
       if (salesLead.inquirerType !== 'PROSP' && lead.reasonForCall) {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
+      }
+
+      // Since this method is only fired when we need to create a new CC lead...we need to null out
+      // influencerId in order to create a new one.  Do this when we have an existing influencer and
+      // it's an add scenario!!!
+      if (isAdd && lead.hasInfluencers === 1) {
+        lead.influencer.influencerId = null;
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
@@ -373,7 +385,7 @@ class SalesAPIService {
       if (!containContactCenter(communities)) {
         let community = createCommunity();
         community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user);
+        leadId = await this.processContactCenter(lead, community, user, true);
       }
       else {
         let contactCenter;
@@ -385,9 +397,9 @@ class SalesAPIService {
           return community;
         });
         if (contactCenter != null) {
-            leadId = await this.processContactCenter(lead, contactCenter, user);
-          }
+          leadId = await this.processContactCenter(lead, contactCenter, user, false);
         }
+      }
     }
     catch (err) {
 
@@ -420,8 +432,7 @@ class SalesAPIService {
     try {
       // If we have an email, submit the request.
       if (lead && lead.influencer && lead.influencer.email) {
-        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
-        this.submitEloquaRequest(eloquaRequest);
+        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
@@ -430,105 +441,48 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
+
     // IF zero/many community is selected always assume Contact Center community
-    let leadId = lead.leadId;
-    if (leadId == null) {
+    if (lead.leadId == null) {
       // We should have a leadId here, if not throw new error.
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
-    if (lead.buildingId !== 225707) {
-      try {
-        let community = createCommunity();
-        community.communityId = 225707;
-        lead.leadId = null; // Need to null it out here!
-
-        if (lead.influencer) {
-          lead.influencer.influencerId = null; // Need to null it out here!
-        }
-
-        await this.processContactCenter(lead, community, user);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Prospect changes.
-      // NOTE: Made a change to submitProspect to allow a null community.  For Prospect "Adds",
-      //       it needs only communityId (buildingId)...for "Updates", it can be left off the request.
-      await this.submitProspect(lead, null, user);
-    }
-    catch (err) {
-
-    }
-
-    // Determine if we need to fire Influencer changes.
-    if (lead.influencer && lead.callingFor !== 'Myself') {
-      try {
-        // Set Gender ("What is the gender of the caller?") to influencer gender.
-        lead.influencer.gender = lead.callerType;
-
-        // Set "Reason for Call" to influencer interest reason.
-        lead.influencer.interestReasonId = lead.reasonForCall;
-
-        // Process any Influencer changes.
-        const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-        await this.submitInfluencer(influencer);
-      }
-      catch (err) {
-
-      }
-    }
-
-    try {
-      // Process any Notes changes.
-      const notes = lead.notes
-      if (notes) {
-        await this.submitNotes(leadId, notes, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Prospect Needs changes.
-      const careType = lead.careType
-      if (careType) {
-        await this.submitProspectNeeds(leadId, lead, user);
-      }
-    }
-    catch (err) {
-
-    }
-
-    try {
-      // Process any Second Person changes...only if we are creating a new one!
-      const secondPerson = lead.secondPerson;
-      if (secondPerson && secondPerson.selected && !secondPerson.leadId) {
-        const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-        await this.submitSecondPerson(secondPersonRequest);
-      }
-    }
-    catch (err) {
-      
-    }
-
+    let leadId = null;
     const communityList = [...communities];
 
-    // try {
-    //   // Process COI list.
-    //   if (!containContactCenter(communities)) {
-    //     let community = createCommunity();
-    //     community.communityId = 225707
-    //     communityList.push(community);
-    //   }
-    // }
-    // catch (err) {
+    // if not the contact center clear the leadId
+    lead.leadCareTypeId = null;
+    if (!isContactCenter({ buildingId: lead.buildingId })) {
+      lead.leadId = null;
+    }
 
-    // }
+    let contactCenter = null;
+    let isAdd = true;
+    try {
+      if (!containContactCenter(communityList) && lead.buildingId !== 225707) { // Don't fire this if we already have a CC lead!
+        contactCenter = createCommunity();
+        contactCenter.communityId = 225707;
+      }
+      else {
+        isAdd = false;
+        communityList.map((community) => {
+          if (isContactCenter(community)) {
+            contactCenter = community;
+            return null;
+          }
+          return community;
+        });
+      }
+      leadId = await this.processContactCenter(lead, contactCenter, user, isAdd);
+    }
+    catch (e) {
+      // todo: add logic here to handle errors
+    }
+
+    if (lead.leadId == null) {
+      lead.leadId = leadId;
+    }
 
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
@@ -552,8 +506,7 @@ class SalesAPIService {
     try {
       // If we have an email, submit the request.
       if (lead && lead.influencer && lead.influencer.email) {
-        const eloquaRequest = ObjectMappingService.createEloquaRequest(lead, formattedCommunityList, user);
-        this.submitEloquaRequest(eloquaRequest);
+        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
