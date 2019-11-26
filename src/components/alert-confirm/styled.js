@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Button, ModalFooter } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { fadeIn, fadeOut } from '../../styled';
 
 const getButtonTransition = (transformOrigin) => {
@@ -9,10 +9,6 @@ const getButtonTransition = (transformOrigin) => {
         transition-property: transform;
         transition-duration: 0.5s;`
 }
-
-const StyledModalFooter = styled(ModalFooter)`
-    position: relative;
-`;
 
 const StyledSpinnerWrapper = styled.div`
     position: absolute;
@@ -66,7 +62,6 @@ const StyledLoadingMessage = styled.span`
 export {
     StyledInitialMessage,
     StyledLoadingMessage,
-    StyledModalFooter,
     StyledSpinnerWrapper,
     StyledYesButton,
     StyledNoButton,
