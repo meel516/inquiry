@@ -230,7 +230,7 @@ class SalesAPIService {
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
-      fetch(secondPersonUrl, {
+      await fetch(secondPersonUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
