@@ -9,13 +9,13 @@ import { StyledModalContent } from './styled';
 const PROSPECT_ID_CELL_ID = 0;
 
 const prospectCellFormatter = ({ row: { leadid, buildingid, pname } }) => {
-    const href = `https://sales.uat.assisted.com/Sims?smsLeadId=${leadid}&targetSimsPage=PROSPECT&buildingId=${buildingid}`;
-    return <a href={href} target='_blank'>{pname}</a>;
+    const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${leadid}&targetSimsPage=PROSPECT&buildingId=${buildingid}`;
+    return <a href={href} target='_blank' rel='noopener noreferrer'>{pname}</a>;
 }
 
 const influencerCellFormatter = ({ row: { leadid, buildingid, iname } }) => {
-    const href = `https://sales.uat.assisted.com/Sims?smsLeadId=${leadid}&targetSimsPage=INFLUENCERS&buildingId=${buildingid}`;
-    return <a href={href} target='_blank'>{iname}</a>;
+    const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${leadid}&targetSimsPage=INFLUENCERS&buildingId=${buildingid}`;
+    return <a href={href} target='_blank' rel='noopener noreferrer'>{iname}</a>;
 }
 
 const columns = [
@@ -40,7 +40,7 @@ export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, sho
         if (idx === PROSPECT_ID_CELL_ID) {
             onRowSelection(rows[rowIdx]);
         }
-    }, [onRowSelection])
+    }, [onRowSelection, rows])
 
     return (
         <StyledModalContent showLeadData={showLeadData}>
