@@ -14,6 +14,7 @@ function parsePhone(record, key) {
 export default (record) => {
     return {
         leadid: record.leadId,
+        buildingid: record.buildingId,
         ccleadid: record.ccLeadId,
         community: record.buildingName,
         hasaddtl: record.hasAddlInfluencers,
