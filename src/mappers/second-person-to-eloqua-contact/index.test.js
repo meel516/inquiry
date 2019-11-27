@@ -16,7 +16,9 @@ describe('prospectToEloquaContact mapper', () => {
             selected: 'a'
         }
         const expected = {
-            salesContact: 'CONTACT'
+            salesLead: {
+                salesContact: 'CONTACT'
+            }
         }
         expect(mapper(input)).toEqual(expected)
     })
