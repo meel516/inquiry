@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'reactstrap';
-import { useFormikContext } from 'formik';
 import { Checkbox } from '../form-items';
 import { Person } from './components/Person';
 import { Note } from '../form-items';
 import { ObjectMappingService } from '../../services/Types';
+import { useFormikContextWrapper } from '../../hooks';
 
 const TYPE = 'secondPerson';
 
-export const SecondPerson = ({ basePath, hasSecondPerson, locked = false }) => {
-    const { setFieldValue } = useFormikContext();
+export const SecondPerson = ({ basePath, hasSecondPerson }) => {
+    const { setFieldValue, isLocked } = useFormikContextWrapper();
     const fullPath = `${basePath}.${TYPE}`;
 
     const handleSecondPersonChange = useCallback((e) => {
@@ -27,13 +27,13 @@ export const SecondPerson = ({ basePath, hasSecondPerson, locked = false }) => {
         <>
             <Row>
                 <Col>
-                    <Checkbox name={`${fullPath}.selected`} label='Is there a 2nd Prospect?' onChange={handleSecondPersonChange} disabled={locked} />
+                    <Checkbox name={`${fullPath}.selected`} label='Is there a 2nd Prospect?' onChange={handleSecondPersonChange} disabled={isLocked} />
                 </Col>
             </Row>
             {
                 hasSecondPerson && (
                     <>
-                        <Person basePath={basePath} type={TYPE} locked={locked} />
+                        <Person basePath={basePath} type={TYPE} locked={isLocked} />
                         <Note name={`${basePath}.notes.secondPersonNote`} label='2nd Person Situation' />
                     </>
                 )

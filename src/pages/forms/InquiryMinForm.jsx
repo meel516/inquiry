@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/AlertConfirm';
@@ -6,6 +6,7 @@ import { formValidationSchema } from './ValidationSchema';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { getCommunitiesErrors } from './validators';
+import { FormikContextWrapper } from '../../hooks';
 import {
   BudgetSection,
   InfluencerSection,
@@ -24,6 +25,21 @@ const InquiryForm = ({
 }) => {
   const TOP = useRef(null);
 
+  const isLeadFromContactCenterBuilding = useCallback((lead) => {
+    return lead.buildingId === 225707;
+  }, []);
+
+  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson }} = values;
+  const { readOnly } = status;
+  const isLocked = !!leadId;
+  const isExistingContact = !!influencer.contactId;
+  const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
+  const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
+
+  const wrappedFormikValues = useMemo(() => {
+    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked };
+  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked ]);
+
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
 
@@ -35,10 +51,6 @@ const InquiryForm = ({
 
     setTimeout(() => TOP.current.scrollIntoView({ behavior: 'smooth' }), 500);
   }, [isValid, handleSubmit])
-
-  const isLeadFromContactCenterBuilding = useCallback((lead) => {
-    return lead.buildingId === 225707;
-  }, []);
 
   const updateLead = useCallback((lead) => {
     const age = lead.prospect
@@ -61,30 +73,25 @@ const InquiryForm = ({
     validateForm( { ...values, lead: newLead });
   }, [values, setFieldValue, validateForm])
 
-  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson }} = values;
-  const { readOnly } = status;
-  const isLocked = !!leadId;
-  const isExistingContact = !!influencer.contactId;
-  const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
-  const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
-
   return (
     <Form>
-      <section>
-        <div ref={TOP}></div>
-      </section>
-      <InfluencerSection influencer={influencer} isReadOnly={readOnly} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
-      <SituationSection isReadOnly={readOnly} isLocked={isLocked} hideProspect={hideProspect} />
-      <PassionPersonalitySection username={user.username} />
-      <BudgetSection isReadOnly={readOnly} isLocked={isLocked} hasSecondPerson={secondPerson.selected} />
-      <ResultOfCallSection isLocked={isLocked} isContactCenterBuildingId={isContactCenterBuildingId} leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
-      {
-        !status.readOnly && (
-          <div className="float-right">
-            <AlertConfirm handleSubmit={handleFormSubmit} />
-          </div>
-        )
-      }
+      <FormikContextWrapper.Provider value={wrappedFormikValues}>
+        <section>
+          <div ref={TOP}></div>
+        </section>
+        <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
+        <SituationSection />
+        <PassionPersonalitySection username={user.username} />
+        <BudgetSection hasSecondPerson={secondPerson.selected} />
+        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
+        {
+          !status.readOnly && (
+            <div className="float-right">
+              <AlertConfirm handleSubmit={handleFormSubmit} />
+            </div>
+          )
+        }
+      </FormikContextWrapper.Provider>
       {process.env.REACT_APP_NODE_ENV !== "production" && <Debug />}
     </Form>
   );

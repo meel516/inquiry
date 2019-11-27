@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Checkbox } from '../form-items/Checkbox';
 import { StyledCheckboxGroupWrapper } from './styled';
 
-export const Drivers = ({ basePath, isReadOnly }) => {
+export const Drivers = ({ basePath }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
@@ -12,22 +12,22 @@ export const Drivers = ({ basePath, isReadOnly }) => {
       <Label for="drivers" className="label-format">Drivers</Label>
       <Row>
         <Col>
-          <Checkbox name={`${rootPath}activities`} label='Activities' className='col-4' disabled={isReadOnly} />
-          <Checkbox name={`${rootPath}accessToResidents`} label='Access to Residents' className='col-4' disabled={isReadOnly} />
-          <Checkbox name={`${rootPath}ageInPlace`} label='Age in Place' className='col-3' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}activities`} label='Activities' className='col-4' />
+          <Checkbox name={`${rootPath}accessToResidents`} label='Access to Residents' className='col-4' />
+          <Checkbox name={`${rootPath}ageInPlace`} label='Age in Place' className='col-3' />
         </Col>
       </Row>
       <Row>
         <Col>
-          <Checkbox name={`${rootPath}care`} label='Care' className='col-4' disabled={isReadOnly} />
-          <Checkbox name={`${rootPath}location`} label='Location' className='col-4' disabled={isReadOnly} />
-          <Checkbox name={`${rootPath}peaceOfMind`} label='Peace of mind' className='col-3' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}care`} label='Care' className='col-4' />
+          <Checkbox name={`${rootPath}location`} label='Location' className='col-4' />
+          <Checkbox name={`${rootPath}peaceOfMind`} label='Peace of mind' className='col-3' />
         </Col>
       </Row>
       <Row>
         <Col>
-          <Checkbox name={`${rootPath}petFriendly`} label='Pet friendly' className='col-4' disabled={isReadOnly} />
-          <Checkbox name={`${rootPath}safety`} label='Safety' className='col-4' disabled={isReadOnly} />
+          <Checkbox name={`${rootPath}petFriendly`} label='Pet friendly' className='col-4' />
+          <Checkbox name={`${rootPath}safety`} label='Safety' className='col-4' />
         </Col>
       </Row>
     </StyledCheckboxGroupWrapper>

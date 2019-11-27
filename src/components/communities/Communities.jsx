@@ -9,7 +9,7 @@ import { createCommunity } from '../../services/community-services';
 
 const MAX_COMMUNITIES = 5;
 
-export const Communities = (props) => {
+export const Communities = ({ username }) => {
   const [ communityList, setCommunityList ] = useState([]);
   const [ followupActions, setFollowupActions ] = useState([]);
 
@@ -18,11 +18,11 @@ export const Communities = (props) => {
   }, [followupActions]);
 
   useEffect(() => {
-    fetchCommunities(props.username).then(comms => {
+    fetchCommunities(username).then(comms => {
       const mapped = comms.map(com => ({ value: com.id, label: `${com.buildingName} - ${com.accountingCode}` }));
       setCommunityList(mapped);
     })
-  }, [props.username]);
+  }, [username]);
 
   useEffect(() => {
     getFollowupActions().then(data => setFollowupActions(data));
@@ -71,7 +71,5 @@ export const Communities = (props) => {
 }
 
 Communities.propTypes = {
-  allowAddCommunities: PropTypes.bool,
-  onAddCommunity: PropTypes.func,
-  onRemoveCommunity: PropTypes.func,
+  username: PropTypes.string.isRequired,
 }

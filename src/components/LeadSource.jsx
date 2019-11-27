@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap'
-import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '../services/dropdowns';
 import { Select, ReactSelect } from './formik-inputs';
+import { useFormikContextWrapper } from '../hooks';
 
 export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', locked = false }) => {
   const [ leadSources, setLeadSources ] = useState([]);
   const [ leadSourceDetails, setLeadSourceDetails ] = useState([]);
   const [ leadSourceSubDetails, setLeadSourceSubDetails ] = useState([]);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue } = useFormikContextWrapper();
 
   const inputNames = useMemo(() => {
     return {
