@@ -14,7 +14,7 @@ const prospectCellFormatter = ({ row: { leadid, buildingid, pname } }) => {
 }
 
 const influencerCellFormatter = ({ row: { leadid, buildingid, iname } }) => {
-    const href = `https://sales.uat.assisted.com/Sims?smsLeadId=${leadid}&targetSimsPage=INFLUENCER&buildingId=${buildingid}`;
+    const href = `https://sales.uat.assisted.com/Sims?smsLeadId=${leadid}&targetSimsPage=INFLUENCERS&buildingId=${buildingid}`;
     return <a href={href} target='_blank'>{iname}</a>;
 }
 
@@ -46,7 +46,7 @@ export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, sho
         <StyledModalContent showLeadData={showLeadData}>
             <ModalHeader>Potential Lead Matches</ModalHeader>
             <ModalBody>
-                <p>Below are leads that this person is associated with. Click the prospect ID for the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
+                <p>Below are leads that this person is associated with. Click the Prospect ID for the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
                 <ReactDataGrid
                     columns={columns}
                     rowGetter={rowGetter}
