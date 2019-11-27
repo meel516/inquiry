@@ -1,6 +1,5 @@
 import convertToISODate from '../utils/convert-to-iso-date'
 import getFreeMealItem from './community-services/get-free-meal-item'
-import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import getPrimaryPhone from '../utils/find-primary-phone'
 import mapCallingForToInquiryValue from '../mappers/calling-for-to-inquiry-value'
 import Lead from '../models/lead'
@@ -17,79 +16,7 @@ import {defaultDrivers} from '../constants/default-drivers'
 import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales-contact'
 import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
-function LeadDataRecord(record) {
-    if (record) {
-        this.leadid = record.leadId
-
-        if (record.ccLeadId) {
-            this.ccleadid = record.ccLeadId
-        }
-
-        this.community = record.buildingName
-        this.hasaddtl = record.hasAddlInfluencers
-
-        if (record.prospect) {
-            this.prospectid = record.prospect.contactId
-            this.pname = record.prospect.firstName + " " + record.prospect.lastName
-            if (record.prospect.phoneNumbers) {
-                for (let i = 0; i < record.prospect.phoneNumbers.length; i++) {
-                    let tmpPhone = record.prospect.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.pphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.pemail = record.prospect.emailAddress
-        }
-
-        if (record.primaryInfluencer) {
-            this.iname = record.primaryInfluencer.firstName + " " + record.primaryInfluencer.lastName
-            if (record.primaryInfluencer.phoneNumbers) {
-                for (let i = 0; i < record.primaryInfluencer.phoneNumbers.length; i++) {
-                    let tmpPhone = record.primaryInfluencer.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.iphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.iemail = record.primaryInfluencer.emailAddress
-        }
-
-        if (record.secondPerson) {
-            this.spname = record.secondPerson.firstName + " " + record.secondPerson.lastName
-            if (record.secondPerson.phoneNumbers) {
-                for (let i = 0; i < record.secondPerson.phoneNumbers.length; i++) {
-                    let tmpPhone = record.secondPerson.phoneNumbers[i];
-                    if (tmpPhone) {
-                        if (tmpPhone.primary) {
-                            if (tmpPhone.phoneNumber) {
-                                const pn = parsePhoneNumberFromString("+1" + tmpPhone.phoneNumber);
-                                this.spphone = pn.formatNational();
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            this.spemail = record.secondPerson.emailAddress
-        }
-    }
-}
+import leadDataRecord from '../models/lead-data-record'
 
 class ObjectMappingService {
 
@@ -408,7 +335,7 @@ class ObjectMappingService {
             for (let i = 0; i < payload.length; i++) {
                 let leadRow = payload[i];
                 if (leadRow) {
-                    const ldr = new LeadDataRecord(leadRow);
+                    const ldr = leadDataRecord(leadRow);
                     returnval.push(ldr);
                 }
             }
