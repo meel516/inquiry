@@ -6,25 +6,13 @@ import { useRowGetter } from './hooks';
 import { EmptyRowsView } from './EmptyRowsView';
 import { StyledModalContent } from './styled';
 
-const PROSPECT_ID_CELL_ID = 0;
-
-const prospectCellFormatter = ({ row: { leadid, buildingid, pname } }) => {
-    const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${leadid}&targetSimsPage=PROSPECT&buildingId=${buildingid}`;
-    return <a href={href} target='_blank' rel='noopener noreferrer'>{pname}</a>;
-}
-
-const influencerCellFormatter = ({ row: { leadid, buildingid, iname } }) => {
-    const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${leadid}&targetSimsPage=INFLUENCERS&buildingId=${buildingid}`;
-    return <a href={href} target='_blank' rel='noopener noreferrer'>{iname}</a>;
-}
-
 const columns = [
   { key: 'prospectid', name: 'Prospect ID', width: 100, resizable: true },
   { key: 'community', name: 'Community', width: 200, resizable: true },
-  { key: 'iname', name: 'Influencer Name', width: 200, resizable: true, formatter: influencerCellFormatter },
+  { key: 'iname', name: 'Influencer Name', width: 200, resizable: true },
   { key: 'iphone', name: 'Influencer Phone', width: 200, resizable: true },
   { key: 'iemail', name: 'Influencer Email', width: 200, resizable: true },
-  { key: 'pname', name: 'Prospect Name', width: 200, resizable: true, formatter: prospectCellFormatter },
+  { key: 'pname', name: 'Prospect Name', width: 200, resizable: true },
   { key: 'pphone', name: 'Prospect Phone', width: 200, resizable: true },
   { key: 'pemail', name: 'Prospect Email', width: 200, resizable: true },
   { key: 'spname', name: '2nd Person Name', width: 200, resizable: true },
@@ -36,17 +24,22 @@ const columns = [
 export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, showLeadData }) => {
     const rowGetter = useRowGetter(rows);
 
-    const onCellClick = useCallback(({ idx, rowIdx }) => {
-        if (idx === PROSPECT_ID_CELL_ID) {
-            onRowSelection(rows[rowIdx]);
-        }
+    const onCellClick = useCallback(({ rowIdx }) => {
+        const rowData = rows[rowIdx];
+        
+        // First, we need to pop a new browser window to open the SMS Notes tab for this lead.
+        const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${rowData.leadid}&targetSimsPage=NOTES&buildingId=${rowData.buildingid}`;
+        window.open(href, '_blank', 'height=700,width=1000');
+        
+        // Finally, load the app with this lead's data.
+        onRowSelection(rowData);
     }, [onRowSelection, rows])
 
     return (
         <StyledModalContent showLeadData={showLeadData}>
             <ModalHeader>Potential Lead Matches</ModalHeader>
             <ModalBody>
-                <p>Below are leads that this person is associated with. Click the Prospect ID for the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
+                <p>Below are leads that this person is associated with. Click the one you want to update, otherwise click "None of These". If you clicked the wrong person, click "Go Back" to change.</p>
                 <ReactDataGrid
                     columns={columns}
                     rowGetter={rowGetter}
