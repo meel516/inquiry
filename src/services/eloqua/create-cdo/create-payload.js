@@ -51,7 +51,6 @@ export default (lead, communities, userName, userEmail) => {
     formDetails.advisorUsername = userName;
     formDetails.advisorEmail = userEmail;
 
-    console.log(JSON.stringify(formDetails));
     return {
         communities,
         formDetails
