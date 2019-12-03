@@ -57,7 +57,10 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
             const loadedLeadId = row.ccleadid || row.leadid;
 
             if (loadedLeadId) {
-                const lead = await salesService.getLeadByLeadId(loadedLeadId);
+                // Since a lead row could have a non-primary influencer, we need to pass that id down
+                // to the service, so we load the correct influencer into the app.
+                const influencerContactIdToLoad = row.inflContactId || '';
+                const lead = await salesService.getLeadByLeadId(loadedLeadId, influencerContactIdToLoad);
                 submitModal(lead);
             }
         }

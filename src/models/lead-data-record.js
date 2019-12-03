@@ -27,6 +27,7 @@ export default (record) => {
         spemail: get(record, 'secondPerson.emailAddress'),
         pphone: parsePhone(record, 'prospect'),
         iphone: parsePhone(record, 'primaryInfluencer'),
-        spphone: parsePhone(record, 'secondPerson')
+        spphone: parsePhone(record, 'secondPerson'),
+        inflContactId: get(record, 'primaryInfluencer.contactId')
     }
 }
