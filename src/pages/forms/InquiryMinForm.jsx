@@ -30,7 +30,6 @@ const InquiryForm = ({
   }, []);
 
   const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson }} = values;
-  const { readOnly } = status;
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
