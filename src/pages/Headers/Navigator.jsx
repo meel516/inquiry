@@ -5,10 +5,10 @@ export const Navigator = ({ authenticated, name }) => (
   <Navbar color="light" light expand="md" className="noTopBottomPadding">
     <NavbarBrand href="/">
       <img
-        src="/bsl_logo.jpg"
+        src="/bsl_logo.svg"
         width="253"
         height="60"
-        className="d-inline-block align-top"
+        style={{ transform: 'scale(0.9)' }}
         alt="Brookdale Senior Living"
       />
     </NavbarBrand>
