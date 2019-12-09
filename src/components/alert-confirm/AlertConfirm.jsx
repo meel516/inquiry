@@ -16,7 +16,12 @@ export const AlertConfirm = React.memo(({ handleSubmit, isSubmitting }) => {
     const handleYes = useCallback((e) => {
         setSubmitting(true);
         handleSubmit(e);
-    }, [handleSubmit, setModalOpen])
+    }, [handleSubmit, setSubmitting])
+
+    const handleNo = useCallback(() => {
+        setSubmitting(false);
+        setModalOpen(false);
+    }, [setSubmitting, setModalOpen])
 
     useEffect(() => {
         if (submitting && !isSubmitting) {
@@ -35,7 +40,7 @@ export const AlertConfirm = React.memo(({ handleSubmit, isSubmitting }) => {
                 </ModalBody>
                 <ModalFooter>
                     <StyledYesButton submitting={submitting} type="button" size="sm" color="primary" onClick={handleYes}>Yes</StyledYesButton>
-                    <StyledNoButton submitting={submitting} type="button" color="secondary" size="sm" onClick={() => (setModalOpen(false), setSubmitting(false))}>No</StyledNoButton>
+                    <StyledNoButton submitting={submitting} type="button" color="secondary" size="sm" onClick={handleNo}>No</StyledNoButton>
                     <StyledSpinnerWrapper submitting={submitting}>
                         <Spinner type="border" size="md" color="secondary">Submitting...</Spinner>
                     </StyledSpinnerWrapper>
