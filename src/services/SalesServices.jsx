@@ -35,9 +35,9 @@ class SalesAPIService {
   }
 
   // TODO: need to build this out, so that system can fetch lead by Id not just guid
-  async getLeadByLeadId(leadId) {
+  async getLeadByLeadId(leadId, influencerContactIdToLoad) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
-    return await this.getLeadByUrl(leadUrl);
+    return await this.getLeadByUrl(leadUrl, influencerContactIdToLoad);
   }
 
   async retrieveLeadDataForContactId(contactId) {
@@ -46,7 +46,7 @@ class SalesAPIService {
     return ObjectMappingService.buildLeadDataResponseForContactId(output);
   }
 
-  async getLeadByUrl(uri) {
+  async getLeadByUrl(uri, influencerContactIdToLoad) {
     let salesLead = await this.createFetch(uri);
     if (salesLead) {
       const lead = ObjectMappingService.createLead(salesLead);
@@ -76,7 +76,11 @@ class SalesAPIService {
             lead.hasInfluencers = 1;
 
             let influencer = influencers.find(function (influencer) {
-              return (influencer.primary === true && influencer.active === true);
+              if (influencerContactIdToLoad && influencerContactIdToLoad !== '') {
+                return (influencer.salesContact.contactId === influencerContactIdToLoad);
+              } else {
+                return (influencer.primary === true && influencer.active === true);
+              }
             });
             lead.influencer = ObjectMappingService.createInfluencer(influencer);
             if (lead.influencer) {

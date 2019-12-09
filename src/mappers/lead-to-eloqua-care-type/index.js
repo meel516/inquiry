@@ -11,20 +11,20 @@ export default (lead = {}) => ({
     feeding: get(lead, 'adlNeeds.feeding'), 
     toileting: get(lead, 'adlNeeds.toileting'), 
 
-    alzDiagnosis: get(lead, 'memoryConcerns.dementia'), 
-    argumentative: get(lead, 'memoryConcerns.memoryLoss'), 
-    forgetsRepeats: get(lead, 'memoryConcerns.repeatsStories'), 
+    alzDiagnosis: get(lead, 'memoryConcerns.alzDiagnosis'), 
+    argumentative: get(lead, 'memoryConcerns.argumentative'), 
+    forgetsRepeats: get(lead, 'memoryConcerns.forgetsRepeats'), 
     wandering: get(lead, 'memoryConcerns.wandering'), 
 
     fallRisk: get(lead, 'mobilityConcerns.fallRisk'), 
-    walkerRegularly: get(lead, 'mobilityConcerns.regularlyWalks'), 
-    caneRegularly: get(lead, 'mobilityConcerns.usesCane'), 
-    wheelchairRegularly: get(lead, 'mobilityConcerns.usesWheelChair'), 
-    onePersTransfer: get(lead, 'mobilityConcerns.personTransfer'), 
-    twoPersTransfer: get(lead, 'mobilityConcerns.secondPersonTransfer'), 
+    walkerRegularly: get(lead, 'mobilityConcerns.walkerRegularly'), 
+    caneRegularly: get(lead, 'mobilityConcerns.caneRegularly'), 
+    wheelchairRegularly: get(lead, 'mobilityConcerns.wheelchairRegularly'), 
+    onePersTransfer: get(lead, 'mobilityConcerns.onePersTransfer'), 
+    twoPersTransfer: get(lead, 'mobilityConcerns.twoPersTransfer'), 
 
-    diabetesDiagnosis: get(lead, 'nutritionConcerns.diabetes'), 
-    lowSaltLowDiet: get(lead, 'nutritionConcerns.lowSalt'), 
-    otherDietRestrictions: get(lead, 'nutritionConcerns.prescribedDiet'), 
+    diabetesDiagnosis: get(lead, 'nutritionConcerns.diabetesDiagnosis'), 
+    lowSaltLowDiet: get(lead, 'nutritionConcerns.lowSaltLowDiet'), 
+    otherDietRestrictions: get(lead, 'nutritionConcerns.otherDietRestrictions'), 
     notEatingWell: get(lead, 'nutritionConcerns.notEatingWell')
 })

@@ -12,5 +12,4 @@ export default [
     { name: "Communities with Villas", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/Communities%20that%20Offer%20Villas.docx" },
     { name: "Free Meal Offer QRG", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/Free%20Meal%20Offer/Free%20Meal%20Offer%20QRG.docx" },
     { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/July%20Veterans%20Events%202018/Special%20Event%20RSVP%20Guide.docx" },
-    { name: "Aug Sept 2019 Promo QRG", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/2019%20Aug-Sept%20Free%20Month%20Promo/2019%20Aug-Sept%20Month%20Free%20Promo%20QRG.docx" },
   ]

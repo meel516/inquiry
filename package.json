@@ -15,7 +15,7 @@
     "query-string": "6.8.3",
     "react": "16.10.2",
     "react-data-grid": "6.1.0",
-    "react-datetime-picker": "2.7.1",
+    "react-datetime-picker": "2.8.0",
     "react-dom": "16.10.2",
     "react-draggable": "4.1.0",
     "react-feather": "2.0.3",
@@ -46,7 +46,7 @@
     "extends": "react-app"
   },
   "engines": {
-    "node": "10.x",
+    "node": "12.x",
     "npm": "6.x",
     "yarn": "1.19.x"
   },
