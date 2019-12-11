@@ -1,0 +1,1 @@
+export default (callingFor) => callingFor === 'Myself' ? 'PROSP' : 'INFLU'

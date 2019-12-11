@@ -1,26 +1,41 @@
 {
   "name": "inquiry-form",
-  "version": "0.1.0",
+  "version": "1.0.1",
+  "description": "Contact Center Application",
   "private": true,
   "dependencies": {
-    "@okta/okta-react": "^1.2.0",
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "prop-types": "^15.7.2",
-    "react": "^16.9.0",
-    "react-datetime-picker": "^2.7.1",
-    "react-dom": "^16.9.0",
-    "react-feather": "^2.0.3",
-    "react-icons": "^3.7.0",
-    "react-router-dom": "^5.0.1",
+    "@okta/okta-auth-js": "2.9.0",
+    "@okta/okta-react": "1.2.3",
+    "bootstrap": "4.3.1",
+    "formik": "2.0.5",
+    "libphonenumber-js": "1.7.26",
+    "lodash": "4.17.15",
+    "moment": "2.24.0",
+    "prop-types": "15.7.2",
+    "query-string": "6.8.3",
+    "react": "16.10.2",
+    "react-data-grid": "6.1.0",
+    "react-datetime-picker": "2.8.0",
+    "react-dom": "16.10.2",
+    "react-draggable": "4.1.0",
+    "react-feather": "2.0.3",
+    "react-icons": "3.7.0",
+    "react-number-format": "4.3.0",
+    "react-router-dom": "5.1.2",
     "react-scripts": "3.0.1",
-    "react-select": "^3.0.4",
-    "reactstrap": "^8.0.1"
+    "react-select": "3.0.8",
+    "react-toastify": "5.4.0",
+    "reactstrap": "8.1.1",
+    "styled-components": "4.4.1",
+    "uuid": "3.3.3",
+    "yup": "0.27.0"
   },
   "scripts": {
-    "start": "react-scripts start --env=local",
+    "start": "react-scripts start",
+    "local": "react-scripts start --env=local",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "test:update": "react-scripts test --updateSnapshot",
     "test:coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject",
@@ -29,6 +44,11 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "6.x",
+    "yarn": "1.19.x"
   },
   "browserslist": {
     "production": [
@@ -43,10 +63,13 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.1.11",
-    "@storybook/addon-links": "^5.1.11",
-    "@storybook/addons": "^5.1.11",
-    "@storybook/react": "^5.1.11",
-    "react-test-renderer": "^16.9.0"
+    "@storybook/addon-actions": "5.2.3",
+    "@storybook/addon-links": "5.2.3",
+    "@storybook/addons": "5.2.3",
+    "@storybook/react": "5.2.3",
+    "enzyme": "3.10.0",
+    "enzyme-adapter-react-16": "1.14.0",
+    "jest-fetch-mock": "2.1.2",
+    "react-test-renderer": "16.10.2"
   }
 }

@@ -47,6 +47,32 @@ body {
   padding-bottom: 0;
 }
 
+.section-header {
+  font-weight: bold;
+  font-size: 14pt;
+}
+
+.label-format {
+  font-weight: bold;
+}
+
+div.react-datetime-picker__wrapper {
+  border: 0;
+}
+
+label.required-field:before {
+  content: "* ";
+}
+
+div.alert-smaller-size {
+  padding: .3rem 1rem;
+}
+
+nav.noTopBottomPadding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

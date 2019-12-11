@@ -1,0 +1,1 @@
+export default (phoneString) => phoneString ? phoneString.replace(/\D/g, '') : null

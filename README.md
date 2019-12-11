@@ -1,14 +1,17 @@
-# Inquiry Form Application
+# Connection Center Application
 
-This project consists of a re-write of the Inquiry Form used by the Brookdale Contact Center.  It was built using reactjs along with several installed modules, which are listed below.
+This project consists of a re-write of the Connection Center Application, which is currently hosted on a Wordpress VM, used by the Brookdale Contact Center.  The technology chosen was to write the new application using React along with several installed modules, which are listed below. (As more modules are used they will be listed here and documented as to why they were choosen, for future reference.)
 
-Formik - do I need to use this - the main reason is for validation but not sure?
-React Bootstrap - is used to apply bootstrap formatting to the output of the reactjs ui
-React Router - to route between page requests
-Okta - used to connect to okta and requires react-router to be in place
+* Formik - do I need to use this - the main reason is for validation and form framework
+* React Bootstrap - is used to apply bootstrap formatting to the output of the React UI
+* React Router - to route between page requests
+* Okta - used for SSO to know who is signed into the application and for cloud security 
   - https://developer.okta.com/code/react/okta_react/
-React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
+* React Select - this is a pretty powerful library that has type ahead searching, create new dropdown values, multiple values (similar to labels)
 	- https://react-select.com/home#getting-started
+* PropTypes - used to define the components
+* React Date/Time picker - used in the community section for the user to have a visual way of changing the date/time used in defining in Follow Up
+* Toastify - used for alerting the user for errors and successful messages
 
 
 ## Getting Started
@@ -17,33 +20,59 @@ These instructions will help you get your machine setup to be able to run the ap
 
 ### Install npm
 
-If you already have Node.js installed on your machine you can skip this section.  In order to do development and You will need to install npm on your machine in order to run the application and do any development work.  npm (Node.js) can be downloaded [here](https://nodejs.org/en/download/).
+If you already have Node.js installed on your machine you can skip this section.  In order to do development and You will need to install npm on your machine in order to run the application and do any development work.  npm (Node.js) can be downloaded [here](https://nodejs.org/en/download/).  The current version of NodeJS that the team is using is 10.16.3 and npm version 6.12.0, while it is not frowned upon to go outside these bounds, these are the versions used to deploy to the server.
 
 ### Install IDE
 
-There are several IDEs that are available on the market that can be used for editing this code, see the list below.
+There are several IDEs that are available on the market that can be used for editing this code, see the list below.  While it is not required a team member use a specific IDE, if you choose a different IDE that teammember is responsible for their own development environment.  The team as a whole has decided to use VS Code.
 
-Atom
-VS Code
-Notepad++
-Sublime
+*VS Code - most developers are using this for their IDE
+*Atom
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run the following commands:
+
+### `npm run local`
+
+Allows you to run the app in the development mode locally, using the local (.env.local) configuration.
+
+A file needs to be created called .env.local in the base of the project.  Using the following environment variables you can change the behavior of the system.  The OKTA CLIENTID is maintained by the IDM team and but the team will have a copy on their local for testing purposes.  Each environment may have a have a different url/client id defined.
+
+````
+# application level environment properties
+#REACT_APP_NODE_ENV='production'
+#REACT_APP_APPLICATION_NAME=Connection Center Application
+
+# sales services api
+REACT_APP_SALES_SERVICES_URL=https://sales-services.uat.brookdale.com
+
+# sales system
+REACT_APP_SALES_URL=https://sales.uat.assisted.com/Sims
+
+# community api
+REACT_APP_COMMUNITY_URL=http://unit-api.brookdale.com/bu-master
+
+# version
+REACT_APP_VERSION=localhost
+
+# okta - local
+REACT_APP_OKTA_URL=https://brookdaledev.oktapreview.com
+REACT_APP_OKTA_CLIENTID=
+````
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+This script is reserved for running the application in the GCP server environment.
 
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run test -t <path_to_test/>`
+
+Launches only the single test suite based upon the file supplied.
 
 ### `npm run build`
 
@@ -53,44 +82,36 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Versioning
 
-### `npm run eject`
+The application version will conform to semantic versioning.  Each release feature release (at this point after each review) a new release will be cut incrementing the
+minor version, until we reach production.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## GDK Installation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In order to deploy the applications to the GCP (Google Cloud Platform) you need to install the [Google SDK (GDK)](https://cloud.google.com/sdk/).
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Deployment
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This section covers the deployment process of the Application to the GCP (Google Cloud Platform) environment.  At the time of this we are using the following script to deploy the application to the GCP environment.  
 
-## Learn More
+These are the steps in order to complete the deployment.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+1. Run gcloud update.  While this is not required for the actual deployment of the application, it keeps your GDK updated with any fixes.
+```
+gcloud components update
+```
+2. Check the app.yaml file to make sure all environment variables are properly set for the environment being posted to.  The version used in the deployment should match the version in the app.yaml.  At the current time the app.yaml contains the following environment variables.
+```yaml
+REACT_APP_SALES_URL:
+REACT_APP_SALES_SERVICES_URL:
+REACT_APP_OKTA_URL:
+REACT_APP_OKTA_CLIENTID:
+REACT_APP_VERSION:
+REACT_APP_NODE_ENV:
+REACT_APP_APPLICATION_NAME:
+```
+3. Run the deployment script via a command line to deploy the application to GCP.  The version value must but a string value, so replace all dots (.) with dashes (-). The project is optional if you have your local GSDK profile setup to that project.
+```
+gcloud app deploy --verbosity=debug --no-promote --version <version/> --project </projectId>
+```

@@ -1,72 +1,97 @@
-import React from 'react';
-import {Col, Input, FormGroup, Label, Row} from 'reactstrap';
-import Select from 'react-select';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Col, FormGroup, Label, Row } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { getAddressStates } from '../services/dropdowns';
+import { Input, Select } from './formik-inputs';
 
-const URL_STATELIST = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/stateProv`;
+export const Address = React.memo(({ basePath, locked = false }) => {
+  const [ states, setStates ] = useState([]);
 
-export default class Address extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      states: [],
+  useEffect(() => {
+    getAddressStates()
+      .then((data) => setStates(data));
+  }, [setStates]);
+
+  const inputNames = useMemo(() => {
+    return {
+      lineone: `${basePath}.address.line1`,
+      linetwo: `${basePath}.address.line2`,
+      city: `${basePath}.address.city`,
+      state: `${basePath}.address.state`,
+      zip: `${basePath}.address.zip`,
     }
-  }
+  }, [basePath]);
 
-  componentDidMount() {
-    console.log(`uri: ${URL_STATELIST}`);
-    fetch(URL_STATELIST, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ states: data })
-      })
-      .catch(error => console.log(error));
-  }
+  const stateOptions = useMemo(() => {
+    return states.map((state) => {
+      return <option key={state.value} value={state.value}>{state.text}</option>
+    });
+  }, [states]);
 
-  render() {
-    const {states} = this.state || [];
-    // const options = (states || []).map((state) => {
-    //   return <option key={state.value} value={state.value}>{state.text}</option>
-    // })
+  return (
+    <>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label htmlFor={inputNames.lineone} className="label-format">Address 1</Label>
+            <Input 
+              type="text" 
+              name={inputNames.lineone}
+              placeholder="Street Address"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.linetwo} className="label-format">Address 2</Label>
+            <Input 
+              type="text" 
+              name={inputNames.linetwo}
+              placeholder="Apartment, Studio, or Floor"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.city} className="label-format">City</Label>
+            <Input 
+              type="text" 
+              name={inputNames.city}
+              placeholder="City"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.state} className="label-format">State</Label>
+            <Select name={inputNames.state} disabled={locked} >
+              {stateOptions}
+            </Select>
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
+            <Label for={inputNames.zip} className="label-format">Zip</Label>
+            <Input 
+              type="number" 
+              name={inputNames.zip} 
+              placeholder="Zip"
+              disabled={locked}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+    </>
+  );
+})
 
-    return (
-      <div className="Address">
-  			<Row>
-  				<Col>
-            <FormGroup>
-    					<Label htmlFor="line1">Address</Label>
-    					<Input type="text" name="addressLine1" placeholder="Address" />
-            </FormGroup>
-  				</Col>
-  			</Row>
-  			<Row>
-  				<Col>
-            <FormGroup>
-    					<Label for="line2">Address 2</Label>
-    					<Input type="text" name="addressLine2" placeholder="Apartment, studio, or floor" />
-            </FormGroup>
-  				</Col>
-        </Row>
-        <Row>
-  				<Col>
-            <FormGroup>
-    					<Label for="city">City</Label>
-    					<Input type="text" name="city" />
-            </FormGroup>
-  				</Col>
-  				<Col>
-            <FormGroup>
-    					<Label for="state">State</Label>
-              <Input type="select" name="state">
-    						<option></option>
-    					</Input>
-            </FormGroup>
-  				</Col>
-  				<Col>
-  					<Label for="zip">Zip</Label>
-  					<Input type="text" name="zip" />
-  				</Col>
-  			</Row>
-      </div>
-    )
-  }
+Address.displayName = 'Address';
+Address.propTypes = {
+  basePath: PropTypes.string.isRequired,
+  locked: PropTypes.bool,
 }

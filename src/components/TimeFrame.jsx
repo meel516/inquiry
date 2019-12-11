@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {Label} from 'reactstrap';
+import { Label } from 'reactstrap';
 import Select from 'react-select';
 
-const URL_TIMEFRAME = `${process.env.REACT_APP_SALES_SERVICES_URL}/api/dropdowns/decisionTimeframe`;
+import { getDecisionTimeframe } from '../services/dropdowns';
 
 export default class TimeFrame extends React.Component {
   constructor(props) {
@@ -15,11 +15,9 @@ export default class TimeFrame extends React.Component {
   }
 
   componentDidMount() {
-    console.log('VeteranStatus.componentDidMount()')
-    fetch(URL_TIMEFRAME, {mode: 'cors', cache: 'no-cache'})
-      .then((res) => res.json())
+    getDecisionTimeframe()
       .then((data) => {
-        data.map(function(tf) {
+        data.map(function (tf) {
           tf.label = tf.text;
         })
         this.setState({ timeframe: data })
@@ -28,14 +26,14 @@ export default class TimeFrame extends React.Component {
   }
 
   render() {
-    const {timeframe} = this.state || []
+    const { timeframe } = this.state || []
     return (
       <>
-      <Label for="timeframe">Timeframe</Label>
-      <Select
-        options={timeframe}
-        id="timeframe"
-      />
+        <Label for="timeframe" className="label-format">Timeframe</Label>
+        <Select
+          options={timeframe}
+          id="timeframe"
+        />
       </>
     )
   }

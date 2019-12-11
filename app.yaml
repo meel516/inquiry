@@ -11,6 +11,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START app_yaml]
-env: flex
 runtime: nodejs
+env: flex
+
+manual_scaling:
+  instances: 1
+
+env_variables:
+  REACT_APP_SALES_URL: https://sales.uat.assisted.com/Sims
+  REACT_APP_SALES_SERVICES_URL: https://sales-services.uat.brookdale.com
+  REACT_APP_OKTA_URL: https://brookdaledev.oktapreview.com
+  REACT_APP_OKTA_CLIENTID: 
+  REACT_APP_VERSION: 
+  REACT_APP_NODE_ENV: production
+  REACT_APP_APPLICATION_NAME: Connection Center Application
+
+# readiness_check:
+#   app_start_timeout_sec: 1800
+
 # [END app_yaml]
