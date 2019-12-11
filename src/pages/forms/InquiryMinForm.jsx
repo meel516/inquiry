@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
-import { AlertConfirm } from '../../components/AlertConfirm';
+import { AlertConfirm } from '../../components/alert-confirm';
 import { formValidationSchema } from './ValidationSchema';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
@@ -19,6 +19,7 @@ const InquiryForm = ({
   values,
   status,
   isValid,
+  isSubmitting,
   setFieldValue,
   validateForm,
   handleSubmit,
@@ -41,7 +42,7 @@ const InquiryForm = ({
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
-
+    
     if (!isValid) {
       toast.error("Please fix the errors before continuing.", {
         position: toast.POSITION.TOP_CENTER
@@ -86,7 +87,7 @@ const InquiryForm = ({
         {
           !status.readOnly && (
             <div className="float-right">
-              <AlertConfirm handleSubmit={handleFormSubmit} />
+              <AlertConfirm handleSubmit={handleFormSubmit} isSubmitting={isSubmitting} />
             </div>
           )
         }
