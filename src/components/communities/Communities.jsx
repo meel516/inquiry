@@ -6,10 +6,12 @@ import { CommunitySelect } from './components/CommunitySelect';
 import { getFollowupActions } from '../../services/dropdowns';
 import fetchCommunities from '../../services/community-services/fetch-communities';
 import { createCommunity } from '../../services/community-services';
+import { StyledErrorMessage } from '../../styled';
+import { StyledButtonWrapper } from './styled';
 
 const MAX_COMMUNITIES = 5;
 
-export const Communities = (props) => {
+export const Communities = ({ username, requiredCommunityError }) => {
   const [ communityList, setCommunityList ] = useState([]);
   const [ followupActions, setFollowupActions ] = useState([]);
 
@@ -18,11 +20,11 @@ export const Communities = (props) => {
   }, [followupActions]);
 
   useEffect(() => {
-    fetchCommunities(props.username).then(comms => {
+    fetchCommunities(username).then(comms => {
       const mapped = comms.map(com => ({ value: com.id, label: `${com.buildingName} - ${com.accountingCode}` }));
       setCommunityList(mapped);
     })
-  }, [props.username]);
+  }, [username]);
 
   useEffect(() => {
     getFollowupActions().then(data => setFollowupActions(data));
@@ -38,7 +40,11 @@ export const Communities = (props) => {
           validateForm,
         } = form;
         const addDisabled = communities.length === MAX_COMMUNITIES || readOnly;
-        const onAdd = () => push(createCommunity());
+        const onAdd = () => {
+          const newCommunity = createCommunity();
+          push(newCommunity);
+          validateForm({ ...form.values, communities: communities.concat(newCommunity) })
+        }
         const onRemove = (i) => () => {
           remove(i);
           // build new communities array and manuall validate because
@@ -50,9 +56,12 @@ export const Communities = (props) => {
 
         return (
           <Fragment>
-            <Button color="primary" size="sm" aria-pressed="false" disabled={addDisabled} onClick={onAdd}>
-              Add Community
-            </Button>
+            <StyledButtonWrapper>
+              <Button color="primary" size="sm" aria-pressed="false" disabled={addDisabled} onClick={onAdd}>
+                Add Community
+              </Button>
+              { requiredCommunityError && <StyledErrorMessage>{requiredCommunityError}</StyledErrorMessage> }
+            </StyledButtonWrapper>
             {
               communities.map((community, index) => (
                 <CommunitySelect
