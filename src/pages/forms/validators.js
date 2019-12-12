@@ -1,6 +1,13 @@
 import { string } from 'yup';
 import { isEmpty } from 'lodash';
 
+const requiredCommunityResultOfCallOptions = new Set([
+    'Visit/Assessment/Home Visit Scheduled',
+    'New Lead No Visit',
+    'Special Event RSVP',
+    'Webform No Response',
+])
+
 export const digitLengthLessThan = (max) => {
     return function (value) {
         return value === undefined ? true : value.toString().length <= max;
@@ -66,4 +73,11 @@ export const getCommunitiesErrors = (communities) => {
         const errors = { ...dupeError, ...fieldErrors[i] };
         return isEmpty(errors) ? null : errors;
     });
-} 
+}
+
+export const getRequiredCommunityError = (communities, resultOfCall) => {
+    if (requiredCommunityResultOfCallOptions.has(resultOfCall) && !communities.length) {
+        return "The Result of Call selection requires a community to be added";
+    }
+    return null;
+}
