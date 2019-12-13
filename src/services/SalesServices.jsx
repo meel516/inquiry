@@ -348,6 +348,8 @@ class SalesAPIService {
       await this.submitSecondPerson(secondPersonRequest);
     }
 
+    handleResultOfCall(lead, user);
+
     return leadId;
   }
 
@@ -504,7 +506,7 @@ class SalesAPIService {
       }
     }
     catch (err) {
-
+      // todo: handle errors here
     }
 
     try {
@@ -514,7 +516,7 @@ class SalesAPIService {
       }
     }
     catch (err) {
-
+      // todo: handle errors here
     }
   }
 
