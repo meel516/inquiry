@@ -1,12 +1,15 @@
 import { string } from 'yup';
 import { isEmpty } from 'lodash';
 
+const resultOfCallsWithTransactionDetails = new Set(['Non Lead Call']);
 const requiredCommunityResultOfCallOptions = new Set([
     'Visit/Assessment/Home Visit Scheduled',
     'New Lead No Visit',
     'Special Event RSVP',
     'Webform No Response',
 ])
+
+export const resultOfCallRequiresTransactionDetails = roc => resultOfCallsWithTransactionDetails.has(roc);
 
 export const digitLengthLessThan = (max) => {
     return function (value) {

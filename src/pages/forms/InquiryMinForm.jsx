@@ -21,6 +21,7 @@ const InquiryForm = ({
   status,
   isValid,
   isSubmitting,
+  setFieldTouched,
   setFieldValue,
   validateForm,
   handleSubmit,
@@ -31,15 +32,15 @@ const InquiryForm = ({
     return lead.buildingId === 225707;
   }, []);
 
-  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson }} = values;
+  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson, resultOfCall }} = values;
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
   const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
 
   const wrappedFormikValues = useMemo(() => {
-    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked };
-  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked ]);
+    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched };
+  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched ]);
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
@@ -84,7 +85,7 @@ const InquiryForm = ({
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
         <BudgetSection hasSecondPerson={secondPerson.selected} />
-        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
+        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} />
         {
           !status.readOnly && (
             <div className="float-right">

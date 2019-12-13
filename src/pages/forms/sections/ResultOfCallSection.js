@@ -6,14 +6,14 @@ import { LeadSource } from '../../../components/LeadSource';
 import { StyledFormSection } from './styled';
 import { useFormikContextWrapper } from '../../../hooks';
 
-export const ResultOfCallSection = React.memo(({ leadSource, leadSourceDetail }) => {
+export const ResultOfCallSection = React.memo(({ leadSource, leadSourceDetail, resultOfCall }) => {
   const { isLocked, isContactCenterBuildingId } = useFormikContextWrapper();
 
   return (
     <StyledFormSection id='resultOfCall'>
       <Row>
         <Col md="5">
-          <ResultOfCall basePath='lead' />
+          <ResultOfCall basePath='lead' value={resultOfCall} />
         </Col>
       </Row>
       <Row>
@@ -59,4 +59,5 @@ ResultOfCallSection.displayName = 'ResultOfCallSection';
 ResultOfCallSection.propTypes = {
     leadSource: PropTypes.number.isRequired,
     leadSourceDetail: PropTypes.number.isRequired,
+    resultOfCall: PropTypes.string.isRequired,
 }

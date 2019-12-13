@@ -1,5 +1,11 @@
 import { get } from '../request'
-import { createDropDownUrl, createLeadSourceDropDownUrl, createLeadSourceSubDetailDropDownUrl } from '../../constants/url-generator'
+import {
+    createDropDownUrl,
+    createLeadSourceDropDownUrl,
+    createLeadSourceSubDetailDropDownUrl,
+    createLostClosedReasonsUrl,
+    createLostClosedDestinationsUrl,
+} from '../../constants/url-generator'
 import dropdownTypes from '../../constants/dropdown-types'
 
 export const getDropdowns = (url) => get(url).then((res) => res.json()) 
@@ -15,3 +21,5 @@ export const getReasonForInterest = () => getDropdowns(createDropDownUrl(dropdow
 export const getCurrentSituation = () => getDropdowns(createDropDownUrl(dropdownTypes.currentSituation))
 export const getCareTypes = () => getDropdowns(createDropDownUrl(dropdownTypes.careTypes))
 export const getFollowupActions = () => getDropdowns(createDropDownUrl(dropdownTypes.followUpActions))
+export const getLostClosedReasons = (statusId) => getDropdowns(createLostClosedReasonsUrl(statusId))
+export const getLostClosedDestinations = (reasonId) => getDropdowns(createLostClosedDestinationsUrl(reasonId))
