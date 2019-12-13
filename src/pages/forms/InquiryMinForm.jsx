@@ -5,8 +5,8 @@ import { AlertConfirm } from '../../components/alert-confirm';
 import { formValidationSchema } from './ValidationSchema';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
-import { getCommunitiesErrors } from './validators';
 import { FormikContextWrapper } from '../../hooks';
+import { getCommunitiesErrors, getRequiredCommunityError } from './validators';
 import {
   BudgetSection,
   InfluencerSection,
@@ -17,6 +17,7 @@ import {
 
 const InquiryForm = ({
   values,
+  errors,
   status,
   isValid,
   isSubmitting,
@@ -81,7 +82,7 @@ const InquiryForm = ({
         </section>
         <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
         <SituationSection />
-        <PassionPersonalitySection username={user.username} />
+        <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
         <BudgetSection hasSecondPerson={secondPerson.selected} />
         <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
         {
@@ -104,7 +105,12 @@ const EnhancedInquiryForm = withFormik({
   validateOnChange: false,
   validateOnMount: true,
   validate: (values) => {
-    const errors = getCommunitiesErrors(values.communities);
+    const requiredCommunityError = getRequiredCommunityError(values.communities, values.lead.resultOfCall);
+    if (requiredCommunityError) {
+      return { requiredCommunityError };
+    }
+
+    const errors = getCommunitiesErrors(values.communities, values.lead.resultOfCall);
     return errors.some(x => !!x)
       ? { communities: errors }
       : {};
