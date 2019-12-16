@@ -5,7 +5,7 @@ import { AlertConfirm } from '../../components/alert-confirm';
 import { formValidationSchema } from './ValidationSchema';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
-import { getCommunitiesErrors } from './validators';
+import { getCommunitiesErrors, getRequiredCommunityError } from './validators';
 import {
   BudgetSection,
   InfluencerSection,
@@ -16,6 +16,7 @@ import {
 
 const InquiryForm = ({
   values,
+  errors,
   status,
   isValid,
   isSubmitting,
@@ -76,7 +77,7 @@ const InquiryForm = ({
       </section>
       <InfluencerSection influencer={influencer} isReadOnly={readOnly} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
       <SituationSection isReadOnly={readOnly} isLocked={isLocked} hideProspect={hideProspect} />
-      <PassionPersonalitySection username={user.username} />
+      <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
       <BudgetSection isReadOnly={readOnly} isLocked={isLocked} hasSecondPerson={secondPerson.selected} />
       <ResultOfCallSection isLocked={isLocked} isContactCenterBuildingId={isContactCenterBuildingId} leadSource={leadSource} leadSourceDetail={leadSourceDetail} />
       {
@@ -98,7 +99,12 @@ const EnhancedInquiryForm = withFormik({
   validateOnChange: false,
   validateOnMount: true,
   validate: (values) => {
-    const errors = getCommunitiesErrors(values.communities);
+    const requiredCommunityError = getRequiredCommunityError(values.communities, values.lead.resultOfCall);
+    if (requiredCommunityError) {
+      return { requiredCommunityError };
+    }
+
+    const errors = getCommunitiesErrors(values.communities, values.lead.resultOfCall);
     return errors.some(x => !!x)
       ? { communities: errors }
       : {};
