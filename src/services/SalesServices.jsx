@@ -8,6 +8,7 @@ import { get } from 'lodash'
 import createEloquaCdo from './eloqua/create-cdo'
 
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
+import handleResultOfCall from '../services/handle-result-of-call'
 
 // business logic ------
 class SalesAPIService {
