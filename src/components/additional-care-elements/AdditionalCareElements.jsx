@@ -31,7 +31,7 @@ export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
     <>
       <Row>
         <Col>
-          <FormGroup>
+          <FormGroup id='additional-care-elements-discovered'>
             <Label className="label-format">Additional Care Elements Discovered</Label>
             <Select
               isMulti={true}

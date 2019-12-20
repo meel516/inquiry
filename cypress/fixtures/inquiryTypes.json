@@ -1,0 +1,46 @@
+[
+    {
+        "value": "12",
+        "text": "BKD Recommended"
+    },
+    {
+        "value": "13",
+        "text": "CC Recommended"
+    },
+    {
+        "value": "4",
+        "text": "Call In"
+    },
+    {
+        "value": "2",
+        "text": "Call Out"
+    },
+    {
+        "value": "11",
+        "text": "Chat"
+    },
+    {
+        "value": "6",
+        "text": "Email"
+    },
+    {
+        "value": "7",
+        "text": "Event Attendee"
+    },
+    {
+        "value": "1",
+        "text": "Fax"
+    },
+    {
+        "value": "3",
+        "text": "Mail In"
+    },
+    {
+        "value": "9",
+        "text": "Social Media"
+    },
+    {
+        "value": "5",
+        "text": "Walk In"
+    }
+]

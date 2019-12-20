@@ -1,0 +1,5665 @@
+[
+    {
+        "id": 52199,
+        "buildingName": "BAH_Freedom Plaza Sun City Center",
+        "accountingCode": "51111",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52200,
+        "buildingName": "BAH_Freedom Pointe at The Villages",
+        "accountingCode": "52040",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52204,
+        "buildingName": "BAH_Freedom Square",
+        "accountingCode": "51131",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52205,
+        "buildingName": "BAH_Freedom Village at Bradenton",
+        "accountingCode": "51290",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52206,
+        "buildingName": "BAH_Freedom Village at Brandywine",
+        "accountingCode": "51181",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 646986,
+        "buildingName": "BHS Large Employer Program",
+        "accountingCode": "73213",
+        "stateProvCode": "TN",
+        "billingTypeCode": null
+    },
+    {
+        "id": 514484,
+        "buildingName": "BHS Los Angeles",
+        "accountingCode": "74880",
+        "stateProvCode": "CA",
+        "billingTypeCode": null
+    },
+    {
+        "id": 514138,
+        "buildingName": "BHS Raleigh",
+        "accountingCode": "74003",
+        "stateProvCode": "NC",
+        "billingTypeCode": null
+    },
+    {
+        "id": 514416,
+        "buildingName": "BHS San Antonio",
+        "accountingCode": "74690",
+        "stateProvCode": "TX",
+        "billingTypeCode": null
+    },
+    {
+        "id": 850312,
+        "buildingName": "Brookdale Absaroka",
+        "accountingCode": "28656",
+        "stateProvCode": "WY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 108,
+        "buildingName": "Brookdale Ada",
+        "accountingCode": "17010",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308238,
+        "buildingName": "Brookdale Admiral Heights",
+        "accountingCode": "24756",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26374,
+        "buildingName": "Brookdale Adrian",
+        "accountingCode": "00758",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308377,
+        "buildingName": "Brookdale Alamo Heights",
+        "accountingCode": "24485",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1034,
+        "buildingName": "Brookdale Alderwood",
+        "accountingCode": "12140",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308049,
+        "buildingName": "Brookdale Alexandria",
+        "accountingCode": "24155",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308273,
+        "buildingName": "Brookdale Alhambra",
+        "accountingCode": "24339",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 329,
+        "buildingName": "Brookdale Allenmore AL (WA)",
+        "accountingCode": "07270",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 219,
+        "buildingName": "Brookdale Allenmore IL (WA)",
+        "accountingCode": "07180",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 358,
+        "buildingName": "Brookdale Alliance",
+        "accountingCode": "11230",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 913235,
+        "buildingName": "Brookdale Altamonte Springs",
+        "accountingCode": "18443",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308282,
+        "buildingName": "Brookdale Anaheim",
+        "accountingCode": "24348",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26403,
+        "buildingName": "Brookdale Anaheim Hills",
+        "accountingCode": "00965",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944618,
+        "buildingName": "Brookdale Anderson",
+        "accountingCode": "29073",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87294,
+        "buildingName": "Brookdale Ann Arbor",
+        "accountingCode": "23086",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227134,
+        "buildingName": "Brookdale Apache Junction",
+        "accountingCode": "18441",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308173,
+        "buildingName": "Brookdale Appleton",
+        "accountingCode": "24650",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308036,
+        "buildingName": "Brookdale Arbor Place",
+        "accountingCode": "24132",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308360,
+        "buildingName": "Brookdale Arlington AL/MC (VA)",
+        "accountingCode": "24440",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308058,
+        "buildingName": "Brookdale Arrowhead Ranch",
+        "accountingCode": "24165",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 229,
+        "buildingName": "Brookdale Arvada",
+        "accountingCode": "07790",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46436,
+        "buildingName": "Brookdale Asheboro",
+        "accountingCode": "18160",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46433,
+        "buildingName": "Brookdale Asheville Overlook",
+        "accountingCode": "18130",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 396,
+        "buildingName": "Brookdale Asheville Walden Ridge",
+        "accountingCode": "03210",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 25235,
+        "buildingName": "Brookdale Atrium Way IL/AL (FL)",
+        "accountingCode": "17930",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308044,
+        "buildingName": "Brookdale Attleboro",
+        "accountingCode": "24145",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308022,
+        "buildingName": "Brookdale Auburn",
+        "accountingCode": "24112",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87290,
+        "buildingName": "Brookdale Augusta",
+        "accountingCode": "23069",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955705,
+        "buildingName": "Brookdale Aurora",
+        "accountingCode": "26170",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 402,
+        "buildingName": "Brookdale Austintown",
+        "accountingCode": "11240",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 182,
+        "buildingName": "Brookdale Avondale",
+        "accountingCode": "04360",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 94,
+        "buildingName": "Brookdale Barberton",
+        "accountingCode": "11250",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 109,
+        "buildingName": "Brookdale Bartlesville North",
+        "accountingCode": "17020",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 110,
+        "buildingName": "Brookdale Bartlesville South",
+        "accountingCode": "17030",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87300,
+        "buildingName": "Brookdale Bath",
+        "accountingCode": "23082",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 929465,
+        "buildingName": "Brookdale Battery Park City",
+        "accountingCode": "29333",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 168,
+        "buildingName": "Brookdale Battle Creek AL",
+        "accountingCode": "02190",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 441,
+        "buildingName": "Brookdale Battle Creek MC",
+        "accountingCode": "02280",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 166,
+        "buildingName": "Brookdale Bay City AL",
+        "accountingCode": "02100",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 173,
+        "buildingName": "Brookdale Bay City MC",
+        "accountingCode": "02410",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955708,
+        "buildingName": "Brookdale Bay Pines",
+        "accountingCode": "26310",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 47692,
+        "buildingName": "Brookdale Bayshore",
+        "accountingCode": "00777",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308212,
+        "buildingName": "Brookdale Baywood",
+        "accountingCode": "24701",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 376,
+        "buildingName": "Brookdale Beavercreek",
+        "accountingCode": "11490",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1067,
+        "buildingName": "Brookdale Beaverton",
+        "accountingCode": "07950",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850313,
+        "buildingName": "Brookdale Beckett Lake",
+        "accountingCode": "28364",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308078,
+        "buildingName": "Brookdale Beckett Meadows",
+        "accountingCode": "24188",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52228,
+        "buildingName": "Brookdale Belle Meade",
+        "accountingCode": "52180",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307989,
+        "buildingName": "Brookdale Bellevue AL/MC (NY)",
+        "accountingCode": "24065",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1019,
+        "buildingName": "Brookdale Bend",
+        "accountingCode": "12300",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 22,
+        "buildingName": "Brookdale Berkeley Boulevard",
+        "accountingCode": "03310",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 111,
+        "buildingName": "Brookdale Bethany",
+        "accountingCode": "17040",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308035,
+        "buildingName": "Brookdale Biloxi",
+        "accountingCode": "24129",
+        "stateProvCode": "MS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 295,
+        "buildingName": "Brookdale Bloomington",
+        "accountingCode": "01260",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308081,
+        "buildingName": "Brookdale Bloomsburg",
+        "accountingCode": "24191",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 176,
+        "buildingName": "Brookdale Bluewater Bay",
+        "accountingCode": "04250",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 218,
+        "buildingName": "Brookdale Boise Parkcenter AL (ID)",
+        "accountingCode": "07170",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 489,
+        "buildingName": "Brookdale Boise Parkcenter IL (ID)",
+        "accountingCode": "07220",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308297,
+        "buildingName": "Brookdale Bonita Springs",
+        "accountingCode": "24365",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227141,
+        "buildingName": "Brookdale Bossier City",
+        "accountingCode": "18454",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 217,
+        "buildingName": "Brookdale Boulder Creek",
+        "accountingCode": "07160",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 95,
+        "buildingName": "Brookdale Bowling Green",
+        "accountingCode": "11260",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307962,
+        "buildingName": "Brookdale Bradenton Gardens",
+        "accountingCode": "24025",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308108,
+        "buildingName": "Brookdale Brea",
+        "accountingCode": "24304",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 231,
+        "buildingName": "Brookdale Briargate",
+        "accountingCode": "07810",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 230,
+        "buildingName": "Brookdale Brighton AL (CO)",
+        "accountingCode": "07800",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308326,
+        "buildingName": "Brookdale Brighton IL (MI)",
+        "accountingCode": "24398",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26378,
+        "buildingName": "Brookdale Bristol",
+        "accountingCode": "00761",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308089,
+        "buildingName": "Brookdale Broadmoor",
+        "accountingCode": "24202",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850902,
+        "buildingName": "Brookdale Broadway Cityview",
+        "accountingCode": "28910",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 636598,
+        "buildingName": "Brookdale Brockport",
+        "accountingCode": "42133",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 112,
+        "buildingName": "Brookdale Broken Arrow",
+        "accountingCode": "17050",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 90846,
+        "buildingName": "Brookdale Brookfield AL (WI)",
+        "accountingCode": "18740",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 275,
+        "buildingName": "Brookdale Brookfield Capitol Dr",
+        "accountingCode": "01020",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 225748,
+        "buildingName": "Brookdale Brookfield MC (WI)",
+        "accountingCode": "18880",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308276,
+        "buildingName": "Brookdale Brookhurst",
+        "accountingCode": "24342",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24264,
+        "buildingName": "Brookdale Browns Creek",
+        "accountingCode": "17780",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 488,
+        "buildingName": "Brookdale Brushy Creek",
+        "accountingCode": "03400",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 104,
+        "buildingName": "Brookdale Buck Creek",
+        "accountingCode": "11410",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850316,
+        "buildingName": "Brookdale Buckingham",
+        "accountingCode": "28532",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308390,
+        "buildingName": "Brookdale Buford",
+        "accountingCode": "24534",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46434,
+        "buildingName": "Brookdale Burlington AL (NC)",
+        "accountingCode": "18140",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46435,
+        "buildingName": "Brookdale Burlington MC (NC)",
+        "accountingCode": "18150",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308374,
+        "buildingName": "Brookdale Burr Ridge",
+        "accountingCode": "24482",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308191,
+        "buildingName": "Brookdale Camarillo",
+        "accountingCode": "24680",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 25,
+        "buildingName": "Brookdale Camino del Sol",
+        "accountingCode": "07350",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308310,
+        "buildingName": "Brookdale Canopy Oaks",
+        "accountingCode": "24379",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 359,
+        "buildingName": "Brookdale Canton AL (OH)",
+        "accountingCode": "11270",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944562,
+        "buildingName": "Brookdale Canton AL/MC (GA)",
+        "accountingCode": "29537",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308232,
+        "buildingName": "Brookdale Canyon Lakes",
+        "accountingCode": "24750",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308321,
+        "buildingName": "Brookdale Cape Cod",
+        "accountingCode": "24393",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 312,
+        "buildingName": "Brookdale Cape Coral",
+        "accountingCode": "04280",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308046,
+        "buildingName": "Brookdale Cape May",
+        "accountingCode": "24150",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308351,
+        "buildingName": "Brookdale Carlsbad",
+        "accountingCode": "24431",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87293,
+        "buildingName": "Brookdale Carmel",
+        "accountingCode": "23081",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308352,
+        "buildingName": "Brookdale Carmel Valley",
+        "accountingCode": "24432",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52188,
+        "buildingName": "Brookdale Carriage Club Providence",
+        "accountingCode": "50610",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227136,
+        "buildingName": "Brookdale Carrollton",
+        "accountingCode": "18452",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850314,
+        "buildingName": "Brookdale Carrollwood",
+        "accountingCode": "28368",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 40,
+        "buildingName": "Brookdale Cary",
+        "accountingCode": "03030",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850311,
+        "buildingName": "Brookdale Cedar City",
+        "accountingCode": "28635",
+        "stateProvCode": "UT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850004,
+        "buildingName": "Brookdale Cedar Ridge",
+        "accountingCode": "28575",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46392,
+        "buildingName": "Brookdale Cedar Springs",
+        "accountingCode": "17950",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 96,
+        "buildingName": "Brookdale Centennial Park",
+        "accountingCode": "11290",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 8,
+        "buildingName": "Brookdale Central",
+        "accountingCode": "03470",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308057,
+        "buildingName": "Brookdale Central Chandler",
+        "accountingCode": "24164",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51572,
+        "buildingName": "Brookdale Central Paradise Valley",
+        "accountingCode": "00783",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308109,
+        "buildingName": "Brookdale Central Whittier",
+        "accountingCode": "24306",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52,
+        "buildingName": "Brookdale Centre Pointe Boulevard",
+        "accountingCode": "04100",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 153493,
+        "buildingName": "Brookdale Centre of New England",
+        "accountingCode": "18780",
+        "stateProvCode": "RI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26372,
+        "buildingName": "Brookdale Chambrel Pinecastle",
+        "accountingCode": "00751",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26369,
+        "buildingName": "Brookdale Chambrel Roswell",
+        "accountingCode": "00752",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26371,
+        "buildingName": "Brookdale Chambrel Williamsburg",
+        "accountingCode": "00753",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308068,
+        "buildingName": "Brookdale Champion Oaks",
+        "accountingCode": "24177",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91757,
+        "buildingName": "Brookdale Champions",
+        "accountingCode": "20308",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850898,
+        "buildingName": "Brookdale Champlin",
+        "accountingCode": "28552",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87286,
+        "buildingName": "Brookdale Chanate",
+        "accountingCode": "23068",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26,
+        "buildingName": "Brookdale Chandler Ray Road",
+        "accountingCode": "07690",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227135,
+        "buildingName": "Brookdale Chandler Regional",
+        "accountingCode": "18442",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 38,
+        "buildingName": "Brookdale Chapel Hill AL (NC)",
+        "accountingCode": "03010",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 397,
+        "buildingName": "Brookdale Chapel Hill MC (NC)",
+        "accountingCode": "03240",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308045,
+        "buildingName": "Brookdale Charleston Gardens",
+        "accountingCode": "24149",
+        "stateProvCode": "WV",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52264,
+        "buildingName": "Brookdale Charlotte East",
+        "accountingCode": "50770",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26337,
+        "buildingName": "Brookdale Chatfield",
+        "accountingCode": "00827",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308279,
+        "buildingName": "Brookdale Chatsworth",
+        "accountingCode": "24345",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308211,
+        "buildingName": "Brookdale Chenal Heights",
+        "accountingCode": "24700",
+        "stateProvCode": "AR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 113,
+        "buildingName": "Brookdale Chickasha",
+        "accountingCode": "17060",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307993,
+        "buildingName": "Brookdale Chubbuck",
+        "accountingCode": "24071",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 926969,
+        "buildingName": "Brookdale Citrus",
+        "accountingCode": "29059",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308122,
+        "buildingName": "Brookdale Citrus Heights",
+        "accountingCode": "24305",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308280,
+        "buildingName": "Brookdale Clairemont",
+        "accountingCode": "24346",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 114,
+        "buildingName": "Brookdale Claremore",
+        "accountingCode": "17070",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 365,
+        "buildingName": "Brookdale Clarksville",
+        "accountingCode": "04220",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91744,
+        "buildingName": "Brookdale Clear Lake",
+        "accountingCode": "20408",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849792,
+        "buildingName": "Brookdale Clermont",
+        "accountingCode": "28377",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24256,
+        "buildingName": "Brookdale Cleveland",
+        "accountingCode": "17700",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955706,
+        "buildingName": "Brookdale Cleveland Park",
+        "accountingCode": "26260",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308038,
+        "buildingName": "Brookdale Clinton AL/MC (MS)",
+        "accountingCode": "24134",
+        "stateProvCode": "MS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 204,
+        "buildingName": "Brookdale Clinton IL (NY)",
+        "accountingCode": "06090",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1064,
+        "buildingName": "Brookdale Clinton MC (NY)",
+        "accountingCode": "06250",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26367,
+        "buildingName": "Brookdale Club Hill",
+        "accountingCode": "00748",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307982,
+        "buildingName": "Brookdale Coeur d'Alene",
+        "accountingCode": "24056",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26377,
+        "buildingName": "Brookdale College Parkway",
+        "accountingCode": "00765",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308163,
+        "buildingName": "Brookdale College Place",
+        "accountingCode": "24638",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308116,
+        "buildingName": "Brookdale College Square",
+        "accountingCode": "24317",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308069,
+        "buildingName": "Brookdale Collin Oaks",
+        "accountingCode": "24178",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24257,
+        "buildingName": "Brookdale Colonial Heights",
+        "accountingCode": "17710",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307994,
+        "buildingName": "Brookdale Colonial Park",
+        "accountingCode": "24072",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 7,
+        "buildingName": "Brookdale Columbia AL (SC)",
+        "accountingCode": "03360",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 407,
+        "buildingName": "Brookdale Columbia AL (TN)",
+        "accountingCode": "04710",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308099,
+        "buildingName": "Brookdale Columbus",
+        "accountingCode": "24223",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46455,
+        "buildingName": "Brookdale Concord Parkway",
+        "accountingCode": "18310",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308101,
+        "buildingName": "Brookdale Conway AL (AR)",
+        "accountingCode": "24230",
+        "stateProvCode": "AR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308369,
+        "buildingName": "Brookdale Conway AL (SC)",
+        "accountingCode": "24476",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308060,
+        "buildingName": "Brookdale Conway AL/MC (FL)",
+        "accountingCode": "24167",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308091,
+        "buildingName": "Brookdale Corona",
+        "accountingCode": "24206",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52232,
+        "buildingName": "Brookdale Corpus Christi",
+        "accountingCode": "52020",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 136,
+        "buildingName": "Brookdale Corsicana",
+        "accountingCode": "17300",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308025,
+        "buildingName": "Brookdale Country Day Road",
+        "accountingCode": "24116",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955709,
+        "buildingName": "Brookdale Countryside",
+        "accountingCode": "26340",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308019,
+        "buildingName": "Brookdale Courtyard Puyallup",
+        "accountingCode": "24106",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308093,
+        "buildingName": "Brookdale Creekside",
+        "accountingCode": "24216",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26362,
+        "buildingName": "Brookdale Creve Coeur",
+        "accountingCode": "02009",
+        "stateProvCode": "MO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 54,
+        "buildingName": "Brookdale Crown Point",
+        "accountingCode": "04500",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308320,
+        "buildingName": "Brookdale Cushing Park",
+        "accountingCode": "24392",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52210,
+        "buildingName": "Brookdale Cypress Station",
+        "accountingCode": "52320",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308275,
+        "buildingName": "Brookdale Danville",
+        "accountingCode": "24341",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308224,
+        "buildingName": "Brookdale Danville Diablo Road",
+        "accountingCode": "24738",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46432,
+        "buildingName": "Brookdale Danville Piedmont",
+        "accountingCode": "18110",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 169,
+        "buildingName": "Brookdale Davison",
+        "accountingCode": "02210",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 178,
+        "buildingName": "Brookdale DeLand",
+        "accountingCode": "04300",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308302,
+        "buildingName": "Brookdale Deer Creek AL/MC (FL)",
+        "accountingCode": "24370",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 49,
+        "buildingName": "Brookdale Deer Creek Sarasota",
+        "accountingCode": "04030",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 172,
+        "buildingName": "Brookdale Delta AL (MI)",
+        "accountingCode": "02400",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 278,
+        "buildingName": "Brookdale Delta MC (MI)",
+        "accountingCode": "02220",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 138,
+        "buildingName": "Brookdale Denton North",
+        "accountingCode": "17320",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 23836,
+        "buildingName": "Brookdale Denton South",
+        "accountingCode": "17670",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849730,
+        "buildingName": "Brookdale Denver",
+        "accountingCode": "28682",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 82,
+        "buildingName": "Brookdale Derby",
+        "accountingCode": "11110",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26359,
+        "buildingName": "Brookdale Des Plaines",
+        "accountingCode": "00803",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308031,
+        "buildingName": "Brookdale Desert Ridge",
+        "accountingCode": "24122",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 25195,
+        "buildingName": "Brookdale Destin",
+        "accountingCode": "18020",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46443,
+        "buildingName": "Brookdale Dickinson Avenue",
+        "accountingCode": "18230",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 83,
+        "buildingName": "Brookdale Dodge City",
+        "accountingCode": "11120",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 576298,
+        "buildingName": "Brookdale Dogwood Creek",
+        "accountingCode": "18950",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307976,
+        "buildingName": "Brookdale Dover",
+        "accountingCode": "24044",
+        "stateProvCode": "DE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308007,
+        "buildingName": "Brookdale Dowlen Oaks",
+        "accountingCode": "24088",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24075,
+        "buildingName": "Brookdale Dr. Phillips AL (FL)",
+        "accountingCode": "04080",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24055,
+        "buildingName": "Brookdale Dr. Phillips MC (FL)",
+        "accountingCode": "04050",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 403,
+        "buildingName": "Brookdale Dublin MC (PA)",
+        "accountingCode": "05410",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 116,
+        "buildingName": "Brookdale Durant",
+        "accountingCode": "17090",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46440,
+        "buildingName": "Brookdale Durham",
+        "accountingCode": "18200",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 374,
+        "buildingName": "Brookdale Eagan",
+        "accountingCode": "01120",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308158,
+        "buildingName": "Brookdale Easley AL (SC)",
+        "accountingCode": "24051",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308157,
+        "buildingName": "Brookdale Easley IL/AL/MC(SC)",
+        "accountingCode": "24050",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 332,
+        "buildingName": "Brookdale East Arbor",
+        "accountingCode": "07710",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46471,
+        "buildingName": "Brookdale East Broad",
+        "accountingCode": "18470",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 386,
+        "buildingName": "Brookdale East Niskayuna",
+        "accountingCode": "06020",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307990,
+        "buildingName": "Brookdale East Side",
+        "accountingCode": "24066",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 382,
+        "buildingName": "Brookdale East Tucson",
+        "accountingCode": "07740",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 462,
+        "buildingName": "Brookdale East Wichita",
+        "accountingCode": "11590",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 47,
+        "buildingName": "Brookdale Ebenezer Road",
+        "accountingCode": "03990",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307965,
+        "buildingName": "Brookdale Echelon Lake",
+        "accountingCode": "24029",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308000,
+        "buildingName": "Brookdale Eddy Pond East",
+        "accountingCode": "24079",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308041,
+        "buildingName": "Brookdale Eddy Pond West",
+        "accountingCode": "24141",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46456,
+        "buildingName": "Brookdale Eden",
+        "accountingCode": "18320",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308461,
+        "buildingName": "Brookdale Eden Estates",
+        "accountingCode": "24624",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 384,
+        "buildingName": "Brookdale Eden Prairie",
+        "accountingCode": "01160",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26339,
+        "buildingName": "Brookdale Edina",
+        "accountingCode": "00812",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 117,
+        "buildingName": "Brookdale Edmond Danforth",
+        "accountingCode": "17100",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 129,
+        "buildingName": "Brookdale Edmond Santa Fe",
+        "accountingCode": "17230",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 226,
+        "buildingName": "Brookdale El Camino",
+        "accountingCode": "07310",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46441,
+        "buildingName": "Brookdale Elizabeth City",
+        "accountingCode": "18210",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308188,
+        "buildingName": "Brookdale Elk Grove",
+        "accountingCode": "24677",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308118,
+        "buildingName": "Brookdale Emerson",
+        "accountingCode": "24319",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87301,
+        "buildingName": "Brookdale Englewood AL/MC (OH)",
+        "accountingCode": "23100",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 118,
+        "buildingName": "Brookdale Enid",
+        "accountingCode": "17110",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 139,
+        "buildingName": "Brookdale Ennis",
+        "accountingCode": "17330",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307958,
+        "buildingName": "Brookdale Everett",
+        "accountingCode": "24011",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26336,
+        "buildingName": "Brookdale Evesham",
+        "accountingCode": "00818",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307996,
+        "buildingName": "Brookdale Fairhaven",
+        "accountingCode": "24074",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 43,
+        "buildingName": "Brookdale Falling Creek",
+        "accountingCode": "03340",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 266,
+        "buildingName": "Brookdale Faribault",
+        "accountingCode": "08380",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308076,
+        "buildingName": "Brookdale Farmers Branch",
+        "accountingCode": "24186",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26341,
+        "buildingName": "Brookdale Farmington",
+        "accountingCode": "00816",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26385,
+        "buildingName": "Brookdale Farmington Hills",
+        "accountingCode": "00763",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1050,
+        "buildingName": "Brookdale Farmington Hills North",
+        "accountingCode": "02010",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 64,
+        "buildingName": "Brookdale Fayetteville",
+        "accountingCode": "06510",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307979,
+        "buildingName": "Brookdale Federal Way",
+        "accountingCode": "24048",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308216,
+        "buildingName": "Brookdale Fillmore Pond",
+        "accountingCode": "24706",
+        "stateProvCode": "VT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 98,
+        "buildingName": "Brookdale Findlay",
+        "accountingCode": "11310",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87297,
+        "buildingName": "Brookdale Finneytown",
+        "accountingCode": "23103",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91743,
+        "buildingName": "Brookdale First Colony",
+        "accountingCode": "20406",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308170,
+        "buildingName": "Brookdale Fisher's Landing",
+        "accountingCode": "24645",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308033,
+        "buildingName": "Brookdale Flagstaff",
+        "accountingCode": "24124",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 468,
+        "buildingName": "Brookdale Florence AL (NJ)",
+        "accountingCode": "05330",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 45995,
+        "buildingName": "Brookdale Florham Park",
+        "accountingCode": "17875",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308048,
+        "buildingName": "Brookdale Folsom",
+        "accountingCode": "24153",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46442,
+        "buildingName": "Brookdale Forest City",
+        "accountingCode": "18220",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 211,
+        "buildingName": "Brookdale Forest Grove",
+        "accountingCode": "07100",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 233,
+        "buildingName": "Brookdale Fort Collins AL (CO)",
+        "accountingCode": "07830",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 448,
+        "buildingName": "Brookdale Fort Collins MC (CO)",
+        "accountingCode": "07510",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308043,
+        "buildingName": "Brookdale Fort Myers Cypress Lake",
+        "accountingCode": "24144",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 180,
+        "buildingName": "Brookdale Fort Myers Lakes Park",
+        "accountingCode": "04320",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 50,
+        "buildingName": "Brookdale Fort Myers The Colony",
+        "accountingCode": "04040",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308103,
+        "buildingName": "Brookdale Fort Smith",
+        "accountingCode": "24232",
+        "stateProvCode": "AR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24269,
+        "buildingName": "Brookdale Fort Walton Beach",
+        "accountingCode": "17830",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308066,
+        "buildingName": "Brookdale Fort Wayne",
+        "accountingCode": "24174",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44374,
+        "buildingName": "Brookdale Foundation House",
+        "accountingCode": "17920",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308455,
+        "buildingName": "Brookdale Franklin",
+        "accountingCode": "24618",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 86457,
+        "buildingName": "Brookdale Gaines Ranch",
+        "accountingCode": "18730",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308303,
+        "buildingName": "Brookdale Gainesville Southwest",
+        "accountingCode": "24371",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308370,
+        "buildingName": "Brookdale Gallatin",
+        "accountingCode": "24477",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 840908,
+        "buildingName": "Brookdale Galleria",
+        "accountingCode": "20820",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308283,
+        "buildingName": "Brookdale Garden Grove",
+        "accountingCode": "24349",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 221,
+        "buildingName": "Brookdale Geary Street",
+        "accountingCode": "07250",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 140,
+        "buildingName": "Brookdale Georgetown",
+        "accountingCode": "17340",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46419,
+        "buildingName": "Brookdale Germantown",
+        "accountingCode": "18050",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26348,
+        "buildingName": "Brookdale Glen Ellyn",
+        "accountingCode": "02001",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 366,
+        "buildingName": "Brookdale Goodlettsville AL (TN)",
+        "accountingCode": "04240",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308,
+        "buildingName": "Brookdale Goodlettsville MC (TN)",
+        "accountingCode": "04840",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 373,
+        "buildingName": "Brookdale Grand Blanc AL (MI)",
+        "accountingCode": "02330",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 4,
+        "buildingName": "Brookdale Grand Blanc MC (MI)",
+        "accountingCode": "02320",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26387,
+        "buildingName": "Brookdale Grand Court Lubbock",
+        "accountingCode": "00768",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 210,
+        "buildingName": "Brookdale Grand Prairie IL (OR)",
+        "accountingCode": "07090",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307978,
+        "buildingName": "Brookdale Grand Terrace",
+        "accountingCode": "24047",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308082,
+        "buildingName": "Brookdale Grandon Farms",
+        "accountingCode": "24192",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308350,
+        "buildingName": "Brookdale Granger",
+        "accountingCode": "24429",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308447,
+        "buildingName": "Brookdale Grayson View",
+        "accountingCode": "24608",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 85,
+        "buildingName": "Brookdale Great Bend",
+        "accountingCode": "11140",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849794,
+        "buildingName": "Brookdale Great Falls",
+        "accountingCode": "28557",
+        "stateProvCode": "MT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 234,
+        "buildingName": "Brookdale Greeley",
+        "accountingCode": "07840",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52190,
+        "buildingName": "Brookdale Green Hills Cumberland",
+        "accountingCode": "18660",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849727,
+        "buildingName": "Brookdale Green Mountain",
+        "accountingCode": "28683",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24258,
+        "buildingName": "Brookdale Greeneville",
+        "accountingCode": "17840",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 442,
+        "buildingName": "Brookdale Greenville AL/MC (OH)",
+        "accountingCode": "11320",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850930,
+        "buildingName": "Brookdale Greenville AL/MC/SNF (SC)",
+        "accountingCode": "28694",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 279,
+        "buildingName": "Brookdale Greenwood",
+        "accountingCode": "03420",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52220,
+        "buildingName": "Brookdale Greenwood Village",
+        "accountingCode": "52190",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308466,
+        "buildingName": "Brookdale Guadalupe River Plaza",
+        "accountingCode": "24629",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308034,
+        "buildingName": "Brookdale Hagerstown",
+        "accountingCode": "24125",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 317,
+        "buildingName": "Brookdale Hamilton",
+        "accountingCode": "05050",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308061,
+        "buildingName": "Brookdale Hamilton Wolfe",
+        "accountingCode": "24168",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24259,
+        "buildingName": "Brookdale Hampton Cove",
+        "accountingCode": "17730",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 45,
+        "buildingName": "Brookdale Harbison",
+        "accountingCode": "03370",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 23815,
+        "buildingName": "Brookdale Harbor Bay",
+        "accountingCode": "07240",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308083,
+        "buildingName": "Brookdale Harrisburg",
+        "accountingCode": "24193",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308085,
+        "buildingName": "Brookdale Harrisonburg",
+        "accountingCode": "24195",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308393,
+        "buildingName": "Brookdale Hartwell",
+        "accountingCode": "24539",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308153,
+        "buildingName": "Brookdale Hattiesburg AL (MS)",
+        "accountingCode": "24130",
+        "stateProvCode": "MS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308154,
+        "buildingName": "Brookdale Hattiesburg MC (MS)",
+        "accountingCode": "24224",
+        "stateProvCode": "MS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26356,
+        "buildingName": "Brookdale Hawthorn Lakes AL (IL)",
+        "accountingCode": "00873",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26343,
+        "buildingName": "Brookdale Hawthorn Lakes IL/AL (IL)",
+        "accountingCode": "00813",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 86,
+        "buildingName": "Brookdale Hays",
+        "accountingCode": "11150",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308006,
+        "buildingName": "Brookdale Hearthstone Moses Lake",
+        "accountingCode": "24087",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308053,
+        "buildingName": "Brookdale Henderson",
+        "accountingCode": "24159",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307981,
+        "buildingName": "Brookdale Hendersonville East",
+        "accountingCode": "24053",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 206,
+        "buildingName": "Brookdale Heritage Plaza",
+        "accountingCode": "07050",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 194,
+        "buildingName": "Brookdale Hermitage Boulevard",
+        "accountingCode": "04630",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46461,
+        "buildingName": "Brookdale Hickory Northeast",
+        "accountingCode": "18370",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46462,
+        "buildingName": "Brookdale High Point",
+        "accountingCode": "18380",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46463,
+        "buildingName": "Brookdale High Point North AL (NC)",
+        "accountingCode": "18390",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46464,
+        "buildingName": "Brookdale High Point North MC (NC)",
+        "accountingCode": "18400",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44312,
+        "buildingName": "Brookdale Highlands",
+        "accountingCode": "18520",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 390,
+        "buildingName": "Brookdale Highlands Ranch",
+        "accountingCode": "07530",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850927,
+        "buildingName": "Brookdale Highline",
+        "accountingCode": "28530",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308327,
+        "buildingName": "Brookdale Hillsborough",
+        "accountingCode": "24399",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24260,
+        "buildingName": "Brookdale Hixson",
+        "accountingCode": "17740",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46422,
+        "buildingName": "Brookdale Hockessin",
+        "accountingCode": "18040",
+        "stateProvCode": "DE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26357,
+        "buildingName": "Brookdale Hoffman Estates",
+        "accountingCode": "00840",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308077,
+        "buildingName": "Brookdale Hollywood Park",
+        "accountingCode": "24187",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 271,
+        "buildingName": "Brookdale Inver Grove Heights",
+        "accountingCode": "08670",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26399,
+        "buildingName": "Brookdale Irvine",
+        "accountingCode": "00961",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 412,
+        "buildingName": "Brookdale Ithaca AL (NY)",
+        "accountingCode": "06130",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 429,
+        "buildingName": "Brookdale Ithaca MC (NY)",
+        "accountingCode": "06220",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 25240,
+        "buildingName": "Brookdale Jackson Oaks",
+        "accountingCode": "18100",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308304,
+        "buildingName": "Brookdale Jensen Beach",
+        "accountingCode": "24372",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24261,
+        "buildingName": "Brookdale Johnson City",
+        "accountingCode": "17750",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52250,
+        "buildingName": "Brookdale Jones Farm",
+        "accountingCode": "50960",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308417,
+        "buildingName": "Brookdale Juan Tabo Place",
+        "accountingCode": "24565",
+        "stateProvCode": "NM",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87,
+        "buildingName": "Brookdale Junction City",
+        "accountingCode": "11160",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850490,
+        "buildingName": "Brookdale Kearney Northridge",
+        "accountingCode": "28560",
+        "stateProvCode": "NE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 61,
+        "buildingName": "Brookdale Kenmore AL (NY)",
+        "accountingCode": "06050",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1045,
+        "buildingName": "Brookdale Kenosha",
+        "accountingCode": "01170",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87298,
+        "buildingName": "Brookdale Kenwood",
+        "accountingCode": "23099",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 141,
+        "buildingName": "Brookdale Kerrville",
+        "accountingCode": "17350",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26376,
+        "buildingName": "Brookdale Kettering",
+        "accountingCode": "00762",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308098,
+        "buildingName": "Brookdale Kettleman Lane",
+        "accountingCode": "24222",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308371,
+        "buildingName": "Brookdale Kingsport",
+        "accountingCode": "24478",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51992,
+        "buildingName": "Brookdale LaCrosse AL 08430 (WI)",
+        "accountingCode": "08430",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 29,
+        "buildingName": "Brookdale LaCrosse AL 08740 (WI)",
+        "accountingCode": "08740",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 370,
+        "buildingName": "Brookdale LaCrosse MC (WI)",
+        "accountingCode": "08420",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308051,
+        "buildingName": "Brookdale Lafayette",
+        "accountingCode": "24157",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307971,
+        "buildingName": "Brookdale Lake Brazos",
+        "accountingCode": "24039",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308050,
+        "buildingName": "Brookdale Lake Charles",
+        "accountingCode": "24156",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308071,
+        "buildingName": "Brookdale Lake Highlands",
+        "accountingCode": "24180",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308305,
+        "buildingName": "Brookdale Lake Mary",
+        "accountingCode": "24373",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 909921,
+        "buildingName": "Brookdale Lake Orienta",
+        "accountingCode": "18445",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308344,
+        "buildingName": "Brookdale Lake Ridge",
+        "accountingCode": "24418",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26354,
+        "buildingName": "Brookdale Lake Shore Drive",
+        "accountingCode": "00806",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26379,
+        "buildingName": "Brookdale Lake Tavares",
+        "accountingCode": "00771",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26347,
+        "buildingName": "Brookdale Lake View",
+        "accountingCode": "00821",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 156,
+        "buildingName": "Brookdale Lakeshore",
+        "accountingCode": "17500",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308334,
+        "buildingName": "Brookdale Lakeview Crossing",
+        "accountingCode": "24406",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52252,
+        "buildingName": "Brookdale Lakeway AL/MC (TX)",
+        "accountingCode": "52150",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308040,
+        "buildingName": "Brookdale Lakewood AL (NY)",
+        "accountingCode": "24136",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955707,
+        "buildingName": "Brookdale Lakewood AL/MC (CO)",
+        "accountingCode": "26280",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308067,
+        "buildingName": "Brookdale Las Vegas",
+        "accountingCode": "24176",
+        "stateProvCode": "NV",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307975,
+        "buildingName": "Brookdale Latrobe",
+        "accountingCode": "24043",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46460,
+        "buildingName": "Brookdale Lawndale Park",
+        "accountingCode": "18360",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308394,
+        "buildingName": "Brookdale Lawrenceville",
+        "accountingCode": "24540",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 490,
+        "buildingName": "Brookdale Leawood State Line",
+        "accountingCode": "11610",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46465,
+        "buildingName": "Brookdale Lenoir",
+        "accountingCode": "18410",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308021,
+        "buildingName": "Brookdale Lewiston",
+        "accountingCode": "24108",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 143,
+        "buildingName": "Brookdale Lewisville",
+        "accountingCode": "17370",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46445,
+        "buildingName": "Brookdale Lexington AL/MC (NC)",
+        "accountingCode": "18250",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308090,
+        "buildingName": "Brookdale Liberal Springs",
+        "accountingCode": "24204",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26358,
+        "buildingName": "Brookdale Lisle IL/AL (IL)",
+        "accountingCode": "00802",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 311,
+        "buildingName": "Brookdale Littleton",
+        "accountingCode": "07850",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307988,
+        "buildingName": "Brookdale Liverpool",
+        "accountingCode": "24064",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51272,
+        "buildingName": "Brookdale Lodi",
+        "accountingCode": "00779",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308217,
+        "buildingName": "Brookdale Lohmans Crossing",
+        "accountingCode": "24707",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308087,
+        "buildingName": "Brookdale Loma Linda",
+        "accountingCode": "24200",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 235,
+        "buildingName": "Brookdale Longmont",
+        "accountingCode": "07860",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307972,
+        "buildingName": "Brookdale Longview",
+        "accountingCode": "24040",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572094,
+        "buildingName": "Brookdale Lowry",
+        "accountingCode": "26425",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46438,
+        "buildingName": "Brookdale MacArthur Park",
+        "accountingCode": "18180",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850315,
+        "buildingName": "Brookdale Macon",
+        "accountingCode": "28542",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 31,
+        "buildingName": "Brookdale Madison West",
+        "accountingCode": "01030",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308382,
+        "buildingName": "Brookdale Magnolia",
+        "accountingCode": "24525",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 150,
+        "buildingName": "Brookdale Maltsberger",
+        "accountingCode": "17440",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308307,
+        "buildingName": "Brookdale Mandarin",
+        "accountingCode": "24375",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 183,
+        "buildingName": "Brookdale Mandarin Central",
+        "accountingCode": "04370",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308214,
+        "buildingName": "Brookdale Mandeville",
+        "accountingCode": "24704",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 260,
+        "buildingName": "Brookdale Mankato",
+        "accountingCode": "08290",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 277,
+        "buildingName": "Brookdale Manlius",
+        "accountingCode": "06060",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 144,
+        "buildingName": "Brookdale Mansfield AL (TX)",
+        "accountingCode": "17380",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 23837,
+        "buildingName": "Brookdale Mariana Butte",
+        "accountingCode": "07550",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308228,
+        "buildingName": "Brookdale Marysville AL/MC (OH)",
+        "accountingCode": "24746",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850899,
+        "buildingName": "Brookdale McCook",
+        "accountingCode": "28562",
+        "stateProvCode": "NE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 320,
+        "buildingName": "Brookdale McMinnville City Center",
+        "accountingCode": "07230",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 215,
+        "buildingName": "Brookdale McMinnville Town Center",
+        "accountingCode": "07140",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 88,
+        "buildingName": "Brookdale McPherson",
+        "accountingCode": "11170",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308024,
+        "buildingName": "Brookdale Meadow Springs",
+        "accountingCode": "24115",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46439,
+        "buildingName": "Brookdale Meadowmont",
+        "accountingCode": "18190",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 327,
+        "buildingName": "Brookdale Medford",
+        "accountingCode": "07130",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308460,
+        "buildingName": "Brookdale Medi Park West",
+        "accountingCode": "24623",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308055,
+        "buildingName": "Brookdale Medical Center Kingsley",
+        "accountingCode": "24161",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 151,
+        "buildingName": "Brookdale Medical Center Whitby",
+        "accountingCode": "17450",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308330,
+        "buildingName": "Brookdale Medina North",
+        "accountingCode": "24402",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308338,
+        "buildingName": "Brookdale Medina South",
+        "accountingCode": "24411",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308062,
+        "buildingName": "Brookdale Melbourne",
+        "accountingCode": "24169",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91740,
+        "buildingName": "Brookdale Memorial City",
+        "accountingCode": "20404",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308072,
+        "buildingName": "Brookdale Memorial Oaks",
+        "accountingCode": "24181",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308335,
+        "buildingName": "Brookdale Mentor",
+        "accountingCode": "24407",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 162,
+        "buildingName": "Brookdale Meridian AL (MI)",
+        "accountingCode": "02050",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572081,
+        "buildingName": "Brookdale Meridian Arvada",
+        "accountingCode": "26412",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572082,
+        "buildingName": "Brookdale Meridian Boulder",
+        "accountingCode": "26413",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 913218,
+        "buildingName": "Brookdale Meridian Englewood",
+        "accountingCode": "18414",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308028,
+        "buildingName": "Brookdale Meridian IL/AL/MC (MS)",
+        "accountingCode": "24119",
+        "stateProvCode": "MS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572086,
+        "buildingName": "Brookdale Meridian Lakewood",
+        "accountingCode": "26415",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 35,
+        "buildingName": "Brookdale Meridian MC (MI)",
+        "accountingCode": "02040",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572087,
+        "buildingName": "Brookdale Meridian Westland",
+        "accountingCode": "26416",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 264,
+        "buildingName": "Brookdale Middleton Century Ave",
+        "accountingCode": "08360",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 288,
+        "buildingName": "Brookdale Middleton Stonefield",
+        "accountingCode": "01010",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 174,
+        "buildingName": "Brookdale Midland AL (MI)",
+        "accountingCode": "02160",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308004,
+        "buildingName": "Brookdale Midland AL (TX)",
+        "accountingCode": "24085",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 167,
+        "buildingName": "Brookdale Midland MC (MI)",
+        "accountingCode": "02420",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46420,
+        "buildingName": "Brookdale Midlothian",
+        "accountingCode": "18030",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 159,
+        "buildingName": "Brookdale Midwestern",
+        "accountingCode": "17530",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26402,
+        "buildingName": "Brookdale Mirage Inn",
+        "accountingCode": "00964",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 316,
+        "buildingName": "Brookdale Monroe AL (MI)",
+        "accountingCode": "02140",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 45996,
+        "buildingName": "Brookdale Monroe AL/MC (NJ)",
+        "accountingCode": "17885",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308231,
+        "buildingName": "Brookdale Monroe IL/AL/MC (WA)",
+        "accountingCode": "24749",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 284,
+        "buildingName": "Brookdale Monroe MC (MI)",
+        "accountingCode": "02380",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46466,
+        "buildingName": "Brookdale Monroe Square AL (NC)",
+        "accountingCode": "18420",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46467,
+        "buildingName": "Brookdale Monroe Square MC (NC)",
+        "accountingCode": "18430",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26398,
+        "buildingName": "Brookdale Monrovia",
+        "accountingCode": "00960",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308167,
+        "buildingName": "Brookdale Montclair Poulsbo",
+        "accountingCode": "24642",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308097,
+        "buildingName": "Brookdale Monterey",
+        "accountingCode": "24221",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26368,
+        "buildingName": "Brookdale Montrose",
+        "accountingCode": "00750",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87287,
+        "buildingName": "Brookdale Monument Valley Park",
+        "accountingCode": "23101",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46446,
+        "buildingName": "Brookdale Morehead City",
+        "accountingCode": "18260",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308333,
+        "buildingName": "Brookdale Mount Vernon",
+        "accountingCode": "24405",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24267,
+        "buildingName": "Brookdale Mount Vernon Drive",
+        "accountingCode": "17810",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 330,
+        "buildingName": "Brookdale Mt. Hood",
+        "accountingCode": "07110",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26360,
+        "buildingName": "Brookdale Mt. Lebanon",
+        "accountingCode": "18720",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46413,
+        "buildingName": "Brookdale Muirfield",
+        "accountingCode": "18070",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308403,
+        "buildingName": "Brookdale Murray",
+        "accountingCode": "24549",
+        "stateProvCode": "KY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51292,
+        "buildingName": "Brookdale Murrieta",
+        "accountingCode": "00778",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 58,
+        "buildingName": "Brookdale Murrysville",
+        "accountingCode": "05130",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850923,
+        "buildingName": "Brookdale Muskogee",
+        "accountingCode": "28576",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308073,
+        "buildingName": "Brookdale N. Fredericksburg Road",
+        "accountingCode": "24182",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 152,
+        "buildingName": "Brookdale Nacogdoches",
+        "accountingCode": "17460",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308293,
+        "buildingName": "Brookdale Napa",
+        "accountingCode": "24360",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 955704,
+        "buildingName": "Brookdale Naples",
+        "accountingCode": "26160",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850892,
+        "buildingName": "Brookdale Neese Rd Woodstock",
+        "accountingCode": "28546",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 6,
+        "buildingName": "Brookdale New Bern",
+        "accountingCode": "03290",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 145,
+        "buildingName": "Brookdale New Braunfels",
+        "accountingCode": "17390",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46012,
+        "buildingName": "Brookdale New Hope",
+        "accountingCode": "18120",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308012,
+        "buildingName": "Brookdale New Port Richey",
+        "accountingCode": "24095",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308438,
+        "buildingName": "Brookdale Newberg",
+        "accountingCode": "24594",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308398,
+        "buildingName": "Brookdale Newnan",
+        "accountingCode": "24544",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 520,
+        "buildingName": "Brookdale Niagara AL (NY)",
+        "accountingCode": "06240",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 521,
+        "buildingName": "Brookdale Niagara MC (NY)",
+        "accountingCode": "06230",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 394,
+        "buildingName": "Brookdale Nine Mile",
+        "accountingCode": "07590",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 62,
+        "buildingName": "Brookdale Niskayuna",
+        "accountingCode": "06070",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 123,
+        "buildingName": "Brookdale Norman",
+        "accountingCode": "17170",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 364,
+        "buildingName": "Brookdale North Augusta",
+        "accountingCode": "03500",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308070,
+        "buildingName": "Brookdale North Austin",
+        "accountingCode": "24179",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 207,
+        "buildingName": "Brookdale North Boulder",
+        "accountingCode": "07060",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52245,
+        "buildingName": "Brookdale North Chandler",
+        "accountingCode": "51200",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944616,
+        "buildingName": "Brookdale North Chelmsford",
+        "accountingCode": "29107",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308290,
+        "buildingName": "Brookdale North Euclid",
+        "accountingCode": "24357",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308274,
+        "buildingName": "Brookdale North Fremont",
+        "accountingCode": "24340",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308365,
+        "buildingName": "Brookdale North Gilbert",
+        "accountingCode": "24472",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308366,
+        "buildingName": "Brookdale North Glendale",
+        "accountingCode": "24473",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 236,
+        "buildingName": "Brookdale North Loveland",
+        "accountingCode": "07870",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308059,
+        "buildingName": "Brookdale North Mesa",
+        "accountingCode": "24166",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308245,
+        "buildingName": "Brookdale North Naples",
+        "accountingCode": "24763",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 353,
+        "buildingName": "Brookdale North Oaks",
+        "accountingCode": "01140",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26345,
+        "buildingName": "Brookdale North Raleigh",
+        "accountingCode": "02003",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572113,
+        "buildingName": "Brookdale North Richland Hills",
+        "accountingCode": "26459",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52194,
+        "buildingName": "Brookdale North Scottsdale",
+        "accountingCode": "52400",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308288,
+        "buildingName": "Brookdale North Tarzana",
+        "accountingCode": "24355",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308368,
+        "buildingName": "Brookdale North Tucson",
+        "accountingCode": "24475",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 200,
+        "buildingName": "Brookdale Northampton",
+        "accountingCode": "05010",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26388,
+        "buildingName": "Brookdale Northbrook",
+        "accountingCode": "00774",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850386,
+        "buildingName": "Brookdale Northdale",
+        "accountingCode": "28326",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227146,
+        "buildingName": "Brookdale Northport",
+        "accountingCode": "18890",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308184,
+        "buildingName": "Brookdale Northridge",
+        "accountingCode": "24673",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308470,
+        "buildingName": "Brookdale Northshore",
+        "accountingCode": "24633",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 36,
+        "buildingName": "Brookdale Northville",
+        "accountingCode": "02060",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46459,
+        "buildingName": "Brookdale Northwest Greensboro",
+        "accountingCode": "18350",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52253,
+        "buildingName": "Brookdale Northwest Hills",
+        "accountingCode": "52300",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51972,
+        "buildingName": "Brookdale Novi",
+        "accountingCode": "00784",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308094,
+        "buildingName": "Brookdale Oak Hollow",
+        "accountingCode": "24217",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52224,
+        "buildingName": "Brookdale Oak Park",
+        "accountingCode": "50670",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307963,
+        "buildingName": "Brookdale Oakbridge",
+        "accountingCode": "24026",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308054,
+        "buildingName": "Brookdale Oakwell",
+        "accountingCode": "24160",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87299,
+        "buildingName": "Brookdale Oakwood",
+        "accountingCode": "23097",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308009,
+        "buildingName": "Brookdale Ocean Shores",
+        "accountingCode": "24091",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308088,
+        "buildingName": "Brookdale Oceanside",
+        "accountingCode": "24201",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849750,
+        "buildingName": "Brookdale Ocoee",
+        "accountingCode": "28380",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 470,
+        "buildingName": "Brookdale Oklahoma City Southwest",
+        "accountingCode": "17560",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 631518,
+        "buildingName": "Brookdale Olney",
+        "accountingCode": "19770",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308236,
+        "buildingName": "Brookdale Olympia East",
+        "accountingCode": "24754",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 392,
+        "buildingName": "Brookdale Olympia West",
+        "accountingCode": "07190",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 242,
+        "buildingName": "Brookdale Onalaska",
+        "accountingCode": "08090",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307961,
+        "buildingName": "Brookdale Ontario",
+        "accountingCode": "24022",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308063,
+        "buildingName": "Brookdale Orange Park",
+        "accountingCode": "24170",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308197,
+        "buildingName": "Brookdale Orland Park",
+        "accountingCode": "24686",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44333,
+        "buildingName": "Brookdale Ormond Beach",
+        "accountingCode": "18540",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 189,
+        "buildingName": "Brookdale Ormond Beach West",
+        "accountingCode": "04480",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 15,
+        "buildingName": "Brookdale Oro Valley",
+        "accountingCode": "07290",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308439,
+        "buildingName": "Brookdale Oswego Springs Portland",
+        "accountingCode": "24595",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 86770,
+        "buildingName": "Brookdale Overland Park",
+        "accountingCode": "18670",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26386,
+        "buildingName": "Brookdale Overland Park 119th",
+        "accountingCode": "00769",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849749,
+        "buildingName": "Brookdale Oviedo",
+        "accountingCode": "28381",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 127,
+        "buildingName": "Brookdale Owasso",
+        "accountingCode": "17210",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308309,
+        "buildingName": "Brookdale Paddock Hills",
+        "accountingCode": "24378",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307977,
+        "buildingName": "Brookdale Painted Post",
+        "accountingCode": "24045",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 147,
+        "buildingName": "Brookdale Palestine",
+        "accountingCode": "17410",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 913234,
+        "buildingName": "Brookdale Palm Beach Gardens",
+        "accountingCode": "18212",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 190,
+        "buildingName": "Brookdale Palm Coast",
+        "accountingCode": "04490",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308299,
+        "buildingName": "Brookdale Palma Sola",
+        "accountingCode": "24367",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308112,
+        "buildingName": "Brookdale Palmer Ranch",
+        "accountingCode": "24309",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 337,
+        "buildingName": "Brookdale Panama City",
+        "accountingCode": "04530",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308359,
+        "buildingName": "Brookdale Paramus",
+        "accountingCode": "24439",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26349,
+        "buildingName": "Brookdale Park Place",
+        "accountingCode": "00814",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52247,
+        "buildingName": "Brookdale Parkplace",
+        "accountingCode": "50830",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26397,
+        "buildingName": "Brookdale Patriot Heights",
+        "accountingCode": "00943",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26401,
+        "buildingName": "Brookdale Paulin Creek",
+        "accountingCode": "00963",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46472,
+        "buildingName": "Brookdale Peachtree AL (NC)",
+        "accountingCode": "18480",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46473,
+        "buildingName": "Brookdale Peachtree MC (NC)",
+        "accountingCode": "18490",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52211,
+        "buildingName": "Brookdale Pearland",
+        "accountingCode": "52080",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 840909,
+        "buildingName": "Brookdale Pecan Park",
+        "accountingCode": "20380",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 201,
+        "buildingName": "Brookdale Penn Hills",
+        "accountingCode": "05150",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 379,
+        "buildingName": "Brookdale Pensacola",
+        "accountingCode": "04540",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 333,
+        "buildingName": "Brookdale Peoria",
+        "accountingCode": "07720",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308115,
+        "buildingName": "Brookdale Phillippi Creek",
+        "accountingCode": "24312",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308356,
+        "buildingName": "Brookdale Pikesville",
+        "accountingCode": "24436",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46447,
+        "buildingName": "Brookdale Pinehurst",
+        "accountingCode": "18270",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308111,
+        "buildingName": "Brookdale Pinehurst Park",
+        "accountingCode": "24308",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308346,
+        "buildingName": "Brookdale Pinnacle",
+        "accountingCode": "24420",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 102,
+        "buildingName": "Brookdale Piqua",
+        "accountingCode": "11380",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 60,
+        "buildingName": "Brookdale Pittsford",
+        "accountingCode": "06040",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308183,
+        "buildingName": "Brookdale Pleasant Hills",
+        "accountingCode": "24672",
+        "stateProvCode": "AR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 354,
+        "buildingName": "Brookdale Plymouth",
+        "accountingCode": "01150",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307997,
+        "buildingName": "Brookdale Pocatello",
+        "accountingCode": "24075",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 53,
+        "buildingName": "Brookdale Pointe West",
+        "accountingCode": "04010",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 191,
+        "buildingName": "Brookdale Port Charlotte",
+        "accountingCode": "04570",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 187,
+        "buildingName": "Brookdale Port Orange",
+        "accountingCode": "04550",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 352,
+        "buildingName": "Brookdale Portage AL (MI)",
+        "accountingCode": "02310",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 3,
+        "buildingName": "Brookdale Portage MC (MI)",
+        "accountingCode": "02200",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308322,
+        "buildingName": "Brookdale Potomac",
+        "accountingCode": "24394",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308380,
+        "buildingName": "Brookdale Prescott",
+        "accountingCode": "24523",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308462,
+        "buildingName": "Brookdale Preston",
+        "accountingCode": "24625",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308375,
+        "buildingName": "Brookdale Prospect Heights",
+        "accountingCode": "24483",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 192,
+        "buildingName": "Brookdale Punta Gorda Isles",
+        "accountingCode": "04580",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 393,
+        "buildingName": "Brookdale Puyallup South",
+        "accountingCode": "07210",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26351,
+        "buildingName": "Brookdale Quincy Bay",
+        "accountingCode": "00836",
+        "stateProvCode": "MA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308185,
+        "buildingName": "Brookdale Rancho Mirage",
+        "accountingCode": "24674",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849706,
+        "buildingName": "Brookdale Red Bluff",
+        "accountingCode": "28527",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308442,
+        "buildingName": "Brookdale Redmond",
+        "accountingCode": "24598",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26353,
+        "buildingName": "Brookdale Redwood City",
+        "accountingCode": "00835",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46452,
+        "buildingName": "Brookdale Reidsville",
+        "accountingCode": "18280",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308003,
+        "buildingName": "Brookdale Remington Park",
+        "accountingCode": "24084",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308268,
+        "buildingName": "Brookdale Reno",
+        "accountingCode": "24322",
+        "stateProvCode": "NV",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308159,
+        "buildingName": "Brookdale Renton",
+        "accountingCode": "24010",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46468,
+        "buildingName": "Brookdale Reynolda Road",
+        "accountingCode": "18440",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 209,
+        "buildingName": "Brookdale Richland",
+        "accountingCode": "07080",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 149,
+        "buildingName": "Brookdale Richland Hills AL (TX)",
+        "accountingCode": "17430",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 405,
+        "buildingName": "Brookdale Richland Hills MC (TX)",
+        "accountingCode": "17550",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 418,
+        "buildingName": "Brookdale Richmond",
+        "accountingCode": "01330",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52237,
+        "buildingName": "Brookdale Richmond Heights",
+        "accountingCode": "52270",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308433,
+        "buildingName": "Brookdale River Road",
+        "accountingCode": "24588",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308445,
+        "buildingName": "Brookdale River Valley Tualatin",
+        "accountingCode": "24606",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44373,
+        "buildingName": "Brookdale Riverwalk IL/AL/MC (CA)",
+        "accountingCode": "17910",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308269,
+        "buildingName": "Brookdale Roanoke",
+        "accountingCode": "24324",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46458,
+        "buildingName": "Brookdale Robinwood",
+        "accountingCode": "18340",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308457,
+        "buildingName": "Brookdale Rock Springs",
+        "accountingCode": "24620",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944617,
+        "buildingName": "Brookdale Rocky Hill",
+        "accountingCode": "29080",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 5,
+        "buildingName": "Brookdale Rocky Mount",
+        "accountingCode": "03280",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 227140,
+        "buildingName": "Brookdale Rome",
+        "accountingCode": "18453",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308181,
+        "buildingName": "Brookdale Rose Valley Cottages",
+        "accountingCode": "24665",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308444,
+        "buildingName": "Brookdale Rose Valley Scappoose",
+        "accountingCode": "24600",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308443,
+        "buildingName": "Brookdale Roseburg",
+        "accountingCode": "24599",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52255,
+        "buildingName": "Brookdale Rosehill",
+        "accountingCode": "51370",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308287,
+        "buildingName": "Brookdale Roseville",
+        "accountingCode": "24354",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 475,
+        "buildingName": "Brookdale Rotonda",
+        "accountingCode": "04310",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572114,
+        "buildingName": "Brookdale Round Rock",
+        "accountingCode": "26460",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308102,
+        "buildingName": "Brookdale Russellville",
+        "accountingCode": "24231",
+        "stateProvCode": "AR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 481,
+        "buildingName": "Brookdale Saginaw AL",
+        "accountingCode": "02090",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 165,
+        "buildingName": "Brookdale Saginaw MC",
+        "accountingCode": "02390",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91748,
+        "buildingName": "Brookdale Sakonnet Bay",
+        "accountingCode": "20513",
+        "stateProvCode": "RI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 381,
+        "buildingName": "Brookdale Salem AL (OH)",
+        "accountingCode": "11390",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308345,
+        "buildingName": "Brookdale Salem AL (VA)",
+        "accountingCode": "24419",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 361,
+        "buildingName": "Brookdale Salem MC (OR)",
+        "accountingCode": "07640",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 90,
+        "buildingName": "Brookdale Salina Fairdale",
+        "accountingCode": "11190",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 89,
+        "buildingName": "Brookdale Salina Kirwin",
+        "accountingCode": "11180",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46469,
+        "buildingName": "Brookdale Salisbury",
+        "accountingCode": "18450",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572115,
+        "buildingName": "Brookdale San Antonio",
+        "accountingCode": "26461",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850891,
+        "buildingName": "Brookdale San Dimas",
+        "accountingCode": "28433",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26335,
+        "buildingName": "Brookdale San Jose",
+        "accountingCode": "00822",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308354,
+        "buildingName": "Brookdale San Juan Capistrano",
+        "accountingCode": "24434",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26361,
+        "buildingName": "Brookdale San Marcos",
+        "accountingCode": "00847",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 572116,
+        "buildingName": "Brookdale San Marcos North",
+        "accountingCode": "26462",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307999,
+        "buildingName": "Brookdale San Marcos South",
+        "accountingCode": "24078",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308281,
+        "buildingName": "Brookdale San Pablo",
+        "accountingCode": "24347",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308254,
+        "buildingName": "Brookdale San Ramon",
+        "accountingCode": "24775",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 367,
+        "buildingName": "Brookdale Sandy Springs AL (TN)",
+        "accountingCode": "04230",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 500,
+        "buildingName": "Brookdale Santa Barbara",
+        "accountingCode": "04910",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52249,
+        "buildingName": "Brookdale Santa Catalina",
+        "accountingCode": "50710",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26350,
+        "buildingName": "Brookdale Santa Fe",
+        "accountingCode": "00829",
+        "stateProvCode": "NM",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26405,
+        "buildingName": "Brookdale Santa Monica",
+        "accountingCode": "00967",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44352,
+        "buildingName": "Brookdale Santa Monica Gardens",
+        "accountingCode": "17870",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52182,
+        "buildingName": "Brookdale Sarasota Midtown",
+        "accountingCode": "52140",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26404,
+        "buildingName": "Brookdale Scotts Valley",
+        "accountingCode": "00966",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24266,
+        "buildingName": "Brookdale Sevierville",
+        "accountingCode": "17800",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850491,
+        "buildingName": "Brookdale Seward Heartland Park",
+        "accountingCode": "28563",
+        "stateProvCode": "NE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308467,
+        "buildingName": "Brookdale Shadow Hills",
+        "accountingCode": "24630",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52214,
+        "buildingName": "Brookdale Shadowlake",
+        "accountingCode": "52120",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 840907,
+        "buildingName": "Brookdale Shavano Park",
+        "accountingCode": "20350",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 130,
+        "buildingName": "Brookdale Shawnee AL (OK)",
+        "accountingCode": "17240",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52256,
+        "buildingName": "Brookdale Shawnee MC (KS)",
+        "accountingCode": "52510",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44,
+        "buildingName": "Brookdale Shelby",
+        "accountingCode": "03350",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307968,
+        "buildingName": "Brookdale Sherwood",
+        "accountingCode": "24035",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 24276,
+        "buildingName": "Brookdale Shoals",
+        "accountingCode": "17860",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308052,
+        "buildingName": "Brookdale Shreveport",
+        "accountingCode": "24158",
+        "stateProvCode": "LA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308015,
+        "buildingName": "Brookdale Sikes Lake",
+        "accountingCode": "24102",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 388,
+        "buildingName": "Brookdale Silver Lake",
+        "accountingCode": "07200",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308402,
+        "buildingName": "Brookdale Sioux City",
+        "accountingCode": "24548",
+        "stateProvCode": "IA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46470,
+        "buildingName": "Brookdale Skeet Club",
+        "accountingCode": "18460",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26396,
+        "buildingName": "Brookdale Skyline",
+        "accountingCode": "00946",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308005,
+        "buildingName": "Brookdale Sleepy Hollow",
+        "accountingCode": "24086",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46453,
+        "buildingName": "Brookdale Smithfield AL/MC (NC)",
+        "accountingCode": "18290",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26406,
+        "buildingName": "Brookdale South Bay",
+        "accountingCode": "00968",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91747,
+        "buildingName": "Brookdale South Bay AL/SNF (RI)",
+        "accountingCode": "20514",
+        "stateProvCode": "RI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 2,
+        "buildingName": "Brookdale South Bend",
+        "accountingCode": "01240",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87295,
+        "buildingName": "Brookdale South Charlotte",
+        "accountingCode": "23093",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944502,
+        "buildingName": "Brookdale South Lee Buford AL/MC (GA)",
+        "accountingCode": "29535",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 944561,
+        "buildingName": "Brookdale South Lee Buford IL (GA)",
+        "accountingCode": "29536",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308117,
+        "buildingName": "Brookdale South Park",
+        "accountingCode": "24318",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 45997,
+        "buildingName": "Brookdale South Tarzana",
+        "accountingCode": "17880",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308295,
+        "buildingName": "Brookdale South Windsor",
+        "accountingCode": "24363",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26346,
+        "buildingName": "Brookdale Southfield",
+        "accountingCode": "18710",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308064,
+        "buildingName": "Brookdale Southpoint",
+        "accountingCode": "24171",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 926970,
+        "buildingName": "Brookdale Southpointe Drive",
+        "accountingCode": "29090",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52189,
+        "buildingName": "Brookdale Southside",
+        "accountingCode": "50630",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 67,
+        "buildingName": "Brookdale Sparks",
+        "accountingCode": "07480",
+        "stateProvCode": "NV",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308376,
+        "buildingName": "Brookdale Spicewood Springs",
+        "accountingCode": "24484",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 338,
+        "buildingName": "Brookdale Spring Hill",
+        "accountingCode": "04590",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52215,
+        "buildingName": "Brookdale Spring Shadows",
+        "accountingCode": "52100",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 103,
+        "buildingName": "Brookdale Springdale",
+        "accountingCode": "11400",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308014,
+        "buildingName": "Brookdale Springmeadows",
+        "accountingCode": "24101",
+        "stateProvCode": "MT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26352,
+        "buildingName": "Brookdale Springs Mesa",
+        "accountingCode": "00811",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308215,
+        "buildingName": "Brookdale Spruce Wood",
+        "accountingCode": "24705",
+        "stateProvCode": "NH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308315,
+        "buildingName": "Brookdale St. Augustine",
+        "accountingCode": "24385",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850489,
+        "buildingName": "Brookdale St. Peters",
+        "accountingCode": "28554",
+        "stateProvCode": "MO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308237,
+        "buildingName": "Brookdale Stanwood",
+        "accountingCode": "24755",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308032,
+        "buildingName": "Brookdale Staunton",
+        "accountingCode": "24123",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308384,
+        "buildingName": "Brookdale Sterling Court",
+        "accountingCode": "24528",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308175,
+        "buildingName": "Brookdale Stevens Point",
+        "accountingCode": "24652",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 131,
+        "buildingName": "Brookdale Stillwater",
+        "accountingCode": "17250",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308056,
+        "buildingName": "Brookdale Stonebridge Ranch",
+        "accountingCode": "24162",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308016,
+        "buildingName": "Brookdale Stonestreet",
+        "accountingCode": "24103",
+        "stateProvCode": "KY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 193,
+        "buildingName": "Brookdale Stuart",
+        "accountingCode": "04610",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308074,
+        "buildingName": "Brookdale Sugar Land",
+        "accountingCode": "24183",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308218,
+        "buildingName": "Brookdale Summer Ridge",
+        "accountingCode": "24708",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 205,
+        "buildingName": "Brookdale Summerfield",
+        "accountingCode": "06100",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 321,
+        "buildingName": "Brookdale Sumter",
+        "accountingCode": "03380",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 256,
+        "buildingName": "Brookdale Sun Prairie",
+        "accountingCode": "08250",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849728,
+        "buildingName": "Brookdale Sunrise Creek",
+        "accountingCode": "28531",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308120,
+        "buildingName": "Brookdale Sunwest IL (CA)",
+        "accountingCode": "24773",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308121,
+        "buildingName": "Brookdale Sunwest IL/AL/MC (CA)",
+        "accountingCode": "24774",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 259,
+        "buildingName": "Brookdale Sussex",
+        "accountingCode": "08280",
+        "stateProvCode": "WI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850897,
+        "buildingName": "Brookdale Sweetwater Creek",
+        "accountingCode": "28541",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850924,
+        "buildingName": "Brookdale Tahlequah Heritage",
+        "accountingCode": "28579",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 92,
+        "buildingName": "Brookdale Tallgrass",
+        "accountingCode": "11210",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52244,
+        "buildingName": "Brookdale Tamarac Square",
+        "accountingCode": "51210",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308075,
+        "buildingName": "Brookdale Tanglewood Oaks",
+        "accountingCode": "24184",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308367,
+        "buildingName": "Brookdale Tanque Verde",
+        "accountingCode": "24474",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52195,
+        "buildingName": "Brookdale Tarpon Springs",
+        "accountingCode": "52010",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 195,
+        "buildingName": "Brookdale Tavares",
+        "accountingCode": "04640",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 65,
+        "buildingName": "Brookdale Tempe",
+        "accountingCode": "07010",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 196,
+        "buildingName": "Brookdale Tequesta AL (FL)",
+        "accountingCode": "04650",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 340,
+        "buildingName": "Brookdale Tequesta MC (FL)",
+        "accountingCode": "04660",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 154,
+        "buildingName": "Brookdale Texarkana",
+        "accountingCode": "17480",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52212,
+        "buildingName": "Brookdale The Heights",
+        "accountingCode": "52090",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 505,
+        "buildingName": "Brookdale Topeka",
+        "accountingCode": "11620",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308168,
+        "buildingName": "Brookdale Torbett",
+        "accountingCode": "24643",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308201,
+        "buildingName": "Brookdale Towson",
+        "accountingCode": "24690",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308285,
+        "buildingName": "Brookdale Tracy",
+        "accountingCode": "24351",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308106,
+        "buildingName": "Brookdale Trail Ridge",
+        "accountingCode": "24302",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87296,
+        "buildingName": "Brookdale Tramway Ridge",
+        "accountingCode": "23098",
+        "stateProvCode": "NM",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26363,
+        "buildingName": "Brookdale Trillium Crossing",
+        "accountingCode": "02007",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52262,
+        "buildingName": "Brookdale Trinity Towers",
+        "accountingCode": "50950",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 1068,
+        "buildingName": "Brookdale Troutdale",
+        "accountingCode": "07450",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 351,
+        "buildingName": "Brookdale Troy AL (MI)",
+        "accountingCode": "02370",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 105,
+        "buildingName": "Brookdale Troy AL/MC (OH)",
+        "accountingCode": "11440",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 37,
+        "buildingName": "Brookdale Troy MC (MI)",
+        "accountingCode": "02180",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308372,
+        "buildingName": "Brookdale Tullahoma",
+        "accountingCode": "24479",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 132,
+        "buildingName": "Brookdale Tulsa 71st and Sheridan",
+        "accountingCode": "17260",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850005,
+        "buildingName": "Brookdale Tulsa Midtown",
+        "accountingCode": "28693",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 133,
+        "buildingName": "Brookdale Tulsa South",
+        "accountingCode": "17270",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 224,
+        "buildingName": "Brookdale Twin Falls",
+        "accountingCode": "07280",
+        "stateProvCode": "ID",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 155,
+        "buildingName": "Brookdale Tyler East",
+        "accountingCode": "17490",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308095,
+        "buildingName": "Brookdale Tyler South",
+        "accountingCode": "24218",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46457,
+        "buildingName": "Brookdale Union",
+        "accountingCode": "18330",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308105,
+        "buildingName": "Brookdale Union Hills",
+        "accountingCode": "24301",
+        "stateProvCode": "AZ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46474,
+        "buildingName": "Brookdale Union Park",
+        "accountingCode": "18500",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52223,
+        "buildingName": "Brookdale University Park IL/AL (CO)",
+        "accountingCode": "50620",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52251,
+        "buildingName": "Brookdale University Park IL/AL/MC (AL)",
+        "accountingCode": "50940",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308251,
+        "buildingName": "Brookdale Uptown Whittier",
+        "accountingCode": "24770",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308026,
+        "buildingName": "Brookdale Urbana AL/MC (IL)",
+        "accountingCode": "24117",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 163,
+        "buildingName": "Brookdale Utica AL (MI)",
+        "accountingCode": "02070",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 161,
+        "buildingName": "Brookdale Utica MC (MI)",
+        "accountingCode": "02020",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26375,
+        "buildingName": "Brookdale Valencia",
+        "accountingCode": "00759",
+        "stateProvCode": "NM",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308289,
+        "buildingName": "Brookdale Valley View",
+        "accountingCode": "24356",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 342,
+        "buildingName": "Brookdale Valparaiso AL (IN)",
+        "accountingCode": "01230",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 301,
+        "buildingName": "Brookdale Valparaiso MC (IN)",
+        "accountingCode": "01460",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308171,
+        "buildingName": "Brookdale Vancouver Stonebridge",
+        "accountingCode": "24646",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91731,
+        "buildingName": "Brookdale Vernon Hills",
+        "accountingCode": "20401",
+        "stateProvCode": "IL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 198,
+        "buildingName": "Brookdale Vero Beach South AL (FL)",
+        "accountingCode": "04680",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 426,
+        "buildingName": "Brookdale Vero Beach South MC (FL)",
+        "accountingCode": "04870",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308349,
+        "buildingName": "Brookdale Vestal West",
+        "accountingCode": "24428",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308426,
+        "buildingName": "Brookdale Village",
+        "accountingCode": "24577",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308195,
+        "buildingName": "Brookdale Vinings",
+        "accountingCode": "24684",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87303,
+        "buildingName": "Brookdale Virginia Beach",
+        "accountingCode": "23125",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 66,
+        "buildingName": "Brookdale Vista",
+        "accountingCode": "07430",
+        "stateProvCode": "NV",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 225,
+        "buildingName": "Brookdale Vista Grande",
+        "accountingCode": "07300",
+        "stateProvCode": "CO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 33,
+        "buildingName": "Brookdale W. Arlington Boulevard",
+        "accountingCode": "03320",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 34,
+        "buildingName": "Brookdale W. Eisenhower Pkwy",
+        "accountingCode": "02030",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46454,
+        "buildingName": "Brookdale Wake Forest",
+        "accountingCode": "18300",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307967,
+        "buildingName": "Brookdale Walla Walla",
+        "accountingCode": "24033",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308291,
+        "buildingName": "Brookdale Walnut",
+        "accountingCode": "24358",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 146,
+        "buildingName": "Brookdale Watauga",
+        "accountingCode": "17400",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 157,
+        "buildingName": "Brookdale Waxahachie",
+        "accountingCode": "17510",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308119,
+        "buildingName": "Brookdale Wayne AL/MC (NJ)",
+        "accountingCode": "24320",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849795,
+        "buildingName": "Brookdale Wayne IL/AL (NE)",
+        "accountingCode": "28564",
+        "stateProvCode": "NE",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 120,
+        "buildingName": "Brookdale Weatherford AL (OK)",
+        "accountingCode": "17130",
+        "stateProvCode": "OK",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 158,
+        "buildingName": "Brookdale Weatherford AL (TX)",
+        "accountingCode": "17520",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 46475,
+        "buildingName": "Brookdale Weddington Park",
+        "accountingCode": "18510",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308316,
+        "buildingName": "Brookdale Wekiwa Springs",
+        "accountingCode": "24387",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91,
+        "buildingName": "Brookdale Wellington",
+        "accountingCode": "11200",
+        "stateProvCode": "KS",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91754,
+        "buildingName": "Brookdale West Ashley",
+        "accountingCode": "20306",
+        "stateProvCode": "SC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91751,
+        "buildingName": "Brookdale West Bay",
+        "accountingCode": "20515",
+        "stateProvCode": "RI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308298,
+        "buildingName": "Brookdale West Boynton Beach",
+        "accountingCode": "24366",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 306698,
+        "buildingName": "Brookdale West County",
+        "accountingCode": "19760",
+        "stateProvCode": "MO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308361,
+        "buildingName": "Brookdale West End Richmond",
+        "accountingCode": "24441",
+        "stateProvCode": "VA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87288,
+        "buildingName": "Brookdale West Hartford",
+        "accountingCode": "23104",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 186,
+        "buildingName": "Brookdale West Melbourne AL 04440 (FL)",
+        "accountingCode": "04440",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 372,
+        "buildingName": "Brookdale West Melbourne AL 04690 (FL)",
+        "accountingCode": "04690",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 557,
+        "buildingName": "Brookdale West Melbourne MC (FL)",
+        "accountingCode": "04900",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308267,
+        "buildingName": "Brookdale West Orange",
+        "accountingCode": "24321",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26338,
+        "buildingName": "Brookdale West Palm Beach",
+        "accountingCode": "00817",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308239,
+        "buildingName": "Brookdale West Seattle",
+        "accountingCode": "24757",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 292,
+        "buildingName": "Brookdale West St. Paul AL (MN)",
+        "accountingCode": "08700",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 356,
+        "buildingName": "Brookdale West St. Paul MC (MN)",
+        "accountingCode": "08720",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 91741,
+        "buildingName": "Brookdale West University",
+        "accountingCode": "20405",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 280,
+        "buildingName": "Brookdale Westampton",
+        "accountingCode": "05060",
+        "stateProvCode": "NJ",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 153,
+        "buildingName": "Brookdale Western Hills",
+        "accountingCode": "17470",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 306,
+        "buildingName": "Brookdale Westerville",
+        "accountingCode": "11280",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52254,
+        "buildingName": "Brookdale Westlake Hills",
+        "accountingCode": "50930",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52263,
+        "buildingName": "Brookdale Westlake Village",
+        "accountingCode": "50810",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52186,
+        "buildingName": "Brookdale Westover Hills",
+        "accountingCode": "52390",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308096,
+        "buildingName": "Brookdale White Rock",
+        "accountingCode": "24219",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 44375,
+        "buildingName": "Brookdale Wickliffe",
+        "accountingCode": "17900",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 59,
+        "buildingName": "Brookdale Williamsville",
+        "accountingCode": "06030",
+        "stateProvCode": "NY",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 265,
+        "buildingName": "Brookdale Willmar",
+        "accountingCode": "08370",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52217,
+        "buildingName": "Brookdale Willowbrook Place",
+        "accountingCode": "52110",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308471,
+        "buildingName": "Brookdale Willows Sherman",
+        "accountingCode": "24634",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 401,
+        "buildingName": "Brookdale Wilmington",
+        "accountingCode": "03080",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308446,
+        "buildingName": "Brookdale Wilsonville",
+        "accountingCode": "24607",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87289,
+        "buildingName": "Brookdale Wilton",
+        "accountingCode": "23077",
+        "stateProvCode": "CT",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 51252,
+        "buildingName": "Brookdale Windsor",
+        "accountingCode": "00780",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 262,
+        "buildingName": "Brookdale Winona",
+        "accountingCode": "08330",
+        "stateProvCode": "MN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 175,
+        "buildingName": "Brookdale Winston-Salem",
+        "accountingCode": "03060",
+        "stateProvCode": "NC",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 323,
+        "buildingName": "Brookdale Winter Haven AL (FL)",
+        "accountingCode": "04700",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427,
+        "buildingName": "Brookdale Winter Haven MC (FL)",
+        "accountingCode": "04860",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 850896,
+        "buildingName": "Brookdale Woodstock",
+        "accountingCode": "28547",
+        "stateProvCode": "GA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308324,
+        "buildingName": "Brookdale Woodward Estates",
+        "accountingCode": "24396",
+        "stateProvCode": "MD",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 87302,
+        "buildingName": "Brookdale Wooster",
+        "accountingCode": "23092",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 26380,
+        "buildingName": "Brookdale Wornall Place",
+        "accountingCode": "00766",
+        "stateProvCode": "MO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 222,
+        "buildingName": "Brookdale Yakima",
+        "accountingCode": "07260",
+        "stateProvCode": "WA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 849726,
+        "buildingName": "Brookdale Yorba Linda",
+        "accountingCode": "28676",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308336,
+        "buildingName": "Brookdale Zanesville",
+        "accountingCode": "24408",
+        "stateProvCode": "OH",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 286897,
+        "buildingName": "Brookdale at Home",
+        "accountingCode": "64010",
+        "stateProvCode": "TN",
+        "billingTypeCode": null
+    },
+    {
+        "id": 577478,
+        "buildingName": "Constellation HOU",
+        "accountingCode": "64030",
+        "stateProvCode": "TX",
+        "billingTypeCode": null
+    },
+    {
+        "id": 225707,
+        "buildingName": "Contact Center",
+        "accountingCode": "64000",
+        "stateProvCode": "TN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 86926,
+        "buildingName": "Cortona Park",
+        "accountingCode": "18700",
+        "stateProvCode": "CA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427466,
+        "buildingName": "Cypress Village",
+        "accountingCode": "70940",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 307998,
+        "buildingName": "Emeritus at Amber Oaks",
+        "accountingCode": "24077",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427338,
+        "buildingName": "Foxwood Springs",
+        "accountingCode": "70941",
+        "stateProvCode": "MO",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427341,
+        "buildingName": "Freedom Plaza Sun City Center",
+        "accountingCode": "71111",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427364,
+        "buildingName": "Freedom Pointe at The Villages",
+        "accountingCode": "72040",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427438,
+        "buildingName": "Freedom Square",
+        "accountingCode": "71131",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427358,
+        "buildingName": "Freedom Village at Bradenton",
+        "accountingCode": "71280",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427363,
+        "buildingName": "Freedom Village at Brandywine",
+        "accountingCode": "71181",
+        "stateProvCode": "PA",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427340,
+        "buildingName": "Freedom Village at Holland",
+        "accountingCode": "71101",
+        "stateProvCode": "MI",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427361,
+        "buildingName": "Galleria Woods",
+        "accountingCode": "71260",
+        "stateProvCode": "AL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 308436,
+        "buildingName": "Hillside",
+        "accountingCode": "24591",
+        "stateProvCode": "OR",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427439,
+        "buildingName": "Homewood at Sun City Center",
+        "accountingCode": "72130",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 646956,
+        "buildingName": "Hospice Large Employer Program",
+        "accountingCode": "73120",
+        "stateProvCode": "TN",
+        "billingTypeCode": null
+    },
+    {
+        "id": 851768,
+        "buildingName": "Hospice Los Angeles",
+        "accountingCode": "76880",
+        "stateProvCode": "CA",
+        "billingTypeCode": null
+    },
+    {
+        "id": 851762,
+        "buildingName": "Hospice San Antonio",
+        "accountingCode": "76690",
+        "stateProvCode": "TX",
+        "billingTypeCode": null
+    },
+    {
+        "id": 427418,
+        "buildingName": "Lake Port Square",
+        "accountingCode": "70005",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427362,
+        "buildingName": "Lake Seminole Square",
+        "accountingCode": "71121",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 646957,
+        "buildingName": "NOC - Tampa",
+        "accountingCode": "73121",
+        "stateProvCode": "FL",
+        "billingTypeCode": null
+    },
+    {
+        "id": 928321,
+        "buildingName": "Nurture Leads",
+        "accountingCode": "64040",
+        "stateProvCode": "TN",
+        "billingTypeCode": null
+    },
+    {
+        "id": 427419,
+        "buildingName": "Regency Oaks Clearwater",
+        "accountingCode": "70006",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427339,
+        "buildingName": "Robin Run",
+        "accountingCode": "70945",
+        "stateProvCode": "IN",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 427359,
+        "buildingName": "South Port Square",
+        "accountingCode": "70004",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 570658,
+        "buildingName": "The Solana Preserve Vintage Park",
+        "accountingCode": "19930",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 565744,
+        "buildingName": "The Solana Vintage Park",
+        "accountingCode": "18930",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 630538,
+        "buildingName": "The Village at Gleannloch Farms",
+        "accountingCode": "71151",
+        "stateProvCode": "TX",
+        "billingTypeCode": "CECIL"
+    },
+    {
+        "id": 52257,
+        "buildingName": "Towers on Park Lane",
+        "accountingCode": "50660",
+        "stateProvCode": "TX",
+        "billingTypeCode": "HLTHMDX"
+    },
+    {
+        "id": 308314,
+        "buildingName": "Waterside Landing",
+        "accountingCode": "24384",
+        "stateProvCode": "FL",
+        "billingTypeCode": "CECIL"
+    }
+]
