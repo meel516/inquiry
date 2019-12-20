@@ -6,3 +6,4 @@ export const createLeadSourceSubDetailDropDownUrl = (type, leadSourceDetailId) =
 export const createCommunitiesFetchUrl = () => `${reactAppSalesServicesUrl()}/CommunitySearch/service/searchByAppAndUser`
 export const createDuplicateSearchUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/contact/duplication`
 export const createEloquaCdoUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/inquiryForm/eloqua`
+export const createStatusUpdateUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/autoStatusUpdate`
