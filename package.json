@@ -40,10 +40,14 @@
     "test:coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "cypress:open": "cypress open --browser chrome"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "plugin:cypress/recommended"
+    ]
   },
   "engines": {
     "node": "12.x",
@@ -67,8 +71,10 @@
     "@storybook/addon-links": "5.2.3",
     "@storybook/addons": "5.2.3",
     "@storybook/react": "5.2.3",
+    "cypress": "^3.7.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
+    "eslint-plugin-cypress": "^2.8.1",
     "jest-fetch-mock": "2.1.2",
     "react-test-renderer": "16.10.2"
   }
