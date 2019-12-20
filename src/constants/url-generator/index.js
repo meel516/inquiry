@@ -8,3 +8,4 @@ export const createDuplicateSearchUrl = () => `${reactAppSalesServicesUrl()}/Sim
 export const createEloquaCdoUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/inquiryForm/eloqua`
 export const createLostClosedReasonsUrl = (statusId) => `${reactAppSalesServicesUrl()}/Sims/api/reasons/byStatus/${statusId}`
 export const createLostClosedDestinationsUrl = (reasonId) => `${reactAppSalesServicesUrl()}/Sims/api/reasons/${reasonId}/destinations`
+export const createStatusUpdateUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/autoStatusUpdate`
