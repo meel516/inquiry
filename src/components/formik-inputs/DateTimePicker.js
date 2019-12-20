@@ -27,6 +27,8 @@ export const DateTimePicker = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={field.value}
+                calendarType="US"
+                showWeekNumbers={false}
             />
             { meta.touched && meta.error ? (
                 <Alert color='danger' className='alert-smaller-size'>{meta.error}</Alert>
