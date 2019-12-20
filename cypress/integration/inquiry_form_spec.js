@@ -29,8 +29,8 @@ describe('Inquiry Form', () => {
         cy.visit('/inquiryform')
 
         // Influencer
-        cy.get(influencer.firstName).type('Alex')
-        cy.get(influencer.lastName).type('Lurvey')
+        cy.get(influencer.firstName).type('Mister')
+        cy.get(influencer.lastName).type('Smith')
         cy.get(influencer.phone.number).type('2222222222').blur()
         duplicateModal.clickRowInGrid()
         duplicateModal.clickGoBack()
