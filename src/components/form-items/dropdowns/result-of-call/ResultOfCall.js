@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useField } from 'formik';
@@ -6,21 +6,11 @@ import { Select } from '../../../formik-inputs';
 import { TransactionDetailsModal, LostClosedStatusId } from './TransactionDetailsModal';
 import { useFormikContextWrapper } from '../../../../hooks';
 import { resultOfCallRequiresTransactionDetails } from '../../../../pages/forms/validators';
+import { getResultOfCall } from '../../../../services/dropdowns';
 import { paths } from './paths';
 
-const resultOfCallArray = [
-  { value: 1, label: 'Visit/Assessment/Home Visit Scheduled' },
-  { value: 2, label: 'New Lead No Visit' },
-  { value: 3, label: 'Nonqualified Lead' },
-  { value: 4, label: 'Non Lead Call' },
-  { value: 5, label: 'Special Event RSVP' },
-  { value: 6, label: 'Webform No Response' },
-];
-const resultOfCallOptions = resultOfCallArray.map(result => {
-  return <option key={result.value} value={result.label}>{result.label}</option>;
-});
-
 export const ResultOfCall = ({ basePath, value, locked = false }) => {
+  const [ resultofcalls, setResultOfCalls ] = useState([]);
   const [ modalOpen, setModalOpen ] = useState(false);
   const { setFieldValue, setFieldTouched } = useFormikContextWrapper();
   // eslint-disable-next-line
@@ -28,6 +18,12 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
   // eslint-disable-next-line
   const [ _destinationField, destinationFieldMeta ] = useField(paths.destination);
   const name = `${basePath}.resultOfCall`;
+
+  const resultOfCallOptions = useMemo(() => {
+    return resultofcalls.map(resultofcall => {
+      return <option key={resultofcall.value} value={resultofcall.value}>{resultofcall.text}</option>
+    })
+  }, [resultofcalls]);
 
   const clearTransactionDetails = useCallback(() => {
     setFieldValue(paths.status, 0);
@@ -53,6 +49,11 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
     setFieldValue(name, '');
     setModalOpen(false);
   }, [setModalOpen, setFieldValue, clearTransactionDetails, name])
+
+  useEffect(() => {
+    getResultOfCall()
+      .then(data => setResultOfCalls(data));
+  }, [setResultOfCalls])
 
   useEffect(() => {
     if (resultOfCallRequiresTransactionDetails(value)) {

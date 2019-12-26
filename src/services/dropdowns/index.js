@@ -23,3 +23,4 @@ export const getCareTypes = () => getDropdowns(createDropDownUrl(dropdownTypes.c
 export const getFollowupActions = () => getDropdowns(createDropDownUrl(dropdownTypes.followUpActions))
 export const getLostClosedReasons = (statusId) => getDropdowns(createLostClosedReasonsUrl(statusId))
 export const getLostClosedDestinations = (reasonId) => getDropdowns(createLostClosedDestinationsUrl(reasonId))
+export const getResultOfCall = () => getDropdowns(createDropDownUrl(dropdownTypes.resultOfCall))
