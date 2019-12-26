@@ -15,3 +15,4 @@ export const getReasonForInterest = () => getDropdowns(createDropDownUrl(dropdow
 export const getCurrentSituation = () => getDropdowns(createDropDownUrl(dropdownTypes.currentSituation))
 export const getCareTypes = () => getDropdowns(createDropDownUrl(dropdownTypes.careTypes))
 export const getFollowupActions = () => getDropdowns(createDropDownUrl(dropdownTypes.followUpActions))
+export const getResultOfCall = () => getDropdowns(createDropDownUrl(dropdownTypes.resultOfCall))

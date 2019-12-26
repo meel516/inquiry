@@ -9,5 +9,6 @@ export default {
     interestReason: 'interestReason',
     currentSituation: 'currentSituation',
     careTypes: 'careTypes',
-    followUpActions: 'followUpActions'
+    followUpActions: 'followUpActions',
+    resultOfCall: 'resultOfCall'
 }
