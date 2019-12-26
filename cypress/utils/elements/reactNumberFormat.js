@@ -6,8 +6,17 @@ class ReactNumberFormat {
         this.elem = cy.get(selector);
     }
 
-    get = () => {
-        return cy.get(this.selector)
+    blur = () => {
+        // blur by clicking on the associated label
+        const name = this.selector.split('"')[1]
+        cy.get(`label[for="${name}"]`).click()
+    }
+
+    focus = () => {
+        this.elem.siblings().not('span').then(fields => {
+            cy.wrap(fields).eq(1).focus()
+        })
+        return this
     }
 
     populate = (
@@ -26,7 +35,7 @@ class ReactNumberFormat {
             cy.wrap(fields).eq(4).type(minute)
             cy.wrap(fields).eq(5).select(ampm.toLowerCase(), { force: true })
         })
-        return this.elem;
+        return this;
     }
 }
 
