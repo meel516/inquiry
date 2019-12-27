@@ -3,6 +3,7 @@ import { fieldSelectors, getStringOfLength } from '../utils';
 import { community, reactSelect } from '../utils/elements';
 import { login, mockAllApiCalls, replaceFetch, visitInquiryForm } from '../utils/befores';
 import followUpActions from '../fixtures/followUpActions.json';
+import resultOfCallOptions from '../fixtures/resultOfCall.json';
 
 const assertNumberCommunities = (expected) => {
     cy.get('div.communities-container').then(comms => {
@@ -63,7 +64,6 @@ describe('Add Community', () => {
                     assert.equal(dupes.length, expected)
                 })
             }
-            
         }
 
         const typeAndAssertCommunityId = (index, text = '51111{enter}') => {
@@ -110,5 +110,22 @@ describe('Add Community', () => {
             .fastType(getStringOfLength(4001))
             .blur()
         cy.get('.alert.alert-danger').should('contain', validationMessage)
+    })
+
+    it ('throws validation when there are no communities and the result of call option requires a community', () => {
+        const { communities, lead: { resultOfCall }} = fieldSelectors;
+        const communitiesError = 'The Result of Call selection requires a community to be added';
+        const requiredCommunityResultOfCallOptions = new Set([
+            '1', // Visit/Assessment/Home Visit Scheduled
+            '2', // New Lead No Visit
+            '5', // Special Event RSVP
+            '6', // Webform No Response
+        ])
+
+        resultOfCallOptions.forEach(({ value }) => {
+            const check = requiredCommunityResultOfCallOptions.has(value) ? 'exist' : 'not.exist';
+            cy.get(resultOfCall).select(value).blur()
+            cy.get('div').contains(communitiesError).should(check);
+        })
     })
 })
