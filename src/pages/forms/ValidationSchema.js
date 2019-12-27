@@ -28,9 +28,6 @@ const prospectSchema = {
   email: string()
     .email("Email must be valid")
     .max(100, 'Email can be at most 100 characters'),
-  address: object().shape({
-    line1: string().max(40, 'Address 1 can be at most 40 characters'),
-  }),
   age: numberOrEmptyString()
     .notRequired()
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),

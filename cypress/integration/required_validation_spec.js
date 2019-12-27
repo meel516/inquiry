@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 import { fieldSelectors } from '../utils';
 import { community, reactNumberFormat, reactSelect } from '../utils/elements';
-import { login, mockAllApiCalls, replaceFetch } from '../utils/befores';
+import { login, mockAllApiCalls, replaceFetch, visitInquiryForm } from '../utils/befores';
 
 const requiredMessages = {
     firstName: 'First Name is required',
@@ -39,14 +39,14 @@ const validValues = {
 
 describe('Inquiry Form', () => {
     before(() => {
-        replaceFetch();
+        replaceFetch()
+        login()
     })
 
     beforeEach(() => {
-        cy.server();
-        mockAllApiCalls();
-        login();
-        cy.visit('/inquiryform')
+        cy.server()
+        mockAllApiCalls()
+        visitInquiryForm()
     })
 
     it ('shows a required error for all required fields', () => {

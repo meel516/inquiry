@@ -1,5 +1,5 @@
 /// <reference types="Cypress" />
-import { login, mockAllApiCalls, replaceFetch } from '../utils/befores';
+import { login, mockAllApiCalls, replaceFetch, visitInquiryForm } from '../utils/befores';
 import { fieldSelectors } from '../utils';
 import {
     additionalCareElements,
@@ -11,22 +11,20 @@ import {
 
 describe('Inquiry Form', () => {
     before(() => {
-        replaceFetch();
+        replaceFetch()
+        login()
     })
 
-    beforeEach(function () {
-        cy.server();
-        mockAllApiCalls();
-        login();
+    beforeEach(() => {
+        cy.server()
+        mockAllApiCalls()
+        visitInquiryForm()
     })
 
     it('can navigate and fill out the entire form', () => {
         // This test has no asserts. If it fails it most likely means the page was restuctured
         // in a way that makes the element selectors break
         const { lead: { influencer, prospect, secondPerson, adlNeeds, notes }, communities, lead } = fieldSelectors;
-
-        cy.viewport(1400, 800)
-        cy.visit('/inquiryform')
 
         // Influencer
         cy.get(influencer.firstName).type('Mister')

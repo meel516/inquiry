@@ -38,65 +38,70 @@ export const login = () => {
 
 export const setupDropdownMocks = () => {
     cy.route({
+        method: 'GET',
+        url: '/Sims/api/dropdowns/resultOfCall',
+        response: 'fixture:resultOfCall.json',
+    }).as('resultOfCall')
+    cy.route({
         method: 'POST',
         url: '/CommunitySearch/service/searchByAppAndUser',
         response: 'fixture:communities.json',
-    })
+    }).as('communities')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/phoneTypes',
         response: 'fixture:phoneTypes.json',
-    })
+    }).as('phoneTypes')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/stateProv',
         response: 'fixture:stateProv.json',
-    })
+    }).as('stateProv')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/careTypes',
         response: 'fixture:careTypes.json',
-    })
+    }).as('careTypes')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/followUpActions',
         response: 'fixture:followUpActions.json',
-    })
+    }).as('followUpActions')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/interestReason',
         response: 'fixture:interestReason.json',
-    })
+    }).as('interestReason')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/inquiryTypes',
         response: 'fixture:inquiryTypes.json',
-    })
+    }).as('inquiryTypes')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/veteranStatus',
         response: 'fixture:veteranStatus.json',
-    })
+    }).as('veteranStatus')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/inquiryLeadSource',
         response: 'fixture:inquiryLeadSource.json',
-    })
+    }).as('inquiryLeadSource')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/inquiryLeadSource/*/inquiryLeadSourceDetails',
         response: 'fixture:inquiryLeadSourceDetails.json',
-    })
+    }).as('inquiryLeadSourceDetails')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/inquiryLeadSourceDetail/*/inquiryLeadSourceSubDetails',
         response: 'fixture:inquiryLeadSourceSubDetails.json',
-    })
+    }).as('inquiryLeadSourceSubDetails')
     cy.route({
         method: 'GET',
         url: '/Sims/api/dropdowns/currentSituation',
         response: 'fixture:currentSituation.json',
-    })
+    }).as('currentSituation')
 }
 
 export const setupDuplicateModalMocks = () => {
@@ -115,4 +120,10 @@ export const setupDuplicateModalMocks = () => {
 export const mockAllApiCalls = () => {
     setupDropdownMocks();
     setupDuplicateModalMocks();
+}
+
+export const visitInquiryForm = () => {
+    cy.visit('/inquiryform')
+    // wait for one of the initial calls (lead source is usually the last in line)
+    cy.wait('@inquiryLeadSource');
 }

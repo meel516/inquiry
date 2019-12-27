@@ -1,0 +1,26 @@
+[
+    {
+        "value": "1",
+        "text": "Visit/Assessment/Home Visit Scheduled"
+    },
+    {
+        "value": "2",
+        "text": "New Lead No Visit"
+    },
+    {
+        "value": "3",
+        "text": "Nonqualified Lead"
+    },
+    {
+        "value": "4",
+        "text": "Non Lead Call"
+    },
+    {
+        "value": "5",
+        "text": "Special Event RSVP"
+    },
+    {
+        "value": "6",
+        "text": "Webform No Response"
+    }
+]

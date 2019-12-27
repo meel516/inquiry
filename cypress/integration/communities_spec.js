@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 import { fieldSelectors, getStringOfLength } from '../utils';
 import { community, reactSelect } from '../utils/elements';
-import { login, mockAllApiCalls, replaceFetch } from '../utils/befores';
+import { login, mockAllApiCalls, replaceFetch, visitInquiryForm } from '../utils/befores';
 import followUpActions from '../fixtures/followUpActions.json';
 
 const assertNumberCommunities = (expected) => {
@@ -12,14 +12,14 @@ const assertNumberCommunities = (expected) => {
 
 describe('Add Community', () => {
     before(() => {
-        replaceFetch();
+        replaceFetch()
+        login()
     })
 
     beforeEach(() => {
-        cy.server();
-        mockAllApiCalls();
-        login();
-        cy.visit('/inquiryform')
+        cy.server()
+        mockAllApiCalls()
+        visitInquiryForm()
     })
 
     it ('disables add community button when limit of 5 is reached', () => {
@@ -56,10 +56,14 @@ describe('Add Community', () => {
         const duplicateCommunityMessage = 'You have added a duplicate community';
 
         const assertNumberDuplicates = (expected) => {
-            const check = expected === 0 ? 'not.contain' : 'contain';
-            cy.get('.alert.alert-danger').should(check, duplicateCommunityMessage).then(dupes => {
-                assert.equal(dupes.length, expected)
-            })
+            if (expected === 0) {
+                cy.get('.alert.alert-danger').should('not.contain', duplicateCommunityMessage)
+            } else {
+                cy.get('.alert.alert-danger').should('contain', duplicateCommunityMessage).then(dupes => {
+                    assert.equal(dupes.length, expected)
+                })
+            }
+            
         }
 
         const typeAndAssertCommunityId = (index, text = '51111{enter}') => {
