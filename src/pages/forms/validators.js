@@ -2,10 +2,10 @@ import { string } from 'yup';
 import { isEmpty } from 'lodash';
 
 const requiredCommunityResultOfCallOptions = new Set([
-    'Visit/Assessment/Home Visit Scheduled',
-    'New Lead No Visit',
-    'Special Event RSVP',
-    'Webform No Response',
+    '1', // Visit/Assessment/Home Visit Scheduled
+    '2', // New Lead No Visit
+    '5', // Special Event RSVP
+    '6', // Webform No Response
 ])
 
 export const digitLengthLessThan = (max) => {
