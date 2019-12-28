@@ -28,3 +28,8 @@ export const clickRowInGrid = () => {
         cy.wrap(modal).get('.react-grid-Row').first().click();
     })
 }
+
+export const waitAndDismissModal = () => {
+    cy.wait('@duplication')
+    clickFirstNoneOfThese()
+}

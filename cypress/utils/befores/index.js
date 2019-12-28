@@ -109,12 +109,12 @@ export const setupDuplicateModalMocks = () => {
         method: 'POST',
         url: '/Sims/api/contact/duplication',
         response: 'fixture:duplication.json',
-    })
+    }).as('duplication')
     cy.route({
         method: 'GET',
         url: '/Sims/api/lead/contact/*',
         response: 'fixture:leadContact.json',
-    })
+    }).as('duplicationLead')
 }
 
 export const mockAllApiCalls = () => {
