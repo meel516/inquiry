@@ -1,0 +1,82 @@
+[
+    {
+        "value": "21",
+        "text": "Caregiver Burden"
+    },
+    {
+        "value": "19",
+        "text": "Family Decision"
+    },
+    {
+        "value": "1",
+        "text": "Family Relocating"
+    },
+    {
+        "value": "2",
+        "text": "Financial Strain of Home Ownership"
+    },
+    {
+        "value": "20",
+        "text": "Gathering Information"
+    },
+    {
+        "value": "3",
+        "text": "Health"
+    },
+    {
+        "value": "4",
+        "text": "Home Maintenance"
+    },
+    {
+        "value": "5",
+        "text": "Hospital Discharge"
+    },
+    {
+        "value": "6",
+        "text": "Location"
+    },
+    {
+        "value": "7",
+        "text": "Memory Care Needs"
+    },
+    {
+        "value": "8",
+        "text": "Nutrition Assistance"
+    },
+    {
+        "value": "9",
+        "text": "Prompted by Physician"
+    },
+    {
+        "value": "10",
+        "text": "Relocate Near Family"
+    },
+    {
+        "value": "11",
+        "text": "Relocate Near Friends"
+    },
+    {
+        "value": "12",
+        "text": "Respite"
+    },
+    {
+        "value": "13",
+        "text": "Security"
+    },
+    {
+        "value": "14",
+        "text": "Services"
+    },
+    {
+        "value": "15",
+        "text": "Skilled Nursing Discharge"
+    },
+    {
+        "value": "16",
+        "text": "Socialization/Life Enrichment"
+    },
+    {
+        "value": "17",
+        "text": "Transportation"
+    }
+]

@@ -1,0 +1,66 @@
+[
+    {
+        "value": "1",
+        "text": "Advertising - Local"
+    },
+    {
+        "value": "25",
+        "text": "Advertising - National"
+    },
+    {
+        "value": "18",
+        "text": "BSL Resident Transfer"
+    },
+    {
+        "value": "4",
+        "text": "Internet"
+    },
+    {
+        "value": "5",
+        "text": "Lives in Neighborhood"
+    },
+    {
+        "value": "6",
+        "text": "Media/Public Relations Event"
+    },
+    {
+        "value": "22",
+        "text": "National Contract"
+    },
+    {
+        "value": "20",
+        "text": "Referral - Brookdale"
+    },
+    {
+        "value": "9",
+        "text": "Referral - Friend/Family"
+    },
+    {
+        "value": "10",
+        "text": "Referral - Guardian"
+    },
+    {
+        "value": "24",
+        "text": "Referral - Professional"
+    },
+    {
+        "value": "13",
+        "text": "Referral - Resident/Resident Family"
+    },
+    {
+        "value": "23",
+        "text": "Social Media"
+    },
+    {
+        "value": "16",
+        "text": "Special Event Off-Site"
+    },
+    {
+        "value": "15",
+        "text": "Special Event at Community"
+    },
+    {
+        "value": "17",
+        "text": "Support Group"
+    }
+]
