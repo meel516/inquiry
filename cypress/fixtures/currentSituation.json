@@ -1,0 +1,66 @@
+[
+    {
+        "value": "1",
+        "text": "Adult Day Care"
+    },
+    {
+        "value": "3",
+        "text": "Assisted Living - Brookdale"
+    },
+    {
+        "value": "4",
+        "text": "Assisted Living - Other"
+    },
+    {
+        "value": "5",
+        "text": "CCRC Community"
+    },
+    {
+        "value": "6",
+        "text": "Home (w/out Services)"
+    },
+    {
+        "value": "7",
+        "text": "Home (with Services)"
+    },
+    {
+        "value": "8",
+        "text": "Hospice"
+    },
+    {
+        "value": "9",
+        "text": "Hospital"
+    },
+    {
+        "value": "11",
+        "text": "Independent Living - Brookdale"
+    },
+    {
+        "value": "12",
+        "text": "Independent Living - Other"
+    },
+    {
+        "value": "13",
+        "text": "Living with Family"
+    },
+    {
+        "value": "14",
+        "text": "Memory Care - Brookdale"
+    },
+    {
+        "value": "15",
+        "text": "Memory Care - Other"
+    },
+    {
+        "value": "18",
+        "text": "Rehab"
+    },
+    {
+        "value": "16",
+        "text": "Skilled Nursing - Brookdale"
+    },
+    {
+        "value": "17",
+        "text": "Skilled Nursing - Other"
+    }
+]

@@ -5,10 +5,10 @@ const resultOfCallsWithTransactionDetails = new Set([
     '4', // Non Lead Call
 ]);
 const requiredCommunityResultOfCallOptions = new Set([
-    'Visit/Assessment/Home Visit Scheduled',
-    'New Lead No Visit',
-    'Special Event RSVP',
-    'Webform No Response',
+    '1', // Visit/Assessment/Home Visit Scheduled
+    '2', // New Lead No Visit
+    '5', // Special Event RSVP
+    '6', // Webform No Response
 ])
 
 export const resultOfCallRequiresTransactionDetails = roc => resultOfCallsWithTransactionDetails.has(roc);
