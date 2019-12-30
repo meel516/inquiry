@@ -15,7 +15,6 @@ describe('Second Person Section', () => {
         visitInquiryForm()
     })
 
-
     it ('hides second person fields when not selected', () => {
         const { lead: { secondPerson }} = fields;
         const secondPersonFieldsToShow = [
