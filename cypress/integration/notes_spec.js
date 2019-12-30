@@ -2,7 +2,6 @@
 import { login, mockAllApiCalls, replaceFetch, visitInquiryForm } from '../utils/befores';
 import { getStringOfLength, fieldSelectors } from '../utils';
 
-// second person note handle in second_person_spec
 describe('Notes', () => {
     before(() => {
         replaceFetch()
@@ -73,6 +72,24 @@ describe('Notes', () => {
         cy.get('.alert.alert-danger').should('not.contain', validationMessage)
 
         cy.get(fieldSelectors.lead.notes.additionalNotes)
+            .clear()
+            .fastType(getStringOfLength(4001))
+            .blur()
+        cy.get('.alert.alert-danger').should('contain', validationMessage)
+    })
+
+    it ('throws validation when secondPersonNote is greater than 4000 characters', () => {
+        const validationMessage = '2nd Person Situation can be at most 4000 characters';
+
+        cy.get(fieldSelectors.lead.secondPerson.selected).check()
+
+        cy.get(fieldSelectors.lead.notes.secondPersonNote)
+            .clear()
+            .fastType(getStringOfLength(4000))
+            .blur()
+        cy.get('.alert.alert-danger').should('not.contain', validationMessage)
+
+        cy.get(fieldSelectors.lead.notes.secondPersonNote)
             .clear()
             .fastType(getStringOfLength(4001))
             .blur()
