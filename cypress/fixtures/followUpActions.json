@@ -1,0 +1,102 @@
+[
+    {
+        "value": "8",
+        "text": "Assessment"
+    },
+    {
+        "value": "26",
+        "text": "Call In"
+    },
+    {
+        "value": "1",
+        "text": "Call to Follow Up"
+    },
+    {
+        "value": "53",
+        "text": "Chat"
+    },
+    {
+        "value": "2",
+        "text": "Email"
+    },
+    {
+        "value": "45",
+        "text": "Email Blast"
+    },
+    {
+        "value": "3",
+        "text": "Fax"
+    },
+    {
+        "value": "20",
+        "text": "Guest Stay"
+    },
+    {
+        "value": "6",
+        "text": "Home Visit"
+    },
+    {
+        "value": "7",
+        "text": "Hospital Visit"
+    },
+    {
+        "value": "9",
+        "text": "Other"
+    },
+    {
+        "value": "43",
+        "text": "Personal Connection"
+    },
+    {
+        "value": "56",
+        "text": "Reengaged"
+    },
+    {
+        "value": "48",
+        "text": "Rehab/Skilled Visit"
+    },
+    {
+        "value": "23",
+        "text": "Send Brochure"
+    },
+    {
+        "value": "22",
+        "text": "Send Direct Mail"
+    },
+    {
+        "value": "42",
+        "text": "Send Newsletter"
+    },
+    {
+        "value": "4",
+        "text": "Send Other Info"
+    },
+    {
+        "value": "25",
+        "text": "Send Personal Note"
+    },
+    {
+        "value": "49",
+        "text": "Social Media"
+    },
+    {
+        "value": "51",
+        "text": "Special Event Off-Site"
+    },
+    {
+        "value": "52",
+        "text": "Special Event at Community"
+    },
+    {
+        "value": "54",
+        "text": "Text Message"
+    },
+    {
+        "value": "5",
+        "text": "Visit/Appt - Scheduled"
+    },
+    {
+        "value": "28",
+        "text": "Visit/Walk In - Unscheduled"
+    }
+]

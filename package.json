@@ -41,7 +41,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "cypress:open": "cypress open --browser chrome"
+    "cypress:open": "cypress open --browser chrome",
+    "cypress:run": "cypress run"
   },
   "eslintConfig": {
     "extends": [

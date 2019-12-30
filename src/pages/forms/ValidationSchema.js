@@ -28,9 +28,6 @@ const prospectSchema = {
   email: string()
     .email("Email must be valid")
     .max(100, 'Email can be at most 100 characters'),
-  address: object().shape({
-    line1: string().max(40, 'Address 1 can be at most 40 characters'),
-  }),
   age: numberOrEmptyString()
     .notRequired()
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
@@ -139,7 +136,7 @@ const mainFormValidationSchema = object().shape({
       passionsPersonality: string().max(4000, 'Passions & Personality can be at most 4000 characters'),
       financialSituation: string().max(4000, 'Financial Situation can be at most 4000 characters'),
       additionalNotes: string().max(4000, 'Additional Notes can be at most 4000 characters'),
-      secondPerson: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
+      secondPersonNote: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
   }),
   communities: array().of(object()), // all community validation is done outside of yup in ./validators.js

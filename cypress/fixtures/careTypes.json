@@ -1,0 +1,46 @@
+[
+    {
+        "value": "2",
+        "text": "Alzheimer's/Dementia"
+    },
+    {
+        "value": "1",
+        "text": "Assisted Living"
+    },
+    {
+        "value": "12",
+        "text": "At Home"
+    },
+    {
+        "value": "3",
+        "text": "Independent Living"
+    },
+    {
+        "value": "4",
+        "text": "Skilled Nursing Care"
+    },
+    {
+        "value": "6",
+        "text": "BHS"
+    },
+    {
+        "value": "9",
+        "text": "Home Health"
+    },
+    {
+        "value": "8",
+        "text": "Hospice"
+    },
+    {
+        "value": "11",
+        "text": "Nurture"
+    },
+    {
+        "value": "13",
+        "text": "Personalized Living"
+    },
+    {
+        "value": "10",
+        "text": "Rehab"
+    }
+]
