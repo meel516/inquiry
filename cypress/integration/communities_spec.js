@@ -113,7 +113,7 @@ describe('Add Community', () => {
     })
 
     it ('throws validation when there are no communities and the result of call option requires a community', () => {
-        const { communities, lead: { resultOfCall }} = fieldSelectors;
+        const { lead: { resultOfCall }} = fieldSelectors;
         const communitiesError = 'The Result of Call selection requires a community to be added';
         const requiredCommunityResultOfCallOptions = new Set([
             '1', // Visit/Assessment/Home Visit Scheduled
