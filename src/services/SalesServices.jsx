@@ -349,7 +349,7 @@ class SalesAPIService {
       await this.submitSecondPerson(secondPersonRequest);
     }
 
-    handleResultOfCall(lead, user);
+    await handleResultOfCall(lead, user);
 
     return leadId;
   }
