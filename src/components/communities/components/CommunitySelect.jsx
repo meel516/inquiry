@@ -16,11 +16,11 @@ import PropTypes from 'prop-types';
 import { Input, Select, ReactSelect } from '../../formik-inputs';
 import Visit from './Visit';
 import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
-import { useFormikContext } from 'formik';
+import { useFormikContextWrapper } from '../../../hooks';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
-  const { setFieldValue, status: { readOnly } } = useFormikContext();
+  const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
   const inputNames = useMemo(() => {
     return {
       communityId: `communities[${index}].communityId`,

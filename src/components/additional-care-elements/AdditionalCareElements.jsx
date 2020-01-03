@@ -4,7 +4,7 @@ import Select from 'react-select';
 import PropTypes from 'prop-types'
 import { CurrentSituation } from './components/CurrentSituation';
 import { MobilityConcerns, MemoryConcerns, NutritionConcerns } from '../checkbox-groups';
-import { useFormikContext } from 'formik';
+import { useFormikContextWrapper } from '../../hooks';
 import { MEMORY_CONCERNS, MOBILITY_CONCERNS, NUTRITION_CONCERNS, CURRENT_LIVING_SITUATION, additionalCareElements } from '../../constants/default-additional-care-elements'
 
 const resetToOriginalState = (priorState, currentState, basePath, setFieldValue) => {
@@ -16,9 +16,9 @@ const resetToOriginalState = (priorState, currentState, basePath, setFieldValue)
   })
 }
 
-export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
+export const AdditionalCareElements = React.memo(({ basePath }) => {
   const [selections, setSelections] = useState(new Set());
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
 
   const handleAdditionalCareChange = useCallback((currentSelections) => {
     const elements = currentSelections ? currentSelections.map(q => q.value) : [];
@@ -38,7 +38,7 @@ export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
               name='additionalCareElements'
               onChange={handleAdditionalCareChange}
               options={additionalCareElements}
-              isDisabled={isReadOnly}
+              isDisabled={readOnly}
             />
           </FormGroup>
         </Col>
@@ -49,9 +49,9 @@ export const AdditionalCareElements = ({ basePath, isReadOnly }) => {
       {selections.has(CURRENT_LIVING_SITUATION) ? <CurrentSituation basePath={basePath} /> : null}
     </>
   )
-}
+})
 
+AdditionalCareElements.displayName = 'AdditionalCareElements';
 AdditionalCareElements.propTypes = {
   basePath: PropTypes.string.isRequired,
-  isReadOnly: PropTypes.bool,
 }

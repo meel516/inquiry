@@ -1,5 +1,5 @@
 import { string, number, object, boolean, array, mixed } from 'yup';
-import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber } from './validators';
+import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber, resultOfCallRequiresTransactionDetails } from './validators';
 
 const numberOrEmptyString = () => {
   const schema = mixed();
@@ -138,6 +138,16 @@ const mainFormValidationSchema = object().shape({
       additionalNotes: string().max(4000, 'Additional Notes can be at most 4000 characters'),
       secondPersonNote: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
+    reason: number().when('resultOfCall', {
+      is: roc => resultOfCallRequiresTransactionDetails(roc),
+      then: number().test('required-number-value', 'Reason is required', nonZeroNumber),
+      otherwise: number()
+    }),
+    destination: number().when('reason', {
+      is: reason => !!reason,
+      then: number().test('required-number-value', 'Destination is required', nonZeroNumber),
+      otherwise: number()
+    })
   }),
   communities: array().of(object()), // all community validation is done outside of yup in ./validators.js
 })

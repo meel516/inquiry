@@ -80,7 +80,5 @@ export const Communities = ({ username, requiredCommunityError }) => {
 }
 
 Communities.propTypes = {
-  allowAddCommunities: PropTypes.bool,
-  onAddCommunity: PropTypes.func,
-  onRemoveCommunity: PropTypes.func,
+  username: PropTypes.string.isRequired,
 }
