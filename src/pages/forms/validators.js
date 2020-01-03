@@ -2,6 +2,7 @@ import { string } from 'yup';
 import { isEmpty } from 'lodash';
 
 const resultOfCallsWithTransactionDetails = new Set([
+    '3', // nonqualified lead
     '4', // Non Lead Call
 ]);
 const requiredCommunityResultOfCallOptions = new Set([
