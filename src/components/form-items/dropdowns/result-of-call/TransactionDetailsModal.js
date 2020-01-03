@@ -29,7 +29,7 @@ export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose }) => {
     }, [selectedReasonId, setDestinations])
 
     return (
-        <Modal isOpen={isOpen} size='md' toggle={onClose}>
+        <Modal isOpen={isOpen} size='md' style={{ maxWidth: '600px'}} toggle={onClose}>
             <ModalHeader>Stage Details</ModalHeader>
             <StyledModalBody>
                 <StyledDropdownWrapper>
