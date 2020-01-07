@@ -46,16 +46,16 @@ export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId = 1
     }, [defaultStatusId])
 
     const destinationInput = useMemo(() => {
-        if (selectedReasonId && defaultStatusId === LostClosedStatusId) {
+        if (selectedReasonId && (defaultStatusId === LostClosedStatusId) ) {
             return (
-<StyledDropdownWrapper>
-                        <Label for={paths.destination}>Destination:</Label>
-                        <StyledSelectWrapper>
-                            <Select name={paths.destination} placeholderValue={0}>
-                                { destinations.map(({ id, description }) => <option key={id} value={id}>{description}</option>) }
-                            </Select>
-                        </StyledSelectWrapper>
-                    </StyledDropdownWrapper>
+                <StyledDropdownWrapper>
+                    <Label for={paths.destination}>Destination:</Label>
+                    <StyledSelectWrapper>
+                        <Select name={paths.destination} placeholderValue={0}>
+                            { destinations.map(({ id, description }) => <option key={id} value={id}>{description}</option>) }
+                        </Select>
+                    </StyledSelectWrapper>
+                </StyledDropdownWrapper>
             )
         }
         return null;
