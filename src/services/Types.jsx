@@ -63,6 +63,11 @@ class ObjectMappingService {
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
             }
+            if (salesLead.leadStage) {
+                lead.salesStage = salesLead.leadStage.salesStage;
+            } else {
+                lead.salesStage = 10;
+            }
             lead.buildingId = salesLead.buildingId
         }
         else {
