@@ -42,8 +42,8 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
     } else {
       if (!reasonFieldMeta.touched)
         setFieldTouched(paths.reason);
-      //else if (!destinationFieldMeta.touched)
-        //setFieldTouched(paths.destination);
+      else if (!destinationFieldMeta.touched)
+        setFieldTouched(paths.destination);
     }
   }, [reasonFieldMeta, destinationFieldMeta, setFieldTouched, setModalOpen])
 
