@@ -8,7 +8,7 @@ import { useFormikContextWrapper } from '../../../../hooks';
 import { resultOfCallRequiresTransactionDetails } from '../../../../pages/forms/validators';
 import { getResultOfCall } from '../../../../services/dropdowns';
 import { paths } from './paths';
-import { LostClosedStatusId } from '../../../../constants/sales-status'
+import { useDefaultStatus } from './hooks'
 
 export const ResultOfCall = ({ basePath, value, locked = false }) => {
   const [ resultofcalls, setResultOfCalls ] = useState([]);
@@ -20,6 +20,7 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
   const [ _destinationField, destinationFieldMeta ] = useField(paths.destination);
   // eslint-disable-next-line
   const [ salesStageField, salesStageFieldMeta ] = useField(paths.salesStage);
+  const defaultStatusId = useDefaultStatus(salesStageField.value);
   const name = `${basePath}.resultOfCall`;
 
   const resultOfCallOptions = useMemo(() => {
@@ -61,11 +62,11 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
   useEffect(() => {
     if (resultOfCallRequiresTransactionDetails(value)) {
       setModalOpen(true);
-      setFieldValue(paths.status, LostClosedStatusId)
+      setFieldValue(paths.status, defaultStatusId)
     } else {
       clearTransactionDetails();
     }
-  }, [value, setFieldValue, setModalOpen, clearTransactionDetails])
+  }, [value, setFieldValue, setModalOpen, defaultStatusId, clearTransactionDetails])
 
   return (
     <>
