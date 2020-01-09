@@ -145,8 +145,7 @@ const mainFormValidationSchema = object().shape({
       otherwise: number()
     }),
     destination: number().when(['reason', 'status'], {
-      is: (reason, status) => (status === LostClosedStatusId) && !!reason
-      },
+      is: (reason, status) => (status === LostClosedStatusId) && !!reason,
       then: number().test('required-number-value', 'Destination is required', nonZeroNumber),
       otherwise: number()
     })
