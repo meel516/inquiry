@@ -1,5 +1,6 @@
 import { string, number, object, boolean, array, mixed } from 'yup';
 import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber, resultOfCallRequiresTransactionDetails } from './validators';
+import { LostClosedStatusId } from '../../constants/sales-status'
 
 const numberOrEmptyString = () => {
   const schema = mixed();
@@ -143,8 +144,9 @@ const mainFormValidationSchema = object().shape({
       then: number().test('required-number-value', 'Reason is required', nonZeroNumber),
       otherwise: number()
     }),
-    destination: number().when('reason', {
-      is: reason => !!reason,
+    destination: number().when(['reason', 'status'], {
+      is: (reason, status) => (status === LostClosedStatusId) && !!reason
+      },
       then: number().test('required-number-value', 'Destination is required', nonZeroNumber),
       otherwise: number()
     })
