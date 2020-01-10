@@ -1,9 +1,9 @@
 export default (lead, user) => {
     return {
         leadId: lead.leadId,
-        statusId: lead.statusId,
-        reasonId: lead.reasonId,
-        destinationId: lead.destinationId,
+        statusId: lead.status,
+        reasonId: lead.reason,
+        destinationId: lead.destination,
         resultOfCall: lead.resultOfCall,
         username: user.username,
     }
