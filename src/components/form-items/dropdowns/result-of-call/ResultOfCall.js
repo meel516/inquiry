@@ -49,10 +49,13 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
   }, [reasonFieldMeta, destinationFieldMeta, setFieldTouched, setModalOpen])
 
   const handleCancel = useCallback(() => {
-    clearTransactionDetails();
     setFieldValue(name, '');
     setModalOpen(false);
-  }, [setModalOpen, setFieldValue, clearTransactionDetails, name])
+  }, [setModalOpen, setFieldValue, name])
+
+  const handleResultOfCallChange = useCallback(() => {
+    clearTransactionDetails();
+  }, [clearTransactionDetails])
 
   useEffect(() => {
     getResultOfCall()
@@ -72,7 +75,7 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
     <>
       <FormGroup>
         <Label for={name} className="label-format required-field">Result of Call</Label>
-        <Select name={name} disabled={locked}>
+        <Select name={name} disabled={locked} onChange={handleResultOfCallChange}>
           {resultOfCallOptions}
         </Select>
       </FormGroup>

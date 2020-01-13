@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { LostClosedStatusId, UnqualifiedStatusId } from '../../../../constants/sales-status'
 
-const useDefaultStatus = (stageId = 10) => {
-    const [status, setStatus] = useState(UnqualifiedStatusId);
+const useDefaultStatus = (stageId) => {
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
-        if(stageId === 10) {
+        if (stageId === 10) {
             setStatus(UnqualifiedStatusId)
-        }
-        else {
+        } else {
             setStatus(LostClosedStatusId)
         }
     }, [setStatus, stageId])
