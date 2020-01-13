@@ -7,7 +7,7 @@ import { paths } from './paths';
 import { useDefaultStatus } from './hooks'
 import { LostClosedStatusId, UnqualifiedStatusId } from '../../../../constants/sales-status'
 
-export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId = 10 }) => {
+export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId }) => {
     const [ selectedReasonId, setSelectedReasonId ] = useState(null);
     const [ reasons, setReasons ] = useState([]);
     const [ destinations, setDestinations ] = useState([]);
@@ -18,9 +18,11 @@ export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId = 1
     }, [setSelectedReasonId]);
 
     useEffect(() => {
-        console.log(`Default status: ${defaultStatusId}`)
-        getLostClosedReasons(defaultStatusId)
-            .then(data => setReasons(data));
+        if (defaultStatusId) {
+            console.log(`Default status: ${defaultStatusId}`)
+            getLostClosedReasons(defaultStatusId)
+                .then(data => setReasons(data));
+        }
     }, [defaultStatusId, setReasons])
 
     useEffect(() => {
