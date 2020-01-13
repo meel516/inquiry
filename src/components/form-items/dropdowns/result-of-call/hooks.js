@@ -5,7 +5,7 @@ const useDefaultStatus = (stageId) => {
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
-        if (stageId === 10) {
+        if (!stageId || (stageId && stageId === 10)) {
             setStatus(UnqualifiedStatusId)
         } else {
             setStatus(LostClosedStatusId)
