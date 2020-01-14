@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Button, Modal, ModalHeader, ModalFooter, Input, Label } from 'reactstrap';
 import { Select } from '../../../formik-inputs';
-import { getLostClosedReasons, getLostClosedDestinations } from '../../../../services/dropdowns';
+import { getReasons, getDestinations } from '../../../../services/dropdowns';
 import { StyledDropdownWrapper, StyledModalBody, StyledSelectWrapper } from './styled';
 import { paths } from './paths';
 import { useDefaultStatus } from './hooks'
@@ -19,15 +19,14 @@ export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId }) 
 
     useEffect(() => {
         if (defaultStatusId) {
-            console.log(`Default status: ${defaultStatusId}`)
-            getLostClosedReasons(defaultStatusId)
+            getReasons(defaultStatusId)
                 .then(data => setReasons(data));
         }
     }, [defaultStatusId, setReasons])
 
     useEffect(() => {
         if (selectedReasonId) {
-            getLostClosedDestinations(selectedReasonId)
+            getDestinations(selectedReasonId)
                 .then(data => setDestinations(data))
         }
     }, [selectedReasonId, setDestinations])
