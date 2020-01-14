@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FormGroup, Label } from 'reactstrap';
+import { FormGroup, Label, Button, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useField } from 'formik';
 import { Select } from '../../../formik-inputs';
@@ -13,7 +13,6 @@ import { LostClosedStatusId } from '../../../../constants/sales-status'
 
 export const ResultOfCall = ({ basePath, value, locked = false }) => {
   const [ resultofcalls, setResultOfCalls ] = useState([]);
-  const [ selectedReasonId, setSelectedReasonId ] = useState(null);
   const [ reasons, setReasons ] = useState([]);
   const [ destinations, setDestinations ] = useState([]);
 
@@ -36,12 +35,45 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
     })
   }, [resultofcalls]);
 
+  const statusDisplay = useMemo(() => {
+    if ( defaultStatusId && defaultStatusId === LostClosedStatusId ) {
+      return (
+        <Row>
+          <Col md="3">
+            <Label for="statusText" className="font-weight-bold">Status:</Label>
+          </Col>
+          <Col md="9">
+            <p name="statusText">Lost/Closed</p>
+          </Col>
+        </Row>
+      )
+    } else {
+      return (
+        <Row>
+          <Col md="3">
+            <Label for="statusText" className="font-weight-bold">Status:</Label>
+          </Col>
+          <Col md="9">
+            <p name="statusText">Unqualified</p>
+          </Col>
+        </Row>
+      )
+    }
+  }, [ defaultStatusId ])
+
   const reasonDisplay = useMemo(() => {
     if ( _reasonField.value && _reasonField.value !== 0 ) {
         let reasonItem = reasons.find((item) => item.reasonId === parseInt(_reasonField.value));
         if (reasonItem) {
           return (
-            <p name="reasonText">Reason: {reasonItem.description}</p>
+            <Row>
+              <Col md="3">
+                <Label for="reasonText" className="font-weight-bold">Reason:</Label>
+              </Col>
+              <Col md="9">
+                <p name="reasonText">{reasonItem.description}</p>
+              </Col>
+            </Row>
           )
         }
     }
@@ -49,10 +81,17 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
 
   const destinationDisplay = useMemo(() => {
     if ( _destinationField.value && _destinationField.value !== 0 ) {
-      let destinationItem = destinations.find((item) => item.destinationId === parseInt(_destinationField.value));
+      let destinationItem = destinations.find((item) => item.id === parseInt(_destinationField.value));
       if (destinationItem) {
         return (
-          <p name="destinationText">Destination: {destinationItem.description}</p>
+          <Row>
+            <Col md="3">
+              <Label for="destinationText" className="font-weight-bold">Destination:</Label>
+            </Col>
+            <Col md="9">
+              <p name="destinationText">{destinationItem.description}</p>
+            </Col>
+          </Row>
         )
       }
     }
@@ -77,11 +116,6 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
     }
   }, [reasonFieldMeta, destinationFieldMeta, setFieldTouched, setModalOpen])
 
-  const handleCancel = useCallback(() => {
-    setFieldValue(name, '');
-    setModalOpen(false);
-  }, [setModalOpen, setFieldValue, name])
-
   const handleResultOfCallChange = useCallback(() => {
     clearTransactionDetails();
   }, [clearTransactionDetails])
@@ -99,12 +133,11 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
   }, [defaultStatusId, setReasons])
 
   useEffect(() => {
-    debugger;
-    if (selectedReasonId) {
-      getDestinations(selectedReasonId)
+    if (_reasonField.value && _reasonField.value !== 0) {
+      getDestinations(parseInt(_reasonField.value))
         .then(data => setDestinations(data))
     }
-  }, [selectedReasonId, setDestinations])
+  }, [_reasonField, setDestinations])
 
   useEffect(() => {
     if (resultOfCallRequiresTransactionDetails(value)) {
@@ -122,11 +155,15 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
         <Select name={name} disabled={locked} onChange={handleResultOfCallChange}>
           {resultOfCallOptions}
         </Select>
+        { resultOfCallRequiresTransactionDetails(value) && statusDisplay }
         { reasonDisplay }
         { (defaultStatusId === LostClosedStatusId) && destinationDisplay }
       </FormGroup>
       { resultOfCallRequiresTransactionDetails(value) && (
-        <TransactionDetailsModal isOpen={modalOpen} onUpdate={handleUpdate} onClose={handleCancel} stageId={salesStageField.value}/>
+        <FormGroup>
+          <Button type="button" color="primary" size="sm" onClick={() => setModalOpen(true)}>Edit Stage Details</Button>
+          <TransactionDetailsModal isOpen={modalOpen} onUpdate={handleUpdate} stageId={salesStageField.value}/>
+        </FormGroup>
       )}
     </>
   )

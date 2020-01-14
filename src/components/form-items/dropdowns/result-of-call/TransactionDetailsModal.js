@@ -81,8 +81,7 @@ export const TransactionDetailsModal = ({ isOpen, onUpdate, onClose, stageId }) 
                 { destinationInput }
             </StyledModalBody>
             <ModalFooter>
-                <Button onClick={onUpdate}>Update</Button>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onUpdate}>Update/Close</Button>
             </ModalFooter>
         </Modal>
     )
