@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormGroup, Label, Button, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { useField } from 'formik';
+import { useField, useFormikContext} from 'formik';
 import { Select } from '../../../formik-inputs';
 import { TransactionDetailsModal } from './TransactionDetailsModal';
 import { useFormikContextWrapper } from '../../../../hooks';
@@ -10,6 +10,7 @@ import { getResultOfCall, getReasons, getDestinations } from '../../../../servic
 import { paths } from './paths';
 import { useDefaultStatus } from './hooks'
 import { LostClosedStatusId } from '../../../../constants/sales-status'
+import { StyledErrorMessage } from '../../../../styled';
 
 export const ResultOfCall = ({ basePath, value, locked = false }) => {
   const [ resultofcalls, setResultOfCalls ] = useState([]);
@@ -18,6 +19,7 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
 
   const [ modalOpen, setModalOpen ] = useState(false);
   const { setFieldValue, setFieldTouched } = useFormikContextWrapper();
+  const { errors } = useFormikContext();
 
   // eslint-disable-next-line
   const [ _reasonField, reasonFieldMeta ] = useField(paths.reason);
@@ -76,8 +78,21 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
             </Row>
           )
         }
+    } else {
+      if (errors && errors.lead && errors.lead.reason) {
+        return (
+          <Row>
+            <Col md="3">
+              <Label for="reasonText" className="font-weight-bold">Reason:</Label>
+            </Col>
+            <Col md="9">
+              <StyledErrorMessage>{errors.lead.reason}</StyledErrorMessage>
+            </Col>
+          </Row>
+        )
+      }
     }
-  }, [ _reasonField, reasons ])
+  }, [ _reasonField, reasons, errors ])
 
   const destinationDisplay = useMemo(() => {
     if ( _destinationField.value && _destinationField.value !== 0 ) {
@@ -94,8 +109,21 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
           </Row>
         )
       }
+    } else {
+      if (errors && errors.lead && errors.lead.destination) {
+        return (
+          <Row>
+            <Col md="3">
+              <Label for="destinationText" className="font-weight-bold">Destination:</Label>
+            </Col>
+            <Col md="9">
+              <StyledErrorMessage>{errors.lead.destination}</StyledErrorMessage>
+            </Col>
+          </Row>
+        )
+      }
     }
-  }, [ _destinationField, destinations ])
+  }, [ _destinationField, destinations, errors ])
 
   const clearTransactionDetails = useCallback(() => {
     setFieldValue(paths.status, 0);
@@ -115,6 +143,10 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
         setFieldTouched(paths.destination);
     }
   }, [reasonFieldMeta, destinationFieldMeta, setFieldTouched, setModalOpen])
+
+  const handleClose = useCallback(() => {
+    setModalOpen(false);
+  }, [])
 
   const handleResultOfCallChange = useCallback(() => {
     clearTransactionDetails();
@@ -162,7 +194,7 @@ export const ResultOfCall = ({ basePath, value, locked = false }) => {
       { resultOfCallRequiresTransactionDetails(value) && (
         <FormGroup>
           <Button type="button" color="primary" size="sm" onClick={() => setModalOpen(true)}>Edit Stage Details</Button>
-          <TransactionDetailsModal isOpen={modalOpen} onUpdate={handleUpdate} stageId={salesStageField.value}/>
+          <TransactionDetailsModal isOpen={modalOpen} onClose={handleClose} onUpdate={handleUpdate} stageId={salesStageField.value}/>
         </FormGroup>
       )}
     </>
