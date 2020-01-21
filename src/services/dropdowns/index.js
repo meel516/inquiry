@@ -24,3 +24,5 @@ export const getFollowupActions = () => getDropdowns(createDropDownUrl(dropdownT
 export const getReasons = (statusId) => getDropdowns(createReasonsUrl(statusId))
 export const getDestinations = (reasonId) => getDropdowns(createDestinationsUrl(reasonId))
 export const getResultOfCall = () => getDropdowns(createDropDownUrl(dropdownTypes.resultOfCall))
+export const getEventDetails = (eventId) => getDropdowns(createLeadSourceDropDownUrl(dropdownTypes.inquiryLeadSource, eventId))
+export const getEventAddlDetails = (eventDetailId) => getDropdowns(createLeadSourceSubDetailDropDownUrl(dropdownTypes.inquiryLeadSourceDetail, eventDetailId))

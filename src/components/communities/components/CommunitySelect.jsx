@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -17,10 +17,14 @@ import { Input, Select, ReactSelect } from '../../formik-inputs';
 import Visit from './Visit';
 import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
 import { useFormikContextWrapper } from '../../../hooks';
+import { getEventDetails, getEventAddlDetails } from '../../../services/dropdowns';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
   const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
+  const [ eventDetails, setEventDetails ] = useState([]);
+  const [ eventAddlDetails, setEventAddlDetails ] = useState([]);
+
   const inputNames = useMemo(() => {
     return {
       communityId: `communities[${index}].communityId`,
@@ -31,13 +35,46 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
       startingPrice: `communities[${index}].startingPrice`,
       secondPersonFee: `communities[${index}].secondPersonFee`,
       communityFee: `communities[${index}].communityFee`,
+      eventDetail: `communities[${index}].eventDetail`,
+      eventAddlDetail: `communities[${index}].eventAddlDetail`,
     }
   }, [index]);
 
   const handleFollowupAction = useCallback((optn) => {
+    if (!optn.target) {
+      setFieldValue(inputNames.followUpAction, 0);
+      setEventDetails([]);
+    }
+
     setFieldValue(inputNames.note, defaultVisitNotes[optn.target.value] || '');
     setSelectedAction(optn.target.value);
-  }, [inputNames, setSelectedAction, setFieldValue]);
+  }, [inputNames, setSelectedAction, setFieldValue, setEventDetails]);
+
+  const eventDetailOptions = useMemo(() => {
+    return eventDetails.map(source => {
+      return <option key={source.value} value={source.value}>{source.text}</option>;
+    })
+  }, [eventDetails]);
+
+  useEffect(() => {
+    async function getAndSetEventDetails () {
+      const details = await getEventDetails(15); // TODO Remove hard-coding, but Special Event at Community ILS is 15!!!
+      setEventDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
+      setFieldValue(inputNames.eventDetailOptions, details);
+      debugger;
+    }
+
+    if (selectedAction && selectedAction === "52") {
+      // Action is Special Event at Community...grab the event details!
+      getAndSetEventDetails();
+    }
+  }, [selectedAction, setFieldValue, inputNames])
+
+  const eventAddlDetailOptions = useMemo(() => {
+    return eventDetails.map(source => {
+      return <option key={source.value} value={source.value}>{source.text}</option>;
+    })
+  }, [eventDetails]);
 
   return (
     <div className="communities-container">
@@ -94,6 +131,20 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
                   {followupOptions}
                 </Select>
               </FormGroup>
+            </Col>
+            <Col md="4">
+              <FormGroup>
+                <Label for={inputNames.eventDetail} className='label-format'>Event Detail</Label>
+                <Select name={inputNames.eventDetail}>
+                  {eventDetailOptions}
+                </Select>
+              </FormGroup>
+            </Col>
+            <Col md="4">
+              <Label for={inputNames.eventAddlDetail} className='label-format'>Event Add'l Detail</Label>
+              <Select name={inputNames.eventAddlDetail}>
+                {eventAddlDetailOptions}
+              </Select>
             </Col>
           </Row>
           {

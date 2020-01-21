@@ -10,5 +10,7 @@ export default {
     currentSituation: 'currentSituation',
     careTypes: 'careTypes',
     followUpActions: 'followUpActions',
-    resultOfCall: 'resultOfCall'
+    resultOfCall: 'resultOfCall',
+    eventDetail: 'eventDetail',
+    eventAddlDetail: 'eventAddlDetail'
 }
