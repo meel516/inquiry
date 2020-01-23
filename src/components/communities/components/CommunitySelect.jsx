@@ -21,6 +21,7 @@ import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
+  const [ selectedEventDetail, setSelectedEventDetail ] = useState(null);
   const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
   const [ eventDetails, setEventDetails ] = useState([]);
   const [ eventAddlDetails, setEventAddlDetails ] = useState([]);
@@ -67,13 +68,14 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
     setSelectedAction(optn.target.value);
   }, [inputNames, setSelectedAction, setFieldValue, setEventDetails]);
 
-  const onEventDetailChange = useCallback((e) => {
-    if (!e.target) {
+  const onEventDetailChange = useCallback((optn) => {
+    if (!optn.target) {
       setFieldValue(inputNames.eventDetail, 0);
       setEventAddlDetails([]);
     }
 
     setFieldValue(inputNames.eventAddlDetail, 0);
+    setSelectedEventDetail(optn.target.value);
   }, [setEventAddlDetails, setFieldValue, inputNames]);
 
   useEffect(() => {
@@ -93,22 +95,18 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
 
   useEffect(() => {
     async function getAndSetEventAddlDetails () {
-      debugger;
-      //const addldetails = await getEventAddlDetails(parseInt(inputNames.eventDetail));
-      const addldetails = await getEventAddlDetails(10007);
-      //const mappedAddlDetails = addldetails.map(subdetail => ({ value: parseInt(subdetail.value, 10), label: `${subdetail.text}` }));
-      //setEventAddlDetails(mappedAddlDetails);
+      const addldetails = await getEventAddlDetails(parseInt(selectedEventDetail));
       setEventAddlDetails(addldetails.map(addldetail => ({ ...addldetail, value: parseInt(addldetail.value, 10) })));
+      setFieldValue(inputNames.eventAddlDetailOptions, addldetails);
     }
 
-//    debugger;
-//    if (inputNames.eventDetail && parseInt(inputNames.eventDetail) > 0) {
-      // MATT NEED TO find out why inputNames.eventDetail VALUE isn't there.  Might want to set it in onEventDetailChange???
+    if (selectedEventDetail && parseInt(selectedEventDetail) > 0) {
+      // Event Detail is there...grab the event add'l details!
       getAndSetEventAddlDetails();
-    // } else {
-    //   setEventAddlDetails([]);
-    // }
-  }, [setFieldValue, inputNames])
+    } else {
+      setEventAddlDetails([]);
+    }
+  }, [selectedEventDetail, setFieldValue, inputNames])
 
   return (
     <div className="communities-container">
@@ -167,20 +165,24 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               </FormGroup>
             </Col>
             <Col md="4">
-              <FormGroup>
-                <Label for={inputNames.eventDetail} className='label-format'>Event Detail</Label>
-                <Select name={inputNames.eventDetail} onChange={onEventDetailChange}>
-                  {eventDetailOptions}
-                </Select>
-              </FormGroup>
+              { selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
+                <FormGroup>
+                  <Label for={inputNames.eventDetail} className='label-format'>Event Detail</Label>
+                  <Select name={inputNames.eventDetail} onChange={onEventDetailChange}>
+                    {eventDetailOptions}
+                  </Select>
+                </FormGroup>
+              }
             </Col>
             <Col md="4">
-              <FormGroup>
-                <Label for={inputNames.eventAddlDetail} className='label-format'>Event Add'l Detail</Label>
-                <Select name={inputNames.eventAddlDetail}>
-                  {eventAddlDetailOptions}
-                </Select>
-              </FormGroup>
+              { selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
+                <FormGroup>
+                  <Label for={inputNames.eventAddlDetail} className='label-format'>Event Add'l Detail</Label>
+                  <Select name={inputNames.eventAddlDetail}>
+                    {eventAddlDetailOptions}
+                  </Select>
+                </FormGroup>
+              }
             </Col>
           </Row>
           {
