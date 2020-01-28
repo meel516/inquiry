@@ -12,6 +12,8 @@ const requiredCommunityResultOfCallOptions = new Set([
     '6', // Webform No Response
 ])
 
+const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
+
 export const resultOfCallRequiresTransactionDetails = roc => resultOfCallsWithTransactionDetails.has(roc);
 
 export const digitLengthLessThan = (max) => {
@@ -54,7 +56,7 @@ const getDuplicateCommunitiesErrors = (communities) => {
 
 const getCommunityErrors = (community) => {
     const errors = {};
-    const { communityId, note, followUpAction, followupDate } = community;
+    const { communityId, note, followUpAction, followupDate, eventDetail, eventAddlDetail } = community;
 
     if (!communityId)
         errors.communityId = 'Community is required';
@@ -65,8 +67,17 @@ const getCommunityErrors = (community) => {
     if (followUpAction) {
         if (!followupDate)
             errors.followupDate = 'Next Steps Date is required';
+        
         if (!note || !note.trim())
             errors.note = 'Description is required';
+        
+        if (parseInt(followUpAction) === SMS_FUACTION_SEAC) {
+            if (!eventDetail || eventDetail === 0)
+                errors.eventDetail = 'Event Detail is required'
+
+            if (!eventAddlDetail || eventAddlDetail === 0)
+                errors.eventAddlDetail = "Event Add'l Detail is required"
+        }
     }
 
     return isEmpty(errors) ? null : errors;
