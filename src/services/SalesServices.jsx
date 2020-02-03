@@ -437,8 +437,8 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email, submit the request.
-      if (lead && lead.influencer && lead.influencer.email) {
+      // Submit every request to Eloqua.
+      if (lead && lead.influencer) {
         await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
