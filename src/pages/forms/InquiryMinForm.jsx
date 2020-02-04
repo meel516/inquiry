@@ -34,7 +34,7 @@ const InquiryForm = ({
 
   const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson, resultOfCall }} = values;
   const isLocked = !!leadId;
-  const isExistingContact = !!influencer.contactId;
+  const isExistingContact = (influencer ? !!influencer.contactId : null);
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
   const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
 
@@ -84,7 +84,7 @@ const InquiryForm = ({
         <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
-        <BudgetSection hasSecondPerson={secondPerson.selected} />
+        <BudgetSection hasSecondPerson={(secondPerson ? secondPerson.selected : null)} />
         <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} />
         {
           !status.readOnly && (

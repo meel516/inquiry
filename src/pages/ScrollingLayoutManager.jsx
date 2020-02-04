@@ -26,6 +26,7 @@ class LayoutManager extends React.Component {
     const { location: { search }} = this.props;
     const { guid, umid, leadId } = queryString.parse(search);
 
+    debugger;
     let lead = {};
     if (umid) {
       lead.umid = umid;
