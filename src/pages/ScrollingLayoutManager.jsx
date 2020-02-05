@@ -27,12 +27,14 @@ class LayoutManager extends React.Component {
     const { guid, umid, leadId } = queryString.parse(search);
 
     let lead = {};
-    if (umid) {
-      lead.umid = umid;
-    } else if (guid || leadId) {
+    if (guid || leadId) {
       lead = await this.salesapi.getLeadById({ guid, leadId });
     } else {
       lead = ObjectMappingService.createEmptyLead();
+    }
+
+    if (umid) {
+      lead.umid = umid;
     }
     
     this.checkAuthentication();
