@@ -24,7 +24,7 @@ class LayoutManager extends React.Component {
 
   componentDidMount = async () => {
     const { location: { search }} = this.props;
-    const { guid, umid, leadId } = queryString.parse(search);
+    const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
     let lead = {};
     if (guid || leadId) {
@@ -33,8 +33,20 @@ class LayoutManager extends React.Component {
       lead = ObjectMappingService.createEmptyLead();
     }
 
+    // Populate UMID, if passed into URL string.
     if (umid) {
       lead.umid = umid;
+    }
+
+    // Populate Lead Source data, if passed into URL string.
+    if (ils) {
+      lead.leadSource = ils;
+    }
+    if (ilsd) {
+      lead.leadSourceDetail = ilsd;
+    }
+    if (ilssd) {
+      lead.leadSourceSubDetail = parseInt(ilssd);
     }
     
     this.checkAuthentication();
