@@ -31,6 +31,18 @@ class LayoutManager extends React.Component {
       lead = await this.salesapi.getLeadById({ guid, leadId });
     } else {
       lead = ObjectMappingService.createEmptyLead();
+
+      // Populate Lead Source data, if passed into URL string.
+      // NOTE: This is done ONLY on an emply lead!
+      if (ils) {
+        lead.leadSource = ils;
+      }
+      if (ilsd) {
+        lead.leadSourceDetail = ilsd;
+      }
+      if (ilssd) {
+        lead.leadSourceSubDetail = parseInt(ilssd);
+      }
     }
 
     // Populate UMID, if passed into URL string.
@@ -38,17 +50,6 @@ class LayoutManager extends React.Component {
       lead.umid = umid;
     }
 
-    // Populate Lead Source data, if passed into URL string.
-    if (ils) {
-      lead.leadSource = ils;
-    }
-    if (ilsd) {
-      lead.leadSourceDetail = ilsd;
-    }
-    if (ilssd) {
-      lead.leadSourceSubDetail = parseInt(ilssd);
-    }
-    
     this.checkAuthentication();
     this.setState({ lead });
   }
