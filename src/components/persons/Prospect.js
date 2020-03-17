@@ -3,10 +3,12 @@ import { Col, FormGroup, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { Input } from '../formik-inputs';
 import { Person } from './components/Person';
+import { useFormikContextWrapper } from '../../hooks';
 
 const TYPE = 'prospect';
 
-export const Prospect = ({ basePath, hideProspect = false, locked = false }) => {
+export const Prospect = ({ basePath }) => {
+    const { isLocked, hideProspect } = useFormikContextWrapper();
     const agePath = `${basePath}.${TYPE}.age`;
 
     return (
@@ -16,7 +18,7 @@ export const Prospect = ({ basePath, hideProspect = false, locked = false }) => 
                 <Label className="section-header">Prospect</Label>
             </Col>
         </Row>
-        { !hideProspect && (<Person basePath={basePath} type={TYPE} locked={locked} />) }
+        { !hideProspect && (<Person basePath={basePath} type={TYPE} locked={isLocked} />) }
         <Row>
             <Col xs="1" md="6">
                 <FormGroup>

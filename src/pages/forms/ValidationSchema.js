@@ -1,5 +1,6 @@
 import { string, number, object, boolean, array, mixed } from 'yup';
-import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber } from './validators';
+import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber, resultOfCallRequiresTransactionDetails } from './validators';
+import { LostClosedStatusId } from '../../constants/sales-status'
 
 const numberOrEmptyString = () => {
   const schema = mixed();
@@ -28,9 +29,6 @@ const prospectSchema = {
   email: string()
     .email("Email must be valid")
     .max(100, 'Email can be at most 100 characters'),
-  address: object().shape({
-    line1: string().max(40, 'Address 1 can be at most 40 characters'),
-  }),
   age: numberOrEmptyString()
     .notRequired()
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
@@ -139,8 +137,18 @@ const mainFormValidationSchema = object().shape({
       passionsPersonality: string().max(4000, 'Passions & Personality can be at most 4000 characters'),
       financialSituation: string().max(4000, 'Financial Situation can be at most 4000 characters'),
       additionalNotes: string().max(4000, 'Additional Notes can be at most 4000 characters'),
-      secondPerson: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
+      secondPersonNote: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
+    reason: number().when('resultOfCall', {
+      is: roc => resultOfCallRequiresTransactionDetails(roc),
+      then: number().test('required-number-value', 'Reason is required', nonZeroNumber),
+      otherwise: number()
+    }),
+    destination: number().when(['reason', 'status'], {
+      is: (reason, status) => (status === LostClosedStatusId) && !!reason,
+      then: number().test('required-number-value', 'Destination is required', nonZeroNumber),
+      otherwise: number()
+    })
   }),
   communities: array().of(object()), // all community validation is done outside of yup in ./validators.js
 })

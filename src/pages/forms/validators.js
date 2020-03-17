@@ -1,12 +1,20 @@
 import { string } from 'yup';
 import { isEmpty } from 'lodash';
 
+const resultOfCallsWithTransactionDetails = new Set([
+    '3', // nonqualified lead
+    '4', // Non Lead Call
+]);
 const requiredCommunityResultOfCallOptions = new Set([
-    'Visit/Assessment/Home Visit Scheduled',
-    'New Lead No Visit',
-    'Special Event RSVP',
-    'Webform No Response',
+    '1', // Visit/Assessment/Home Visit Scheduled
+    '2', // New Lead No Visit
+    '5', // Special Event RSVP
+    '6', // Webform No Response
 ])
+
+const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
+
+export const resultOfCallRequiresTransactionDetails = roc => resultOfCallsWithTransactionDetails.has(roc);
 
 export const digitLengthLessThan = (max) => {
     return function (value) {
@@ -48,7 +56,7 @@ const getDuplicateCommunitiesErrors = (communities) => {
 
 const getCommunityErrors = (community) => {
     const errors = {};
-    const { communityId, note, followUpAction, followupDate } = community;
+    const { communityId, note, followUpAction, followupDate, eventDetail, eventAddlDetail } = community;
 
     if (!communityId)
         errors.communityId = 'Community is required';
@@ -59,8 +67,17 @@ const getCommunityErrors = (community) => {
     if (followUpAction) {
         if (!followupDate)
             errors.followupDate = 'Next Steps Date is required';
+        
         if (!note || !note.trim())
             errors.note = 'Description is required';
+        
+        if (parseInt(followUpAction) === SMS_FUACTION_SEAC) {
+            if (!eventDetail || eventDetail === 0)
+                errors.eventDetail = 'Event Detail is required'
+
+            if (!eventAddlDetail || eventAddlDetail === 0)
+                errors.eventAddlDetail = "Event Add'l Detail is required"
+        }
     }
 
     return isEmpty(errors) ? null : errors;

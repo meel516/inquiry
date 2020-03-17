@@ -10,7 +10,8 @@ export const Select = ({
     onBlur,
     children,
     disabled = false,
-    placeholder = 'Select One'
+    placeholder = 'Select One',
+    placeholderValue = '',
 }) => {
     const { status: { readOnly } } = useFormikContext();
     const [ field, meta ] = useField(name);
@@ -27,7 +28,7 @@ export const Select = ({
     return (
         <>
             <Input type='select' { ...field } { ...props }>
-                <option value=''>{placeholder}</option>
+                <option value={placeholderValue}>{placeholder}</option>
                 {children}
             </Input>
             { meta.touched && meta.error ? (
@@ -40,6 +41,7 @@ export const Select = ({
 Select.propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    placeholderValue: PropTypes.any,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     disabled: PropTypes.bool,

@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 import { PropTypes } from 'prop-types';
-import { useFormikContext } from 'formik';
 import { FormGroup, Label } from 'reactstrap';
 import { Select } from '../../formik-inputs';
 import { ObjectMappingService } from '../../../services/Types';
+import { useFormikContextWrapper } from '../../../hooks';
 
 export const CallingFor = ({ basePath, locked = false }) => {
     const path = `${basePath}.callingFor`;
-    const { setFieldValue } = useFormikContext();
+    const { setFieldValue } = useFormikContextWrapper();
 
     const onCallingForChange = useCallback((e) => {
         const { value } = e.target;

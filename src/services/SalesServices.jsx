@@ -8,6 +8,7 @@ import { get } from 'lodash'
 import createEloquaCdo from './eloqua/create-cdo'
 
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
+import handleResultOfCall from '../services/handle-result-of-call'
 
 // business logic ------
 class SalesAPIService {
@@ -348,6 +349,8 @@ class SalesAPIService {
       await this.submitSecondPerson(secondPersonRequest);
     }
 
+    await handleResultOfCall(lead, user);
+
     return leadId;
   }
 
@@ -434,8 +437,8 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email, submit the request.
-      if (lead && lead.influencer && lead.influencer.email) {
+      // Submit every request to Eloqua.
+      if (lead && lead.influencer) {
         await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
@@ -504,7 +507,7 @@ class SalesAPIService {
       }
     }
     catch (err) {
-
+      // todo: handle errors here
     }
 
     try {
@@ -514,7 +517,7 @@ class SalesAPIService {
       }
     }
     catch (err) {
-
+      // todo: handle errors here
     }
   }
 
