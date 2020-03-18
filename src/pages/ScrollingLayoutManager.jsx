@@ -24,19 +24,32 @@ class LayoutManager extends React.Component {
 
   componentDidMount = async () => {
     const { location: { search }} = this.props;
-    const { guid, umid, leadId } = queryString.parse(search);
+    const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
     let lead = {};
     if (guid || leadId) {
       lead = await this.salesapi.getLeadById({ guid, leadId });
     } else {
       lead = ObjectMappingService.createEmptyLead();
+
+      // Populate Lead Source data, if passed into URL string.
+      // NOTE: This is done ONLY on an emply lead!
+      if (ils) {
+        lead.leadSource = ils;
+      }
+      if (ilsd) {
+        lead.leadSourceDetail = ilsd;
+      }
+      if (ilssd) {
+        lead.leadSourceSubDetail = parseInt(ilssd);
+      }
     }
 
+    // Populate UMID, if passed into URL string.
     if (umid) {
       lead.umid = umid;
     }
-    
+
     this.checkAuthentication();
     this.setState({ lead });
   }

@@ -35,7 +35,6 @@ class SalesAPIService {
     return await this.getLeadByUrl(leadUrl);
   }
 
-  // TODO: need to build this out, so that system can fetch lead by Id not just guid
   async getLeadByLeadId(leadId, influencerContactIdToLoad) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl, influencerContactIdToLoad);
@@ -532,9 +531,17 @@ class SalesAPIService {
     return lead
   }
 
+  processReturnResults(res) {
+    if (res && res.ok) {
+      return res.json();
+    } else {
+      return null;
+    }
+  }
+
   createFetch(url) {
     return fetch(url, { mode: 'cors', cache: 'no-cache' })
-      .then((res) => res.json())
+      .then((res) => this.processReturnResults(res))
   }
 
   log(msg) {
