@@ -15,4 +15,6 @@ export const defaultVisitNotes = {
   9: "Unfortunately, the Connection Center Team has not been able to reach this customer.  This is a viable lead.  Please continue to follow-up.",
   // Special Event at Community
   52: "This lead called in to RSVP for a special event being hosted at your community. Please reach out make an introduction and provide any additional information necessary for them to have a great experience at Brookdale!\n\nThe details of our conversation with this lead regarding the event they desire to attend are in an email that was sent to your Sales House Account and included in the Notes section of this lead.",
+  // Visit - Virtual
+  59: "The Brookdale Senior Living Advisors Team has scheduled a virtual community visit for this lead. Please reach out to this customer prior to their visit to confirm and to introduce yourself.  Let's get a move-in!",
 };
