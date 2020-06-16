@@ -27,8 +27,12 @@ class LayoutManager extends React.Component {
     const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
     let lead = {};
+    lead.prospectOnlyHasCC = false; // Default
     if (guid || leadId) {
       lead = await this.salesapi.getLeadById({ guid, leadId });
+      
+      // We need to set a property to keep track if the ONLY COI for this Prospect ContactId is at the CC.
+      lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
     } else {
       lead = ObjectMappingService.createEmptyLead();
 
@@ -74,7 +78,7 @@ class LayoutManager extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-2">
-              <Section />
+              <Section lead={lead}/>
             </div>
             <div className="col-7 inquiry-form">
               {
