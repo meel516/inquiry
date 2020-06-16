@@ -386,7 +386,6 @@ class SalesAPIService {
     if (prospectContactId) {
       const leadCOIs = await this.retrieveLeadDataForContactId(prospectContactId);
       // Check if the list is only ONE and if it's from the Contact Center.
-      debugger;
       if (leadCOIs && leadCOIs.length === 1) {
         if (leadCOIs[0].buildingid === 225707) {
           return true;
