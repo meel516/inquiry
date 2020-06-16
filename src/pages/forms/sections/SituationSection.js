@@ -15,7 +15,7 @@ export const SituationSection = React.memo(() => (
             </Col>
         </Row>
         <AdditionalCareElements basePath='lead' />
-        <Prospect basePath='lead' />
+        <Prospect basePath='lead' prospectOnlyInCC='lead.prospectOnlyHasCC'/>
         <CareType basePath='lead' />
     </StyledFormSection>
 ))

@@ -382,6 +382,20 @@ class SalesAPIService {
     return prospect;
   }
 
+  async prospectOnlyHasContactCenterCOI(prospectContactId) {
+    if (prospectContactId) {
+      const leadCOIs = await this.retrieveLeadDataForContactId(prospectContactId);
+      // Check if the list is only ONE and if it's from the Contact Center.
+      if (leadCOIs && leadCOIs.length === 1) {
+        if (leadCOIs[0].buildingid === 225707) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 

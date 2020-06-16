@@ -8,7 +8,7 @@ import { useFormikContextWrapper } from '../../hooks';
 const TYPE = 'prospect';
 
 export const Prospect = ({ basePath }) => {
-    const { isLocked, hideProspect } = useFormikContextWrapper();
+    const { isLocked, hideProspect, prospectOnlyInCC } = useFormikContextWrapper();
     const agePath = `${basePath}.${TYPE}.age`;
 
     return (
@@ -18,7 +18,7 @@ export const Prospect = ({ basePath }) => {
                 <Label className="section-header">Prospect</Label>
             </Col>
         </Row>
-        { !hideProspect && (<Person basePath={basePath} type={TYPE} locked={isLocked} />) }
+        { !hideProspect && (<Person basePath={basePath} type={TYPE} locked={isLocked && !prospectOnlyInCC} />) }
         <Row>
             <Col xs="1" md="6">
                 <FormGroup>
@@ -39,6 +39,7 @@ Prospect.propTypes = {
     basePath: PropTypes.string.isRequired,
     hideProspect: PropTypes.bool,
     locked: PropTypes.bool,
+    prospectOnlyInCC: PropTypes.bool.isRequired,
 }
 
 Prospect.defaultProps = {
