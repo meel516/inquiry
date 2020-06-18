@@ -61,6 +61,9 @@ export const ContactMatchesModal = ({ contact, isOpen, onClose, onSubmit }) => {
                 // to the service, so we load the correct influencer into the app.
                 const influencerContactIdToLoad = row.inflContactId || '';
                 const lead = await salesService.getLeadByLeadId(loadedLeadId, influencerContactIdToLoad);
+
+                // We need to set a property to keep track if the ONLY COI for this Prospect ContactId is at the CC.
+                lead.prospectOnlyHasCC = await salesService.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
                 submitModal(lead);
             }
         }
