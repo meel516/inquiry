@@ -37,7 +37,7 @@ const InquiryForm = ({
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
   const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
-  const prospectOnlyInCC = (values.lead.prospect && values.lead.prospect.contactId && values.lead.prospectOnlyHasCC);
+  const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
 
   const wrappedFormikValues = useMemo(() => {
     return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC };
