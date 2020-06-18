@@ -32,7 +32,12 @@ class LayoutManager extends React.Component {
       lead = await this.salesapi.getLeadById({ guid, leadId });
       
       // We need to set a property to keep track if the ONLY COI for this Prospect ContactId is at the CC.
-      lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
+      // NOTE: Check to see if Prospect is null...if so, that means the lead.influencer IS the prospect.
+      if (lead.prospect && !lead.prospect.contactId) {
+        lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.influencer.contactId);
+      } else {
+        lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
+      }
     } else {
       lead = ObjectMappingService.createEmptyLead();
 
