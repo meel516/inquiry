@@ -468,6 +468,17 @@ class SalesAPIService {
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
     }
 
+    // Handle swap logic, if it exists.
+    if (lead && lead.swapProspect) {
+      lead.hasInfluencers = 0;
+
+      // if (lead && lead.influencer && lead.influencer.influencerId !== "") {
+      //   lead.influencer.influencerId = "";
+      // }
+
+      lead.prospect = ObjectMappingService.createEmptyContact();
+    }
+
     let leadId = null;
     const communityList = [...communities];
 

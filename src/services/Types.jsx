@@ -301,6 +301,14 @@ class ObjectMappingService {
             salesLead.leadId = lead.leadId;
         }
 
+        if (lead.swapProspect) {
+            salesLead.swapProspect = lead.swapProspect;
+        }
+
+        if (lead.editContact) {
+            salesLead.editContact = lead.editContact;
+        }
+
         return salesLead;
     }
 
