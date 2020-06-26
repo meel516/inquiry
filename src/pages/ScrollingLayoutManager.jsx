@@ -27,7 +27,6 @@ class LayoutManager extends React.Component {
     const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
     let lead = {};
-    lead.prospectOnlyHasCC = false; // Default
     if (guid || leadId) {
       lead = await this.salesapi.getLeadById({ guid, leadId });
       
@@ -40,6 +39,7 @@ class LayoutManager extends React.Component {
       }
     } else {
       lead = ObjectMappingService.createEmptyLead();
+      lead.prospectOnlyHasCC = false; // Default
 
       // Populate Lead Source data, if passed into URL string.
       // NOTE: This is done ONLY on an emply lead!

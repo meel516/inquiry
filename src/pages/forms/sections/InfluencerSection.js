@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { Influencer } from '../../../components/persons';
 import { StyledFormSection } from './styled';
 
-export const InfluencerSection = React.memo(({ influencer, updateLead, isLeadFromContactCenterBuilding, isLocked, prospectOnlyInCC }) => (
+export const InfluencerSection = React.memo(({ influencer, updateLead, isLeadFromContactCenterBuilding, isLocked, editContactSelected }) => (
     <StyledFormSection id='contactInfo'>
         <Influencer
             basePath='lead'
             contact={influencer}
             updateLead={updateLead}
             isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
-            locked={isLocked && !prospectOnlyInCC}
+            locked={isLocked && !editContactSelected}
         />
     </StyledFormSection>
 ))
@@ -21,5 +21,5 @@ InfluencerSection.propTypes = {
     updateLead: PropTypes.func.isRequired,
     isLeadFromContactCenterBuilding: PropTypes.func.isRequired,
     isLocked: PropTypes.bool.isRequired,
-    prospectOnlyInCC: PropTypes.bool.isRequired,
+    editContactSelected: PropTypes.bool.isRequired,
 }
