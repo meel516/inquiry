@@ -37,7 +37,7 @@ const InquiryForm = ({
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
-  const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
+  const hideProspect = (callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId)) || values.lead.swapProspect;
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
   const editContactSelected = (values.lead.editContact);
 
