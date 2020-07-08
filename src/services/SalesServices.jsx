@@ -35,7 +35,6 @@ class SalesAPIService {
     return await this.getLeadByUrl(leadUrl);
   }
 
-  // TODO: need to build this out, so that system can fetch lead by Id not just guid
   async getLeadByLeadId(leadId, influencerContactIdToLoad) {
     const leadUrl = this.createApiUri(`leads/${leadId}`)
     return await this.getLeadByUrl(leadUrl, influencerContactIdToLoad);
@@ -383,6 +382,20 @@ class SalesAPIService {
     return prospect;
   }
 
+  async prospectOnlyHasContactCenterCOI(prospectContactId) {
+    if (prospectContactId) {
+      const leadCOIs = await this.retrieveLeadDataForContactId(prospectContactId);
+      // Check if the list is only ONE and if it's from the Contact Center.
+      if (leadCOIs && leadCOIs.length === 1) {
+        if (leadCOIs[0].buildingid === 225707) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
@@ -453,6 +466,17 @@ class SalesAPIService {
     if (lead.leadId == null) {
       // We should have a leadId here, if not throw new error.
       throw new AppError('412', 'Update attempted, but Lead record does not exist.')
+    }
+
+    // Handle swap logic, if it exists.
+    if (lead && lead.swapProspect) {
+      lead.hasInfluencers = 0;
+
+      // if (lead && lead.influencer && lead.influencer.influencerId !== "") {
+      //   lead.influencer.influencerId = "";
+      // }
+
+      lead.prospect = ObjectMappingService.createEmptyContact();
     }
 
     let leadId = null;
@@ -532,9 +556,17 @@ class SalesAPIService {
     return lead
   }
 
+  processReturnResults(res) {
+    if (res && res.ok) {
+      return res.json();
+    } else {
+      return null;
+    }
+  }
+
   createFetch(url) {
     return fetch(url, { mode: 'cors', cache: 'no-cache' })
-      .then((res) => res.json())
+      .then((res) => this.processReturnResults(res))
   }
 
   log(msg) {

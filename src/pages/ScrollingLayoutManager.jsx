@@ -24,19 +24,41 @@ class LayoutManager extends React.Component {
 
   componentDidMount = async () => {
     const { location: { search }} = this.props;
-    const { guid, umid, leadId } = queryString.parse(search);
+    const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
     let lead = {};
     if (guid || leadId) {
       lead = await this.salesapi.getLeadById({ guid, leadId });
+      
+      // We need to set a property to keep track if the ONLY COI for this Prospect ContactId is at the CC.
+      // NOTE: Check to see if Prospect is null...if so, that means the lead.influencer IS the prospect.
+      if (lead.prospect && !lead.prospect.contactId) {
+        lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.influencer.contactId);
+      } else {
+        lead.prospectOnlyHasCC = await this.salesapi.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
+      }
     } else {
       lead = ObjectMappingService.createEmptyLead();
+      lead.prospectOnlyHasCC = false; // Default
+
+      // Populate Lead Source data, if passed into URL string.
+      // NOTE: This is done ONLY on an emply lead!
+      if (ils) {
+        lead.leadSource = ils;
+      }
+      if (ilsd) {
+        lead.leadSourceDetail = ilsd;
+      }
+      if (ilssd) {
+        lead.leadSourceSubDetail = parseInt(ilssd);
+      }
     }
 
+    // Populate UMID, if passed into URL string.
     if (umid) {
       lead.umid = umid;
     }
-    
+
     this.checkAuthentication();
     this.setState({ lead });
   }
@@ -61,7 +83,7 @@ class LayoutManager extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-2">
-              <Section />
+              <Section lead={lead}/>
             </div>
             <div className="col-7 inquiry-form">
               {

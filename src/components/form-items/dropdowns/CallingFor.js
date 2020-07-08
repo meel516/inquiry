@@ -7,15 +7,23 @@ import { useFormikContextWrapper } from '../../../hooks';
 
 export const CallingFor = ({ basePath, locked = false }) => {
     const path = `${basePath}.callingFor`;
-    const { setFieldValue } = useFormikContextWrapper();
+    const { setFieldValue, editContactSelected } = useFormikContextWrapper();
 
     const onCallingForChange = useCallback((e) => {
         const { value } = e.target;
+
+        // Default Prospect Swap flag.
+        setFieldValue(`${basePath}.swapProspect`, false);
     
         if (value === 'Myself') {
-          setFieldValue(`${basePath}.prospect`, ObjectMappingService.createEmptyContact());
+            if (editContactSelected) {
+                // Swap Influencer with Prospect!!!
+                setFieldValue(`${basePath}.swapProspect`, true);
+            } else {
+                setFieldValue(`${basePath}.prospect`, ObjectMappingService.createEmptyContact());
+            }
         }
-    }, [basePath, setFieldValue]);
+    }, [basePath, setFieldValue, editContactSelected]);
       
     return (
         <FormGroup>

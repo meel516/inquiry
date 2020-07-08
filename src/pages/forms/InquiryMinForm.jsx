@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
+import { Button, Row, Col } from 'reactstrap';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/alert-confirm';
@@ -36,11 +37,17 @@ const InquiryForm = ({
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
-  const hideProspect = callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId);
+  const hideProspect = (callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId)) || values.lead.swapProspect;
+  const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
+  const editContactSelected = (values.lead.editContact);
+
+  const editContact = useCallback(() => {
+    setFieldValue(`lead.editContact`, true);
+  }, [ setFieldValue ]);
 
   const wrappedFormikValues = useMemo(() => {
-    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched };
-  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched ]);
+    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected };
+  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected ]);
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
@@ -81,11 +88,16 @@ const InquiryForm = ({
         <section>
           <div ref={TOP}></div>
         </section>
-        <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} />
+        <Row>
+          <Col>
+            <Button color="primary" size="sm" aria-pressed="false" disabled={!prospectOnlyInCC} onClick={editContact}>Edit Contact</Button>
+          </Col>
+        </Row>
+        <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} editContactSelected={editContactSelected} />
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
         <BudgetSection hasSecondPerson={secondPerson.selected} />
-        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} />
+        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead}/>
         {
           !status.readOnly && (
             <div className="float-right">
