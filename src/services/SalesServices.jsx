@@ -1,6 +1,6 @@
 //import React from 'react'
 import { isContactCenter, createCommunity, containContactCenter } from './community-services'
-import convertToISODate from '../utils/convert-to-iso-date'
+import convertToDateTimeStr from '../utils/convert-to-dateTimeStr'
 import { ObjectMappingService } from './Types'
 import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
@@ -434,7 +434,7 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToISODate(community.followupDate);
+        community.followupDate = convertToDateTimeStr(community.followupDate);
         formattedCommunityList.push(community);
       })
     }
@@ -519,7 +519,7 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToISODate(community.followupDate);
+        community.followupDate = convertToDateTimeStr(community.followupDate);
         formattedCommunityList.push(community);
       })
     }
