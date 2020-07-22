@@ -14,4 +14,5 @@ export default [
     { name: "Free Meal Offer QRG", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/Free%20Meal%20Offer/Free%20Meal%20Offer%20QRG.docx" },
     { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/July%20Veterans%20Events%202018/Special%20Event%20RSVP%20Guide.docx" },
     { name: "BKD Webinar Sign Up", location: "https://www.brookdale.com/en/meetings/webinar.html" },
+    { name: "BHS-PL Referral Form", location: "https://bkdcontactcenter.host/cc-bhs-pl-referral-form/" },
   ]
