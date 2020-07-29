@@ -14,10 +14,26 @@
 runtime: nodejs
 env: flex
 
-manual_scaling:
-  instances: 1
+#manual_scaling:
+#  instances: 1
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 3
+  cool_down_period_sec: 180
+  cpu_utilization:
+    target_utilization: 0.5
+
+resources:
+  cpu: 1
+  memory_gb: 1.0
+  disk_size_gb: 10
 
 env_variables:
+  #PROD
+  #REACT_APP_SALES_URL: https://sales.assisted.com/Sims
+  #REACT_APP_SALES_SERVICES_URL: https://sales-services.brookdale.com
+  #REACT_APP_OKTA_URL: https://brookdale.okta.com
+  #UAT
   REACT_APP_SALES_URL: https://sales.uat.assisted.com/Sims
   REACT_APP_SALES_SERVICES_URL: https://sales-services.uat.brookdale.com
   REACT_APP_OKTA_URL: https://brookdaledev.oktapreview.com
