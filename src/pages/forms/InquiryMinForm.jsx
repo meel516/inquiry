@@ -40,6 +40,7 @@ const InquiryForm = ({
   const hideProspect = (callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId)) || values.lead.swapProspect;
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
   const editContactSelected = (values.lead.editContact);
+  const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
   const editContact = useCallback(() => {
     setFieldValue(`lead.editContact`, true);
@@ -97,7 +98,7 @@ const InquiryForm = ({
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
         <BudgetSection hasSecondPerson={secondPerson.selected} />
-        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead}/>
+        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
           !status.readOnly && (
             <div className="float-right">

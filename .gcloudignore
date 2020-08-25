@@ -28,6 +28,7 @@ yarn-error.log
 package-lock.json
 jsconfig.json
 README.md
+yarn.lock
 
 # excludes certain files from the source
 src/stories/*
