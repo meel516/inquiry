@@ -9,7 +9,6 @@ const requiredCommunityResultOfCallOptions = new Set([
     '1', // Visit/Assessment/Home Visit Scheduled
     '2', // New Lead No Visit
     '5', // Special Event RSVP
-    '6', // Webform No Response
 ])
 
 const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
