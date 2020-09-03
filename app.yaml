@@ -11,32 +11,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START app_yaml]
-#runtime: nodejs
-#env: flex
-runtime: nodejs12
-env: standard
-instance_class: F2
+# flex config start
+runtime: nodejs
+env: flex
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 3
+  cool_down_period_sec: 180
+  cpu_utilization:
+    target_utilization: 0.5
+
+resources:
+  cpu: 1
+  memory_gb: 1.0
+  disk_size_gb: 10
+# flex config stop
+
+# standard config start
+#runtime: nodejs12
+#env: standard
+#instance_class: F2
 
 #manual_scaling:
 #  instances: 1
-automatic_scaling:
-#  min_num_instances: 1
-#  max_num_instances: 3
-#  cool_down_period_sec: 180
-#  cpu_utilization:
-#    target_utilization: 0.5
-  min_idle_instances: 1
-  max_idle_instances: automatic
-  min_pending_latency: automatic
-  max_pending_latency: automatic
-  target_cpu_utilization: 0.75
-  min_instances: 1
-  max_instances: 3
-
-#resources:
-#  cpu: 1
-#  memory_gb: 1.0
-#  disk_size_gb: 10
+#  min_idle_instances: 1
+#  max_idle_instances: automatic
+#  min_pending_latency: automatic
+#  max_pending_latency: automatic
+#  target_cpu_utilization: 0.75
+#  min_instances: 1
+#  max_instances: 3
+# standard config stop
 
 env_variables:
   #PROD
