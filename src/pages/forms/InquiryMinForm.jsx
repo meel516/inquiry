@@ -39,7 +39,7 @@ const InquiryForm = ({
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
   const hideProspect = (callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId)) || values.lead.swapProspect;
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
-  const editContactSelected = (values.lead.editContact);
+  const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
   const editContact = useCallback(() => {

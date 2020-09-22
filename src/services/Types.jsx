@@ -35,6 +35,7 @@ class ObjectMappingService {
             email: "",
             phone: this.createEmptyPhone(),
             veteranStatus: undefined,
+            textOptInCheckbox: false,
         }
     }
 
@@ -121,7 +122,8 @@ class ObjectMappingService {
             contact.age = salesContact.age;
             contact.gender = salesContact.gender;
             contact.veteranStatus = salesContact.veteranStatus;
-            //contact.currentSituation = salesContact.currentSituation;
+            contact.textOptInCheckbox = salesContact.textOptInInd;
+            
             const address = this.createEmptyAddress();
             if (salesContact.address) {
                 const salesAddress = salesContact.address;
@@ -207,6 +209,7 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
+        salesContact.textOptInInd = influencer.textOptInCheckbox
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
@@ -264,6 +267,7 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
+            salesContact.textOptInInd = influencer.textOptInCheckbox
             addContactAddressToSalesContact(salesContact, influencer)
             addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
@@ -278,6 +282,7 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
+            salesContact.textOptInInd = prospect.textOptInCheckbox
             addContactPhoneToSalesContact(salesContact, prospect)
         }
 

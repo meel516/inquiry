@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Col, FormGroup, Label, Row } from 'reactstrap';
 import { Input, NumberFormat, Select } from '../../formik-inputs';
 import { getPhoneTypes } from '../../../services/dropdowns';
+import { Checkbox } from '../../form-items/Checkbox';
 
 export const Person = React.memo(({ basePath, type, locked, onDuplicateFieldChange, onDuplicateFieldBlur }) => {
     const [ phoneTypes, setPhoneTypes ] = useState([]);
@@ -15,6 +16,7 @@ export const Person = React.memo(({ basePath, type, locked, onDuplicateFieldChan
             type: `${basePath}.${type}.phone.type`,
         },
         email: `${basePath}.${type}.email`,
+        textOptInCheckbox: `${basePath}.${type}.textOptInCheckbox`,
     }), [basePath, type]);
 
     useEffect(() => {
@@ -90,6 +92,9 @@ export const Person = React.memo(({ basePath, type, locked, onDuplicateFieldChan
                             disabled={locked}
                         />
                     </FormGroup>
+                </Col>
+                <Col className='align-self-center'>
+                    <Checkbox name={inputNames.textOptInCheckbox} label='Text Messaging Opt In' disabled={locked} />
                 </Col>
             </Row>
         </>
