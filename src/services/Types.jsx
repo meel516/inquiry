@@ -35,7 +35,6 @@ class ObjectMappingService {
             email: "",
             phone: this.createEmptyPhone(),
             veteranStatus: undefined,
-            textOptInCheckbox: false,
         }
     }
 
@@ -93,6 +92,7 @@ class ObjectMappingService {
         lead.financialOptions = defaultFinancialOptions;
         lead.drivers = defaultDrivers;
         lead.notes = {}
+        lead.textOptInCheckbox = false;
 
         return lead;
     }
@@ -209,7 +209,7 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
-        salesContact.textOptInInd = influencer.textOptInCheckbox
+        //salesContact.textOptInInd = influencer.textOptInCheckbox
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
@@ -256,6 +256,7 @@ class ObjectMappingService {
 
         let salesContact = {}
         const salesLead = createSalesLead(salesContact)
+        salesContact.textOptInInd = !!lead.textOptInCheckbox
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP' && (!lead.hasInfluencers || lead.hasInfluencers === 0)) {
@@ -267,7 +268,6 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
-            salesContact.textOptInInd = influencer.textOptInCheckbox
             addContactAddressToSalesContact(salesContact, influencer)
             addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
@@ -282,7 +282,6 @@ class ObjectMappingService {
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
-            salesContact.textOptInInd = prospect.textOptInCheckbox
             addContactPhoneToSalesContact(salesContact, prospect)
         }
 

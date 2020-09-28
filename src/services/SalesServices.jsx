@@ -47,6 +47,8 @@ class SalesAPIService {
   }
 
   async getLeadByUrl(uri, influencerContactIdToLoad) {
+    let influencer = "";
+
     let salesLead = await this.createFetch(uri);
     if (salesLead) {
       const lead = ObjectMappingService.createLead(salesLead);
@@ -75,7 +77,7 @@ class SalesAPIService {
             // Set a property (on load) to save the fact we have influencers.
             lead.hasInfluencers = 1;
 
-            let influencer = influencers.find(function (influencer) {
+            influencer = influencers.find(function (influencer) {
               if (influencerContactIdToLoad && influencerContactIdToLoad !== '') {
                 return (influencer.salesContact.contactId === influencerContactIdToLoad);
               } else {
@@ -129,6 +131,15 @@ class SalesAPIService {
           if (get(secondPerson, 'salesLead.leadId')) {
             lead.secondPerson.leadId = get(secondPerson, 'salesLead.leadId');
           }
+        }
+
+        // Populate Text Opt In Checkbox
+        if (salesLead.inquirerType === 'PROSP') {
+          // Populate checkbox from Prospect
+          lead.textOptInCheckbox = !!prospect.textOptInCheckbox;
+        } else {
+          // Populate checkbox from Influencer
+          lead.textOptInCheckbox = !!influencer.salesContact.textOptInInd;
         }
       }
       return lead;
@@ -328,6 +339,7 @@ class SalesAPIService {
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+      influencer.salesContact.textOptInInd = !!lead.textOptInCheckbox;
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
     }
