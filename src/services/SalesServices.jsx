@@ -339,7 +339,13 @@ class SalesAPIService {
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
-      influencer.salesContact.textOptInInd = !!lead.textOptInCheckbox;
+
+      if (salesLead.inquirerType === 'INFLU') {
+        influencer.salesContact.textOptInInd = !!lead.textOptInCheckbox
+      } else {
+        influencer.salesContact.textOptInInd = false
+      }
+
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
     }

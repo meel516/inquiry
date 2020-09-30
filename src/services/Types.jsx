@@ -256,7 +256,6 @@ class ObjectMappingService {
 
         let salesContact = {}
         const salesLead = createSalesLead(salesContact)
-        salesContact.textOptInInd = !!lead.textOptInCheckbox
 
         let callingFor = mapCallingForToInquiryValue(lead.callingFor)
         if (callingFor === 'PROSP' && (!lead.hasInfluencers || lead.hasInfluencers === 0)) {
@@ -283,6 +282,12 @@ class ObjectMappingService {
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId
             addContactPhoneToSalesContact(salesContact, prospect)
+        }
+
+        if (callingFor === 'PROSP') {
+            salesContact.textOptInInd = !!lead.textOptInCheckbox
+        } else {
+            salesContact.textOptInInd = false
         }
 
         salesLead.inquiryTypeId = lead.inquiryType
