@@ -290,6 +290,8 @@ class ObjectMappingService {
             salesContact.textOptInInd = false
         }
 
+        salesContact.addSubscriber = lead.addSubscriber
+        
         salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
 

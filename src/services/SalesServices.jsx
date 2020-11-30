@@ -339,6 +339,8 @@ class SalesAPIService {
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+      // Process addSubscriber logic.
+      influencer.salesContact.addSubscriber = lead.addSubscriber;
 
       if (salesLead.inquirerType === 'INFLU') {
         influencer.salesContact.textOptInInd = !!lead.textOptInCheckbox
@@ -417,6 +419,24 @@ class SalesAPIService {
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
+    let processAddSubscriber = true;
+    const txtContactVisitList = ["5", "6", "8", "59"];
+    const formattedCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
+        community.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(community);
+
+        // Check if the action is one of the Text Contact Visit values.
+        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
+          processAddSubscriber = false;
+        }
+      })
+    }
+
+    lead.addSubscriber = processAddSubscriber;
+
     // IF zero/many community is selected always assume Contact Center community
     let leadId = null;
     try {
@@ -448,15 +468,6 @@ class SalesAPIService {
       throw new AppError('412', 'Lead was not created in Sales System.')
     }
 
-    const formattedCommunityList = [];
-    if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
-      communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
-      })
-    }
-
     try {
       // Submit Add Communities/FUA request.
       if (formattedCommunityList && formattedCommunityList.length > 0) {
@@ -479,7 +490,6 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
-
     // IF zero/many community is selected always assume Contact Center community
     if (lead.leadId == null) {
       // We should have a leadId here, if not throw new error.
@@ -533,14 +543,23 @@ class SalesAPIService {
       lead.leadId = leadId;
     }
 
+    let processAddSubscriber = true;
+    const txtContactVisitList = ["5", "6", "8", "59"];
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
         community.followupDate = convertToDateTimeStr(community.followupDate);
         formattedCommunityList.push(community);
+
+        // Check if the action is one of the Text Contact Visit values.
+        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
+          processAddSubscriber = false;
+        }
       })
     }
+
+    lead.addSubscriber = processAddSubscriber;
 
     try {
       // Submit Add Communities/FUA request.
