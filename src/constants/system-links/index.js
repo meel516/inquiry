@@ -15,5 +15,5 @@ export default [
     { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/July%20Veterans%20Events%202018/Special%20Event%20RSVP%20Guide.docx" },
     { name: "BKD Webinar Sign Up", location: "https://www.brookdale.com/en/meetings/webinar.html" },
     { name: "BHS-PL Referral Form", location: "https://bkdcontactcenter.host/cc-bhs-pl-referral-form/" },
-    { name: "BKD-COVID Vaccine Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/BKD%20COVID%20Vaccine%20Talking%20Points.docx" },
+    { name: "BKD-COVID Vaccine Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/BKD%20COVID%20Vaccine%20Talking%20Points.htm" },
   ]
