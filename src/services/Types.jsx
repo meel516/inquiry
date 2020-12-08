@@ -287,7 +287,7 @@ class ObjectMappingService {
         if (callingFor === 'PROSP') {
             salesContact.textOptInInd = !!lead.textOptInCheckbox
         } else {
-            salesContact.textOptInInd = false
+            salesContact.textOptInInd = ((prospect && prospect.textOptInCheckbox) ? prospect.textOptInCheckbox: false)
         }
 
         salesContact.addSubscriber = lead.addSubscriber
