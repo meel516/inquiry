@@ -30,6 +30,7 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
     let leadUpdates = {
       [TYPE]: contactUpdates,
       callerType: !contactUpdates.gender ? undefined : contactUpdates.gender,
+      textOptInCheckbox: !contactUpdates.textOptInCheckbox ? false : contactUpdates.textOptInCheckbox,
     };
 
     if (selectedLead) {
