@@ -504,7 +504,10 @@ class SalesAPIService {
       //   lead.influencer.influencerId = "";
       // }
 
+      // Save off Veteran Status since the below line overwrites it!!!
+      let formVetStatus = lead.prospect.veteranStatus;
       lead.prospect = ObjectMappingService.createEmptyContact();
+      lead.prospect.veteranStatus = formVetStatus;
     }
 
     let leadId = null;
@@ -572,8 +575,8 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email, submit the request.
-      if (lead && lead.influencer && lead.influencer.email) {
+      // Submit every request to Eloqua.
+      if (lead && lead.influencer) {
         await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }
