@@ -92,6 +92,7 @@ class ObjectMappingService {
         lead.financialOptions = defaultFinancialOptions;
         lead.drivers = defaultDrivers;
         lead.notes = {}
+        lead.textOptInCheckbox = false;
 
         return lead;
     }
@@ -121,7 +122,8 @@ class ObjectMappingService {
             contact.age = salesContact.age;
             contact.gender = salesContact.gender;
             contact.veteranStatus = salesContact.veteranStatus;
-            //contact.currentSituation = salesContact.currentSituation;
+            contact.textOptInCheckbox = salesContact.textOptInInd;
+            
             const address = this.createEmptyAddress();
             if (salesContact.address) {
                 const salesAddress = salesContact.address;
@@ -207,6 +209,7 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
+        //salesContact.textOptInInd = influencer.textOptInCheckbox
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
@@ -281,6 +284,14 @@ class ObjectMappingService {
             addContactPhoneToSalesContact(salesContact, prospect)
         }
 
+        if (callingFor === 'PROSP') {
+            salesContact.textOptInInd = !!lead.textOptInCheckbox
+        } else {
+            salesContact.textOptInInd = ((prospect && prospect.textOptInCheckbox) ? prospect.textOptInCheckbox : false)
+        }
+
+        salesContact.addSubscriber = lead.addSubscriber
+        
         salesLead.inquiryTypeId = lead.inquiryType
         salesLead.inquirerType = callingFor
 

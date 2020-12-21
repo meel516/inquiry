@@ -47,6 +47,8 @@ class SalesAPIService {
   }
 
   async getLeadByUrl(uri, influencerContactIdToLoad) {
+    let influencer = "";
+
     let salesLead = await this.createFetch(uri);
     if (salesLead) {
       const lead = ObjectMappingService.createLead(salesLead);
@@ -75,7 +77,7 @@ class SalesAPIService {
             // Set a property (on load) to save the fact we have influencers.
             lead.hasInfluencers = 1;
 
-            let influencer = influencers.find(function (influencer) {
+            influencer = influencers.find(function (influencer) {
               if (influencerContactIdToLoad && influencerContactIdToLoad !== '') {
                 return (influencer.salesContact.contactId === influencerContactIdToLoad);
               } else {
@@ -129,6 +131,15 @@ class SalesAPIService {
           if (get(secondPerson, 'salesLead.leadId')) {
             lead.secondPerson.leadId = get(secondPerson, 'salesLead.leadId');
           }
+        }
+
+        // Populate Text Opt In Checkbox
+        if (salesLead.inquirerType === 'PROSP') {
+          // Populate checkbox from Prospect
+          lead.textOptInCheckbox = !!prospect.textOptInCheckbox;
+        } else {
+          // Populate checkbox from Influencer
+          lead.textOptInCheckbox = !!influencer.salesContact.textOptInInd;
         }
       }
       return lead;
@@ -328,6 +339,15 @@ class SalesAPIService {
       }
 
       const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+      // Process addSubscriber logic.
+      influencer.salesContact.addSubscriber = lead.addSubscriber;
+
+      if (salesLead.inquirerType === 'INFLU') {
+        influencer.salesContact.textOptInInd = !!lead.textOptInCheckbox
+      } else {
+        influencer.salesContact.textOptInInd = false
+      }
+
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
     }
@@ -399,6 +419,24 @@ class SalesAPIService {
   async handleNewInquiryForm(lead, communities, user) {
     const communityList = [...communities];
 
+    let processAddSubscriber = true;
+    const txtContactVisitList = ["5", "6", "8", "59"];
+    const formattedCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
+        community.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(community);
+
+        // Check if the action is one of the Text Contact Visit values.
+        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
+          processAddSubscriber = false;
+        }
+      })
+    }
+
+    lead.addSubscriber = processAddSubscriber;
+
     // IF zero/many community is selected always assume Contact Center community
     let leadId = null;
     try {
@@ -430,15 +468,6 @@ class SalesAPIService {
       throw new AppError('412', 'Lead was not created in Sales System.')
     }
 
-    const formattedCommunityList = [];
-    if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
-      communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
-      })
-    }
-
     try {
       // Submit Add Communities/FUA request.
       if (formattedCommunityList && formattedCommunityList.length > 0) {
@@ -461,7 +490,6 @@ class SalesAPIService {
   }
 
   async handleExistingInquiryForm(lead, communities, user) {
-
     // IF zero/many community is selected always assume Contact Center community
     if (lead.leadId == null) {
       // We should have a leadId here, if not throw new error.
@@ -476,7 +504,10 @@ class SalesAPIService {
       //   lead.influencer.influencerId = "";
       // }
 
+      // Save off Veteran Status since the below line overwrites it!!!
+      let formVetStatus = lead.prospect.veteranStatus;
       lead.prospect = ObjectMappingService.createEmptyContact();
+      lead.prospect.veteranStatus = formVetStatus;
     }
 
     let leadId = null;
@@ -515,14 +546,23 @@ class SalesAPIService {
       lead.leadId = leadId;
     }
 
+    let processAddSubscriber = true;
+    const txtContactVisitList = ["5", "6", "8", "59"];
     const formattedCommunityList = [];
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
         community.followupDate = convertToDateTimeStr(community.followupDate);
         formattedCommunityList.push(community);
+
+        // Check if the action is one of the Text Contact Visit values.
+        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
+          processAddSubscriber = false;
+        }
       })
     }
+
+    lead.addSubscriber = processAddSubscriber;
 
     try {
       // Submit Add Communities/FUA request.
@@ -535,8 +575,8 @@ class SalesAPIService {
     }
 
     try {
-      // If we have an email, submit the request.
-      if (lead && lead.influencer && lead.influencer.email) {
+      // Submit every request to Eloqua.
+      if (lead && lead.influencer) {
         await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
       }
     }

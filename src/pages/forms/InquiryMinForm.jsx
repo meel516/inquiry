@@ -4,6 +4,8 @@ import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/alert-confirm';
 import { formValidationSchema } from './ValidationSchema';
+// import { Checkbox } from '../../components/form-items/Checkbox';
+// import { StyledCheckboxGroupWrapper } from '../../components/checkbox-groups/styled';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { FormikContextWrapper } from '../../hooks';
@@ -39,7 +41,7 @@ const InquiryForm = ({
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
   const hideProspect = (callingFor === 'Myself' && !(values.lead.prospect && values.lead.prospect.contactId)) || values.lead.swapProspect;
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
-  const editContactSelected = (values.lead.editContact);
+  const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
   const editContact = useCallback(() => {
@@ -97,6 +99,11 @@ const InquiryForm = ({
         <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} editContactSelected={editContactSelected} />
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
+
+        {/* <StyledCheckboxGroupWrapper>
+          <Checkbox name='lead.textOptInCheckbox' label='Text Messaging Opt In' />
+        </StyledCheckboxGroupWrapper> */}
+
         <BudgetSection hasSecondPerson={secondPerson.selected} />
         <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
