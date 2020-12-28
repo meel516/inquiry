@@ -102,7 +102,7 @@ const InquiryForm = ({
 
         <p>
         Ok, great! I'm going to read a brief legal disclaimer, at the end of which I'll need your consent.
-        By opting in, you agree to receive recurring automated marketing text messages (such as visit reminders) from Brookdale at the number you've provided. Consent is not a condition of any purchase. Message & data rates may apply. View our Terms and Privacy <a href="https://www.brookdale.com/texting" target="newwin">here</a>.
+        By opting in, you agree to receive recurring automated marketing text messages (such as visit reminders) from Brookdale at the number you've provided. Consent is not a condition of any purchase. Message & data rates may apply. View our Terms and Privacy at brookdale.com/texting.
         Do you agree to receive text messages?
         </p>
         <StyledCheckboxGroupWrapper>
