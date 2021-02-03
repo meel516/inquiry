@@ -350,6 +350,7 @@ class SalesAPIService {
 
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
+      lead.influencer.textOptInCheckbox = influencer.salesContact.textOptInInd;
     }
 
     const notes = lead.notes
@@ -536,6 +537,7 @@ class SalesAPIService {
           return community;
         });
       }
+
       leadId = await this.processContactCenter(lead, contactCenter, user, isAdd);
     }
     catch (e) {
