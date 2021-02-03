@@ -9,5 +9,6 @@ export default (salesContact = {}, additionalValues = {}) => ({
     emailAddress: salesContact.email,
     age: salesContact.age,
     veteranStatus: salesContact.veteranStatus,
+    textOptInInd: salesContact.textOptInCheckbox,
     ...additionalValues
 })
