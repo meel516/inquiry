@@ -353,6 +353,12 @@ class SalesAPIService {
       lead.influencer.textOptInCheckbox = influencer.salesContact.textOptInInd;
     }
 
+    // Special check if the form was submitted as New and Opt In was checked for a "Myself" scenario.
+    if (salesLead.inquirerType === 'PROSP') {
+      salesLead.salesContact.textOptInInd = !!lead.textOptInCheckbox;
+      lead.prospect.textOptInCheckbox = salesLead.salesContact.textOptInInd;
+    }
+
     const notes = lead.notes
     if (notes) {
       await this.submitNotes(leadId, notes, user);
