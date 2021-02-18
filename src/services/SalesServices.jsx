@@ -350,6 +350,13 @@ class SalesAPIService {
 
       const influencerId = await this.submitInfluencer(influencer);
       lead.influencer.influencerId = influencerId
+      lead.influencer.textOptInCheckbox = influencer.salesContact.textOptInInd;
+    }
+
+    // Special check if the form was submitted as New and Opt In was checked for a "Myself" scenario.
+    if (salesLead.inquirerType === 'PROSP') {
+      salesLead.salesContact.textOptInInd = !!lead.textOptInCheckbox;
+      lead.prospect.textOptInCheckbox = salesLead.salesContact.textOptInInd;
     }
 
     const notes = lead.notes
@@ -536,6 +543,7 @@ class SalesAPIService {
           return community;
         });
       }
+
       leadId = await this.processContactCenter(lead, contactCenter, user, isAdd);
     }
     catch (e) {

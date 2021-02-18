@@ -4,8 +4,8 @@ import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/alert-confirm';
 import { formValidationSchema } from './ValidationSchema';
-// import { Checkbox } from '../../components/form-items/Checkbox';
-// import { StyledCheckboxGroupWrapper } from '../../components/checkbox-groups/styled';
+import { Checkbox } from '../../components/form-items/Checkbox';
+import { StyledCheckboxGroupWrapper } from '../../components/checkbox-groups/styled';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { FormikContextWrapper } from '../../hooks';
@@ -100,9 +100,14 @@ const InquiryForm = ({
         <SituationSection />
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
 
-        {/* <StyledCheckboxGroupWrapper>
+        <p>
+        Ok, great! I'm going to read a brief legal disclaimer, at the end of which I'll need your consent.
+        By opting in, you agree to receive recurring automated marketing text messages (such as visit reminders) from Brookdale at the number you've provided. Consent is not a condition of any purchase. Message & data rates may apply. View our Terms and Privacy at brookdale.com/texting.
+        Do you agree to receive text messages?
+        </p>
+        <StyledCheckboxGroupWrapper>
           <Checkbox name='lead.textOptInCheckbox' label='Text Messaging Opt In' />
-        </StyledCheckboxGroupWrapper> */}
+        </StyledCheckboxGroupWrapper>
 
         <BudgetSection hasSecondPerson={secondPerson.selected} />
         <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
