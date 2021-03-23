@@ -16,11 +16,44 @@ This project consists of a re-write of the Connection Center Application, which 
 
 ## Getting Started
 
-These instructions will help you get your machine setup to be able to run the application. If you are familiar with any of these components feel free to skip any of these sections. We will also help you get your local development environment setup to be able to make changes. (Note: This project was originally bootstrapped with [Create React App](https://github.com/facebook/create-react-app).)  And several packages were added to the system on an as needed basis.
+These instructions will help you get your machine setup to be able to run the application. If you are familiar with any
+of these components feel free to skip any of these sections. We will also help you get your local development
+environment setup to be able to make changes. (Note: This project was originally bootstrapped with 
+[Create React App](https://github.com/facebook/create-react-app).)  And several packages were added to the system on
+an as needed basis.
 
-### Install npm
+### Installation Requirements
 
-If you already have Node.js installed on your machine you can skip this section.  In order to do development and You will need to install npm on your machine in order to run the application and do any development work.  npm (Node.js) can be downloaded [here](https://nodejs.org/en/download/).  The current version of NodeJS that the team is using is 10.16.3 and npm version 6.12.0, while it is not frowned upon to go outside these bounds, these are the versions used to deploy to the server.
+If you already have Node.js installed on your machine, you can skip this section.  In order to do development, you 
+will need to install npm on your machine in order to run the application and do any development work.  npm 
+(Node.js) can be downloaded [here](https://nodejs.org/en/download/).  The current version of NodeJS that the team is 
+using is 10.16.3 and npm version 6.12.0, while it is not frowned upon to go outside these bounds, these are the 
+versions used to deploy to the server.
+
+### Running locally
+
+* Download and install node 12
+* Put the node folder in your path 
+* Install yarn and load node_modules
+
+```bash
+$ npm install -g yarn
+$ yarn install --frozen-lockfile
+```
+
+or, if you have self-signed cert problems,
+
+```bash
+$ npm config set strict-ssl false
+$ npm install -g yarn
+$ NODE_TLS_REJECT_UNAUTHORIZED=0 yarn install --frozen-lockfile
+```
+
+* Start the server
+
+```bash
+$ npm run local
+```
 
 ### Install IDE
 
