@@ -3,7 +3,7 @@ export default [
   { name: "Aspect Disposition Codes", location: "http://teams.brookdaleliving.com/sites/sla/Systems Guides/Aspect/Aspect Disposition Codes.htm" },
   { name: "BAH Referral Form", location: "https://bkdcontactcenter.host/cc-bhs-pl-referral-form/" },
   { name: "BKD Webinar Sign Up", location: "https://www.brookdale.com/en/meetings/webinar.html" },
-  { name: "CC Helpful Numbers", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Helpful%20Numbers%202.12.19.docx" },
+  { name: "CC Helpful Numbers", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Helpful%20Numbers%202.12.19.htm" },
   { name: "CC Rate Finder", location: "http://edge.assisted.com/#/views/RateFinderUpdate/RateFinder?:iid=1" },
   { name: "Community Profiles", location: "https://bkdcontactcenter.host/community-profile-look-up/" },
   { name: "COVID-19 Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/COVID-19%20Virus%20CC%20Talking%20Points%20Job%20Aid.pdf" },
@@ -15,5 +15,5 @@ export default [
   { name: "SMS", location: `${process.env.REACT_APP_SALES_URL}` },
   { name: "SNF QRG", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/SNF - SMS Lead Procedure QRG.htm" },
   { name: "Spanish Lead", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Spanish Inquiries Procedure.htm" },
-  { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Special%20Campaigns%20%20Incentives/July%20Veterans%20Events%202018/Special%20Event%20RSVP%20Guide.docx" },
+  { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/Special%20Event%20RSVP%20Guide.htm" },
 ]
