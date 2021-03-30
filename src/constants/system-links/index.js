@@ -8,7 +8,6 @@ export default [
   { name: "Community Profiles", location: "https://bkdcontactcenter.host/community-profile-look-up/" },
   { name: "COVID-19 Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/COVID-19%20Virus%20CC%20Talking%20Points%20Job%20Aid.pdf" },
   { name: "Medicaid/Medicare", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Medicaid vs. Medicare Ven Diagram2.htm" },
-  { name: "Transfer Call Procedure", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Transfer Call Procedure.htm" },
   { name: "Non-SL Call QRG", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Non Senior Living Lead QRG.htm" },
   { name: "QRG Terminology Look Up", location: "https://bkdcontactcenter.host/knowledgelookup/" },
   { name: "Result of Call / Lost Closed Reasons", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Lost Closed Reasons QRG.htm" },
@@ -16,4 +15,5 @@ export default [
   { name: "SNF QRG", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/SNF - SMS Lead Procedure QRG.htm" },
   { name: "Spanish Lead", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Spanish Inquiries Procedure.htm" },
   { name: "Special Event RSVP Guide", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/Special%20Event%20RSVP%20Guide.htm" },
+  { name: "Transfer Call Procedure", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Transfer Call Procedure.htm" },
 ]
