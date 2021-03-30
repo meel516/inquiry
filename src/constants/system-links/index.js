@@ -6,7 +6,6 @@ export default [
   { name: "CC Helpful Numbers", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Helpful%20Numbers%202.12.19.docx" },
   { name: "CC Rate Finder", location: "http://edge.assisted.com/#/views/RateFinderUpdate/RateFinder?:iid=1" },
   { name: "Community Profiles", location: "https://bkdcontactcenter.host/community-profile-look-up/" },
-  { name: "BKD-COVID Vaccine Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/BKD%20COVID%20Vaccine%20Talking%20Points.htm" },
   { name: "COVID-19 Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/COVID-19%20Virus%20CC%20Talking%20Points%20Job%20Aid.pdf" },
   { name: "Medicaid/Medicare", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Medicaid vs. Medicare Ven Diagram2.htm" },
   { name: "Transfer Call Procedure", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Transfer Call Procedure.htm" },
