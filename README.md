@@ -59,8 +59,8 @@ $ npm run local
 
 There are several IDEs that are available on the market that can be used for editing this code, see the list below.  While it is not required a team member use a specific IDE, if you choose a different IDE that teammember is responsible for their own development environment.  The team as a whole has decided to use VS Code.
 
-*VS Code - most developers are using this for their IDE
-*Atom
+* VS Code - most developers are using this for their IDE
+* Atom
 
 ## Available Scripts
 
