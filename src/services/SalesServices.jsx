@@ -520,6 +520,24 @@ class SalesAPIService {
     let leadId = null;
     const communityList = [...communities];
 
+    let processAddSubscriber = true;
+    const txtContactVisitList = ["5", "6", "8", "59"];
+    const formattedCommunityList = [];
+    if (communityList && communityList.length > 0) {
+      // First, iterate through the communityList and format the followupDate to the ISOString.
+      communityList.forEach((community) => {
+        community.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(community);
+
+        // Check if the action is one of the Text Contact Visit values.
+        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
+          processAddSubscriber = false;
+        }
+      })
+    }
+
+    lead.addSubscriber = processAddSubscriber;
+
     // if not the contact center clear the leadId
     lead.leadCareTypeId = null;
     if (!isContactCenter({ buildingId: lead.buildingId })) {
@@ -553,24 +571,6 @@ class SalesAPIService {
     if (lead.leadId == null) {
       lead.leadId = leadId;
     }
-
-    let processAddSubscriber = true;
-    const txtContactVisitList = ["5", "6", "8", "59"];
-    const formattedCommunityList = [];
-    if (communityList && communityList.length > 0) {
-      // First, iterate through the communityList and format the followupDate to the ISOString.
-      communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
-
-        // Check if the action is one of the Text Contact Visit values.
-        if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
-          processAddSubscriber = false;
-        }
-      })
-    }
-
-    lead.addSubscriber = processAddSubscriber;
 
     try {
       // Submit Add Communities/FUA request.
