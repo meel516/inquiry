@@ -23,7 +23,14 @@ class SalesAPIService {
 
   async getLeadById({ guid, leadId }) {
     if (guid) {
-      return await this.getLeadByGuid(guid)
+      // We are now allowing BOTH a guid or a leadId to be passed in as "guid"
+      // check for a hyphen first.
+      debugger;
+      if (guid.indexOf('-') > -1) {
+        return await this.getLeadByGuid(guid)
+      } else {
+        return await this.getLeadByLeadId(guid)
+      }
     }
     if (leadId) {
       return await this.getLeadByLeadId(leadId)
