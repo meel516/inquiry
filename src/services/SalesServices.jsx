@@ -5,7 +5,7 @@ import { ObjectMappingService } from './Types'
 import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
 import { get } from 'lodash'
-import createEloquaCdo from './eloqua/create-cdo'
+import createSfmcCallAudit from './sfmc/create-call-audit'
 
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 import handleResultOfCall from '../services/handle-result-of-call'
@@ -493,9 +493,9 @@ class SalesAPIService {
     }
 
     try {
-      // Submit every request to Eloqua.
+      // Submit every request to SFMC
       if (lead && lead.influencer) {
-        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
+        await createSfmcCallAudit(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
@@ -590,9 +590,9 @@ class SalesAPIService {
     }
 
     try {
-      // Submit every request to Eloqua.
+      // Submit every request to SFMC
       if (lead && lead.influencer) {
-        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
+        await createSfmcCallAudit(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
