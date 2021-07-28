@@ -189,7 +189,7 @@ class SalesAPIService {
     for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(coid, value, user);
+        let noteRequest = ObjectMappingService.createNoteRequest(coid, key, value, user);
         fetch(noteUrl, {
           method: 'POST', mode: 'cors',
           headers: {
