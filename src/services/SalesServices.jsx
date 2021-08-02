@@ -180,25 +180,29 @@ class SalesAPIService {
 
   /**
   * Submits notes to the server.
-  * @param {number} coid the lead id used to associate the note
-  * @param {note} notes the note object which contains all form notes
+  * @param {salesLead} salesLead the salesLead object used to associate the note (leadId) as well as provide more info from the form.
+  * @param {lead} lead the lead object to obtain notes and other care type values.
   */
-  async submitNotes(coid, notes, user) {
+  async submitNotes(salesLead, lead, user) {
     const noteUrl = this.createApiUri('leads/note');
 
-    for (let [key, value] of Object.entries(notes)) {
+    for (let [key, value] of Object.entries(lead.notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(coid, key, value, user);
-        fetch(noteUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(noteRequest),
-        })
-          .then(res => res.json())
-          .catch(err => console.log(err))
+        let noteRequest = ObjectMappingService.createNoteRequest(salesLead, lead, key, value, user);
+        if (noteRequest) {
+          console.log(JSON.stringify(noteRequest));
+
+          fetch(noteUrl, {
+            method: 'POST', mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(noteRequest),
+          })
+            .then(res => res.json())
+            .catch(err => console.log(err))
+        }
       }
     }
   }
@@ -368,7 +372,7 @@ class SalesAPIService {
 
     const notes = lead.notes
     if (notes) {
-      await this.submitNotes(leadId, notes, user);
+      await this.submitNotes(salesLead, lead, user);
     }
 
     const careType = lead.careType
