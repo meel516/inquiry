@@ -191,13 +191,34 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest = (leadId, noteText, user) => ({
+    static createNoteRequest = (salesLead, { adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns }, key, noteText, user) => ({
         deleteInd: false,
         bhsInd: false,
-        leadId,
+        salesLead,
+        salesLeadCareType: {...adlNeeds, ...memoryConcerns, ...mobilityConcerns, ...nutritionConcerns},
+        noteTypeId: this.processNoteKey(key),
         noteText,
         username: user.username
     })
+
+    static processNoteKey(key) {
+        if (key) {
+            switch(key) {
+                case "situation":
+                    return 1;
+                case "passionsPersonality":
+                    return 2;
+                case "financialSituation":
+                    return 3;
+                case "additionalNotes":
+                    return 4;
+                case "secondPersonNote":
+                    return 5;
+                default:
+                    return 0;
+            }
+        }
+    }
 
     static createInfluencerRequest(leadId, influencer, gender, user) {
         let salesContact = {}
