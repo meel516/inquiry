@@ -25,7 +25,6 @@ class SalesAPIService {
     if (guid) {
       // We are now allowing BOTH a guid or a leadId to be passed in as "guid"
       // check for a hyphen first.
-      debugger;
       if (guid.indexOf('-') > -1) {
         return await this.getLeadByGuid(guid)
       } else {
@@ -180,16 +179,16 @@ class SalesAPIService {
 
   /**
   * Submits notes to the server.
-  * @param {salesLead} salesLead the salesLead object used to associate the note (leadId) as well as provide more info from the form.
-  * @param {lead} lead the lead object to obtain notes and other care type values.
+  * @param {number} coid the lead id used to associate the note
+  * @param {note} notes the note object which contains all form notes
   */
-  async submitNotes(salesLead, lead, user) {
+  async submitNotes(coid, notes, user) {
     const noteUrl = this.createApiUri('leads/note');
 
-    for (let [key, value] of Object.entries(lead.notes)) {
+    for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(salesLead, lead, key, value, user);
+        let noteRequest = ObjectMappingService.createNoteRequest(coid, key, value, user);
         if (noteRequest) {
           console.log(JSON.stringify(noteRequest));
 
@@ -372,7 +371,7 @@ class SalesAPIService {
 
     const notes = lead.notes
     if (notes) {
-      await this.submitNotes(salesLead, lead, user);
+      await this.submitNotes(leadId, notes, user);
     }
 
     const careType = lead.careType

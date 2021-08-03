@@ -191,11 +191,10 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest = (salesLead, { adlNeeds, memoryConcerns, mobilityConcerns, nutritionConcerns }, key, noteText, user) => ({
+    static createNoteRequest = (leadId, key, noteText, user) => ({
         deleteInd: false,
         bhsInd: false,
-        salesLead,
-        salesLeadCareType: {...adlNeeds, ...memoryConcerns, ...mobilityConcerns, ...nutritionConcerns},
+        leadId,
         noteTypeId: this.processNoteKey(key),
         noteText,
         username: user.username
@@ -324,8 +323,8 @@ class ObjectMappingService {
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
 
-        salesLead.salesLeadDriver = lead.drivers;
-        salesLead.salesLeadFinancialOption = lead.financialOptions;
+        //salesLead.salesLeadDriver = lead.drivers;
+        //salesLead.salesLeadFinancialOption = lead.financialOptions;
         salesLead.username = user.username
 
         // For updates, we will have a leadId...set it.
