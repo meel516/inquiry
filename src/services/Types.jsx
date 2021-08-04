@@ -191,13 +191,14 @@ class ObjectMappingService {
         return null;
     }
 
-    static createNoteRequest = (leadId, key, noteText, user) => ({
+    static createNoteRequest = (leadId, umid, key, noteText, user) => ({
         deleteInd: false,
         bhsInd: false,
         leadId,
         noteTypeId: this.processNoteKey(key),
         noteText,
-        username: user.username
+        username: user.username,
+        umId: umid
     })
 
     static processNoteKey(key) {
@@ -369,6 +370,7 @@ class ObjectMappingService {
             leadId: lead.leadId,
             communities: communities,
             username: user.username,
+            umId: lead.umid,
         }
     }
 
