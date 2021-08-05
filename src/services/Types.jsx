@@ -324,8 +324,8 @@ class ObjectMappingService {
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
 
-        //salesLead.salesLeadDriver = lead.drivers;
-        //salesLead.salesLeadFinancialOption = lead.financialOptions;
+        salesLead.salesLeadDriver = lead.drivers;
+        salesLead.salesLeadFinancialOption = lead.financialOptions;
         salesLead.username = user.username
 
         // For updates, we will have a leadId...set it.
