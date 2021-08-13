@@ -25,7 +25,6 @@ class SalesAPIService {
     if (guid) {
       // We are now allowing BOTH a guid or a leadId to be passed in as "guid"
       // check for a hyphen first.
-      debugger;
       if (guid.indexOf('-') > -1) {
         return await this.getLeadByGuid(guid)
       } else {
