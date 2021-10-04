@@ -19,6 +19,7 @@ export default (lead, communities, userName, userEmail) => {
     const salesFormDetailsInfluencer = influencerToEloquaContact(lead.influencer);
     salesFormDetailsInfluencer.salesContact = addContactPhoneToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
     salesFormDetailsInfluencer.salesContact = addContactAddressToSalesContact(salesFormDetailsInfluencer.salesContact, lead.influencer)
+    salesFormDetailsInfluencer.influencerId = lead.influencer.influencerId;
     formDetails.influencer = salesFormDetailsInfluencer;
     
     // Second Person
@@ -26,6 +27,7 @@ export default (lead, communities, userName, userEmail) => {
     if (salesFormDetailsSecondPerson && salesFormDetailsSecondPerson.salesLead) {
         salesFormDetailsSecondPerson.salesLead.salesContact = addContactPhoneToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
         salesFormDetailsSecondPerson.salesLead.salesContact = addContactAddressToSalesContact(salesFormDetailsSecondPerson.salesLead.salesContact, lead.secondPerson)
+        salesFormDetailsSecondPerson.salesLead.leadId = lead.secondPerson.leadId;
         formDetails.secondPerson = salesFormDetailsSecondPerson;
     }
     

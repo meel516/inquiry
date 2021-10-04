@@ -179,16 +179,16 @@ class SalesAPIService {
 
   /**
   * Submits notes to the server.
-  * @param {salesLead} salesLead the salesLead object used to associate the note (leadId) as well as provide more info from the form.
-  * @param {lead} lead the lead object to obtain notes and other care type values.
+  * @param {number} coid the lead id used to associate the note
+  * @param {note} notes the note object which contains all form notes
   */
-  async submitNotes(salesLead, lead, user) {
+  async submitNotes(coid, umid, notes, user) {
     const noteUrl = this.createApiUri('leads/note');
 
-    for (let [key, value] of Object.entries(lead.notes)) {
+    for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(salesLead, lead, key, value, user);
+        let noteRequest = ObjectMappingService.createNoteRequest(coid, umid, key, value, user);
         if (noteRequest) {
           console.log(JSON.stringify(noteRequest));
 
@@ -255,15 +255,18 @@ class SalesAPIService {
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
-      await fetch(secondPersonUrl, {
+      let response = await fetch(secondPersonUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(secondPersonRequest),
       })
-        .then(res => res.json())
-        .catch(err => console.log(err))
+      const salesResponse = await response.json();
+      if (response.status === 201) {
+        return salesResponse.objectId;
+      }
+      throw new ServerError(response.status, salesResponse.message);
     }
   }
 
@@ -371,7 +374,7 @@ class SalesAPIService {
 
     const notes = lead.notes
     if (notes) {
-      await this.submitNotes(salesLead, lead, user);
+      await this.submitNotes(leadId, lead.umid, notes, user);
     }
 
     const careType = lead.careType
@@ -382,7 +385,8 @@ class SalesAPIService {
     const secondPerson = lead.secondPerson;
     if (secondPerson && secondPerson.selected) {
       const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-      await this.submitSecondPerson(secondPersonRequest);
+      const secondPersonLeadId = await this.submitSecondPerson(secondPersonRequest);
+      lead.secondPerson.leadId = secondPersonLeadId;
     }
 
     await handleResultOfCall(lead, user);
