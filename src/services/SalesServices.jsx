@@ -445,8 +445,12 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
+        // Create a temp community.
+        const target = {};
+        
+        var tmpCommunity = Object.assign(target, community);
+        tmpCommunity.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(tmpCommunity);
 
         // Check if the action is one of the Text Contact Visit values.
         if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
