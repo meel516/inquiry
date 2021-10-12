@@ -5,7 +5,7 @@ export const createLeadSourceDropDownUrl = (type, leadSourceId) => `${createDrop
 export const createLeadSourceSubDetailDropDownUrl = (type, leadSourceDetailId) => `${createDropDownUrl(type)}/${leadSourceDetailId}/inquiryLeadSourceSubDetails`
 export const createCommunitiesFetchUrl = () => `${reactAppSalesServicesUrl()}/CommunitySearch/service/searchByAppAndUser`
 export const createDuplicateSearchUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/contact/duplication`
-export const createEloquaCdoUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/inquiryForm/eloqua`
 export const createReasonsUrl = (statusId) => `${reactAppSalesServicesUrl()}/Sims/api/reasons/byStatus/${statusId}`
 export const createDestinationsUrl = (reasonId) => `${reactAppSalesServicesUrl()}/Sims/api/reasons/${reasonId}/destinations`
 export const createStatusUpdateUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/autoStatusUpdate`
+export const createSfmcCallAuditUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/ccApp/sfmc`

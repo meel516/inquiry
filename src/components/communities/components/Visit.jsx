@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Col, FormGroup, Row, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Note } from '../../form-items';
-import { DateTimePicker, Select } from '../../formik-inputs';
+import { Input, Select } from '../../formik-inputs';
 import freeMealListings from '../../../constants/free-meal-listings';
 
 const freeMealOptions = freeMealListings.map((optn) => {
@@ -20,12 +20,7 @@ const Visit = ({ inputNames, followUpAction }) => (
       <Col md="4">
         <FormGroup>
           <Label for={inputNames.followupDate} className="label-format">Next Steps Date</Label>
-          <DateTimePicker
-            name={inputNames.followupDate}
-            className="no-border form-control"
-            disableClock={true}
-            showWeekNumbers={true}
-          />
+          <Input name={inputNames.followupDate} type='datetime-local'/>
         </FormGroup>
       </Col>
       <Col md="4" style={{ verticalAlign: 'bottom' }}>

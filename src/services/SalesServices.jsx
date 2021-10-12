@@ -5,8 +5,7 @@ import { ObjectMappingService } from './Types'
 import ServerError from '../models/server-error'
 import AppError from '../models/app-error'
 import { get } from 'lodash'
-import createEloquaCdo from './eloqua/create-cdo'
-
+import createSfmcCallAudit from './sfmc/create-call-audit'
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 import handleResultOfCall from '../services/handle-result-of-call'
 
@@ -182,22 +181,26 @@ class SalesAPIService {
   * @param {number} coid the lead id used to associate the note
   * @param {note} notes the note object which contains all form notes
   */
-  async submitNotes(coid, notes, user) {
+  async submitNotes(coid, umid, notes, user) {
     const noteUrl = this.createApiUri('leads/note');
 
     for (let [key, value] of Object.entries(notes)) {
       console.log(`Note: ${key}`);
       if (value && value.trim().length > 0) {
-        let noteRequest = ObjectMappingService.createNoteRequest(coid, value, user);
-        fetch(noteUrl, {
-          method: 'POST', mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(noteRequest),
-        })
-          .then(res => res.json())
-          .catch(err => console.log(err))
+        let noteRequest = ObjectMappingService.createNoteRequest(coid, umid, key, value, user);
+        if (noteRequest) {
+          console.log(JSON.stringify(noteRequest));
+
+          fetch(noteUrl, {
+            method: 'POST', mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(noteRequest),
+          })
+            .then(res => res.json())
+            .catch(err => console.log(err))
+        }
       }
     }
   }
@@ -251,15 +254,18 @@ class SalesAPIService {
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
-      await fetch(secondPersonUrl, {
+      let response = await fetch(secondPersonUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(secondPersonRequest),
       })
-        .then(res => res.json())
-        .catch(err => console.log(err))
+      const salesResponse = await response.json();
+      if (response.status === 201) {
+        return salesResponse.objectId;
+      }
+      throw new ServerError(response.status, salesResponse.message);
     }
   }
 
@@ -367,7 +373,7 @@ class SalesAPIService {
 
     const notes = lead.notes
     if (notes) {
-      await this.submitNotes(leadId, notes, user);
+      await this.submitNotes(leadId, lead.umid, notes, user);
     }
 
     const careType = lead.careType
@@ -378,7 +384,8 @@ class SalesAPIService {
     const secondPerson = lead.secondPerson;
     if (secondPerson && secondPerson.selected) {
       const secondPersonRequest = ObjectMappingService.createSecondPersonRequest(leadId, lead.secondPerson, user);
-      await this.submitSecondPerson(secondPersonRequest);
+      const secondPersonLeadId = await this.submitSecondPerson(secondPersonRequest);
+      lead.secondPerson.leadId = secondPersonLeadId;
     }
 
     await handleResultOfCall(lead, user);
@@ -438,8 +445,12 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
+        // Create a temp community.
+        const target = {};
+        
+        var tmpCommunity = Object.assign(target, community);
+        tmpCommunity.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(tmpCommunity);
 
         // Check if the action is one of the Text Contact Visit values.
         if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
@@ -492,9 +503,9 @@ class SalesAPIService {
     }
 
     try {
-      // Submit every request to Eloqua.
+      // Submit every request to SFMC
       if (lead && lead.influencer) {
-        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
+        await createSfmcCallAudit(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
@@ -532,8 +543,12 @@ class SalesAPIService {
     if (communityList && communityList.length > 0) {
       // First, iterate through the communityList and format the followupDate to the ISOString.
       communityList.forEach((community) => {
-        community.followupDate = convertToDateTimeStr(community.followupDate);
-        formattedCommunityList.push(community);
+        // Create a temp community.
+        const target = {};
+
+        var tmpCommunity = Object.assign(target, community);
+        tmpCommunity.followupDate = convertToDateTimeStr(community.followupDate);
+        formattedCommunityList.push(tmpCommunity);
 
         // Check if the action is one of the Text Contact Visit values.
         if (txtContactVisitList.indexOf(community.followUpAction) > -1) {
@@ -589,9 +604,9 @@ class SalesAPIService {
     }
 
     try {
-      // Submit every request to Eloqua.
+      // Submit every request to SFMC
       if (lead && lead.influencer) {
-        await createEloquaCdo(lead, formattedCommunityList, user.username, user.email)
+        await createSfmcCallAudit(lead, formattedCommunityList, user.username, user.email)
       }
     }
     catch (err) {
