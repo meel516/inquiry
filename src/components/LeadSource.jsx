@@ -92,12 +92,12 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
 
   const onReferralTextChange = useCallback((e, inputType)=>{
     const { value } = e.target;
-    if(inputType == inputNames.referralText) {
+    if(inputType === inputNames.referralText) {
       setFieldValue(inputNames.referralText, value);
-    } else if(inputType == inputNames.referralText2nd) {
+    } else if(inputType === inputNames.referralText2nd) {
       setFieldValue(inputNames.referralText2nd, value);
     }
-  }, []);
+  }, [setFieldValue, inputNames]);
 
   useEffect(() => {
     async function getAndSetDetails () {
