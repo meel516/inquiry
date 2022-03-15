@@ -99,6 +99,11 @@ export const fields = {
         leadSource: 'lead.leadSource',
         leadSourceDetail: 'lead.leadSourceDetail',
         leadSourceSubDetail: 'lead.leadSourceSubDetail',
+        referralText: 'lead.referralText',
+        leadSource2nd: 'lead.leadSource2nd',
+        leadSourceDetail2nd: 'lead.leadSourceDetail2nd',
+        leadSourceSubDetail2nd: 'lead.leadSourceSubDetail2nd',
+        referralText2nd: 'lead.referralText2nd',
         umid: 'lead.umid',
     },
 }
