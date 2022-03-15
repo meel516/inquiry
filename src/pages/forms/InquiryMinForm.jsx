@@ -65,6 +65,7 @@ const InquiryForm = ({
   }, [isValid, handleSubmit])
 
   const updateLead = useCallback((lead) => {
+    console.log(lead);
     const age = lead.prospect
       ? lead.prospect.age || ''
       : '';

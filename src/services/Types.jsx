@@ -323,6 +323,11 @@ class ObjectMappingService {
         salesLead.inquiryLeadSourceId = lead.leadSource
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
+        salesLead.inquiryLeadSourceReferralText = lead.referralText
+        salesLead.secondInquiryLeadSourceId = lead.leadSource2nd
+        salesLead.secondInquiryLeadSourceDetailId = lead.leadSourceDetail2nd
+        salesLead.secondInquiryLeadSourceSubDetailId = lead.leadSourceSubDetail2nd
+        salesLead.secondInquiryLeadSourceReferralText = lead.referralText2nd
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;

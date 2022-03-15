@@ -101,6 +101,11 @@ export const fieldSelectors = {
         leadSource: `select[name="${fields.lead.leadSource}"]`,
         leadSourceDetail: `select[name="${fields.lead.leadSourceDetail}"]`,
         leadSourceSubDetail: `div[id="${fields.lead.leadSourceSubDetail}"]`, // a react-select (this input is hidden)
+        referralText: `input[name="${fields.lead.referralText}"]`,
+        leadSource2nd: `select[name="${fields.lead.leadSource2nd}"]`,
+        leadSourceDetail2nd: `select[name="${fields.lead.leadSourceDetail2nd}"]`,
+        leadSourceSubDetail2nd: `div[id="${fields.lead.leadSourceSubDetail2nd}"]`, // a react-select (this input is hidden)
+        referralText2nd: `input[name="${fields.lead.referralText2nd}"]`,
         umid: `input[name="${fields.lead.umid}"]`,
     },
     communities: {
