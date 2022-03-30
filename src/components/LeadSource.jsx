@@ -5,17 +5,18 @@ import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '.
 import { Select, ReactSelect } from './formik-inputs';
 import { useFormikContextWrapper } from '../hooks';
 
-export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', locked = false }) => {
+export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false }) => {
   const [ leadSources, setLeadSources ] = useState([]);
   const [ leadSourceDetails, setLeadSourceDetails ] = useState([]);
   const [ leadSourceDetails2nd, setLeadSourceDetails2nd ] = useState([]);
   const [ leadSourceSubDetails, setLeadSourceSubDetails ] = useState([]);
+  const [ leadSourceSubDetails2nd, setLeadSourceSubDetails2nd ] = useState([]);
   const [ referralDisabled, setReferralDisabled ] = useState({
     referral: true,
     referral2nd: true
   });
   const [ referralText, setReferralText ] = useState({
-    referralText: "",
+    referralText: '',
     referralText2nd: ''
   })
   const { setFieldValue } = useFormikContextWrapper();
@@ -55,7 +56,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
 
   useEffect(() => {
     getLeadSources()
-      .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
+    .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
   }, [setLeadSources]);
 
   const disableReferral = useCallback((value, type) => {
@@ -120,11 +121,11 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
 
     if (!value) {
       setFieldValue(inputNames.leadSourceDetail2nd, 0);
-      setLeadSourceSubDetails([]);
+      setLeadSourceSubDetails2nd([]);
     }
 
     setFieldValue(inputNames.leadSourceSubDetail2nd, 0);
-  }, [setLeadSourceSubDetails, setFieldValue, inputNames]);
+  }, [setLeadSourceSubDetails2nd, setFieldValue, inputNames]);
 
   const onReferralTextChange = useCallback((e, inputType)=>{
     const { value } = e.target;
@@ -146,10 +147,25 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
       setFieldValue(inputNames.leadSourceDetailOptions, details);
     }
 
-    if (leadSource > 0) {
-      getAndSetDetails();
+    async function getAndSetDetails2nd () {
+      const details = lead.leadSource2nd ? (await getLeadSourceDetails(lead.leadSource2nd)) : [];
+      setLeadSourceDetails2nd(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
+      setFieldValue(inputNames.leadSourceDetailOptions2nd, details);
     }
-  }, [leadSource, setFieldValue, inputNames])
+
+    if (leadSource > 0) {
+      getAndSetDetails();      
+    }
+
+    if (lead.leadSource2nd > 0) {
+      getAndSetDetails2nd();
+    }
+
+    setReferralText({
+      referralText: lead.referralText,
+      referralText2nd: lead.referralText2nd
+    })
+  }, [leadSource, setFieldValue, inputNames, lead.leadSource2nd, setReferralText, lead.referralText, lead.referralText2nd])
 
   useEffect(() => {
     async function getAndSetSubDetails () {
@@ -158,10 +174,20 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
       setLeadSourceSubDetails(mappedSubDetails);
     }
 
+    async function getAndSetSubDetails2nd () {
+      const subdetails = lead.leadSourceDetail2nd ? (await getLeadSourceSubDetails(lead.leadSourceDetail2nd)) : [];
+      const mappedSubDetails = subdetails.map(subdetail => ({ value: parseInt(subdetail.value, 10), label: `${subdetail.text}` }));
+      setLeadSourceSubDetails2nd(mappedSubDetails);
+    }
+
     if (leadSourceDetail > 0) {
       getAndSetSubDetails();
     }
-  }, [leadSourceDetail])
+
+    if(lead.leadSourceDetail2nd > 0) {
+      getAndSetSubDetails2nd();
+    }
+  }, [leadSourceDetail, lead.leadSourceDetail2nd])
 
   return (
     <>
@@ -197,7 +223,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText} className='label-format'>Referral Text</Label>
-            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral} className="form-control" value={referralText.referralText} onChange={e=> onReferralTextChange(e, inputNames.referralText)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral || locked} className="form-control" value={referralText.referralText} onChange={e=> onReferralTextChange(e, inputNames.referralText)} placeholder="Enter referral text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
@@ -225,7 +251,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail2nd} className='label-format'>2nd Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails} disabled={locked}/>
+            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={locked}/>
           </FormGroup>
         </Col>
       </Row>
@@ -233,7 +259,7 @@ export const LeadSource = ({ leadSource, leadSourceDetail, basePath = 'lead', lo
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText2nd} className='label-format'>2nd Referral Text</Label>
-            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e=> onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || locked} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e=> onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
