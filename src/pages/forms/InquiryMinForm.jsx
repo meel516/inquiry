@@ -65,6 +65,7 @@ const InquiryForm = ({
   }, [isValid, handleSubmit])
 
   const updateLead = useCallback((lead) => {
+    console.log(lead);
     const age = lead.prospect
       ? lead.prospect.age || ''
       : '';
@@ -110,7 +111,7 @@ const InquiryForm = ({
         </StyledCheckboxGroupWrapper>
 
         <BudgetSection hasSecondPerson={secondPerson.selected} />
-        <ResultOfCallSection leadSource={leadSource} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
+        <ResultOfCallSection leadSource={leadSource} lead={values.lead} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
           !status.readOnly && (
             <div className="float-right">

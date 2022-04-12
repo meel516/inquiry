@@ -9,7 +9,11 @@ export default class Lead {
         this.inquiryType = 0;
         this.leadSource = 0;
         this.leadSourceDetail = 0;
-        this.resultOfCall = ''
-        this.umid = ''
+        this.referralText = '';
+        this.leadSource2nd = 0;
+        this.leadSourceDetail2nd = 0;
+        this.referralText2nd = '';
+        this.resultOfCall = '';
+        this.umid = '';
     }
 }
