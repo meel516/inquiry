@@ -53,10 +53,14 @@ class ObjectMappingService {
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadSourceSubDetail = salesLead.inquiryLeadSourceSubDetailId
             lead.referralText = salesLead.inquiryLeadSourceReferralText
-            lead.leadSource2nd = salesLead.secondInquiryLeadSourceId
-            lead.leadSourceDetail2nd = salesLead.secondInquiryLeadSourceDetailId
-            lead.leadSourceSubDetail2nd = salesLead.secondInquiryLeadSourceSubDetailId
-            lead.referralText2nd = salesLead.secondInquiryLeadSourceReferralText
+            
+            if (salesLead.secondInquiryLeadSourceId > 0) {
+                lead.leadSource2nd = salesLead.secondInquiryLeadSourceId
+                lead.leadSourceDetail2nd = salesLead.secondInquiryLeadSourceDetailId
+                lead.leadSourceSubDetail2nd = salesLead.secondInquiryLeadSourceSubDetailId
+                lead.referralText2nd = salesLead.secondInquiryLeadSourceReferralText
+            }
+            
             lead.leadTypeId = salesLead.leadTypeId
             lead.notes = {}
             lead.inquiryType = salesLead.inquiryTypeId
@@ -329,10 +333,13 @@ class ObjectMappingService {
         salesLead.inquiryLeadSourceDetailId = lead.leadSourceDetail
         salesLead.inquiryLeadSourceSubDetailId = lead.leadSourceSubDetail
         salesLead.inquiryLeadSourceReferralText = lead.referralText
-        salesLead.secondInquiryLeadSourceId = lead.leadSource2nd
-        salesLead.secondInquiryLeadSourceDetailId = lead.leadSourceDetail2nd
-        salesLead.secondInquiryLeadSourceSubDetailId = lead.leadSourceSubDetail2nd
-        salesLead.secondInquiryLeadSourceReferralText = lead.referralText2nd
+        
+        if (lead.leadSource2nd > 0) {
+            salesLead.secondInquiryLeadSourceId = lead.leadSource2nd
+            salesLead.secondInquiryLeadSourceDetailId = lead.leadSourceDetail2nd
+            salesLead.secondInquiryLeadSourceSubDetailId = lead.leadSourceSubDetail2nd
+            salesLead.secondInquiryLeadSourceReferralText = lead.referralText2nd
+        }
 
         salesLead.salesLeadDriver = lead.drivers;
         salesLead.salesLeadFinancialOption = lead.financialOptions;
