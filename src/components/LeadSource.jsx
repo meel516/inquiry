@@ -5,7 +5,7 @@ import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '.
 import { Select, ReactSelect } from './formik-inputs';
 import { useFormikContextWrapper } from '../hooks';
 
-export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false }) => {
+export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false, disable2ndLeadSource }) => {
   const [leadSources, setLeadSources] = useState([]);
   const [leadSourceDetails, setLeadSourceDetails] = useState([]);
   const [leadSourceDetails2nd, setLeadSourceDetails2nd] = useState([]);
@@ -15,6 +15,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     referral: true,
     referral2nd: true
   });
+  const [disableLeadSource, setDisableLeadSource] = useState(disable2ndLeadSource)
   const [referralText, setReferralText] = useState({
     referralText: '',
     referralText2nd: ''
@@ -231,7 +232,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSource2nd} className='label-format'>2nd Lead Source</Label>
-            <Select name={inputNames.leadSource2nd} disabled={lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0 && locked} onChange={on2ndLeadSourceChange}>
+            <Select name={inputNames.leadSource2nd} disabled={disableLeadSource && locked} onChange={on2ndLeadSourceChange}>
               {leadSourceOptions}
             </Select>
           </FormGroup>
@@ -241,7 +242,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceDetail2nd} className='label-format'>2nd Lead Source Detail</Label>
-            <Select name={inputNames.leadSourceDetail2nd} disabled={lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0 && locked} onChange={on2ndLeadSourceDetailChange}>
+            <Select name={inputNames.leadSourceDetail2nd} disabled={disableLeadSource && locked} onChange={on2ndLeadSourceDetailChange}>
               {leadSourceDetailOptions2nd}
             </Select>
           </FormGroup>
@@ -251,7 +252,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail2nd} className='label-format'>2nd Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0 && locked} />
+            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={disableLeadSource && locked} />
           </FormGroup>
         </Col>
       </Row>
@@ -259,7 +260,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText2nd} className='label-format'>2nd Referral Text</Label>
-            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || (lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0 && locked)} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e => onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || (disableLeadSource && locked)} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e => onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
