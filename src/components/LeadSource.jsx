@@ -5,17 +5,18 @@ import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '.
 import { Select, ReactSelect } from './formik-inputs';
 import { useFormikContextWrapper } from '../hooks';
 
-export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false }) => {
-  const [ leadSources, setLeadSources ] = useState([]);
-  const [ leadSourceDetails, setLeadSourceDetails ] = useState([]);
-  const [ leadSourceDetails2nd, setLeadSourceDetails2nd ] = useState([]);
-  const [ leadSourceSubDetails, setLeadSourceSubDetails ] = useState([]);
-  const [ leadSourceSubDetails2nd, setLeadSourceSubDetails2nd ] = useState([]);
-  const [ referralDisabled, setReferralDisabled ] = useState({
+export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false, disable2ndLeadSource }) => {
+  const [leadSources, setLeadSources] = useState([]);
+  const [leadSourceDetails, setLeadSourceDetails] = useState([]);
+  const [leadSourceDetails2nd, setLeadSourceDetails2nd] = useState([]);
+  const [leadSourceSubDetails, setLeadSourceSubDetails] = useState([]);
+  const [leadSourceSubDetails2nd, setLeadSourceSubDetails2nd] = useState([]);
+  const [referralDisabled, setReferralDisabled] = useState({
     referral: true,
     referral2nd: true
   });
-  const [ referralText, setReferralText ] = useState({
+  const [disableLeadSourceValue, setDisableLeadSourceValue] = useState(disable2ndLeadSource)
+  const [referralText, setReferralText] = useState({
     referralText: '',
     referralText2nd: ''
   })
@@ -56,14 +57,28 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
 
   useEffect(() => {
     getLeadSources()
-    .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
+      .then(sources => setLeadSources(sources.map(source => ({ ...source, value: parseInt(source.value, 10) }))));
   }, [setLeadSources]);
+
+  const disable2ndLeadSourceCheck = useCallback(() => {
+    if (locked) {
+      if (disable2ndLeadSource) {
+        setDisableLeadSourceValue(true)
+      } else {
+        setDisableLeadSourceValue(false)
+      }
+    }
+  }, [locked]);
+
+  useEffect(() => {
+    disable2ndLeadSourceCheck();
+  }, [disable2ndLeadSourceCheck])
 
   const disableReferral = useCallback((value, type) => {
     let disable = value === "24" ? false : true;
     let tempReferralDisabled = referralDisabled;
     let tempReferral = referralText;
-    if(type === 1) {
+    if (type === 1) {
       setFieldValue(inputNames.referralText, "");
       tempReferral.referralText = "";
       tempReferralDisabled.referral = disable;
@@ -74,7 +89,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     }
     setReferralText(tempReferral);
     setReferralDisabled(tempReferralDisabled)
-  },[ setFieldValue, inputNames, referralDisabled, referralText]);
+  }, [setFieldValue, inputNames, referralDisabled, referralText]);
 
   const onLeadSourceChange = useCallback((e) => {
     const { value } = e.target;
@@ -108,7 +123,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     }
     setFieldValue(inputNames.leadSourceDetail2nd, 0);
     setFieldValue(inputNames.leadSourceSubDetail2nd, 0);
-    async function getAndSetDetails () {
+    async function getAndSetDetails() {
       const details = value ? (await getLeadSourceDetails(value)) : [];
       setLeadSourceDetails2nd(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
       setFieldValue(inputNames.leadSourceDetailOptions, details);
@@ -127,13 +142,13 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     setFieldValue(inputNames.leadSourceSubDetail2nd, 0);
   }, [setLeadSourceSubDetails2nd, setFieldValue, inputNames]);
 
-  const onReferralTextChange = useCallback((e, inputType)=>{
+  const onReferralTextChange = useCallback((e, inputType) => {
     const { value } = e.target;
     let tempReferral = referralText;
-    if(inputType === inputNames.referralText) {
+    if (inputType === inputNames.referralText) {
       setFieldValue(inputNames.referralText, value);
       tempReferral.referralText = value;
-    } else if(inputType === inputNames.referralText2nd) {
+    } else if (inputType === inputNames.referralText2nd) {
       setFieldValue(inputNames.referralText2nd, value);
       tempReferral.referralText2nd = value;
     }
@@ -141,20 +156,20 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
   }, [setFieldValue, inputNames, referralText]);
 
   useEffect(() => {
-    async function getAndSetDetails () {
+    async function getAndSetDetails() {
       const details = leadSource ? (await getLeadSourceDetails(leadSource)) : [];
       setLeadSourceDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
       setFieldValue(inputNames.leadSourceDetailOptions, details);
     }
 
-    async function getAndSetDetails2nd () {
+    async function getAndSetDetails2nd() {
       const details = lead.leadSource2nd ? (await getLeadSourceDetails(lead.leadSource2nd)) : [];
       setLeadSourceDetails2nd(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
       setFieldValue(inputNames.leadSourceDetailOptions2nd, details);
     }
 
     if (leadSource > 0) {
-      getAndSetDetails();      
+      getAndSetDetails();
     }
 
     if (lead.leadSource2nd > 0) {
@@ -168,13 +183,13 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
   }, [leadSource, setFieldValue, inputNames, lead.leadSource2nd, setReferralText, lead.referralText, lead.referralText2nd])
 
   useEffect(() => {
-    async function getAndSetSubDetails () {
+    async function getAndSetSubDetails() {
       const subdetails = leadSourceDetail ? (await getLeadSourceSubDetails(leadSourceDetail)) : [];
       const mappedSubDetails = subdetails.map(subdetail => ({ value: parseInt(subdetail.value, 10), label: `${subdetail.text}` }));
       setLeadSourceSubDetails(mappedSubDetails);
     }
 
-    async function getAndSetSubDetails2nd () {
+    async function getAndSetSubDetails2nd() {
       const subdetails = lead.leadSourceDetail2nd ? (await getLeadSourceSubDetails(lead.leadSourceDetail2nd)) : [];
       const mappedSubDetails = subdetails.map(subdetail => ({ value: parseInt(subdetail.value, 10), label: `${subdetail.text}` }));
       setLeadSourceSubDetails2nd(mappedSubDetails);
@@ -184,7 +199,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       getAndSetSubDetails();
     }
 
-    if(lead.leadSourceDetail2nd > 0) {
+    if (lead.leadSourceDetail2nd > 0) {
       getAndSetSubDetails2nd();
     }
   }, [leadSourceDetail, lead.leadSourceDetail2nd])
@@ -215,7 +230,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail} className='label-format'>Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail} options={leadSourceSubDetails} disabled={locked}/>
+            <ReactSelect name={inputNames.leadSourceSubDetail} options={leadSourceSubDetails} disabled={locked} />
           </FormGroup>
         </Col>
       </Row>
@@ -223,7 +238,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText} className='label-format'>Referral Text</Label>
-            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral || locked} className="form-control" value={referralText.referralText} onChange={e=> onReferralTextChange(e, inputNames.referralText)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral || locked} className="form-control" value={referralText.referralText} onChange={e => onReferralTextChange(e, inputNames.referralText)} placeholder="Enter referral text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
@@ -231,7 +246,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSource2nd} className='label-format'>2nd Lead Source</Label>
-            <Select name={inputNames.leadSource2nd} disabled={locked} onChange={on2ndLeadSourceChange}>
+            <Select name={inputNames.leadSource2nd} disabled={disableLeadSourceValue && locked} onChange={on2ndLeadSourceChange}>
               {leadSourceOptions}
             </Select>
           </FormGroup>
@@ -241,7 +256,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceDetail2nd} className='label-format'>2nd Lead Source Detail</Label>
-            <Select name={inputNames.leadSourceDetail2nd} disabled={locked} onChange={on2ndLeadSourceDetailChange}>
+            <Select name={inputNames.leadSourceDetail2nd} disabled={disableLeadSourceValue && locked} onChange={on2ndLeadSourceDetailChange}>
               {leadSourceDetailOptions2nd}
             </Select>
           </FormGroup>
@@ -251,7 +266,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail2nd} className='label-format'>2nd Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={locked}/>
+            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={disableLeadSourceValue && locked} />
           </FormGroup>
         </Col>
       </Row>
@@ -259,7 +274,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText2nd} className='label-format'>2nd Referral Text</Label>
-            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || locked} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e=> onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || (disableLeadSourceValue && locked)} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e => onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
