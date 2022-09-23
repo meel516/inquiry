@@ -229,7 +229,7 @@ class ObjectMappingService {
         }
     }
 
-    static createInfluencerRequest(leadId, influencer, gender, user) {
+    static createInfluencerRequest(leadId, influencer, gender, user, communities) {
         let salesContact = {}
 
         salesContact.firstName = ((influencer && influencer.firstName) ? influencer.firstName : '')
@@ -239,7 +239,7 @@ class ObjectMappingService {
         salesContact.gender = gender
         salesContact.contactId = ((influencer && influencer.contactId) ? influencer.contactId : '')
         salesContact.masterId = ((influencer && influencer.masterId) ? influencer.masterId : '')
-        //salesContact.textOptInInd = influencer.textOptInCheckbox
+
         addContactPhoneToSalesContact(salesContact, influencer)
         addContactAddressToSalesContact(salesContact, influencer)
 
@@ -250,7 +250,8 @@ class ObjectMappingService {
             username: (user) ? user.username : null,
             influencerId: influencer.influencerId,
             interestReasonId: ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : ''),
-            salesContact
+            salesContact,
+            communities
         }
     }
 
@@ -278,7 +279,7 @@ class ObjectMappingService {
         return null;
     }
 
-    static createProspectRequest(lead, community, user) {
+    static createProspectRequest(lead, community, user, communities) {
         if (!lead) return;
 
         const { prospect, influencer } = lead;
@@ -357,6 +358,9 @@ class ObjectMappingService {
         if (lead.editContact) {
             salesLead.editContact = lead.editContact;
         }
+
+        // Send communities list in order to property process opt in/out calls to the texting provider.
+        salesLead.communities = communities;
 
         return salesLead;
     }

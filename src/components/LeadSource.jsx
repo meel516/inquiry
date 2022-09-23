@@ -68,7 +68,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         setDisableLeadSourceValue(false)
       }
     }
-  }, [locked]);
+  }, [locked, disable2ndLeadSource]);
 
   useEffect(() => {
     disable2ndLeadSourceCheck();

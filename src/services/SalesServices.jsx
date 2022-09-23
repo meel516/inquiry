@@ -269,8 +269,8 @@ class SalesAPIService {
     }
   }
 
-  async submitProspect(lead, community, user) {
-    const prospect = ObjectMappingService.createProspectRequest(lead, community, user);
+  async submitProspect(lead, community, user, communities) {
+    const prospect = ObjectMappingService.createProspectRequest(lead, community, user, communities);
     return await this.sendProspect(prospect);
   }
 
@@ -333,8 +333,8 @@ class SalesAPIService {
   * @param {lead} lead the form lead object
   * @param {Community} community an object representing the contact center
   */
-  async processContactCenter(lead, community, user, isAdd) {
-    const salesLead = await this.submitProspect(lead, community, user)
+  async processContactCenter(lead, community, user, isAdd, communities) {
+    const salesLead = await this.submitProspect(lead, community, user, communities)
     let leadId = lead.leadId = salesLead.leadId
 
     if (salesLead.inquirerType !== 'PROSP' || (salesLead.inquirerType === 'PROSP' && lead.hasInfluencers === 1)) {
@@ -350,7 +350,7 @@ class SalesAPIService {
         lead.influencer.influencerId = null;
       }
 
-      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user);
+      const influencer = ObjectMappingService.createInfluencerRequest(leadId, lead.influencer, lead.callerType, user, communities);
       // Process addSubscriber logic.
       influencer.salesContact.addSubscriber = lead.addSubscriber;
 
@@ -467,7 +467,7 @@ class SalesAPIService {
       if (!containContactCenter(communities)) {
         let community = createCommunity();
         community.communityId = 225707
-        leadId = await this.processContactCenter(lead, community, user, true);
+        leadId = await this.processContactCenter(lead, community, user, true, communities);
       }
       else {
         let contactCenter;
@@ -479,7 +479,7 @@ class SalesAPIService {
           return community;
         });
         if (contactCenter != null) {
-          leadId = await this.processContactCenter(lead, contactCenter, user, false);
+          leadId = await this.processContactCenter(lead, contactCenter, user, false, communities);
         }
       }
     }
@@ -583,7 +583,7 @@ class SalesAPIService {
         });
       }
 
-      leadId = await this.processContactCenter(lead, contactCenter, user, isAdd);
+      leadId = await this.processContactCenter(lead, contactCenter, user, isAdd, communities);
     }
     catch (e) {
       // todo: add logic here to handle errors
