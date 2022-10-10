@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import { Button, Row, Col } from 'reactstrap';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
@@ -19,23 +19,25 @@ import {
 } from './sections';
 
 const InquiryForm = ({
-  values,
-  errors,
-  status,
-  isValid,
-  isSubmitting,
-  setFieldTouched,
-  setFieldValue,
-  validateForm,
-  handleSubmit,
-}) => {
+                       values,
+                       errors,
+                       status,
+                       isValid,
+                       isSubmitting,
+                       setFieldTouched,
+                       setFieldValue,
+                       validateForm,
+                       handleSubmit,
+                     }) => {
   const TOP = useRef(null);
+
+  const [prospectIsLocked, setProspectIsLocked] = useState(false);
 
   const isLeadFromContactCenterBuilding = useCallback((lead) => {
     return lead.buildingId === 225707;
   }, []);
 
-  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson, resultOfCall }} = values;
+  const { user, lead: { influencer, leadSource, leadSourceDetail, leadId, callingFor, secondPerson, resultOfCall,  }} = values;
   const isLocked = !!leadId;
   const isExistingContact = !!influencer.contactId;
   const isContactCenterBuildingId = isLeadFromContactCenterBuilding(values.lead);
@@ -62,13 +64,12 @@ const InquiryForm = ({
     }
 
     setTimeout(() => TOP.current.scrollIntoView({ behavior: 'smooth' }), 500);
-  }, [isValid, handleSubmit])
+  }, [isValid, handleSubmit]);
 
   const updateLead = useCallback((lead) => {
     console.log(lead);
-    const age = lead.prospect
-      ? lead.prospect.age || ''
-      : '';
+    const newProspectIsLocked = !!lead.prospect;
+    const age = lead.prospect ? lead.prospect.age || '' : '';
     const newLead = {
       ...values.lead,
       ...lead,
@@ -82,9 +83,59 @@ const InquiryForm = ({
       prospect: { ...values.lead.prospect, ...lead.prospect, age },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
+    debugger;
     setFieldValue('lead', newLead);
-    validateForm( { ...values, lead: newLead });
-  }, [values, setFieldValue, validateForm])
+    setProspectIsLocked(newProspectIsLocked);
+    validateForm({
+      ...values,
+      lead:             newLead,
+    });
+  }, [values, setFieldValue, validateForm]);
+
+  const updateProspect = useCallback((lead) => {
+    console.log(lead);
+    const age = lead.prospect ? lead.prospect.age || '' : '';
+    let newProspect;
+    let newProspectIsLocked = isLocked;
+    if (lead.prospect) {
+      newProspect = {...values.lead.prospect, ...lead.prospect, age};
+    } else {
+      newProspectIsLocked = false;
+      newProspect = {
+        "firstName": '',
+        "lastName": '',
+        "email": "",
+        "phone": {
+          "number": '',
+          "type": '',
+          "phoneId": undefined,
+          "primary": undefined,
+        },
+        "veteranStatus": undefined,
+        "age": age,
+        "contactId": undefined,
+        "masterId": undefined,
+        "textOptInCheckbox": undefined,
+        "address": {
+          "line1": "",
+          "line2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        }
+      };
+    }
+    const newLead = {
+      ...values.lead,
+      prospect: newProspect,
+    };
+    setFieldValue('lead', newLead);
+    setProspectIsLocked(newProspectIsLocked);
+    validateForm({
+      ...values,
+      lead:             newLead,
+    });
+  }, [values, isLocked, setFieldValue, validateForm]);
 
   return (
     <Form>
@@ -97,8 +148,16 @@ const InquiryForm = ({
             <Button color="primary" size="sm" aria-pressed="false" disabled={!prospectOnlyInCC} onClick={editContact}>Edit Contact</Button>
           </Col>
         </Row>
-        <InfluencerSection influencer={influencer} isLocked={isLocked || isExistingContact} isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding} updateLead={updateLead} editContactSelected={editContactSelected} />
-        <SituationSection />
+        <InfluencerSection influencer={influencer}
+                           isLocked={isLocked || isExistingContact}
+                           isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
+                           updateLead={updateLead}
+                           editContactSelected={editContactSelected}/>
+        <SituationSection influencer={influencer}
+                          locked={prospectIsLocked}
+                          isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
+                          updateProspect={updateProspect}
+                          editContactSelected={editContactSelected}/>
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
 
         <p>
