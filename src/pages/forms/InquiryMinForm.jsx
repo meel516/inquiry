@@ -83,7 +83,6 @@ const InquiryForm = ({
       prospect: { ...values.lead.prospect, ...lead.prospect, age },
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
-    debugger;
     setFieldValue('lead', newLead);
     setProspectIsLocked(newProspectIsLocked);
     validateForm({
