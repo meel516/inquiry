@@ -196,7 +196,8 @@ const InquiryForm = ({
           <Checkbox name='lead.textOptInCheckbox' label='Text Messaging Opt In' />
         </StyledCheckboxGroupWrapper>
 
-        <BudgetSection hasSecondPerson={secondPerson.selected} />
+        <BudgetSection hasSecondPerson={secondPerson.selected}
+                       isSecondPersonAutoFilled={secondPerson.contactId !== undefined}/>
         <ResultOfCallSection leadSource={leadSource} lead={values.lead} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
           !status.readOnly && (
