@@ -113,7 +113,8 @@ const InquiryForm = ({
         notes: { ...values.lead.notes, ...lead.notes },
         nutritionConcerns: { ...values.lead.nutritionConcerns, ...lead.nutritionConcerns },
         prospect: { ...values.lead.prospect, ...lead.prospect, age },
-        secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
+        // secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson }, // this merges the incoming data and form data, which I think we don't want 
+        secondPerson: { ...lead.secondPerson },
       };
       setFieldValue('lead', newLead);
       setProspectIsLocked(newProspectIsLocked);
