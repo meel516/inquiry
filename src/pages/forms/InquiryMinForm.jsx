@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Button, Row, Col } from 'reactstrap';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
@@ -46,6 +46,12 @@ const InquiryForm = ({
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
+  useEffect(() => {
+    // Establish whether the prospect section should be locked - is there a contact ID or not 
+    const prospectLocked = !!values?.lead?.prospect?.contactId;
+    setProspectIsLocked(prospectLocked);
+  }, [setProspectIsLocked, values.lead.prospect]);
+
   const editContact = useCallback(() => {
     setFieldValue(`lead.editContact`, true);
   }, [ setFieldValue ]);
@@ -68,7 +74,6 @@ const InquiryForm = ({
 
   const updateLead = useCallback((lead) => {
     console.log(lead);
-    const newProspectIsLocked = !!lead.prospect;
     const age = lead.prospect ? lead.prospect.age || '' : '';
     const newLead = {
       ...values.lead,
@@ -84,7 +89,6 @@ const InquiryForm = ({
       secondPerson: { ...values.lead.secondPerson, ...lead.secondPerson },
     };
     setFieldValue('lead', newLead);
-    setProspectIsLocked(newProspectIsLocked);
     validateForm({
       ...values,
       lead:             newLead,
@@ -101,7 +105,6 @@ const InquiryForm = ({
     let newLead;
     if (lead.prospect) {
       // user selected a lead - let's rewrite our state with the new lead (and leave the prospect fields locked)
-      const newProspectIsLocked = isLocked;
       newLead = {
         ...values.lead,
         ...lead,
@@ -117,12 +120,10 @@ const InquiryForm = ({
         secondPerson: { ...lead.secondPerson },
       };
       setFieldValue('lead', newLead);
-      setProspectIsLocked(newProspectIsLocked);
     } else {
       // user selected "None of these" - we need to clear out all the prospect information that was previously filled
       // in (and unlock the prospect fields). I computed this by diffing the Formik state between "select influencer
       // only" and "select influencer+lead, and then clear the influencer".
-      const newProspectIsLocked = false;
       const newProspect = {
         "firstName": "",
         "lastName": "",
@@ -157,13 +158,12 @@ const InquiryForm = ({
         prospect:                newProspect,
       };
       setFieldValue('lead', newLead);
-      setProspectIsLocked(newProspectIsLocked);
     }
     validateForm({
       ...values,
       lead: newLead,
     });
-  }, [values, isLocked, setFieldValue, validateForm]);
+  }, [values, setFieldValue, validateForm]);
 
   return (
     <Form>

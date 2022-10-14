@@ -22,6 +22,6 @@ export const BudgetSection = React.memo(({
 
 BudgetSection.displayName = 'BudgetSection';
 BudgetSection.propTypes = {
-    hasSecondPerson:          PropTypes.bool.isRequired,
+    hasSecondPerson:          PropTypes.bool,
     isSecondPersonAutoFilled: PropTypes.bool.isRequired,
 };

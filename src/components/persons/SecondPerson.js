@@ -36,7 +36,7 @@ export const SecondPerson = ({ basePath, hasSecondPerson, isSecondPersonAutoFill
                 </Col>
             </Row>
             {
-                hasSecondPerson && (
+                !!hasSecondPerson && (
                     <>
                         <Person basePath={basePath} type={TYPE} locked={isLocked} />
                         <Note name={`${basePath}.notes.secondPersonNote`} label='2nd Person Situation' />
@@ -49,6 +49,6 @@ export const SecondPerson = ({ basePath, hasSecondPerson, isSecondPersonAutoFill
 
 SecondPerson.propTypes = {
     basePath:                 PropTypes.string.isRequired,
-    hasSecondPerson:          PropTypes.bool.isRequired,
+    hasSecondPerson:          PropTypes.bool,
     isSecondPersonAutoFilled: PropTypes.bool.isRequired,
 };
