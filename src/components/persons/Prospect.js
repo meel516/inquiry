@@ -17,7 +17,7 @@ export const Prospect = ({
                              allowSearch,
                              locked,
                          }) => {
-    const { hideProspect, editContactSelected } = useFormikContextWrapper();
+    const { hideProspect, editContactSelected, editNames } = useFormikContextWrapper();
     const agePath = `${basePath}.${TYPE}.age`;
     const [ showModal, setShowModal ] = useState(false);
 
@@ -60,7 +60,8 @@ export const Prospect = ({
                     onClick={handleDupeCheck}>Edit Prospect</Button>
             <Person basePath={basePath}
                     type={TYPE}
-                    locked={locked && !editContactSelected}/>
+                    locked={locked && !editContactSelected}
+                    editNames={editNames}/>
             {showModal && (<ContactMatchesModalProspect contact={contact}
                                                 isOpen={showModal}
                                                 onClose={closeModal}

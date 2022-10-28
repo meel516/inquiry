@@ -45,6 +45,7 @@ const InquiryForm = ({
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
+  const editNames = (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
@@ -57,7 +58,7 @@ const InquiryForm = ({
   }, [ setFieldValue ]);
 
   const wrappedFormikValues = useMemo(() => {
-    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected };
+    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames };
   }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected ]);
 
   const handleFormSubmit = useCallback((e) => {
