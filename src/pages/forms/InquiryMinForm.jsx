@@ -45,7 +45,10 @@ const InquiryForm = ({
   const prospectOnlyInCC = (values.lead.prospectOnlyHasCC);
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
-  const editNames = (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
+
+  const editNames = useMemo(() => {
+    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
+  }, [values.lead.prospect.contactId]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
@@ -59,7 +62,7 @@ const InquiryForm = ({
 
   const wrappedFormikValues = useMemo(() => {
     return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames };
-  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected ]);
+  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames ]);
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
