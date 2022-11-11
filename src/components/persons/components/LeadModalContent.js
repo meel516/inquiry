@@ -21,19 +21,21 @@ const columns = [
   { key: 'hasaddtl', name: 'Has Addtl Influencers', width: 200, resizable: true },
 ];
 
-export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, showLeadData }) => {
+export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, showLeadData, popOpenSims }) => {
     const rowGetter = useRowGetter(rows);
 
-    const onCellClick = useCallback(({ rowIdx }) => {
+    const onCellClick = useCallback(({rowIdx}) => {
         const rowData = rows[rowIdx];
-        
-        // First, we need to pop a new browser window to open the SMS Notes tab for this lead.
-        const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${rowData.leadid}&targetSimsPage=NOTES&buildingId=${rowData.buildingid}`;
-        window.open(href, '_blank', 'height=700,width=1000');
-        
+
+        if (popOpenSims) {
+            // First, we need to pop a new browser window to open the SMS Notes tab for this lead.
+            const href = `${process.env.REACT_APP_SALES_URL}?smsLeadId=${rowData.leadid}&targetSimsPage=NOTES&buildingId=${rowData.buildingid}`;
+            window.open(href, '_blank', 'height=700,width=1000');
+        }
+
         // Finally, load the app with this lead's data.
         onRowSelection(rowData);
-    }, [onRowSelection, rows])
+    }, [onRowSelection, rows, popOpenSims]);
 
     return (
         <StyledModalContent showLeadData={showLeadData}>
@@ -64,4 +66,9 @@ LeadModalContent.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onRowSelection: PropTypes.func.isRequired,
     showLeadData: PropTypes.bool.isRequired,
+    popOpenSims: PropTypes.bool,
+};
+
+LeadModalContent.defaultProps = {
+    popOpenSims: true,
 }

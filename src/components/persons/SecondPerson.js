@@ -9,8 +9,8 @@ import { useFormikContextWrapper } from '../../hooks';
 
 const TYPE = 'secondPerson';
 
-export const SecondPerson = ({ basePath, hasSecondPerson }) => {
-    const { setFieldValue, isLocked } = useFormikContextWrapper();
+export const SecondPerson = ({ basePath, hasSecondPerson, isSecondPersonAutoFilled }) => {
+    const { setFieldValue } = useFormikContextWrapper();
     const fullPath = `${basePath}.${TYPE}`;
 
     const handleSecondPersonChange = useCallback((e) => {
@@ -21,17 +21,22 @@ export const SecondPerson = ({ basePath, hasSecondPerson }) => {
             };
             setFieldValue(`${fullPath}`, emptySecondPerson);
         }
-    }, [fullPath, setFieldValue])
+    }, [fullPath, setFieldValue]);
+
+    const isLocked = isSecondPersonAutoFilled;
 
     return (
         <>
             <Row>
                 <Col>
-                    <Checkbox name={`${fullPath}.selected`} label='Is there a 2nd Prospect?' onChange={handleSecondPersonChange} disabled={isLocked} />
+                    <Checkbox name={`${fullPath}.selected`}
+                              label='Is there a 2nd Prospect?'
+                              onChange={handleSecondPersonChange}
+                              disabled={isLocked}/>
                 </Col>
             </Row>
             {
-                hasSecondPerson && (
+                !!hasSecondPerson && (
                     <>
                         <Person basePath={basePath} type={TYPE} locked={isLocked} />
                         <Note name={`${basePath}.notes.secondPersonNote`} label='2nd Person Situation' />
@@ -40,10 +45,10 @@ export const SecondPerson = ({ basePath, hasSecondPerson }) => {
             }
         </>
     )
-}
+};
 
 SecondPerson.propTypes = {
-  basePath: PropTypes.string.isRequired,
-  hasSecondPerson: PropTypes.bool.isRequired,
-  locked: PropTypes.bool,
-}
+    basePath:                 PropTypes.string.isRequired,
+    hasSecondPerson:          PropTypes.bool,
+    isSecondPersonAutoFilled: PropTypes.bool.isRequired,
+};
