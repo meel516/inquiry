@@ -4,6 +4,7 @@ import { Note, CareType } from '../../../components/form-items';
 import { Prospect } from '../../../components/persons';
 import { ADLNeeds } from '../../../components/checkbox-groups';
 import { AdditionalCareElements } from '../../../components/additional-care-elements';
+import { CurrentSituation } from '../../../components/additional-care-elements/components/CurrentSituation';
 import { StyledFormSection } from './styled';
 
 export const SituationSection = ({influencer, updateProspect, isLeadFromContactCenterBuilding, locked}) => (
@@ -15,6 +16,7 @@ export const SituationSection = ({influencer, updateProspect, isLeadFromContactC
             </Col>
         </Row>
         <AdditionalCareElements basePath='lead' />
+        <CurrentSituation basePath='lead' />
         <Prospect basePath='lead'
                   contact={influencer}
                   updateProspect={updateProspect}
