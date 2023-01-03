@@ -21,7 +21,7 @@ export const ReasonForCall = ({ basePath, locked = false }) => {
 
   return (
     <FormGroup>
-        <Label for="reasonForCall" className="label-format">Reason for Call</Label>
+        <Label for="reasonForCall" className="label-format required-field">Reason for Call</Label>
         <Select name={name} disabled={locked}>
           {reasonsOptions}
         </Select>

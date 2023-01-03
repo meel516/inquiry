@@ -11,6 +11,7 @@ export default {
     careTypes: 'careTypes',
     followUpActions: 'followUpActions',
     resultOfCall: 'resultOfCall',
+    reasonForCall: 'reasonForCall',
     eventDetail: 'eventDetail',
     eventAddlDetail: 'eventAddlDetail'
 }

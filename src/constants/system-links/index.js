@@ -9,6 +9,7 @@ export default [
   { name: "COVID-19 Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/COVID-19%20Virus%20CC%20Talking%20Points%20Job%20Aid.pdf" },
   { name: "Email Additional Resources", location: "https://bkdcontactcenter.host/additional-resources/" },
   { name: "Medicaid/Medicare", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Medicaid vs. Medicare Ven Diagram2.htm" },
+  { name: "New Sales Verbiage QRG", location: "https://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Updated%20Call%20Flow%20QRG.htm" },
   { name: "Non-SL Call QRG", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Non Senior Living Lead QRG.htm" },
   { name: "QRG Terminology Look Up", location: "https://bkdcontactcenter.host/knowledgelookup/" },
   { name: "Result of Call / Lost Closed Reasons", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Lost Closed Reasons QRG.htm" },

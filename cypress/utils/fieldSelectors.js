@@ -37,6 +37,7 @@ export const fieldSelectors = {
             medications: `input[name="${fields.lead.adlNeeds.medications}"]`,
             toileting: `input[name="${fields.lead.adlNeeds.toileting}"]`,
             transferring: `input[name="${fields.lead.adlNeeds.transferring}"]`,
+            noAdlNeeds: `input[name="${fields.lead.adlNeeds.noAdlNeeds}"]`,
         },
         memoryConcerns: {
             dementia: `input[name="${fields.lead.memoryConcerns.alzDiagnosis}"]`,
@@ -73,6 +74,7 @@ export const fieldSelectors = {
             peaceOfMind: `input[name="${fields.lead.drivers.peaceOfMind}"]`,
             petFriendly: `input[name="${fields.lead.drivers.petFriendly}"]`,
             safety: `input[name="${fields.lead.drivers.safety}"]`,
+            didNotDiscloseDriver: `input[name="${fields.lead.drivers.didNotDiscloseDriver}"]`,
         },
         secondPerson: {
             selected: `input[name="${fields.lead.secondPerson.selected}"]`,

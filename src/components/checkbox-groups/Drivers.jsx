@@ -9,7 +9,7 @@ export const Drivers = ({ basePath }) => {
 
   return (
     <StyledCheckboxGroupWrapper>
-      <Label for="drivers" className="label-format">Drivers</Label>
+      <Label for="drivers" className="label-format  required-field">Drivers</Label>
       <Row>
         <Col>
           <Checkbox name={`${rootPath}activities`} label='Activities' className='col-4' />
@@ -28,6 +28,7 @@ export const Drivers = ({ basePath }) => {
         <Col>
           <Checkbox name={`${rootPath}petFriendly`} label='Pet friendly' className='col-4' />
           <Checkbox name={`${rootPath}safety`} label='Safety' className='col-4' />
+          <Checkbox name={`${rootPath}didNotDiscloseDriver`} label='Did Not Disclose' className='col-3' />
         </Col>
       </Row>
     </StyledCheckboxGroupWrapper>

@@ -28,6 +28,7 @@ export const ADLNeeds = ({ basePath }) => {
       <Row>
         <Col>
           <Checkbox name={`${rootPath}transferring`} label='Transferring' className='col-4' />
+          <Checkbox name={`${rootPath}noAdlNeeds`} label='No ADL Assistance Needed' className='col-4' />
         </Col>
       </Row>
     </StyledCheckboxGroupWrapper>

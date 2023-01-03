@@ -66,7 +66,7 @@ const InquiryForm = ({
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
-    
+
     if (!isValid) {
       toast.error("Please fix the errors before continuing.", {
         position: toast.POSITION.TOP_CENTER
@@ -155,6 +155,7 @@ const InquiryForm = ({
         leadTypeId:              undefined,
         leadCareTypeId:          undefined,
         veteranStatus:           undefined,
+        reasonForCall:           undefined,
         salesStage:              undefined,
         buildingId:              undefined,
         hasInfluencers:          undefined,

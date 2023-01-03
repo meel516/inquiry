@@ -34,6 +34,10 @@ const prospectSchema = {
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
 };
 
+const driversCheckboxSchema = object().shape({
+  drivers: boolean().oneOf([true], 'Drivers at least one check box is required')
+});
+
 const requiredProspectSchema = {
   ...prospectSchema,
   firstName: string()
@@ -123,6 +127,7 @@ const mainFormValidationSchema = object().shape({
     careType: number().test('required-number-value', 'Care Level Recommended is required', nonZeroNumber),
     resultOfCall: string().required('Result of Call is required'),
     callingFor: string().required('Calling For is required'),
+    reasonForCall: number().test('required-number-value', 'Reason for Call is required', nonZeroNumber),
     inquiryType: number().test('required-number-value', 'Inquiry Method is required', nonZeroNumber),
     leadSource: number().test('required-number-value', 'Lead Source is required', nonZeroNumber),
     leadSourceDetail: number().when([ 'leadSource', 'leadSourceDetailOptions'], {

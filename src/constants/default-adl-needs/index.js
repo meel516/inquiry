@@ -7,4 +7,5 @@ export const defaultAdlNeeds = {
     medications: false,
     toileting: false,
     transferring: false,
+    noAdlNeeds: false,
 }
