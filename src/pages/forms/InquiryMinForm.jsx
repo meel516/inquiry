@@ -9,7 +9,7 @@ import { StyledCheckboxGroupWrapper } from '../../components/checkbox-groups/sty
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { FormikContextWrapper } from '../../hooks';
-import { getCommunitiesErrors, getRequiredCommunityError } from './validators';
+import { getCommunitiesErrors, getRequiredCommunityError, getRequiredDriversCheckboxError } from './validators';
 import {
   BudgetSection,
   InfluencerSection,
@@ -83,7 +83,7 @@ const InquiryForm = ({
       ...values.lead,
       ...lead,
       adlNeeds: { ...values.lead.adlNeeds, ...lead.adlNeeds },
-      drivers: { ...values.lead.drivers, ...lead.driveers },
+      drivers: { ...values.lead.drivers, ...lead.drivers },
       financialOptions: { ...values.lead.financialOptions, ...lead.financialOptions },
       memoryConcerns: { ...values.lead.memoryConcerns, ...lead.memoryConcerns },
       mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
@@ -113,7 +113,7 @@ const InquiryForm = ({
         ...values.lead,
         ...lead,
         adlNeeds: { ...values.lead.adlNeeds, ...lead.adlNeeds },
-        drivers: { ...values.lead.drivers, ...lead.driveers },
+        drivers: { ...values.lead.drivers, ...lead.drivers },
         financialOptions: { ...values.lead.financialOptions, ...lead.financialOptions },
         memoryConcerns: { ...values.lead.memoryConcerns, ...lead.memoryConcerns },
         mobilityConcerns: { ...values.lead.mobilityConcerns, ...lead.mobilityConcerns },
@@ -203,7 +203,8 @@ const InquiryForm = ({
         </StyledCheckboxGroupWrapper>
 
         <BudgetSection hasSecondPerson={secondPerson.selected}
-                       isSecondPersonAutoFilled={secondPerson.contactId !== undefined}/>
+                       isSecondPersonAutoFilled={secondPerson.contactId !== undefined}
+                       requiredDriversCheckboxError={errors.requiredDriversCheckboxError}/>
         <ResultOfCallSection leadSource={leadSource} lead={values.lead} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
           !status.readOnly && (
@@ -225,6 +226,12 @@ const EnhancedInquiryForm = withFormik({
   validateOnChange: false,
   validateOnMount: true,
   validate: (values) => {
+
+    const requiredDriversCheckboxError = getRequiredDriversCheckboxError(values.lead.drivers);
+    if (requiredDriversCheckboxError) {
+      return {requiredDriversCheckboxError};
+    }
+
     const requiredCommunityError = getRequiredCommunityError(values.communities, values.lead.resultOfCall);
     if (requiredCommunityError) {
       return { requiredCommunityError };

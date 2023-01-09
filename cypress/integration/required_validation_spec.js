@@ -26,7 +26,6 @@ const validValues = {
     firstName: 'test',
     lastName: 'test',
     careType: 'BHS',
-    drivers: 'Activities',
     resultOfCall: 'New Lead No Visit',
     callingFor: 'Parent',
     reasonForCall: 'Respite',

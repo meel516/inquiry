@@ -34,9 +34,29 @@ const prospectSchema = {
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
 };
 
-const driversCheckboxSchema = object().shape({
-  drivers: boolean().oneOf([true], 'Drivers at least one check box is required')
-});
+const driversCheckboxSchema = object({
+          activities: boolean(),
+          accessToResidents: boolean(),
+          ageInPlace: boolean(),
+          care: boolean(),
+          location: boolean(),
+          peaceOfMind: boolean(),
+          petFriendly: boolean(),
+          safety: boolean(),
+          didNotDiscloseDriver: boolean()
+        })
+        .test(
+                'driversCheckboxTest',
+                'Drivers: at least one check box is required',
+                (obj) => {
+                  if ( obj.activities || obj.accessToResidents || obj.ageInPlace ||
+                       obj.care || obj.location || obj.peaceOfMind ||
+                       obj.petFriendly || obj.safety || obj.didNotDiscloseDriver) {
+                    return true; // everything is fine
+                  }
+                  return false;
+                }
+        );
 
 const requiredProspectSchema = {
   ...prospectSchema,
@@ -70,7 +90,7 @@ const conditionalValidationSchema = object().shape({
     prospect: phonePhoneTypeDependencySchema,
     secondPerson: phonePhoneTypeDependencySchema,
   }),
-})
+});
 
 const mainFormValidationSchema = object().shape({
   lead: object().shape({

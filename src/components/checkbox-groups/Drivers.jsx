@@ -3,13 +3,15 @@ import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { Checkbox } from '../form-items/Checkbox';
 import { StyledCheckboxGroupWrapper } from './styled';
+import {StyledErrorMessage} from '../../styled';
 
-export const Drivers = ({ basePath }) => {
+export const Drivers = ({ basePath, requiredDriversCheckboxError}) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
   return (
     <StyledCheckboxGroupWrapper>
       <Label for="drivers" className="label-format  required-field">Drivers</Label>
+        { requiredDriversCheckboxError && <StyledErrorMessage>{requiredDriversCheckboxError}</StyledErrorMessage> }
       <Row>
         <Col>
           <Checkbox name={`${rootPath}activities`} label='Activities' className='col-4' />

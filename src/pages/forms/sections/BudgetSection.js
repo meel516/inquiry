@@ -7,13 +7,14 @@ import { StyledFormSection } from './styled';
 
 export const BudgetSection = React.memo(({
                                              hasSecondPerson,
-                                             isSecondPersonAutoFilled
+                                             isSecondPersonAutoFilled,
+                                             requiredDriversCheckboxError
                                          }) => (
     <StyledFormSection id='budget'>
         <Note name='lead.notes.financialSituation' label="Financial Situation" />
         <FinancialOptions basePath='lead.financialOptions' />
         <Note name='lead.notes.additionalNotes' label="Additional Notes" />
-        <Drivers basePath='lead.drivers' />
+        <Drivers basePath='lead.drivers' requiredDriversCheckboxError={requiredDriversCheckboxError}/>
         <SecondPerson basePath='lead'
                       hasSecondPerson={hasSecondPerson}
                       isSecondPersonAutoFilled={isSecondPersonAutoFilled}/>
