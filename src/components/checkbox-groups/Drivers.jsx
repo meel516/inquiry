@@ -1,17 +1,26 @@
 import React from 'react'
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from '../form-items/Checkbox';
+import { Checkbox } from '../form-items';
 import { StyledCheckboxGroupWrapper } from './styled';
 import {StyledErrorMessage} from '../../styled';
 
-export const Drivers = ({ basePath, requiredDriversCheckboxError}) => {
+export const Drivers = ({
+                          basePath,
+                          formikErrors,
+                        }) => {
   const rootPath = basePath ? `${basePath}.` : '';
+
+  let errorMessage = null;
+
+  if (formikErrors?.lead?.drivers) {
+    errorMessage = <StyledErrorMessage>{formikErrors?.lead?.drivers}</StyledErrorMessage>;
+  }
 
   return (
     <StyledCheckboxGroupWrapper>
       <Label for="drivers" className="label-format  required-field">Drivers</Label>
-        { requiredDriversCheckboxError && <StyledErrorMessage>{requiredDriversCheckboxError}</StyledErrorMessage> }
+        { errorMessage }
       <Row>
         <Col>
           <Checkbox name={`${rootPath}activities`} label='Activities' className='col-4' />
@@ -34,14 +43,13 @@ export const Drivers = ({ basePath, requiredDriversCheckboxError}) => {
         </Col>
       </Row>
     </StyledCheckboxGroupWrapper>
-)
-}
+  );
+};
 
 Drivers.propTypes = {
-  basePath: PropTypes.string,
-  isReadOnly: PropTypes.bool,
-}
+  basePath:     PropTypes.string,
+  formikErrors: PropTypes.object,
+};
 
 Drivers.defaultProps = {
-  isReadOnly: false,
-}
+};

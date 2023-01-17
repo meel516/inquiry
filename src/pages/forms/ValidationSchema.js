@@ -1,6 +1,8 @@
-import { string, number, object, boolean, array, mixed } from 'yup';
-import { digitLengthLessThan, phoneNumberValidator, nonZeroNumber, resultOfCallRequiresTransactionDetails } from './validators';
-import { LostClosedStatusId } from '../../constants/sales-status'
+import {array, boolean, mixed, number, object, string} from 'yup';
+import {
+  digitLengthLessThan, nonZeroNumber, phoneNumberValidator, resultOfCallRequiresTransactionDetails
+} from './validators';
+import {LostClosedStatusId} from '../../constants/sales-status'
 
 const numberOrEmptyString = () => {
   const schema = mixed();
@@ -35,28 +37,25 @@ const prospectSchema = {
 };
 
 const driversCheckboxSchema = object({
-          activities: boolean(),
-          accessToResidents: boolean(),
-          ageInPlace: boolean(),
-          care: boolean(),
-          location: boolean(),
-          peaceOfMind: boolean(),
-          petFriendly: boolean(),
-          safety: boolean(),
-          didNotDiscloseDriver: boolean()
-        })
-        .test(
-                'driversCheckboxTest',
-                'Drivers: at least one check box is required',
-                (obj) => {
-                  if ( obj.activities || obj.accessToResidents || obj.ageInPlace ||
-                       obj.care || obj.location || obj.peaceOfMind ||
-                       obj.petFriendly || obj.safety || obj.didNotDiscloseDriver) {
-                    return true; // everything is fine
-                  }
-                  return false;
-                }
-        );
+  activities:           boolean(),
+  accessToResidents:    boolean(),
+  ageInPlace:           boolean(),
+  care:                 boolean(),
+  location:             boolean(),
+  peaceOfMind:          boolean(),
+  petFriendly:          boolean(),
+  safety:               boolean(),
+  didNotDiscloseDriver: boolean()
+}).test('driversCheckboxTest', 'Drivers: at least one check box is required', (obj) => {
+  if (isCurrentlySubmitting()) {
+    // submitting - actually check the boxes
+    return obj.activities || obj.accessToResidents || obj.ageInPlace || obj.care || obj.location || obj.peaceOfMind ||
+            obj.petFriendly || obj.safety || obj.didNotDiscloseDriver;
+  } else {
+    // not submitting - this is therefore the initial validation, so skip for drivers
+    return true;
+  }
+});
 
 const requiredProspectSchema = {
   ...prospectSchema,
@@ -164,6 +163,7 @@ const mainFormValidationSchema = object().shape({
       additionalNotes: string().max(4000, 'Additional Notes can be at most 4000 characters'),
       secondPersonNote: string().max(4000, '2nd Person Situation can be at most 4000 characters'),
     }),
+    drivers: driversCheckboxSchema,
     reason: number().when('resultOfCall', {
       is: roc => resultOfCallRequiresTransactionDetails(roc),
       then: number().test('required-number-value', 'Reason is required', nonZeroNumber),
@@ -180,9 +180,39 @@ const mainFormValidationSchema = object().shape({
 
 const formValidationSchema = mainFormValidationSchema.concat(conditionalValidationSchema);
 
+/**
+ * Internal flag to keep track of whether submission is happening
+ * @type {boolean}
+ */
+let currentlySubmitting = false;
+
+/**
+ * Set flag that form submission is started
+ */
+function startSubmit() {
+  currentlySubmitting = true;
+}
+
+/**
+ * Set flag that form submission is finished
+ */
+function endSubmit() {
+  currentlySubmitting = false;
+}
+
+/**
+ * Read the flag that says whether the form is currently submitting
+ */
+function isCurrentlySubmitting() {
+  return currentlySubmitting;
+}
+
 export {
   phonePhoneTypeDependencySchema,
   conditionalValidationSchema,
   mainFormValidationSchema,
   formValidationSchema,
+  startSubmit,
+  endSubmit,
+  isCurrentlySubmitting,
 };

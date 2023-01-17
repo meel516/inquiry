@@ -3,13 +3,13 @@ import { Button, Row, Col } from 'reactstrap';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/alert-confirm';
-import { formValidationSchema } from './ValidationSchema';
-import { Checkbox } from '../../components/form-items/Checkbox';
+import {endSubmit, formValidationSchema, startSubmit} from './ValidationSchema';
+import { Checkbox } from '../../components/form-items';
 import { StyledCheckboxGroupWrapper } from '../../components/checkbox-groups/styled';
 import { Debug } from '../../components/Debug';
 import { SalesAPIService } from "../../services/SalesServices";
 import { FormikContextWrapper } from '../../hooks';
-import { getCommunitiesErrors, getRequiredCommunityError, getRequiredDriversCheckboxError } from './validators';
+import { getCommunitiesErrors, getRequiredCommunityError } from './validators';
 import {
   BudgetSection,
   InfluencerSection,
@@ -47,8 +47,8 @@ const InquiryForm = ({
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
   const editNames = useMemo(() => {
-    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
-  }, [values.lead.prospect.contactId]);
+    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase());
+  }, [values.lead.prospect.firstName]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
@@ -204,7 +204,7 @@ const InquiryForm = ({
 
         <BudgetSection hasSecondPerson={secondPerson.selected}
                        isSecondPersonAutoFilled={secondPerson.contactId !== undefined}
-                       requiredDriversCheckboxError={errors.requiredDriversCheckboxError}/>
+                       formikErrors={errors}/>
         <ResultOfCallSection leadSource={leadSource} lead={values.lead} leadSourceDetail={leadSourceDetail} resultOfCall={resultOfCall} updateLead={updateLead} lockCallingFor={lockCallingFor}/>
         {
           !status.readOnly && (
@@ -227,11 +227,6 @@ const EnhancedInquiryForm = withFormik({
   validateOnMount: true,
   validate: (values) => {
 
-    const requiredDriversCheckboxError = getRequiredDriversCheckboxError(values.lead.drivers);
-    if (requiredDriversCheckboxError) {
-      return {requiredDriversCheckboxError};
-    }
-
     const requiredCommunityError = getRequiredCommunityError(values.communities, values.lead.resultOfCall);
     if (requiredCommunityError) {
       return { requiredCommunityError };
@@ -246,6 +241,7 @@ const EnhancedInquiryForm = withFormik({
   mapPropsToStatus: () => ({ readOnly: false, successful: false }),
   handleSubmit: (values, { setSubmitting, setStatus }) => {
     setSubmitting(true);
+    startSubmit();
     const salesService = new SalesAPIService();
     salesService.submitToService({ ...values })
       .then(() => {
@@ -260,7 +256,10 @@ const EnhancedInquiryForm = withFormik({
           position: toast.POSITION.TOP_CENTER
         });
       })
-      .finally(() => setSubmitting(false))
+      .finally(() => {
+        setSubmitting(false);
+        endSubmit();
+      })
   },
 })(InquiryForm);
 

@@ -97,12 +97,3 @@ export const getRequiredCommunityError = (communities, resultOfCall) => {
     }
     return null;
 }
-
-export const getRequiredDriversCheckboxError = (drivers) => {
-    if ( drivers.activities || drivers.accessToResidents || drivers.ageInPlace ||
-            drivers.care || drivers.location || drivers.peaceOfMind ||
-            drivers.petFriendly || drivers.safety || drivers.didNotDiscloseDriver) {
-        return null; // everything is fine
-    }
-    return 'Drivers: At least one check box is required';
-}
