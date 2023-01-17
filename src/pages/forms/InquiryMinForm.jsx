@@ -190,7 +190,8 @@ const InquiryForm = ({
                           locked={prospectIsLocked}
                           isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
                           updateProspect={updateProspect}
-                          editContactSelected={editContactSelected}/>
+                          editContactSelected={editContactSelected}
+                          formikErrors={errors}/>
         <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
 
         <p>

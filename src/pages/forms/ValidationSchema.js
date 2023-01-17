@@ -36,6 +36,26 @@ const prospectSchema = {
     .test('len', 'Age can be at most 3 digits', digitLengthLessThan(3)),
 };
 
+const adlNeedsCheckboxSchema = object({
+  bathing:            boolean(),
+  dressing:           boolean(),
+  feeding:            boolean(),
+  incontinence:       boolean(),
+  medications:        boolean(),
+  toileting:          boolean(),
+  transferring:       boolean(),
+  noAdlNeeds:         boolean()
+}).test('adlNeedsCheckboxTest', 'ADL Needs: at least one check box is required', (obj) => {
+  if (isCurrentlySubmitting()) {
+    // submitting - actually check the boxes
+    return obj.bathing || obj.dressing || obj.feeding || obj.incontinence || obj.medications || obj.toileting ||
+            obj.transferring || obj.noAdlNeeds;
+  } else {
+    // not submitting - this is therefore the initial validation, so skip for drivers
+    return true;
+  }
+});
+
 const driversCheckboxSchema = object({
   activities:           boolean(),
   accessToResidents:    boolean(),
@@ -143,6 +163,7 @@ const mainFormValidationSchema = object().shape({
     umid: string()
       .required("UMID is required")
       .max(36, 'UMID can be at most 36 characters'),
+    adlNeeds: adlNeedsCheckboxSchema,
     careType: number().test('required-number-value', 'Care Level Recommended is required', nonZeroNumber),
     resultOfCall: string().required('Result of Call is required'),
     callingFor: string().required('Calling For is required'),

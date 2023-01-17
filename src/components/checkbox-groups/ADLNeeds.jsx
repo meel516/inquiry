@@ -1,16 +1,24 @@
 import React from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import PropTypes from 'prop-types'
-import { Checkbox } from '../form-items/Checkbox';
+import { Checkbox } from '../form-items';
 import { StyledCheckboxGroupWrapper } from './styled';
+import {StyledErrorMessage} from '../../styled';
 
-
-export const ADLNeeds = ({ basePath }) => {
+export const ADLNeeds = ({ basePath,
+                             formikErrors,
+                         }) => {
   const rootPath = basePath ? `${basePath}.` : '';
 
+    let errorMessage = null;
+
+    if (formikErrors?.lead?.adlNeeds) {
+        errorMessage = <StyledErrorMessage>{formikErrors?.lead?.adlNeeds}</StyledErrorMessage>;
+    }
   return (
     <StyledCheckboxGroupWrapper>
-      <Label for="adlNeeds" className="label-format">ADL Needs</Label>
+      <Label for="adlNeeds" className="label-format required-field">ADL Needs</Label>
+        { errorMessage }
       <Row>
         <Col>
           <Checkbox name={`${rootPath}bathing`} label='Bathing' className='col-4' />
@@ -36,4 +44,5 @@ export const ADLNeeds = ({ basePath }) => {
 }
 ADLNeeds.propTypes = {
   basePath: PropTypes.string,
+  formikErrors: PropTypes.object,
 }
