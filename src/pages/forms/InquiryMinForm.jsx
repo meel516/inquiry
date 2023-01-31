@@ -47,8 +47,8 @@ const InquiryForm = ({
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
   const editNames = useMemo(() => {
-    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase());
-  }, [values.lead.prospect.firstName]);
+    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
+  }, [values.lead.prospect.contactId]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
