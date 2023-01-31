@@ -7,8 +7,10 @@ const requiredMessages = {
     firstName: 'First Name is required',
     lastName: 'Last Name is required',
     careType: 'Care Level Recommended is required',
+    drivers: "Drivers at least one check box is required",
     resultOfCall: 'Result of Call is required',
     callingFor: 'Calling For is required',
+    reasonForCall: 'Reason For Call is required',
     inquiryType: 'Inquiry Method is required',
     veteranStatus: 'Veteran Status is required',
     leadSource: 'Lead Source is required',
@@ -26,6 +28,7 @@ const validValues = {
     careType: 'BHS',
     resultOfCall: 'New Lead No Visit',
     callingFor: 'Parent',
+    reasonForCall: 'Respite',
     inquiryType: 'Chat',
     veteranStatus: 'Is not a Veteran',
     leadSource: 'Internet',
@@ -50,7 +53,7 @@ describe('Inquiry Form', () => {
     })
 
     it ('shows a required error for all required fields', () => {
-        const { lead: { influencer, prospect, secondPerson, careType, resultOfCall, callingFor, inquiryType,
+        const { lead: { influencer, prospect, secondPerson, careType, drivers, resultOfCall, callingFor, reasonForCall, inquiryType,
             leadSource, leadSourceDetail, umid, callerType }, communities } = fieldSelectors;
 
         cy.get(influencer.firstName).focus().blur()
@@ -98,6 +101,11 @@ describe('Inquiry Form', () => {
         cy.get('.alert.alert-danger').should('contain', requiredMessages.callingFor)
         cy.get(callingFor).select(validValues.callingFor).blur()
         cy.get('.alert.alert-danger').should('not.contain', requiredMessages.callingFor)
+
+        cy.get(reasonForCall).focus().blur()
+        cy.get('.alert.alert-danger').should('contain', requiredMessages.reasonForCall)
+        cy.get(reasonForCall).select(validValues.reasonForCall).blur()
+        cy.get('.alert.alert-danger').should('not.contain', requiredMessages.reasonForCall)
 
         cy.get(inquiryType).focus().blur()
         cy.get('.alert.alert-danger').should('contain', requiredMessages.inquiryType)

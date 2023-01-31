@@ -35,6 +35,7 @@ export const fields = {
             medications: 'lead.adlNeeds.medications',
             toileting: 'lead.adlNeeds.toileting',
             transferring: 'lead.adlNeeds.transferring',
+            noAdlNeeds: 'lead.adlNeeds.noAdlNeeds',
         },
         memoryConcerns: {
             alzDiagnosis: 'lead.memoryConcerns.alzDiagnosis',
@@ -71,6 +72,7 @@ export const fields = {
             peaceOfMind: 'lead.drivers.peaceOfMind',
             petFriendly: 'lead.drivers.petFriendly',
             safety: 'lead.drivers.safety',
+            didNotDiscloseDriver: 'lead.drivers.didNotDiscloseDriver',
         },
         secondPerson: {
             selected: 'lead.secondPerson.selected',

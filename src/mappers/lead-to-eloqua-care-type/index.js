@@ -5,11 +5,12 @@ export default (lead = {}) => ({
 
     bathing: get(lead, 'adlNeeds.bathing'), 
     incontinence: get(lead, 'adlNeeds.incontinence'), 
-    transferring: get(lead, 'adlNeeds.transferring'), 
-    dressing: get(lead, 'adlNeeds.dressing'), 
+    transferring: get(lead, 'adlNeeds.transferring'),
+    noAdlNeeds: get(lead, 'adlNeeds.noAdlNeeds'),
+    dressing: get(lead, 'adlNeeds.dressing'),
     medications: get(lead, 'adlNeeds.medications'), 
     feeding: get(lead, 'adlNeeds.feeding'), 
-    toileting: get(lead, 'adlNeeds.toileting'), 
+    toileting: get(lead, 'adlNeeds.toileting'),
 
     alzDiagnosis: get(lead, 'memoryConcerns.alzDiagnosis'), 
     argumentative: get(lead, 'memoryConcerns.argumentative'), 

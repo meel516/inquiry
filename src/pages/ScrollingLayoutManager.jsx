@@ -76,7 +76,15 @@ class LayoutManager extends React.Component {
       zone: userinfo.zoneinfo,
       locale: userinfo.locale,
     }) : EMPTY_USER;
-    
+
+    let mainContent;
+
+    if (!authenticated || !userinfo || !lead) {
+      mainContent = <Spinner type="border" size="md" color="secondary">Loading Lead</Spinner>;
+    } else {
+      mainContent = <InquiryForm user={formUser} lead={lead}/>;
+    }
+
     return (
       <div>
         <Navigator authenticated={authenticated} name={userinfo ? userinfo.given_name : ''} />
@@ -86,13 +94,7 @@ class LayoutManager extends React.Component {
               <Section lead={lead}/>
             </div>
             <div className="col-7 inquiry-form">
-              {
-                !authenticated || !userinfo || !lead ? (
-                  <Spinner type="border" size="md" color="secondary">Loading Lead</Spinner>
-                ) : (
-                  <InquiryForm user={formUser} lead={lead} />
-                )
-              }
+              {mainContent}
             </div>
             <div className="col-3">
               <LinksManager />

@@ -8,4 +8,5 @@ export const defaultDrivers = {
     peaceOfMind: false,
     petFriendly: false,
     safety: false,
+    didNotDiscloseDriver: false,
 }

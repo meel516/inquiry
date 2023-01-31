@@ -49,6 +49,7 @@ describe('Inquiry Form', () => {
         cy.get(adlNeeds.medications).check()
         cy.get(adlNeeds.toileting).check()
         cy.get(adlNeeds.transferring).check()
+        cy.get(adlNeeds.noAdlNeeds).check()
 
         // additional care elements discovered
         // memory concerns
@@ -116,6 +117,7 @@ describe('Inquiry Form', () => {
         cy.get(lead.drivers.peaceOfMind).check()
         cy.get(lead.drivers.petFriendly).check()
         cy.get(lead.drivers.safety).check()
+        cy.get(lead.drivers.didNotDiscloseDriver).check()
 
         // second person
         cy.get(secondPerson.selected).check()

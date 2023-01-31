@@ -2,10 +2,9 @@ import React, { useState, useCallback } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types'
-import { CurrentSituation } from './components/CurrentSituation';
 import { MobilityConcerns, MemoryConcerns, NutritionConcerns } from '../checkbox-groups';
 import { useFormikContextWrapper } from '../../hooks';
-import { MEMORY_CONCERNS, MOBILITY_CONCERNS, NUTRITION_CONCERNS, CURRENT_LIVING_SITUATION, additionalCareElements } from '../../constants/default-additional-care-elements'
+import { MEMORY_CONCERNS, MOBILITY_CONCERNS, NUTRITION_CONCERNS, additionalCareElements } from '../../constants/default-additional-care-elements'
 
 const resetToOriginalState = (priorState, currentState, basePath, setFieldValue) => {
   priorState.forEach((item) => {
@@ -46,7 +45,6 @@ export const AdditionalCareElements = React.memo(({ basePath }) => {
       {selections.has(MEMORY_CONCERNS) ? <MemoryConcerns basePath={basePath} /> : null}
       {selections.has(MOBILITY_CONCERNS) ? <MobilityConcerns basePath={basePath} /> : null}
       {selections.has(NUTRITION_CONCERNS) ? <NutritionConcerns basePath={basePath} /> : null}
-      {selections.has(CURRENT_LIVING_SITUATION) ? <CurrentSituation basePath={basePath} /> : null}
     </>
   )
 })

@@ -8,6 +8,7 @@ import {
     StyledYesButton,
     StyledNoButton
 } from './styled';
+import {endSubmit, startSubmit} from '../../pages/forms/ValidationSchema';
 
 export const AlertConfirm = React.memo(({ handleSubmit, isSubmitting }) => {
     const [ modalOpen, setModalOpen ] = useState(false);
@@ -15,17 +16,20 @@ export const AlertConfirm = React.memo(({ handleSubmit, isSubmitting }) => {
 
     const handleYes = useCallback((e) => {
         setSubmitting(true);
+        startSubmit();
         handleSubmit(e);
     }, [handleSubmit, setSubmitting])
 
     const handleNo = useCallback(() => {
         setSubmitting(false);
+        endSubmit();
         setModalOpen(false);
     }, [setSubmitting, setModalOpen])
 
     useEffect(() => {
         if (submitting && !isSubmitting) {
             setSubmitting(false);
+            endSubmit();
             setModalOpen(false);
         }
     }, [isSubmitting, submitting, setSubmitting, setModalOpen])
