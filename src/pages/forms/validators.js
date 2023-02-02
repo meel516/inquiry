@@ -63,22 +63,26 @@ const getCommunityErrors = (community) => {
     if (note && note.length > 4000)
         errors.note = 'Description can be at most 4000 characters';
 
-    if (followUpAction) {
-        if (!followupDate)
-            errors.followupDate = 'Next Steps Date is required';
+    if (communityId) {
+        if (!followUpAction) {
+            errors.followUpAction = 'Next Steps Action is required when adding a Community';
+        } else {
+            if (!followupDate)
+                errors.followupDate = 'Next Steps Date is required';
         
-        if (!note || !note.trim())
-            errors.note = 'Description is required';
-        
-        if (parseInt(followUpAction) === SMS_FUACTION_SEAC) {
-            if (!eventDetail || eventDetail === 0)
-                errors.eventDetail = 'Event Detail is required'
+            if (!note || !note.trim())
+                errors.note = 'Description is required';
+            
+            if (parseInt(followUpAction) === SMS_FUACTION_SEAC) {
+                if (!eventDetail || eventDetail === 0)
+                    errors.eventDetail = 'Event Detail is required'
 
-            if (!eventAddlDetail || eventAddlDetail === 0)
-                errors.eventAddlDetail = "Event Add'l Detail is required"
+                if (!eventAddlDetail || eventAddlDetail === 0)
+                    errors.eventAddlDetail = "Event Add'l Detail is required"
+            }
         }
     }
-
+    
     return isEmpty(errors) ? null : errors;
 }
 
