@@ -62,7 +62,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
 
   const disable2ndLeadSourceCheck = useCallback(() => {
     if (locked) {
-      let disable2ndLeadSource = !(lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== "0");
+      let disable2ndLeadSource = (lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0);
       if (disable2ndLeadSource) {
         setDisableLeadSourceValue(true)
       } else {
