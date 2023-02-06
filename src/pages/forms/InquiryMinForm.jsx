@@ -48,7 +48,7 @@ const InquiryForm = ({
 
   const editNames = useMemo(() => {
     return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
-  }, [values.lead.prospect.contactId]);
+  }, [values.lead.prospect.firstName]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 

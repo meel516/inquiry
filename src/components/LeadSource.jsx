@@ -62,13 +62,14 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
 
   const disable2ndLeadSourceCheck = useCallback(() => {
     if (locked) {
+      let disable2ndLeadSource = (lead.leadSource2nd !== undefined && lead.leadSource2nd !== null && lead.leadSource2nd !== 0);
       if (disable2ndLeadSource) {
         setDisableLeadSourceValue(true)
       } else {
         setDisableLeadSourceValue(false)
       }
     }
-  }, [locked, disable2ndLeadSource]);
+  }, [locked, lead.leadSource2nd]);
 
   useEffect(() => {
     disable2ndLeadSourceCheck();
@@ -103,6 +104,18 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     setFieldValue(inputNames.leadSourceSubDetail, 0);
   }, [setLeadSourceDetails, setFieldValue, inputNames, disableReferral]);
 
+  const on2ndLeadSourceChange = useCallback((e) => {
+    const { value } = e.target;
+    disableReferral(value, 2);
+    if (!value) {
+      setFieldValue(inputNames.leadSource2nd, 0);
+      setLeadSourceDetails2nd([]);
+    }
+    
+    setFieldValue(inputNames.leadSourceDetail2nd, 0);
+    setFieldValue(inputNames.leadSourceSubDetail2nd, 0);
+  }, [setLeadSourceDetails2nd, setFieldValue, inputNames, disableReferral]);
+
   const onLeadSourceDetailChange = useCallback((e) => {
     const { value } = e.target;
 
@@ -113,23 +126,6 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
 
     setFieldValue(inputNames.leadSourceSubDetail, 0);
   }, [setLeadSourceSubDetails, setFieldValue, inputNames]);
-
-  const on2ndLeadSourceChange = useCallback((e) => {
-    const { value } = e.target;
-    disableReferral(value, 2);
-    if (!value) {
-      setFieldValue(inputNames.leadSource2nd, 0);
-      setLeadSourceDetails2nd([]);
-    }
-    setFieldValue(inputNames.leadSourceDetail2nd, 0);
-    setFieldValue(inputNames.leadSourceSubDetail2nd, 0);
-    async function getAndSetDetails() {
-      const details = value ? (await getLeadSourceDetails(value)) : [];
-      setLeadSourceDetails2nd(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
-      setFieldValue(inputNames.leadSourceDetailOptions, details);
-    }
-    getAndSetDetails();
-  }, [setLeadSourceDetails2nd, setFieldValue, inputNames, disableReferral]);
 
   const on2ndLeadSourceDetailChange = useCallback((e) => {
     const { value } = e.target;
@@ -177,8 +173,8 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     }
 
     setReferralText({
-      referralText: lead.referralText,
-      referralText2nd: lead.referralText2nd
+      referralText: lead.referralText || '',
+      referralText2nd: lead.referralText2nd || ''
     })
   }, [leadSource, setFieldValue, inputNames, lead.leadSource2nd, setReferralText, lead.referralText, lead.referralText2nd])
 
@@ -238,7 +234,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText} className='label-format'>Referral Text</Label>
-            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral || locked} className="form-control" value={referralText.referralText} onChange={e => onReferralTextChange(e, inputNames.referralText)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} name={inputNames.referralText} disabled={referralDisabled.referral || locked} className="form-control" value={referralText.referralText} onChange={e => onReferralTextChange(e, inputNames.referralText)} placeholder="Enter Referral Text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
@@ -246,7 +242,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSource2nd} className='label-format'>2nd Lead Source</Label>
-            <Select name={inputNames.leadSource2nd} disabled={disableLeadSourceValue && locked} onChange={on2ndLeadSourceChange}>
+            <Select name={inputNames.leadSource2nd} disabled={referralDisabled.referral2nd && disableLeadSourceValue && locked} onChange={on2ndLeadSourceChange}>
               {leadSourceOptions}
             </Select>
           </FormGroup>
@@ -256,7 +252,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceDetail2nd} className='label-format'>2nd Lead Source Detail</Label>
-            <Select name={inputNames.leadSourceDetail2nd} disabled={disableLeadSourceValue && locked} onChange={on2ndLeadSourceDetailChange}>
+            <Select name={inputNames.leadSourceDetail2nd} disabled={referralDisabled.referral2nd && disableLeadSourceValue && locked} onChange={on2ndLeadSourceDetailChange}>
               {leadSourceDetailOptions2nd}
             </Select>
           </FormGroup>
@@ -266,7 +262,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.leadSourceSubDetail2nd} className='label-format'>2nd Additional Detail</Label>
-            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={disableLeadSourceValue && locked} />
+            <ReactSelect name={inputNames.leadSourceSubDetail2nd} options={leadSourceSubDetails2nd} disabled={referralDisabled.referral2nd && disableLeadSourceValue && locked} />
           </FormGroup>
         </Col>
       </Row>
@@ -274,7 +270,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
         <Col>
           <FormGroup>
             <Label for={inputNames.referralText2nd} className='label-format'>2nd Referral Text</Label>
-            <input type={'text'} className="form-control" disabled={referralDisabled.referral2nd || (disableLeadSourceValue && locked)} name={inputNames.referralText2nd} value={referralText.referralText2nd} onChange={e => onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter referral text" maxLength={100} />
+            <input type={'text'} name={inputNames.referralText2nd} disabled={referralDisabled.referral2nd || (disableLeadSourceValue && locked)} className="form-control" value={referralText.referralText2nd} onChange={e => onReferralTextChange(e, inputNames.referralText2nd)} placeholder="Enter Referral Text" maxLength={100} />
           </FormGroup>
         </Col>
       </Row>
