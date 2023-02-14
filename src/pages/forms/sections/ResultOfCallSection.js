@@ -38,7 +38,7 @@ export const ResultOfCallSection = React.memo(({ leadSource, lead, leadSourceDet
       </Row>
       <Row>
         <Col md="5">
-          <LeadSource leadSource={leadSource} lead={lead} disable2ndLeadSource={false} leadSourceDetail={leadSourceDetail} locked={isLocked && isContactCenterBuildingId} />
+          <LeadSource leadSource={leadSource} lead={lead} leadSourceDetail={leadSourceDetail} locked={isLocked && isContactCenterBuildingId} />
         </Col>
       </Row>
       <Row>

@@ -1,6 +1,7 @@
 export default {
     stateProv: 'stateProv',
     inquiryLeadSource: 'inquiryLeadSource',
+    inquiryLeadSourceTree: 'inquiryLeadSourceTree',
     inquiryLeadSourceDetail: 'inquiryLeadSourceDetail',
     phoneTypes: 'phoneTypes',
     inquiryTypes: 'inquiryTypes',
