@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { getVeteranStatus } from '../../../services/dropdowns';
@@ -9,27 +9,30 @@ export const VeteranStatus = ({ basePath, locked = false }) => {
   const name = `${basePath}.veteranStatus`;
 
   useEffect(() => {
-    getVeteranStatus()
-      .then((data) => setStatuses(data));
-  }, [setStatuses]);
+    async function loadStatuses() {
+      try {
+        const data = await getVeteranStatus();
 
-  const veteranStatusOptions = useMemo(() => {
-    return statuses.map(status => {
-      return <option key={status.value} value={status.value}>{status.text}</option>
-    })
-  }, [statuses]);
+        setStatuses(data.map(status => <option key={status.value} value={status.value}>{status.text}</option>));
+      } catch (e) {
+        console.log("Caught error loading statuses", e);
+      }
+    }
+
+    loadStatuses();
+  }, [setStatuses]);
 
   return (
     <FormGroup>
       <Label for={name} className="label-format required-field">Veteran Status</Label>
       <Select name={name} disabled={locked}>
-        {veteranStatusOptions}
+        {statuses}
       </Select>
     </FormGroup>
   )
-}
+};
 
 VeteranStatus.propTypes = {
   basePath: PropTypes.string.isRequired,
   locked: PropTypes.bool,
-}
+};
