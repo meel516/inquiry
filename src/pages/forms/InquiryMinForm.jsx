@@ -46,9 +46,14 @@ const InquiryForm = ({
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
-  const editNames = useMemo(() => {
-    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
-  }, [values.lead.prospect.firstName]);
+  const [editNames, setEditNames] = useState(undefined);
+  useEffect(() => {
+    // If the prospect's first name is 'Unknown', then allow editing of the name. But only set this flag on initial
+    // load, otherwise as soon as you start typing it will lock down.
+    if (editNames === undefined) {
+      setEditNames(values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase());
+    }
+  }, [editNames, values.lead.prospect.firstName]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
