@@ -48,12 +48,15 @@ const InquiryForm = ({
 
   const [editNames, setEditNames] = useState(undefined);
   useEffect(() => {
-    // If the prospect's first name is 'Unknown', then allow editing of the name. But only set this flag on initial
-    // load, otherwise as soon as you start typing it will lock down.
-    if (editNames === undefined) {
-      setEditNames(values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase());
-    }
-  }, [editNames, values.lead.prospect.firstName]);
+    // If the prospect's first name is 'Unknown', then allow editing of the name. But only set this flag on when the
+    // prospect's contact ID changes, otherwise as soon as you start typing it will lock down.
+    const firstName = values.lead.prospect.firstName;
+    setEditNames(firstName.toUpperCase() === 'Unknown'.toUpperCase());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    values.lead.prospect.contactId, // recompute edit names flag when the lead changes
+          // but notably, no dep on the firstName (which is why the deps warning is disabled above)
+  ]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
