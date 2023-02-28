@@ -145,7 +145,8 @@ const InquiryForm = ({
           "number": "",
           "type": ""
         },
-        "age": ""
+        "age": "",
+        veteranStatus: "",
       };
       // 'undefined' here means remove from the object
       newLead = {
