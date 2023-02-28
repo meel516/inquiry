@@ -26,7 +26,7 @@
             "contactId": 12523159,
             "masterId": 5900922,
             "age": 0,
-            "veteranStatus": 4,
+            "veteranStatus": "4",
             "medicare": false
         },
         "secondPerson": null,

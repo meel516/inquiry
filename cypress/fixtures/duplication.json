@@ -98,7 +98,7 @@
         "contactId": 11818810,
         "masterId": 6241608,
         "age": 80,
-        "veteranStatus": 4,
+        "veteranStatus": "4",
         "medicare": false
     },
     {
@@ -479,7 +479,7 @@
         "lastName": "Ugarte",
         "contactId": 12882727,
         "masterId": 7716132,
-        "veteranStatus": 4,
+        "veteranStatus": "4",
         "medicare": false
     },
     {
@@ -726,7 +726,7 @@
         "lastName": "Frances",
         "contactId": 11468518,
         "masterId": 6902956,
-        "veteranStatus": 4,
+        "veteranStatus": "4",
         "medicare": false
     },
     {
