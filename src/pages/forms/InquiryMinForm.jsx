@@ -46,6 +46,12 @@ const InquiryForm = ({
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
+  // this is kind of the same as isExistingContact/isLocked, but clearer about what's going on.
+  const contactNewness = {
+    influencerIsNew: !isExistingContact,
+    prospectIsNew:   !isLocked,
+  };
+
   const [editNames, setEditNames] = useState(undefined);
   useEffect(() => {
     // If the prospect's first name is 'Unknown', then allow editing of the name. But only set this flag on when the
@@ -69,8 +75,31 @@ const InquiryForm = ({
   }, [ setFieldValue ]);
 
   const wrappedFormikValues = useMemo(() => {
-    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames };
-  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames ]);
+            return {
+              status,
+              setFieldValue,
+              hideProspect,
+              isContactCenterBuildingId,
+              isExistingContact,
+              isLocked,
+              setFieldTouched,
+              prospectOnlyInCC,
+              editContactSelected,
+              editNames,
+              contactNewness
+            };
+          },
+          [status,
+            setFieldValue,
+            hideProspect,
+            isContactCenterBuildingId,
+            isExistingContact,
+            isLocked,
+            setFieldTouched,
+            prospectOnlyInCC,
+            editContactSelected,
+            editNames,
+            contactNewness]);
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);

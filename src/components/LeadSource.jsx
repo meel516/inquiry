@@ -29,7 +29,10 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     referralText: '',
     referralText2nd: ''
   });
-  const { setFieldValue } = useFormikContextWrapper();
+  const {
+    setFieldValue,
+    contactNewness
+  } = useFormikContextWrapper();
 
   const inputNames = useMemo(() => {
     return {
@@ -93,7 +96,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     const tempDisabled = leadSourceDisabled;
     if (!tempDisabled.initialValuesSet) {
       for (const [value, type] of [[lead.leadSource, 1], [lead.leadSource2nd, 2]]) {
-        const disable = !selectionEqual(value, 0);
+        const disable = !contactNewness.prospectIsNew && !selectionEqual(value, 0);
         if (type === 1) {
           tempDisabled.leadSourceDisabled = disable;
         } else {
@@ -103,7 +106,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       tempDisabled.initialValuesSet = true;
       setLeadSourceDisabled(tempDisabled);
     }
-  }, [lead.leadSource, lead.leadSource2nd, leadSourceDisabled, locked]);
+  }, [contactNewness.prospectIsNew, lead.leadSource, lead.leadSource2nd, leadSourceDisabled, locked]);
 
   const disableReferral = useCallback((value, type) => {
     const disable = !selectionEqual(value, 24);
