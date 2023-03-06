@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 import PropTypes from 'prop-types';
 import { getLeadSources, getLeadSourceDetails, getLeadSourceSubDetails } from '../services/dropdowns';
-import { Select, ReactSelect } from './formik-inputs';
+import {Select, ReactSelect, Input} from './formik-inputs';
 import { useFormikContextWrapper } from '../hooks';
 
 export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lead', locked = false}) => {
@@ -293,7 +293,14 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
             <Label for={inputNames.referralText}
                    className={'label-format ' + (requiredFields.referralTextRequired ? 'required-field' : '')}>
               Referral Text</Label>
-            <input type={'text'} name={inputNames.referralText} disabled={leadSourceDisabled.leadSourceDisabled || referralTextDisabled.referral} className="form-control" value={referralText.referralText} onChange={e => onReferralTextChange(e, inputNames.referralText)} placeholder="Enter Referral Text" maxLength={100} />
+            <Input type={'text'}
+                   name={inputNames.referralText}
+                   disabled={leadSourceDisabled.leadSourceDisabled || referralTextDisabled.referral}
+                   className="form-control"
+                   value={referralText.referralText}
+                   onChange={e => onReferralTextChange(e, inputNames.referralText)}
+                   placeholder="Enter Referral Text"
+                   maxLength={100}/>
           </FormGroup>
         </Col>
       </Row>
@@ -343,7 +350,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
                    className={'label-format ' + (requiredFields.referralText2ndRequired ? 'required-field' : '')}>
               2nd Referral Text
             </Label>
-            <input type={'text'}
+            <Input type={'text'}
                    name={inputNames.referralText2nd}
                    disabled={leadSourceDisabled.secondLeadSourceDisabled || referralTextDisabled.referral2nd}
                    className="form-control"
