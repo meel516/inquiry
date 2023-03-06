@@ -19,6 +19,13 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     secondLeadSourceDisabled: true,
   });
 
+  const [requiredFields, setRequiredFields] = useState({
+    leadSourceDetailRequired:    false,
+    referralTextRequired:        false,
+    leadSourceDetail2ndRequired: false,
+    referralText2ndRequired:     false,
+  });
+
   // this tells you whether the referral text of the primary and secondary lead source should be disabled (independent
   // of the section disabled flag above)
   const [referralTextDisabled, setReferralTextDisabled] = useState({
@@ -88,42 +95,44 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
 
   // if the contact ID(s) change, we need to recompute the lead sources to determine whether they should be locked down
   useEffect(() => {
-    leadSourceDisabled.initialValuesSet = false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLeadSourceDisabled(o => ({...o, initialValuesSet: false}));
   }, [lead.prospect.contactId, lead.influencer.contactId]);
 
   useEffect(() => {
-    const tempDisabled = leadSourceDisabled;
-    if (!tempDisabled.initialValuesSet) {
-      for (const [value, type] of [[lead.leadSource, 1], [lead.leadSource2nd, 2]]) {
-        const disable = !contactNewness.prospectIsNew && !selectionEqual(value, 0);
-        if (type === 1) {
-          tempDisabled.leadSourceDisabled = disable;
-        } else {
-          tempDisabled.secondLeadSourceDisabled = disable;
-        }
+    const tempDisabled = {};
+    for (const [value, type] of [[lead.leadSource, 1], [lead.leadSource2nd, 2]]) {
+      const disable = !contactNewness.prospectIsNew && !selectionEqual(value, 0);
+      if (type === 1) {
+        tempDisabled.leadSourceDisabled = disable;
+      } else {
+        tempDisabled.secondLeadSourceDisabled = disable;
       }
-      tempDisabled.initialValuesSet = true;
-      setLeadSourceDisabled(tempDisabled);
     }
-  }, [contactNewness.prospectIsNew, lead.leadSource, lead.leadSource2nd, leadSourceDisabled, locked]);
+    tempDisabled.initialValuesSet = true;
+    setLeadSourceDisabled(o => ({...o, ...tempDisabled}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contactNewness.prospectIsNew, lead.prospect.contactId]);
 
   const disableReferral = useCallback((value, type) => {
     const disable = !selectionEqual(value, 24);
-    const tempReferralDisabled = referralTextDisabled;
-    const tempReferral = referralText;
+    const tempReferralDisabled = {};
+    const tempRequired = {};
+    const tempReferral = {};
     if (type === 1) {
       setFieldValue(inputNames.referralText, "");
       tempReferral.referralText = "";
       tempReferralDisabled.referral = disable;
+      tempRequired.referralTextRequired = !disable;
     } else {
       setFieldValue(inputNames.referralText2nd, "");
       tempReferral.referralText2nd = "";
       tempReferralDisabled.referral2nd = disable;
+      tempRequired.referralText2ndRequired = !disable;
     }
-    setReferralText(tempReferral);
-    setReferralTextDisabled(tempReferralDisabled)
-  }, [setFieldValue, inputNames, referralTextDisabled, referralText]);
+    setReferralText(r => ({...r, ...tempReferral}));
+    setRequiredFields(r => ({...r, ...tempRequired}));
+    setReferralTextDisabled(r => ({...r, ...tempReferralDisabled}));
+  }, [setFieldValue, inputNames]);
 
   const onLeadSourceChange = useCallback((e) => {
     const { value } = e.target;
@@ -188,12 +197,16 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     async function getAndSetDetails() {
       const details = leadSource ? (await getLeadSourceDetails(leadSource)) : [];
       setLeadSourceDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
+      const selectable = details.length > 0;
+      setRequiredFields((r) => ({...r, leadSourceDetailRequired: selectable}));
       setFieldValue(inputNames.leadSourceDetailOptions, details);
     }
 
     async function getAndSetDetails2nd() {
       const details = lead.leadSource2nd ? (await getLeadSourceDetails(lead.leadSource2nd)) : [];
       setLeadSourceDetails2nd(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
+      const selectable = details.length > 0;
+      setRequiredFields((r) => ({...r, leadSourceDetail2ndRequired: selectable}));
       setFieldValue(inputNames.leadSourceDetailOptions2nd, details);
     }
 
@@ -248,7 +261,10 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       <Row>
         <Col>
           <FormGroup>
-            <Label for={inputNames.leadSourceDetail} className='label-format required-field'>Lead Source Detail</Label>
+            <Label for={inputNames.leadSourceDetail}
+                   className={'label-format ' + (requiredFields.leadSourceDetailRequired ? 'required-field' : '')}>
+              Lead Source Detail
+            </Label>
             <Select name={inputNames.leadSourceDetail} disabled={leadSourceDisabled.leadSourceDisabled} onChange={onLeadSourceDetailChange}>
               {leadSourceDetailOptions}
             </Select>
@@ -274,7 +290,9 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       <Row>
         <Col>
           <FormGroup>
-            <Label for={inputNames.referralText} className='label-format'>Referral Text</Label>
+            <Label for={inputNames.referralText}
+                   className={'label-format ' + (requiredFields.referralTextRequired ? 'required-field' : '')}>
+              Referral Text</Label>
             <input type={'text'} name={inputNames.referralText} disabled={leadSourceDisabled.leadSourceDisabled || referralTextDisabled.referral} className="form-control" value={referralText.referralText} onChange={e => onReferralTextChange(e, inputNames.referralText)} placeholder="Enter Referral Text" maxLength={100} />
           </FormGroup>
         </Col>
@@ -292,7 +310,10 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       <Row>
         <Col>
           <FormGroup>
-            <Label for={inputNames.leadSourceDetail2nd} className='label-format'>2nd Lead Source Detail</Label>
+            <Label for={inputNames.leadSourceDetail2nd}
+                   className={'label-format ' + (requiredFields.leadSourceDetail2ndRequired ? 'required-field' : '')}>
+              2nd Lead Source Detail
+            </Label>
             <Select name={inputNames.leadSourceDetail2nd} disabled={leadSourceDisabled.secondLeadSourceDisabled} onChange={on2ndLeadSourceDetailChange}>
               {leadSourceDetailOptions2nd}
             </Select>
@@ -318,7 +339,10 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
       <Row>
         <Col>
           <FormGroup>
-            <Label for={inputNames.referralText2nd} className='label-format'>2nd Referral Text</Label>
+            <Label for={inputNames.referralText2nd}
+                   className={'label-format ' + (requiredFields.referralText2ndRequired ? 'required-field' : '')}>
+              2nd Referral Text
+            </Label>
             <input type={'text'}
                    name={inputNames.referralText2nd}
                    disabled={leadSourceDisabled.secondLeadSourceDisabled || referralTextDisabled.referral2nd}

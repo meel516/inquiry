@@ -175,7 +175,22 @@ const mainFormValidationSchema = object().shape({
       then: number().test('required-number-value', 'Lead Source Detail is required', nonZeroNumber),
       otherwise: number(),
     }),
+    referralText: string().when(['leadSource'], {
+      is:        (leadSource) => leadSource === 24,
+      then:      string().required('Referral Text is required when Lead Source is \'Referral - Professional\''),
+      otherwise: string()
+    }),
     leadSourceDetailOptions: array(),
+    leadSourceDetail2nd: number().when([ 'leadSource2nd', 'leadSourceDetailOptions2nd'], {
+      is: (leadSource2nd, options) => options && options.length && leadSource2nd,
+      then: number().test('required-number-value', '2nd Lead Source Detail is required', nonZeroNumber),
+      otherwise: number(),
+    }),
+    referralText2nd: string().when(['leadSource2nd'], {
+      is:        (leadSource2nd) => leadSource2nd === 24,
+      then:      string().required('2nd Referral Text is required when 2nd Lead Source is \'Referral - Professional\''),
+      otherwise: string()
+    }),
     callerType: string().required('Gender of Caller is required'),
     notes: object().shape({
       situation: string().max(4000, 'Situation can be at most 4000 characters'),
