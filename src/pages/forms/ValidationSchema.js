@@ -176,8 +176,8 @@ const mainFormValidationSchema = object().shape({
       otherwise: number(),
     }),
     referralText: string().when('leadSource', {
-      is:        (source) => { debugger; return source === 24; },
-      then:      string().required('Referral Text is required when Lead Source is \'Referral - Professional\''),
+      is:   (source) => source === 24,
+      then: string().required('Referral Text is required when Lead Source is \'Referral - Professional\''),
     }),
     leadSourceDetailOptions: array(),
     leadSourceDetail2nd: number().when([ 'leadSource2nd', 'leadSourceDetailOptions2nd'], {
@@ -186,8 +186,8 @@ const mainFormValidationSchema = object().shape({
       otherwise: number(),
     }),
     referralText2nd: string().when('leadSource2nd', {
-      is:        (source) => source === 24,
-      then:      string().required('2nd Referral Text is required when 2nd Lead Source is \'Referral - Professional\''),
+      is:   (source) => (source + "") === "24", // TODO why is this sometimes a string?
+      then: string().required('2nd Referral Text is required when 2nd Lead Source is \'Referral - Professional\''),
     }),
     callerType: string().required('Gender of Caller is required'),
     notes: object().shape({
