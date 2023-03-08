@@ -17,6 +17,7 @@ import addContactPhoneToSalesContact from '../mappers/add-contact-phone-to-sales
 import addContactAddressToSalesContact from '../mappers/add-contact-address-to-sales-contact'
 
 import leadDataRecord from '../models/lead-data-record'
+import {numToString} from '../utils/misc';
 
 class ObjectMappingService {
 
@@ -68,7 +69,7 @@ class ObjectMappingService {
             lead.callingFor = (salesLead.inquirerType === 'PROSP') ? 'Myself' : 'Other'
             if (salesLead.salesContact) {
                 const { salesContact } = salesLead;
-                lead.veteranStatus = salesContact.veteranStatus
+                lead.veteranStatus = numToString(salesContact.veteranStatus);
                 lead.prospect = this.createContact(salesContact)
                 lead.gender = salesContact.gender
             }
@@ -130,7 +131,7 @@ class ObjectMappingService {
             contact.email = salesContact.emailAddress || '';
             contact.age = salesContact.age;
             contact.gender = salesContact.gender;
-            contact.veteranStatus = salesContact.veteranStatus;
+            contact.veteranStatus = numToString(salesContact.veteranStatus);
             contact.textOptInCheckbox = salesContact.textOptInInd;
             
             const address = this.createEmptyAddress();
@@ -294,7 +295,7 @@ class ObjectMappingService {
             salesContact.lastName = influencer.lastName
             salesContact.emailAddress = influencer.email
             salesContact.age = prospect.age
-            salesContact.veteranStatus = prospect.veteranStatus
+            salesContact.veteranStatus = numToString(prospect.veteranStatus)
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = influencer.contactId
             salesContact.masterId = influencer.masterId
@@ -308,7 +309,7 @@ class ObjectMappingService {
             salesContact.lastName = ((prospect && prospect.lastName) ? prospect.lastName : defaultLastName)
             salesContact.emailAddress = prospect.email
             salesContact.age = prospect.age
-            salesContact.veteranStatus = prospect.veteranStatus
+            salesContact.veteranStatus = numToString(prospect.veteranStatus);
             salesContact.currentSituation = lead.currentSituation
             salesContact.contactId = prospect.contactId
             salesContact.masterId = prospect.masterId

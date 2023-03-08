@@ -8,6 +8,7 @@ import { get } from 'lodash'
 import createSfmcCallAudit from './sfmc/create-call-audit'
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 import handleResultOfCall from '../services/handle-result-of-call'
+import {numToString} from '../utils/misc';
 
 // business logic ------
 class SalesAPIService {
@@ -121,7 +122,7 @@ class SalesAPIService {
               lead.prospect.age = tmpAge;
             }
             if (tmpVetStat) {
-              lead.prospect.veteranStatus = tmpVetStat;
+              lead.prospect.veteranStatus = numToString(tmpVetStat);
             }
           }
 
@@ -531,7 +532,7 @@ class SalesAPIService {
       // Save off Veteran Status since the below line overwrites it!!!
       let formVetStatus = lead.prospect.veteranStatus;
       lead.prospect = ObjectMappingService.createEmptyContact();
-      lead.prospect.veteranStatus = formVetStatus;
+      lead.prospect.veteranStatus = numToString(formVetStatus);
     }
 
     let leadId = null;

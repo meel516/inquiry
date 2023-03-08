@@ -46,9 +46,23 @@ const InquiryForm = ({
   const editContactSelected = !!(values.lead.editContact);
   const lockCallingFor = (callingFor === 'Myself' && values.lead.editContact);
 
-  const editNames = useMemo(() => {
-    return (values.lead.prospect.firstName.toUpperCase() === 'Unknown'.toUpperCase() ? true: false);
-  }, [values.lead.prospect.firstName]);
+  // this is kind of the same as isExistingContact/isLocked, but clearer about what's going on.
+  const contactNewness = {
+    influencerIsNew: !isExistingContact,
+    prospectIsNew:   !isLocked,
+  };
+
+  const [editNames, setEditNames] = useState(undefined);
+  useEffect(() => {
+    // If the prospect's first name is 'Unknown', then allow editing of the name. But only set this flag on when the
+    // prospect's contact ID changes, otherwise as soon as you start typing it will lock down.
+    const firstName = values.lead.prospect.firstName;
+    setEditNames(firstName.toUpperCase() === 'Unknown'.toUpperCase());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    values.lead.prospect.contactId, // recompute edit names flag when the lead changes
+          // but notably, no dep on the firstName (which is why the deps warning is disabled above)
+  ]);
 
   useEffect(() => {
     // Establish whether the prospect section should be locked - is there a contact ID or not 
@@ -61,8 +75,31 @@ const InquiryForm = ({
   }, [ setFieldValue ]);
 
   const wrappedFormikValues = useMemo(() => {
-    return { status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames };
-  }, [status, setFieldValue, hideProspect, isContactCenterBuildingId, isExistingContact, isLocked, setFieldTouched, prospectOnlyInCC, editContactSelected, editNames ]);
+            return {
+              status,
+              setFieldValue,
+              hideProspect,
+              isContactCenterBuildingId,
+              isExistingContact,
+              isLocked,
+              setFieldTouched,
+              prospectOnlyInCC,
+              editContactSelected,
+              editNames,
+              contactNewness
+            };
+          },
+          [status,
+            setFieldValue,
+            hideProspect,
+            isContactCenterBuildingId,
+            isExistingContact,
+            isLocked,
+            setFieldTouched,
+            prospectOnlyInCC,
+            editContactSelected,
+            editNames,
+            contactNewness]);
 
   const handleFormSubmit = useCallback((e) => {
     handleSubmit(e);
@@ -137,7 +174,8 @@ const InquiryForm = ({
           "number": "",
           "type": ""
         },
-        "age": ""
+        "age": "",
+        veteranStatus: "",
       };
       // 'undefined' here means remove from the object
       newLead = {
@@ -151,6 +189,9 @@ const InquiryForm = ({
         leadSource:              0,
         leadSourceDetail:        0,
         referralText:            "",
+        leadSource2nd:           0,
+        leadSourceDetail2nd:     0,
+        referralText2nd:         "",
         leadId:                  undefined,
         leadTypeId:              undefined,
         leadCareTypeId:          undefined,
