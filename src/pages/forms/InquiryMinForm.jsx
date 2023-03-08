@@ -189,6 +189,7 @@ const InquiryForm = ({
         leadSource:              0,
         leadSourceDetail:        0,
         referralText:            "",
+        referralText2nd:         "",
         leadId:                  undefined,
         leadTypeId:              undefined,
         leadCareTypeId:          undefined,
