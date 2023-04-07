@@ -1,5 +1,11 @@
 # Connection Center Application
 
+## Attention
+
+* Don't use the builtin fetch() to do REST calls - use ccFetch() which has retry and backoff logic (TECP-7420)
+
+## Description
+
 This project consists of a re-write of the Connection Center Application, which is currently hosted on a Wordpress VM, used by the Brookdale Contact Center.  The technology chosen was to write the new application using React along with several installed modules, which are listed below. (As more modules are used they will be listed here and documented as to why they were choosen, for future reference.)
 
 * Formik - do I need to use this - the main reason is for validation and form framework

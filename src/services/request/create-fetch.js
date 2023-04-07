@@ -1,4 +1,5 @@
 import getHeaders from './get-headers'
+import ccFetch from './cc-fetch';
 
 export default (url, method, payload) => {
     const fetchParams = {
@@ -8,5 +9,5 @@ export default (url, method, payload) => {
         headers: { ...getHeaders() },
         body: payload ? JSON.stringify(payload) : undefined
     }
-    return fetch(encodeURI(url), fetchParams)
+    return ccFetch(encodeURI(url), fetchParams)
 }
