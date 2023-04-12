@@ -18,11 +18,8 @@ export const Person = React.memo(({ basePath, type, locked, editNames, onDuplica
     }), [basePath, type]);
 
     useEffect(() => {
-        // TODO undo
-        for (let i=0; i<30; i++) {
-            getPhoneTypes()
-                    .then((data) => setPhoneTypes(data));
-        }
+        getPhoneTypes()
+                .then((data) => setPhoneTypes(data));
     }, []);
 
     const phoneTypeOptions = useMemo(() => {
