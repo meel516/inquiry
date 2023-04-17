@@ -19,7 +19,7 @@ export const Person = React.memo(({ basePath, type, locked, editNames, onDuplica
 
     useEffect(() => {
         getPhoneTypes()
-            .then((data) => setPhoneTypes(data));
+                .then((data) => setPhoneTypes(data));
     }, []);
 
     const phoneTypeOptions = useMemo(() => {
