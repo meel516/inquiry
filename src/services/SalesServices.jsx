@@ -9,6 +9,7 @@ import createSfmcCallAudit from './sfmc/create-call-audit'
 import createProspectNeedsRequest from '../mappers/create-prospect-needs-request'
 import handleResultOfCall from '../services/handle-result-of-call'
 import {numToString} from '../utils/misc';
+import ccFetch from './request/cc-fetch';
 
 // business logic ------
 class SalesAPIService {
@@ -162,7 +163,7 @@ class SalesAPIService {
   async submitInfluencer(influencer) {
     const inflUrl = this.createApiUri('influencer');
     if (influencer) {
-      let response = await fetch(inflUrl, {
+      let response = await ccFetch(inflUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +193,7 @@ class SalesAPIService {
         if (noteRequest) {
           console.log(JSON.stringify(noteRequest));
 
-          fetch(noteUrl, {
+          ccFetch(noteUrl, {
             method: 'POST', mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
@@ -211,7 +212,7 @@ class SalesAPIService {
 
     let prospectNeedsRequest = createProspectNeedsRequest(coid, lead, user);
     if (prospectNeedsRequest) {
-      fetch(prospectNeedsUrl, {
+      ccFetch(prospectNeedsUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -243,7 +244,7 @@ class SalesAPIService {
   }
 
   async _createPOST(url, payload) {
-    return fetch(url, {
+    return ccFetch(url, {
       method: 'POST', mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
@@ -255,7 +256,7 @@ class SalesAPIService {
   async submitSecondPerson(secondPersonRequest) {
     if (secondPersonRequest) {
       const secondPersonUrl = this.createApiUri('secondperson');
-      let response = await fetch(secondPersonUrl, {
+      let response = await ccFetch(secondPersonUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -277,7 +278,7 @@ class SalesAPIService {
 
   async sendAddCommunityRequest(request) {
     const coidUrl = this.createApiUri('communities')
-    let response = await fetch(coidUrl, {
+    let response = await ccFetch(coidUrl, {
       method: 'POST', mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
@@ -299,7 +300,7 @@ class SalesAPIService {
     let response;
     if (prospectRequest && !prospectRequest.leadId) {
       // Add - call the POST
-      response = await fetch(leadUrl, {
+      response = await ccFetch(leadUrl, {
         method: 'POST', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -308,7 +309,7 @@ class SalesAPIService {
       })
     } else {
       // Update - call the PUT
-      response = await fetch(leadUrl, {
+      response = await ccFetch(leadUrl, {
         method: 'PUT', mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -635,7 +636,7 @@ class SalesAPIService {
   }
 
   createFetch(url) {
-    return fetch(url, { mode: 'cors', cache: 'no-cache' })
+    return ccFetch(url, { mode: 'cors', cache: 'no-cache' })
       .then((res) => this.processReturnResults(res))
   }
 
