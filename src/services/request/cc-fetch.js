@@ -140,7 +140,8 @@ function determineWaitTime(url) {
 	return waitMs;
 }
 
-const FETCH_MAX_RETRIES = 60;
+// TODO temporarily disable retry logic until we get the transaction problems sorted out in SMS
+const FETCH_MAX_RETRIES = 0;
 
 /**
  * Replacement for the builtin fetch() function, with error retry and logistic backoff when repeatedly hitting the same URL.
