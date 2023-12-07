@@ -62,7 +62,7 @@ export const Communities = ({ username, requiredCommunityError }) => {
               </Button>
               { requiredCommunityError && <StyledErrorMessage>{requiredCommunityError}</StyledErrorMessage> }
             </StyledButtonWrapper>
-            {
+              {
               communities.map((community, index) => (
                 <CommunitySelect
                   key={community.uuid}
