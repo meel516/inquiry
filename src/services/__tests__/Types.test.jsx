@@ -98,7 +98,8 @@ describe('test followup mapping', () => {
             note: "Description",
             startingPrice: 2540,
             secondPersonFee: 500,
-            communityFee: 1850
+            communityFee: 1850,
+            spotlightDiscussed: true
         }
         const user = TestUtils.createEmptyUser();
         const request = ObjectMappingService.createFollowupRequest(leadId, community, user)
@@ -120,7 +121,8 @@ describe('test followup mapping', () => {
             followUpAction: "",
             startingPrice: 2500,
             secondPersonFee: 500,
-            communityFee: 2140
+            communityFee: 2140,
+            spotlightDiscussed: true
         }
         const request = ObjectMappingService.createFollowupRequest(leadId, community);
         expect(request).toBeNull()

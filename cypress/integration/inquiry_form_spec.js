@@ -96,6 +96,7 @@ describe('Inquiry Form', () => {
         reactNumberFormat(communities.followupDate(0)).populate();
         cy.get(communities.freeMeal(0)).select('Dinner')
         cy.get(communities.note(0)).type('description...')
+        cy.get(communities.spotlightDiscussed(0)).type('123')
         community.removeCommunityAt(0);
 
         cy.get(notes.financialSituation).type('pretty flush')

@@ -18,6 +18,8 @@ import Visit from './Visit';
 import { useFormikContextWrapper } from '../../../hooks';
 import { getEventDetails, getEventAddlDetails } from '../../../services/dropdowns';
 import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
+import {StyledCheckboxGroupWrapper} from '../../checkbox-groups/styled';
+import {Checkbox} from '../../form-items';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
@@ -41,6 +43,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
       communityFee: `communities[${index}].communityFee`,
       eventDetail: `communities[${index}].eventDetail`,
       eventAddlDetail: `communities[${index}].eventAddlDetail`,
+      spotlightDiscussed: `communities[${index}].spotlightDiscussed`
     }
   }, [index]);
 
@@ -156,6 +159,13 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
             </Col>
           </Row>
           <Row>
+            <Col>
+              <StyledCheckboxGroupWrapper>
+                <Checkbox name={inputNames.spotlightDiscussed} label='Spotlight discussed' />
+              </StyledCheckboxGroupWrapper>
+            </Col>
+          </Row>
+          <Row>
             <Col md="4">
               <FormGroup>
                 <Label for={inputNames.followUpAction} className='label-format'>Next Steps Action</Label>
@@ -205,4 +215,5 @@ CommunitySelect.propTypes = {
   onRemove: PropTypes.func.isRequired,
   communityList: PropTypes.array,
   followupActions: PropTypes.array,
+  spotlightDiscussed: PropTypes.bool
 }
