@@ -119,5 +119,6 @@ export const fieldSelectors = {
         followupDate: i => `input[name="communities[${i}].followupDate"]`,
         freeMeal: i => `select[name="communities[${i}].freeMeal"]`,
         note: i => `textarea[name="communities[${i}].note"]`,
+        spotlightDiscussed: i => `input[name="communities[${i}].spotlightDiscussed"]`
     }
 }
