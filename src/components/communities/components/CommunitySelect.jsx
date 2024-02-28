@@ -20,6 +20,7 @@ import { getEventDetails, getEventAddlDetails } from '../../../services/dropdown
 import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
 import {StyledCheckboxGroupWrapper} from '../../checkbox-groups/styled';
 import {Checkbox} from '../../form-items';
+import {fetchBuildingDetail} from '../../../services/community-services';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
   const [ selectedAction, setSelectedAction ] = useState(null);
@@ -27,6 +28,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
   const [ eventDetails, setEventDetails ] = useState([]);
   const [ eventAddlDetails, setEventAddlDetails ] = useState([]);
+  const [ showHealthPlus, setShowHealthPlus] = useState([]);
 
   const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
   const SMS_ILS_SEAC = 15; // Special Event at Community - SMS Inquiry Lead Source
@@ -43,7 +45,8 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
       communityFee: `communities[${index}].communityFee`,
       eventDetail: `communities[${index}].eventDetail`,
       eventAddlDetail: `communities[${index}].eventAddlDetail`,
-      spotlightDiscussed: `communities[${index}].spotlightDiscussed`
+      spotlightDiscussed: `communities[${index}].spotlightDiscussed`,
+      healthPlusInd: `communities[${index}].BuildingDetail.healthPlusInded`
     }
   }, [index]);
 
@@ -80,6 +83,15 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
     setFieldValue(inputNames.eventAddlDetail, 0);
     setSelectedEventDetail(optn.target.value);
   }, [setEventAddlDetails, setFieldValue, inputNames]);
+
+  const onCommunityChange = useCallback((optn) => {
+      debugger;
+      const buildingId = optn.value;
+//      setShowHealthPlus(fetchBuildingDetail(buildingId));
+      fetchBuildingDetail(buildingId).then(showHealthPlus => {
+        setShowHealthPlus(showHealthPlus);
+      });
+  }, [inputNames.communityId]);
 
   useEffect(() => {
     async function getAndSetEventDetails () {
@@ -119,7 +131,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
             <Col>
             <FormGroup>
               <Label for={inputNames.communityId} className='label-format'>Community</Label>
-              <ReactSelect name={inputNames.communityId} options={communityList} />
+              <ReactSelect name={inputNames.communityId} options={communityList} onChange={onCommunityChange}/>
             </FormGroup>
             </Col>
           </Row>
@@ -163,6 +175,12 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               <StyledCheckboxGroupWrapper>
                 <Checkbox name={inputNames.spotlightDiscussed} label='Spotlight discussed' />
               </StyledCheckboxGroupWrapper>
+            </Col>
+            <Col>
+              <div></div>
+            </Col>
+            <Col>
+              {showHealthPlus ? <div className='label-format'>HealthPlus</div> : null}
             </Col>
           </Row>
           <Row>
