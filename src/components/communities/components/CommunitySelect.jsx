@@ -87,7 +87,6 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   const onCommunityChange = useCallback((optn) => {
       debugger;
       const buildingId = optn.value;
-//      setShowHealthPlus(fetchBuildingDetail(buildingId));
       fetchBuildingDetail(buildingId).then(showHealthPlus => {
         setShowHealthPlus(showHealthPlus);
       });

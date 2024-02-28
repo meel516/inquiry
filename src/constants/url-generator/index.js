@@ -9,4 +9,4 @@ export const createReasonsUrl = (statusId) => `${reactAppSalesServicesUrl()}/Sim
 export const createDestinationsUrl = (reasonId) => `${reactAppSalesServicesUrl()}/Sims/api/reasons/${reasonId}/destinations`
 export const createStatusUpdateUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/autoStatusUpdate`
 export const createSfmcCallAuditUrl = () => `${reactAppSalesServicesUrl()}/Sims/api/ccApp/sfmc`
-export const fetchBuildingDetailUrl = () => `${reactAppSalesServicesUrl()}/CommunitySearch/service/getHealthPlus`
+export const fetchBuildingDetailUrl = (buildingId) => `${reactAppSalesServicesUrl()}/CommunitySearch/service/getHealthPlus?buildingId=${buildingId}`
