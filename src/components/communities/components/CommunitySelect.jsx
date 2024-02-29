@@ -28,7 +28,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
   const [ eventDetails, setEventDetails ] = useState([]);
   const [ eventAddlDetails, setEventAddlDetails ] = useState([]);
-  const [ showHealthPlus, setShowHealthPlus] = useState([]);
+  const [ showHealthPlus, setShowHealthPlus] = useState(false);
 
   const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
   const SMS_ILS_SEAC = 15; // Special Event at Community - SMS Inquiry Lead Source
@@ -88,7 +88,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
       fetchBuildingDetail(buildingId).then(showHealthPlus => {
         setShowHealthPlus(showHealthPlus);
       });
-  }, []);
+  }, [setShowHealthPlus]);
 
   useEffect(() => {
     async function getAndSetEventDetails () {
