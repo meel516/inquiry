@@ -84,13 +84,11 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   }, [setEventAddlDetails, setFieldValue, inputNames]);
 
   const onCommunityChange = useCallback((optn) => {
-      debugger;
       const buildingId = optn.value;
-      const temp = inputNames.communityId;
       fetchBuildingDetail(buildingId).then(showHealthPlus => {
         setShowHealthPlus(showHealthPlus);
       });
-  }, [inputNames.communityId]);
+  }, []);
 
   useEffect(() => {
     async function getAndSetEventDetails () {
