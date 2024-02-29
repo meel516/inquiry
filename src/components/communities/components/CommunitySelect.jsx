@@ -45,8 +45,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
       communityFee: `communities[${index}].communityFee`,
       eventDetail: `communities[${index}].eventDetail`,
       eventAddlDetail: `communities[${index}].eventAddlDetail`,
-      spotlightDiscussed: `communities[${index}].spotlightDiscussed`,
-      healthPlusInd: `communities[${index}].BuildingDetail.healthPlusInded`
+      spotlightDiscussed: `communities[${index}].spotlightDiscussed`
     }
   }, [index]);
 
@@ -87,6 +86,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   const onCommunityChange = useCallback((optn) => {
       debugger;
       const buildingId = optn.value;
+      const temp = inputNames.communityId;
       fetchBuildingDetail(buildingId).then(showHealthPlus => {
         setShowHealthPlus(showHealthPlus);
       });
