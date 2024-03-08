@@ -1,6 +1,7 @@
 import * as urlGenerator from './index'
 import reactAppSalesServicesUrl from './react-app-sales-services-url'
 import { keys } from 'lodash'
+import {fetchBuildingDetailUrl} from './index';
 
 jest.mock('./react-app-sales-services-url')
 
@@ -16,6 +17,7 @@ describe('constants.urlGenerator', () => {
         expect(typeof urlGenerator.createCommunitiesFetchUrl).toEqual('function')
         expect(typeof urlGenerator.createDuplicateSearchUrl).toEqual('function')
         expect(typeof urlGenerator.createEloquaCdoUrl).toEqual('function')
+        expect(typeof urlGenerator.fetchBuildingDetailUrl).toEqual('function')
         expect(keys(urlGenerator).length).toEqual(6)
     })
     describe('createDropDownUrl', () => {
@@ -46,6 +48,11 @@ describe('constants.urlGenerator', () => {
     describe('createEloquaCdoUrl', () => {
         test('should construct properly', () => {
             expect(urlGenerator.createEloquaCdoUrl()).toEqual(`REACT_APP_SALES_SERVICES_URL/Sims/api/inquiryForm/eloqua`)
+        })
+    })
+    describe('fetchBuildingDetailUrl', () => {
+        test('should construct properly', () => {
+            expect(urlGenerator.fetchBuildingDetailUrl()).toEqual('REACT_APP_SALES_SERVICES_URL/CommunitySearch/service/getHealthPlus?buildingId=1234')
         })
     })
 })
