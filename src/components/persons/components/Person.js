@@ -7,6 +7,8 @@ import { getPhoneTypes } from '../../../services/dropdowns';
 export const Person = React.memo(({ basePath, type, locked, editNames, onDuplicateFieldChange, onDuplicateFieldBlur }) => {
     const [ phoneTypes, setPhoneTypes ] = useState([]);
 
+    const interestedBuildingName = `${basePath}.interestedBuildingName`;
+
     const inputNames = useMemo(() => ({
         firstName: `${basePath}.${type}.firstName`,
         lastName: `${basePath}.${type}.lastName`,
@@ -27,9 +29,21 @@ export const Person = React.memo(({ basePath, type, locked, editNames, onDuplica
             return <option key={type.value} value={type.text}>{type.text}</option>
         });
     }, [phoneTypes]);
-
+    
+    
     return (
         <>
+            <Row>
+                <Col></Col>
+                <Col xs="1" md="6">
+                    <FormGroup>
+                        <Label for={interestedBuildingName} className="label-format">Most Interested In:</Label>
+                        <Input type="text" name={interestedBuildingName} 
+                        placeholder="Interested In"
+                        disabled={locked && !editNames}/>
+                    </FormGroup>
+                </Col>
+            </Row>
             <Row>
                 <Col>
                     <Label for={inputNames.firstName} className="label-format required-field">Name</Label>

@@ -54,6 +54,7 @@ class ObjectMappingService {
             lead.leadSourceDetail = salesLead.inquiryLeadSourceDetailId
             lead.leadSourceSubDetail = salesLead.inquiryLeadSourceSubDetailId
             lead.referralText = salesLead.inquiryLeadSourceReferralText
+            lead.interestedBuildingName = salesLead.interestedBuildingName
             
             if (salesLead.secondInquiryLeadSourceId > 0) {
                 lead.leadSource2nd = salesLead.secondInquiryLeadSourceId

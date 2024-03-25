@@ -17,5 +17,6 @@ export default class Lead {
         this.resultOfCall = '';
         this.reasonForCall = 0;
         this.umid = '';
+        this.interestedBuildingName = '';
     }
 }
