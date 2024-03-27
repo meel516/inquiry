@@ -39,7 +39,7 @@ export const Person = React.memo(({ basePath, type, locked, editNames, onDuplica
                     <FormGroup>
                         <Label for={interestedBuildingName} className="label-format">Most Interested In:</Label>
                         <Input type="text" name={interestedBuildingName} 
-                        placeholder="Interested In"
+                        placeholder="None Specified"
                         disabled={locked && !editNames}/>
                     </FormGroup>
                 </Col>
