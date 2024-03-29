@@ -54,7 +54,7 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
   return (
     <>
     {
-        mostInterestedIn !== '' && (
+        mostInterestedIn !== '' && mostInterestedIn !== undefined && (
           <Row>
             <Col></Col>
             <Col xs="1" md="6">
