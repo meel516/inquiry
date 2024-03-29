@@ -5,6 +5,7 @@ import { Address } from '../Address';
 import { ContactMatchesModal } from './components/ContactMatchesModal';
 import canHaveDuplicates from '../../services/deduplication/can-have-duplicates'
 import { ObjectMappingService } from '../../services/Types'
+import { Col, FormGroup, Label, Row } from 'reactstrap';
 
 const TYPE = 'influencer';
 

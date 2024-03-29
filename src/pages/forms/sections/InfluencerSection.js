@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Influencer } from '../../../components/persons';
 import { StyledFormSection } from './styled';
 
-export const InfluencerSection = React.memo(({ influencer, updateLead, isLeadFromContactCenterBuilding, isLocked, editContactSelected }) => (
+export const InfluencerSection = React.memo(({ influencer, updateLead, isLeadFromContactCenterBuilding, isLocked, editContactSelected, mostInterestedIn }) => (
     <StyledFormSection id='contactInfo'>
         <Influencer
             basePath='lead'
