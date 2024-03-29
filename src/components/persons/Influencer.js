@@ -8,7 +8,7 @@ import { ObjectMappingService } from '../../services/Types'
 
 const TYPE = 'influencer';
 
-export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCenterBuilding, locked }) => {
+export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCenterBuilding, locked, mostInterestedIn }) => {
   const [ runDuplicateCheck, setRunDuplicateCheck ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
 
@@ -52,6 +52,19 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
 
   return (
     <>
+    {
+        mostInterestedIn !== '' && (
+          <Row>
+            <Col></Col>
+            <Col xs="1" md="6">
+                <FormGroup>
+                    <Label for={mostInterestedIn} className="label-format">Most Interested In:</Label>
+                    <b><p style={{color: "red"}}>{mostInterestedIn}</p></b>
+                </FormGroup>
+            </Col>
+          </Row>
+        )
+      }
       <Person
         basePath={basePath}
         type={TYPE}
@@ -80,4 +93,5 @@ Influencer.propTypes = {
   updateLead: PropTypes.func.isRequired,
   isLeadFromContactCenterBuilding: PropTypes.func.isRequired,
   locked: PropTypes.bool,
+  mostInterestedIn: PropTypes.string
 }

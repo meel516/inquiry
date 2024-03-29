@@ -11,6 +11,7 @@ export const InfluencerSection = React.memo(({ influencer, updateLead, isLeadFro
             updateLead={updateLead}
             isLeadFromContactCenterBuilding={isLeadFromContactCenterBuilding}
             locked={isLocked && !editContactSelected}
+            mostInterestedIn={mostInterestedIn}
         />
     </StyledFormSection>
 ))
