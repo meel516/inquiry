@@ -27,7 +27,8 @@ export const Person = React.memo(({ basePath, type, locked, editNames, onDuplica
             return <option key={type.value} value={type.text}>{type.text}</option>
         });
     }, [phoneTypes]);
-
+    
+    
     return (
         <>
             <Row>
