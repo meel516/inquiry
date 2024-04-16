@@ -15,7 +15,7 @@ const requiredMessages = {
     veteranStatus: 'Veteran Status is required',
     leadSource: 'Lead Source is required',
     leadSourceDetail: 'Lead Source Detail is required',
-    umid: 'UMID is required',
+    umid: 'Contact ID is required',
     callerType: 'Gender of Caller is required',
     communityId: 'Community is required',
     followupDate: 'Next Steps Date is required',

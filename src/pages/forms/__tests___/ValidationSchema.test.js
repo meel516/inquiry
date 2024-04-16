@@ -19,7 +19,7 @@ describe('Yup full integration testing/validation', () => {
             "First Name is required",   // this is called twice [prospect|influencer]
             "Last Name is required",    // this is called twice [prospect|influencer]
             "Veteran Status is required",
-            "UMID is required",
+            "Contact ID is required",
             "Care Level Recommended is required",
             "Drivers at least one check box is required",
             "Result of Call is required",
