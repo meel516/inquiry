@@ -161,8 +161,8 @@ const mainFormValidationSchema = object().shape({
         .max(100, 'Email can be at most 100 characters'),
     }),
     umid: string()
-      .required("UMID is required")
-      .max(36, 'UMID can be at most 36 characters'),
+      .required("Contact ID is required")
+      .max(36, 'Contact ID can be at most 36 characters'),
     adlNeeds: adlNeedsCheckboxSchema,
     careType: number().test('required-number-value', 'Care Level Recommended is required', nonZeroNumber),
     resultOfCall: string().required('Result of Call is required'),
