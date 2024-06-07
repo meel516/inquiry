@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import { Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col, FormGroup } from 'reactstrap';
 import { Form, withFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { AlertConfirm } from '../../components/alert-confirm';
@@ -217,6 +217,27 @@ const InquiryForm = ({
         <section>
           <div ref={TOP}></div>
         </section>
+      
+        <Row>
+          {
+            values.lead.interestedBuildingName !== '' && values.lead.interestedBuildingName !== undefined && (
+            <Col xs="1" md="4">
+                <FormGroup>
+                    <b><p>Most Interested In:<p style={{color: "red"}}>{values.lead.interestedBuildingName}</p></p></b>
+                </FormGroup>
+            </Col>
+            )
+          }
+          {
+            values.lead.ingestNote !== '' && values.lead.ingestNote !== undefined && (
+            <Col xs="1" md="8">
+                <FormGroup>
+                    <b><p>Visit Preference:<p style={{color: "red"}}>{values.lead.ingestNote}</p></p></b>
+                </FormGroup>
+            </Col>
+            )
+          }
+        </Row>
         <Row>
           <Col>
             <Button color="primary" size="sm" aria-pressed="false" disabled={!prospectOnlyInCC} onClick={editContact}>Edit Contact</Button>
@@ -234,7 +255,7 @@ const InquiryForm = ({
                           updateProspect={updateProspect}
                           editContactSelected={editContactSelected}
                           formikErrors={errors}/>
-        <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} />
+        <PassionPersonalitySection username={user.username} requiredCommunityError={errors.requiredCommunityError} ingestNote={values.lead.ingestNote} />
 
         <p>
         Ok, great! I'm going to read a brief legal disclaimer, at the end of which I'll need your consent.
