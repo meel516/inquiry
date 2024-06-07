@@ -1,11 +1,10 @@
 export default [
   { name: "Advisor Admin Form", location: "http://bkdcontactcenter.host/advisoradmin/" },
-  { name: "Aspect Disposition Codes", location: "http://teams.brookdaleliving.com/sites/sla/Systems Guides/Aspect/Aspect Disposition Codes.htm" },
+  { name: "Disposition Codes", location: "http://teams.brookdaleliving.com/sites/sla/Systems Guides/Aspect/Aspect Disposition Codes.htm" },
   { name: "BKD Webinar Sign Up", location: "https://www.brookdale.com/en/meetings/webinar.html" },
   { name: "CC Helpful Numbers", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/CC%20Helpful%20Numbers%202.12.19.htm" },
   { name: "CC Rate Finder", location: "http://edge.assisted.com/#/views/RateFinderUpdate/RateFinder?:iid=1" },
   { name: "Community Profiles", location: "https://bkdcontactcenter.host/community-profile-look-up/" },
-  { name: "COVID-19 Talking Points", location: "http://teams.brookdaleliving.com/sites/sla/Quick%20Reference%20Guides/COVID-19%20Virus%20CC%20Talking%20Points%20Job%20Aid.pdf" },
   { name: "Email Additional Resources", location: "https://bkdcontactcenter.host/additional-resources/" },
   { name: "Medicaid/Medicare", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Medicaid vs. Medicare Ven Diagram2.htm" },
   { name: "Non-SL Call QRG", location: "http://teams.brookdaleliving.com/sites/sla/Quick Reference Guides/Non Senior Living Lead QRG.htm" },
