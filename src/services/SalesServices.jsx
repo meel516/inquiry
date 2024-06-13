@@ -344,6 +344,10 @@ class SalesAPIService {
         // Set "Reason for Call" to influencer interest reason.
         lead.influencer.interestReasonId = lead.reasonForCall;
       }
+      if (salesLead.inquirerType !== 'PROSP' && lead.callingFor) {
+        // Set "Calling For" to influencer callingFor.
+        lead.influencer.influencerCallingFor = lead.callingFor;
+      }
 
       // Since this method is only fired when we need to create a new CC lead...we need to null out
       // influencerId in order to create a new one.  Do this when we have an existing influencer and

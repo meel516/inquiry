@@ -252,6 +252,7 @@ class ObjectMappingService {
             username: (user) ? user.username : null,
             influencerId: influencer.influencerId,
             interestReasonId: ((influencer && influencer.interestReasonId) ? influencer.interestReasonId : ''),
+            influencerCallingFor: ((influencer && influencer.influencerCallingFor) ? influencer.influencerCallingFor : ''),
             salesContact,
             communities
         }
@@ -304,6 +305,7 @@ class ObjectMappingService {
             addContactPhoneToSalesContact(salesContact, influencer)
             salesContact.gender = lead.callerType
             salesLead.interestReasonId = lead.reasonForCall
+            salesLead.influencerCallingFor = lead.callingFor
         }
         else {
             salesContact.firstName = ((prospect && prospect.firstName) ? prospect.firstName : 'Unknown')

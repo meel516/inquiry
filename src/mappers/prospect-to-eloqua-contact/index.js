@@ -8,5 +8,6 @@ export default (lead) => !lead ? {} : {
     inquiryLeadSourceId: lead.leadSource,
     inquiryLeadSourceDetailId: lead.leadSourceDetail,
     inquiryLeadSourceSubDetailId: lead.leadSourceSubDetail,
+    influencerCallingFor: lead.callingFor,
     leadStatus: salesLeadStatusFromLead(lead)
 }
