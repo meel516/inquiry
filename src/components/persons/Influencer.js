@@ -5,11 +5,10 @@ import { Address } from '../Address';
 import { ContactMatchesModal } from './components/ContactMatchesModal';
 import canHaveDuplicates from '../../services/deduplication/can-have-duplicates'
 import { ObjectMappingService } from '../../services/Types'
-import { Col, FormGroup, Label, Row } from 'reactstrap';
 
 const TYPE = 'influencer';
 
-export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCenterBuilding, locked, mostInterestedIn }) => {
+export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCenterBuilding, locked }) => {
   const [ runDuplicateCheck, setRunDuplicateCheck ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
 
@@ -53,19 +52,6 @@ export const Influencer = ({ basePath, contact, updateLead, isLeadFromContactCen
 
   return (
     <>
-    {
-        mostInterestedIn !== '' && mostInterestedIn !== undefined && (
-          <Row>
-            <Col></Col>
-            <Col xs="1" md="6">
-                <FormGroup>
-                    <Label for={mostInterestedIn} className="label-format">Most Interested In:</Label>
-                    <b><p style={{color: "red"}}>{mostInterestedIn}</p></b>
-                </FormGroup>
-            </Col>
-          </Row>
-        )
-      }
       <Person
         basePath={basePath}
         type={TYPE}
@@ -93,6 +79,5 @@ Influencer.propTypes = {
   contact: PropTypes.object.isRequired,
   updateLead: PropTypes.func.isRequired,
   isLeadFromContactCenterBuilding: PropTypes.func.isRequired,
-  locked: PropTypes.bool,
-  mostInterestedIn: PropTypes.string
+  locked: PropTypes.bool
 }

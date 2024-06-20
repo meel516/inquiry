@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
+import { Button, Col, FormGroup, Label, Row } from 'reactstrap';
 import { FieldArray } from 'formik';
 import { CommunitySelect } from './components/CommunitySelect';
 import { getFollowupActions } from '../../services/dropdowns';
@@ -11,7 +11,7 @@ import { StyledButtonWrapper } from './styled';
 
 const MAX_COMMUNITIES = 5;
 
-export const Communities = ({ username, requiredCommunityError }) => {
+export const Communities = ({ username, requiredCommunityError, ingestNote }) => {
   const [ communityList, setCommunityList ] = useState([]);
   const [ followupActions, setFollowupActions ] = useState([]);
 
@@ -56,6 +56,19 @@ export const Communities = ({ username, requiredCommunityError }) => {
 
         return (
           <Fragment>
+              {
+                ingestNote !== '' && ingestNote !== undefined && (
+                  <Row>
+                    <Col></Col>
+                    <Col xs="1" md="12">
+                        <FormGroup>
+                            <Label for={ingestNote} className="label-format">Visit Preference:</Label>
+                            <b><p style={{color: "red"}}>{ingestNote}</p></b>
+                        </FormGroup>
+                    </Col>
+                  </Row>
+                )
+              }
             <StyledButtonWrapper>
               <Button color="primary" size="sm" aria-pressed="false" disabled={addDisabled} onClick={onAdd}>
                 Add Community
@@ -81,4 +94,5 @@ export const Communities = ({ username, requiredCommunityError }) => {
 
 Communities.propTypes = {
   username: PropTypes.string.isRequired,
+  ingestNote: PropTypes.string
 }
