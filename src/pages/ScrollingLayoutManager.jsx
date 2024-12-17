@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Spinner } from 'reactstrap';
 import { useOktaAuth } from '@okta/okta-react';
 import queryString from 'query-string';
-import { checkAuthentication } from '../auth/checkAuth';
+//import { checkAuthentication } from '../auth/checkAuth';
 import InquiryForm from './forms/InquiryMinForm';
 import LinksManager from '../components/LinksManager';
 import { Navigator } from './Headers/Navigator';
@@ -16,17 +16,6 @@ const EMPTY_USER = {};
 //class LayoutManager extends React.Component {
 const LayoutManager = () => {
   const { authState, oktaAuth } = useOktaAuth();
-
-  const state = {
-    authenticated: false,
-    userinfo: null,
-    lead: null,
-  };
-  
-  console.log('SLM - Before checkAuth');
-  async () => checkAuthentication.bind(this, authState, oktaAuth);
-  console.log('SLM - After checkAuth');
-
   const salesapi = new SalesAPIService();
 
   const componentDidMount = async () => {
@@ -66,17 +55,17 @@ const LayoutManager = () => {
       lead.umid = umid;
     }
 
-    this.checkAuthentication();
+    //this.checkAuthentication();
     this.setState({ lead });
   };
 
-  const componentDidUpdate = async () => {
-    this.checkAuthentication();
-  };
+  //const componentDidUpdate = async () => {
+  //  this.checkAuthentication();
+  //};
 
   //render() {
-    const { authenticated, userinfo, lead } = state;
-    const formUser = userinfo ? ({
+    //const { authenticated, userinfo, lead } = state;
+    const formUser = useState.userinfo ? ({
       email: userinfo.email,
       name: userinfo.name,
       username: userinfo.preferred_username,
@@ -86,7 +75,7 @@ const LayoutManager = () => {
 
     let mainContent;
 
-    if (!authenticated || !userinfo || !lead) {
+    if (!useState.authenticated || !userinfo || !lead) {
       mainContent = <Spinner type="border" size="sm" color="secondary">Loading Lead</Spinner>;
     } else {
       mainContent = <InquiryForm user={formUser} lead={lead}/>;
@@ -94,11 +83,11 @@ const LayoutManager = () => {
 
     return (
       <div>
-        <Navigator authenticated={authenticated} name={userinfo ? userinfo.given_name : ''} />
+        <Navigator authenticated={useState.authenticated} name={useState.userinfo ? useState.userinfo.given_name : ''} />
         <div className="container-fluid">
           <div className="row">
             <div className="col-2">
-              <Section lead={lead}/>
+              <Section lead={useState.lead}/>
             </div>
             <div className="col-7 inquiry-form">
               {mainContent}

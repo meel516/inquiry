@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import { Outlet } from 'react-router-dom';
@@ -18,6 +18,8 @@ import Loading from './Loading';
 
 export const RequiredAuth = () => {
   const { oktaAuth, authState } = useOktaAuth();
+  const [authenticated, setAuthenticated] = useState(null);
+  const [userinfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     if (!authState) {
@@ -28,6 +30,11 @@ export const RequiredAuth = () => {
       const originalUri = toRelativeUrl(window.location.href, window.location.origin);
       oktaAuth.setOriginalUri(originalUri);
       oktaAuth.signInWithRedirect();
+
+      oktaAuth.getUser().then((info) => {
+        setAuthenticated(authState.isAuthenticated),
+        setUserInfo(info)
+      });
     }
   }, [oktaAuth, !!authState, authState?.isAuthenticated]);
 
