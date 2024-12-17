@@ -14,18 +14,22 @@
  * Helper function that watches the authenticate state, then applies it
  * as a boolean (authenticated) as well as attaches the userinfo data.
  */
-async function checkAuthentication(callback) {
-  const authenticated = await this.props.auth.isAuthenticated();
+async function checkAuthentication(callback, authState, oktaAuth) {
+  console.log('Did I get here');
+  //const authenticated = await this.props.auth.isAuthenticated();
+  const authenticated = await authState.isAuthenticated();
+
   if (authenticated !== this.state.authenticated) {
     if (authenticated && !this.state.userinfo) {
-      const userinfo = await this.props.auth.getUser();
+      //const userinfo = await this.props.auth.getUser();
+      const userinfo = await oktaAuth.getUser();
       this.setState({ authenticated, userinfo });
       if (callback) callback(userinfo);
     } else {
+      console.log('checkAuth: ' + 'Already authenticated');
       this.setState({ authenticated });
     }
   }
 }
 
-/* eslint-disable import/prefer-default-export */
 export { checkAuthentication };

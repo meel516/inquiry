@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import {v1 as uuid} from "uuid"; 
 
 export default id => ({
     uuid: id || uuid(),

@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
-import { withAuth } from '@okta/okta-react';
+import React, { useState, useEffect } from 'react';
+import { useOktaAuth } from '@okta/okta-react';
 import { checkAuthentication } from './auth/checkAuth';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-class Home extends Component {
-  state = { authenticated: null }
-  checkAuthentication = checkAuthentication.bind(this);
+const Home = () => {
+  const { authState, oktaAuth } = useOktaAuth();
 
-  componentDidMount() {
+  const state = { authenticated: null };
+  console.log('Home - Before checkAuth');
+  async () => checkAuthentication.bind(this, authState, oktaAuth);
+  console.log('Home - After checkAuth');
+
+  const componentDidMount = async () => {
     this.checkAuthentication();
   }
 
-  render() {
-    if (this.state.authenticated === null) return null;
-
-    return this.state.authenticated
-      ? <Redirect to='/inquiryForm' />
-      : <Redirect to='/redirect' />;
-  }
+  return authState.isAuthenticated
+      ? <Navigate to='/inquiryForm' />
+      : <Navigate to='/redirect' />;
 }
 
-export default withAuth(Home);
+export default Home;

@@ -110,7 +110,6 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
     }
     tempDisabled.initialValuesSet = true;
     setLeadSourceDisabled(o => ({...o, ...tempDisabled}));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contactNewness.prospectIsNew, lead.prospect.contactId]);
 
   const disableReferral = useCallback((value, type) => {

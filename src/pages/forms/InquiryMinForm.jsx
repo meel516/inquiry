@@ -58,7 +58,6 @@ const InquiryForm = ({
     // prospect's contact ID changes, otherwise as soon as you start typing it will lock down.
     const firstName = values.lead.prospect.firstName;
     setEditNames(firstName.toUpperCase() === 'Unknown'.toUpperCase());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     values.lead.prospect.contactId, // recompute edit names flag when the lead changes
           // but notably, no dep on the firstName (which is why the deps warning is disabled above)

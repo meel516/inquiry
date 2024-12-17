@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Number from 'react-number-format';
+import NumberFormatBase from 'react-number-format';
 import { Alert } from 'reactstrap';
 import { useField, useFormikContext } from 'formik';
 import { useHandleChange, useHandleBlur } from './hooks';

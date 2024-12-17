@@ -7,7 +7,6 @@ import {
   Col,
   FormGroup,
   InputGroup,
-  InputGroupAddon,
   InputGroupText,
   Label,
   Row,

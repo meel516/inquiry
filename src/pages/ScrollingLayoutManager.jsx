@@ -1,6 +1,6 @@
 import React from 'react';
 import { Spinner } from 'reactstrap';
-import { withAuth } from '@okta/okta-react';
+import { useOktaAuth } from '@okta/okta-react';
 import queryString from 'query-string';
 import { checkAuthentication } from '../auth/checkAuth';
 import InquiryForm from './forms/InquiryMinForm';
@@ -13,16 +13,23 @@ import { ObjectMappingService } from "../services/Types";
 
 const EMPTY_USER = {};
 
-class LayoutManager extends React.Component {
-  state = {
+//class LayoutManager extends React.Component {
+const LayoutManager = () => {
+  const { authState, oktaAuth } = useOktaAuth();
+
+  const state = {
     authenticated: false,
     userinfo: null,
     lead: null,
-  }
-  checkAuthentication = checkAuthentication.bind(this);
-  salesapi = new SalesAPIService();
+  };
+  
+  console.log('SLM - Before checkAuth');
+  async () => checkAuthentication.bind(this, authState, oktaAuth);
+  console.log('SLM - After checkAuth');
 
-  componentDidMount = async () => {
+  const salesapi = new SalesAPIService();
+
+  const componentDidMount = async () => {
     const { location: { search }} = this.props;
     const { guid, umid, leadId, ils, ilsd, ilssd } = queryString.parse(search);
 
@@ -61,14 +68,14 @@ class LayoutManager extends React.Component {
 
     this.checkAuthentication();
     this.setState({ lead });
-  }
+  };
 
-  componentDidUpdate() {
+  const componentDidUpdate = async () => {
     this.checkAuthentication();
-  }
+  };
 
-  render() {
-    const { authenticated, userinfo, lead } = this.state;
+  //render() {
+    const { authenticated, userinfo, lead } = state;
     const formUser = userinfo ? ({
       email: userinfo.email,
       name: userinfo.name,
@@ -80,7 +87,7 @@ class LayoutManager extends React.Component {
     let mainContent;
 
     if (!authenticated || !userinfo || !lead) {
-      mainContent = <Spinner type="border" size="md" color="secondary">Loading Lead</Spinner>;
+      mainContent = <Spinner type="border" size="sm" color="secondary">Loading Lead</Spinner>;
     } else {
       mainContent = <InquiryForm user={formUser} lead={lead}/>;
     }
@@ -104,7 +111,7 @@ class LayoutManager extends React.Component {
         <Footer />
       </div>
     )
-  }
+  //}
 }
 
-export default withAuth(LayoutManager);
+export default LayoutManager;
