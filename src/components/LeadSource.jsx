@@ -96,7 +96,7 @@ export const LeadSource = ({ leadSource, lead, leadSourceDetail, basePath = 'lea
   // if the contact ID(s) change, we need to recompute the lead sources to determine whether they should be locked down
   useEffect(() => {
     setLeadSourceDisabled(o => ({...o, initialValuesSet: false}));
-  }, [lead.prospect.contactId, lead.influencer.contactId]);
+  }, [lead.prospect?.contactId, lead.influencer?.contactId]);
 
   useEffect(() => {
     const tempDisabled = {};

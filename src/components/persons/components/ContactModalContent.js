@@ -25,7 +25,7 @@ export const ContactModalContent = ({ rows, onRowSelection, onClose, showLeadDat
                 <ReactDataGrid
                     columns={columns}
                     rowGetter={rowGetter}
-                    rowsCount={rows.length}
+                   rows={rows}
                     minHeight={250}
                     minWidth={1100}
                     emptyRowsView={EmptyRowsView}

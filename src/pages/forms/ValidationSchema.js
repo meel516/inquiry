@@ -86,22 +86,34 @@ const requiredProspectSchema = {
     .required(messages.required.lastName)
     .max(50, 'Last Name can be at most 50 characters'),
 };
-
 const phonePhoneTypeDependencySchema = object().shape({
   phone: object().shape({
-    type: string()
-      .when('number', {
-        is: number => (number !== '' && number !== undefined && number !== null),
-        then: string().required("Phone Type is required when Phone is entered"),
-        otherwise: string()
-      }),
-    number: string().when('type', {
-      is: type => (type !== '' && type !== undefined && type !== null),
-      then: string().required("Phone is required when Phone Type is entered"),
-      otherwise: string()
-    }),
-  }, ['number', 'type'])
+    type: string().test(
+      'type-required-if-number',
+      'Phone Type is required when Phone is entered',
+      function(value) {
+        const { number } = this.parent;  // Access the sibling field 'number'
+        if (number && number !== '') {
+          return !!value;  // type must be filled if number is provided
+        }
+        return true;  // if number is not filled, type is not required
+      }
+    ),
+    number: string().test(
+      'number-required-if-type',
+      'Phone is required when Phone Type is entered',
+      function(value) {
+        const { type } = this.parent;  // Access the sibling field 'type'
+        if (type && type !== '') {
+          return !!value;  // number must be filled if type is provided
+        }
+        return true;  // if type is not filled, number is not required
+      }
+    ),
+  }),
 });
+
+
 
 const conditionalValidationSchema = object().shape({
   lead: object().shape({

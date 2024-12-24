@@ -34,7 +34,7 @@ export const ContactMatchesModalProspect = ({ contact, isOpen, onClose, onSubmit
     const salesService = useSalesService();
 
     const submitModalLead = useCallback((selectedLead) => {
-        const duplicateContactData = duplicateContacts.find(q => q.contactId === contact.contactId);
+        const duplicateContactData = duplicateContacts.find(q => q?.contactId === contact?.contactId);
         onSubmitProspect(duplicateContactData, selectedLead);
     }, [contact, duplicateContacts, onSubmitProspect]);
 
@@ -50,12 +50,12 @@ export const ContactMatchesModalProspect = ({ contact, isOpen, onClose, onSubmit
 
                 // We need to set a property to keep track if the ONLY COI for this Prospect ContactId is at the CC.
                 // NOTE: Check to see if Prospect is null...if so, that means the lead.influencer IS the prospect.
-                if (lead.prospect && !lead.prospect.contactId) {
+                if (lead.prospect && !lead.prospect?.contactId) {
                     lead.prospectOnlyHasCC =
-                            await salesService.prospectOnlyHasContactCenterCOI(lead.influencer.contactId);
+                            await salesService.prospectOnlyHasContactCenterCOI(lead.influencer?.contactId);
                 } else {
                     lead.prospectOnlyHasCC =
-                            await salesService.prospectOnlyHasContactCenterCOI(lead.prospect.contactId);
+                            await salesService.prospectOnlyHasContactCenterCOI(lead.prospect?.contactId);
                 }
 
                 submitModalLead(lead);
@@ -65,7 +65,7 @@ export const ContactMatchesModalProspect = ({ contact, isOpen, onClose, onSubmit
 
     useEffect(() => {
         async function fetchLeads() {
-            const leadData = await salesService.retrieveLeadDataForContactId(contact.contactId);
+            const leadData = await salesService.retrieveLeadDataForContactId(contact?.contactId);
             setLeadData(leadData.sort(leadDataSort));
             setShowLeadData(false);
         }

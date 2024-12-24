@@ -105,7 +105,7 @@ const InquiryForm = ({
 
     if (!isValid) {
       toast.error("Please fix the errors before continuing.", {
-        position: toast.POSITION.TOP_CENTER
+        position: 'top-center',
       });
     }
 
@@ -310,13 +310,13 @@ const EnhancedInquiryForm = withFormik({
       .then(() => {
         setStatus({ successful: true, readOnly: true });
         toast.success("Request was submitted successfully.", {
-          position: toast.POSITION.TOP_CENTER
+          position: 'top-center',
         });
       })
       .catch((err) => {
         setStatus({ successful: false, readOnly: false, error: true });
         toast.error(err.message, {
-          position: toast.POSITION.TOP_CENTER
+          position: 'top-center',
         });
       })
       .finally(() => {

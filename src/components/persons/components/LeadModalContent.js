@@ -45,7 +45,7 @@ export const LeadModalContent = ({ rows, onGoBack, onSubmit, onRowSelection, sho
                 <ReactDataGrid
                     columns={columns}
                     rowGetter={rowGetter}
-                    rowsCount={rows.length}
+                    rows={rows}
                     minHeight={250}
                     minWidth={1100}
                     emptyRowsView={EmptyRowsView}

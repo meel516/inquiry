@@ -17,9 +17,9 @@ export const useDragHandlers = () => {
 
     return [ onStart, onStop ];
 }
-export const useRowGetter = (rows) => {
-    return useCallback(i => rows[i], [rows]);
-};
+export const useRowGetter = (rows = []) => {
+    return useCallback(i => (rows[i] || {}), [rows]);
+  };
 
 export const useSalesService = () => {
     return salesService;

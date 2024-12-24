@@ -5,7 +5,7 @@ import {numToString} from '../../utils/misc';
  */
 export default (salesContact = {}, additionalValues = {}) => {
 	return ({
-		contactId:     salesContact.contactId,
+		contactId:     salesContact?.contactId,
 		firstName:     salesContact.firstName,
 		lastName:      salesContact.lastName,
 		gender:        salesContact.gender,

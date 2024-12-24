@@ -18,7 +18,7 @@ export default (record) => {
         ccleadid: record.ccLeadId,
         community: record.buildingName,
         hasaddtl: record.hasAddlInfluencers,
-        prospectid: get(record, 'prospect.contactId'),
+        prospectid: get(record, 'prospect?.contactId'),
         pname: parseName(record, 'prospect'),
         iname: parseName(record, 'primaryInfluencer'),
         spname: parseName(record, 'secondPerson'),
@@ -28,6 +28,6 @@ export default (record) => {
         pphone: parsePhone(record, 'prospect'),
         iphone: parsePhone(record, 'primaryInfluencer'),
         spphone: parsePhone(record, 'secondPerson'),
-        inflContactId: get(record, 'primaryInfluencer.contactId')
+        inflContactId: get(record, 'primaryInfluencer?.contactId')
     }
 }

@@ -8,6 +8,7 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
+
   Label,
   Row,
 } from 'reactstrap';
@@ -17,17 +18,17 @@ import Visit from './Visit';
 import { useFormikContextWrapper } from '../../../hooks';
 import { getEventDetails, getEventAddlDetails } from '../../../services/dropdowns';
 import { defaultVisitNotes } from '../../../constants/defaultVisitNotes';
-import {StyledCheckboxGroupWrapper} from '../../checkbox-groups/styled';
-import {Checkbox} from '../../form-items';
-import {fetchBuildingDetail} from '../../../services/community-services';
+import { StyledCheckboxGroupWrapper } from '../../checkbox-groups/styled';
+import { Checkbox } from '../../form-items';
+import { fetchBuildingDetail } from '../../../services/community-services';
 
 export const CommunitySelect = ({ index, communityList, onRemove, followupOptions }) => {
-  const [ selectedAction, setSelectedAction ] = useState(null);
-  const [ selectedEventDetail, setSelectedEventDetail ] = useState(null);
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [selectedEventDetail, setSelectedEventDetail] = useState(null);
   const { setFieldValue, status: { readOnly } } = useFormikContextWrapper();
-  const [ eventDetails, setEventDetails ] = useState([]);
-  const [ eventAddlDetails, setEventAddlDetails ] = useState([]);
-  const [ showHealthPlus, setShowHealthPlus] = useState(false);
+  const [eventDetails, setEventDetails] = useState([]);
+  const [eventAddlDetails, setEventAddlDetails] = useState([]);
+  const [showHealthPlus, setShowHealthPlus] = useState(false);
 
   const SMS_FUACTION_SEAC = 52; // Special Event at Community - SMS Follow Up Action
   const SMS_ILS_SEAC = 15; // Special Event at Community - SMS Inquiry Lead Source
@@ -83,14 +84,14 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   }, [setEventAddlDetails, setFieldValue, inputNames]);
 
   const onCommunityChange = useCallback((optn) => {
-      const buildingId = optn.value;
-      fetchBuildingDetail(buildingId).then(showHealthPlus => {
-        setShowHealthPlus(showHealthPlus);
-      });
+    const buildingId = optn.value;
+    fetchBuildingDetail(buildingId).then(showHealthPlus => {
+      setShowHealthPlus(showHealthPlus);
+    });
   }, [setShowHealthPlus]);
 
   useEffect(() => {
-    async function getAndSetEventDetails () {
+    async function getAndSetEventDetails() {
       const details = await getEventDetails(SMS_ILS_SEAC);
       setEventDetails(details.map(detail => ({ ...detail, value: parseInt(detail.value, 10) })));
       setFieldValue(inputNames.eventDetailOptions, details);
@@ -105,7 +106,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
   }, [selectedAction, setFieldValue, inputNames])
 
   useEffect(() => {
-    async function getAndSetEventAddlDetails () {
+    async function getAndSetEventAddlDetails() {
       const addldetails = await getEventAddlDetails(parseInt(selectedEventDetail));
       setEventAddlDetails(addldetails.map(addldetail => ({ ...addldetail, value: parseInt(addldetail.value, 10) })));
       setFieldValue(inputNames.eventAddlDetailOptions, addldetails);
@@ -125,10 +126,10 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
         <CardBody>
           <Row>
             <Col>
-            <FormGroup>
-              <Label for={inputNames.communityId} className='label-format'>Community</Label>
-              <ReactSelect name={inputNames.communityId} options={communityList} onChange={onCommunityChange}/>
-            </FormGroup>
+              <FormGroup>
+                <Label for={inputNames.communityId} className='label-format'>Community</Label>
+                <ReactSelect name={inputNames.communityId} options={communityList} onChange={onCommunityChange} />
+              </FormGroup>
             </Col>
           </Row>
           <Row>
@@ -136,10 +137,12 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               <FormGroup>
                 <Label for={inputNames.startingPrice} className="label-format">Starting at Price</Label>
                 <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>$</InputGroupText>
-                  </InputGroupAddon>
-                  <Input name={inputNames.startingPrice} type='number' placeholder='Starting at Price' />
+                  <InputGroupText>$</InputGroupText>
+                  <Input
+                    name={inputNames.startingPrice}
+                    type="number"
+                    placeholder="Starting at Price"
+                  />
                 </InputGroup>
               </FormGroup>
             </Col>
@@ -147,10 +150,12 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               <FormGroup>
                 <Label for={inputNames.secondPersonFee} className="label-format">2nd Person Fee</Label>
                 <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>$</InputGroupText>
-                  </InputGroupAddon>
-                  <Input name={inputNames.secondPersonFee} type='number' placeholder='2nd Person Fee' />
+                  <InputGroupText>$</InputGroupText>
+                  <Input
+                    name={inputNames.secondPersonFee}
+                    type="number"
+                    placeholder="2nd Person Fee"
+                  />
                 </InputGroup>
               </FormGroup>
             </Col>
@@ -158,10 +163,12 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               <FormGroup>
                 <Label for={inputNames.communityFee} className="label-format">Common Starting Rate</Label>
                 <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>$</InputGroupText>
-                  </InputGroupAddon>
-                  <Input name={inputNames.communityFee} type='number' placeholder='Common Starting Rate' />
+                  <InputGroupText>$</InputGroupText>
+                  <Input
+                    name={inputNames.communityFee}
+                    type="number"
+                    placeholder="Common Starting Rate"
+                  />
                 </InputGroup>
               </FormGroup>
             </Col>
@@ -189,7 +196,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               </FormGroup>
             </Col>
             <Col md="4">
-              { selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
+              {selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
                 <FormGroup>
                   <Label for={inputNames.eventDetail} className='label-format'>Event Detail</Label>
                   <Select name={inputNames.eventDetail} onChange={onEventDetailChange}>
@@ -199,7 +206,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
               }
             </Col>
             <Col md="4">
-              { selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
+              {selectedAction && parseInt(selectedAction) === SMS_FUACTION_SEAC &&
                 <FormGroup>
                   <Label for={inputNames.eventAddlDetail} className='label-format'>Event Add'l Detail</Label>
                   <Select name={inputNames.eventAddlDetail}>
@@ -214,7 +221,7 @@ export const CommunitySelect = ({ index, communityList, onRemove, followupOption
           }
         </CardBody>
         <CardFooter className="text-right">
-          { (readOnly === false) 
+          {(readOnly === false)
             ? <Button color="primary" size="sm" onClick={() => onRemove()}>Remove</Button>
             : null
           }

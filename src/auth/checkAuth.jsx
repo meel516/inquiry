@@ -16,18 +16,21 @@
  */
 async function checkAuthentication(callback, authState, oktaAuth) {
   console.log('Did I get here');
-  //const authenticated = await this.props.auth.isAuthenticated();
-  const authenticated = await authState.isAuthenticated();
 
-  if (authenticated !== this.state.authenticated) {
-    if (authenticated && !this.state.userinfo) {
-      //const userinfo = await this.props.auth.getUser();
+  // Check if the user is authenticated
+  const authenticated = authState.isAuthenticated;
+  console.log('authenticated:', authenticated);
+
+  if (authenticated) {
+    // If authenticated and user info is not available, fetch it
+    if (!authState.userinfo) {
       const userinfo = await oktaAuth.getUser();
-      this.setState({ authenticated, userinfo });
+      console.log('userinfo:', userinfo);
+      
+      // If a callback is passed, call it with the userinfo
       if (callback) callback(userinfo);
     } else {
-      console.log('checkAuth: ' + 'Already authenticated');
-      this.setState({ authenticated });
+      console.log('checkAuth: Already authenticated');
     }
   }
 }
